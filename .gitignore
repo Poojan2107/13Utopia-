@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local recovery / scratch
+/_recovered_hero/
+
+# large / stray media not needed in repo (keep metal-human assets)
+/public/20260924-*.mp4

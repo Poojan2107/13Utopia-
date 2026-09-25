@@ -1,0 +1,20 @@
+.link {
+  color: var(--color-fg);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+.link:hover {
+  color: var(--color-accent);
+}
+
+.arrow {
+  text-decoration: none;
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+.arrow:hover {
+  text-decoration: underline;
+}

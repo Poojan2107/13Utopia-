@@ -1,0 +1,217 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease,
+    backdrop-filter 0.35s ease;
+}
+
+.scrolled {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 4.25rem;
+  max-width: 1720px;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: clamp(1.75rem, 5.5vw, 6.5rem);
+}
+
+.brand {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  flex-shrink: 0;
+  z-index: 1;
+  color: #ffffff;
+}
+
+/* Invert black-on-white JPEG logo to bright crisp white on transparent dark UI */
+.logo {
+  display: block;
+  width: auto;
+  height: 2.1rem;
+  filter: invert(1) hue-rotate(180deg) contrast(1.25);
+  mix-blend-mode: screen;
+  transition: opacity 0.2s ease;
+}
+
+.brand:hover .logo {
+  opacity: 0.88;
+}
+
+.desktopNav {
+  display: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+  gap: clamp(1.6rem, 2.8vw, 3.4rem);
+}
+
+.navLink {
+  text-decoration: none;
+  font-family: var(--font-ui);
+  font-size: clamp(0.82rem, 0.9vw, 0.95rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: #f3f1ea;
+  text-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.95),
+    0 0 20px rgba(0, 0, 0, 0.85);
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.navLink:hover {
+  color: #ffffff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+}
+
+.actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+/* Sleek pill capsule button matching reference */
+.cta {
+  display: none;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: #ffffff;
+  padding: 0.62rem 1.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+.cta:hover {
+  border-color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.cta span {
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.cta:hover span {
+  transform: translateX(2px);
+}
+
+.menuToggle {
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 9999px;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.menuBars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 0.9rem;
+}
+
+.menuBars span {
+  display: block;
+  height: 1px;
+  background: currentColor;
+}
+
+.mobileClosed {
+  display: none;
+}
+
+.mobileOpen {
+  display: block;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-block: 1.5rem 2rem;
+  background: #000000;
+}
+
+.mobileList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.mobileLink {
+  display: block;
+  text-decoration: none;
+  font-family: var(--font-editorial), var(--font-serif), Georgia, serif;
+  font-size: 1.5rem;
+  color: #ffffff;
+  padding-block: 0.35rem;
+}
+
+.mobileCta {
+  display: inline-flex;
+  margin-top: 1rem;
+  text-decoration: none;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: #000000;
+  background: #dfbe82;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+}
+
+@media (min-width: 1024px) {
+  .desktopNav {
+    display: flex;
+  }
+
+  .cta {
+    display: inline-flex;
+  }
+
+  .menuToggle {
+    display: none;
+  }
+}

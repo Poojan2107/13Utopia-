@@ -1,0 +1,121 @@
+.page {
+  background: #000;
+  color: #f3f1ea;
+  min-height: 100svh;
+}
+
+.intro {
+  max-width: 40rem;
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 5vw, 3rem);
+  border-bottom: 1px solid rgba(243, 241, 234, 0.1);
+}
+
+.kicker {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(243, 241, 234, 0.5);
+}
+
+.title {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.lede,
+.uiNote {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: rgba(243, 241, 234, 0.65);
+  max-width: 36rem;
+}
+
+.uiNote {
+  margin-bottom: 0;
+  color: rgba(243, 241, 234, 0.5);
+}
+
+.code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: rgba(243, 241, 234, 0.85);
+}
+
+.block {
+  position: relative;
+  border-bottom: 1px solid rgba(243, 241, 234, 0.08);
+}
+
+.badge {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+  padding: 0.75rem clamp(1.5rem, 5vw, 3rem);
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(243, 241, 234, 0.1);
+  font-family: var(--font-ui);
+}
+
+.badgeId {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #f3f1ea;
+}
+
+.badgeFace {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #f3f1ea;
+}
+
+.badgeProxy {
+  font-weight: 400;
+  color: rgba(243, 241, 234, 0.45);
+}
+
+.badgeNote {
+  flex: 1 1 100%;
+  font-size: 0.8rem;
+  color: rgba(243, 241, 234, 0.45);
+  max-width: 48rem;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2rem clamp(1.5rem, 5vw, 3rem) 3rem;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  color: rgba(243, 241, 234, 0.55);
+}
+
+.footer a {
+  color: #f3f1ea;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Hero inside lab — flush handled via prop; keep badge above */
+.block :global(section[aria-label="13 UTOPIA"]) {
+  /* no-op: flush prop sets margin */
+}

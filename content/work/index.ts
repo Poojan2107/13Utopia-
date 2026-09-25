@@ -1,0 +1,48 @@
+import type { CaseStudy } from "@/lib/content/types";
+
+export const caseStudies: CaseStudy[] = [
+  {
+    slug: "placeholder-case-create",
+    title: "[CONTENT NEEDED] Featured Create case",
+    client: "[CONTENT NEEDED]",
+    industry: "[CONTENT NEEDED]",
+    summary: "[CONTENT NEEDED] Short narrative of the engagement.",
+    challenge: "[CONTENT NEEDED]",
+    insight: "[CONTENT NEEDED]",
+    move: "[CONTENT NEEDED]",
+    build: "[CONTENT NEEDED]",
+    result: "[VERIFIED METRIC REQUIRED]",
+    lesson: "[CONTENT NEEDED]",
+    capabilitySlugs: ["branding-creative", "growth-marketing"],
+    solutionSlugs: ["launch", "grow"],
+    perspectiveSlugs: ["placeholder-brand-tech"],
+    seo: {
+      title: "Case Story | 13 UTOPIA",
+      description: "Case story placeholder — replace with verified project content.",
+    },
+    status: "placeholder",
+    featured: true,
+  },
+  {
+    slug: "placeholder-case-build",
+    title: "[CONTENT NEEDED] Featured Build case",
+    client: "[CONTENT NEEDED]",
+    industry: "[CONTENT NEEDED]",
+    summary: "[CONTENT NEEDED] Short narrative of the technical engagement.",
+    challenge: "[CONTENT NEEDED]",
+    insight: "[CONTENT NEEDED]",
+    move: "[CONTENT NEEDED]",
+    build: "[CONTENT NEEDED]",
+    result: "[VERIFIED METRIC REQUIRED]",
+    lesson: "[CONTENT NEEDED]",
+    capabilitySlugs: ["digital-products", "ai-automation", "cloud-engineering"],
+    solutionSlugs: ["modernize", "automate", "scale"],
+    perspectiveSlugs: ["placeholder-product-growth"],
+    seo: {
+      title: "Case Story | 13 UTOPIA",
+      description: "Case story placeholder — replace with verified project content.",
+    },
+    status: "placeholder",
+    featured: true,
+  },
+];

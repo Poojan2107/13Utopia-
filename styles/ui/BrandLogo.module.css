@@ -1,0 +1,48 @@
+.wrap {
+  display: inline-flex;
+  line-height: 0;
+}
+
+.image {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  display: block;
+}
+
+/* Dark UI wordmark — no white plate */
+.horizontal {
+  background: transparent;
+  padding: 0;
+}
+
+.horizontal .image {
+  height: 1.85rem;
+  width: auto;
+  /* Black logo → cream; gold sparkle shifts — acceptable until light SVG lands */
+  filter: invert(1) brightness(1.05) contrast(1.05);
+  mix-blend-mode: screen;
+}
+
+.mark .image {
+  height: 2.5rem;
+  width: auto;
+  object-fit: contain;
+}
+
+.hero3d {
+  display: block;
+  width: 100%;
+}
+
+.hero3d .image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+@media (min-width: 1024px) {
+  .horizontal .image {
+    height: 2rem;
+  }
+}

@@ -1,0 +1,279 @@
+/* =========================================================
+   TypeLab02Hero — Typography behaviour experiment
+   Sculpture + silk unchanged. Type is quiet, asymmetric, ivory.
+   No gold headlines. No micro-labels. No mirrored fashion blocks.
+   ========================================================= */
+
+.hero {
+  --edge: clamp(2rem, 5vw, 6.5rem);
+  --ink: #f3f1ea;
+  --ink-soft: rgba(243, 241, 234, 0.58);
+  --ink-faint: rgba(243, 241, 234, 0.38);
+  --warm-grey: rgba(180, 174, 162, 0.72);
+
+  --display: "Tiempos Headline", var(--font-display-face), Georgia, serif;
+  --ui: var(--font-sans), system-ui, sans-serif;
+
+  position: relative;
+  min-height: 100svh;
+  min-height: 100dvh;
+  height: 100svh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000;
+  color: var(--ink);
+  box-sizing: border-box;
+}
+
+.faceNoe {
+  --display: "Noe Display", var(--font-type-a), Georgia, serif;
+}
+
+.faceTiempos {
+  --display: "Tiempos Headline", var(--font-display-face), Georgia, serif;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  background: #000;
+}
+
+.videoWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+/* Stronger side scrims so quiet ivory type reads; no gold wash */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, transparent 18%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.35) 18%, transparent 32%),
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.78) 0%,
+      rgba(0, 0, 0, 0.35) 20%,
+      transparent 34%,
+      transparent 66%,
+      rgba(0, 0, 0, 0.35) 80%,
+      rgba(0, 0, 0, 0.78) 100%
+    );
+}
+
+.stage {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  left: var(--edge);
+  right: var(--edge);
+  pointer-events: none;
+}
+
+/* Primary — upper left, not vertically centered mirror */
+.primary {
+  position: absolute;
+  top: clamp(5.5rem, 14vh, 8rem);
+  left: 0;
+  max-width: min(28rem, 38vw);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(1.1rem, 2vh, 1.6rem);
+  pointer-events: auto;
+}
+
+/* Secondary — lower right, different scale — not a twin */
+.secondary {
+  position: absolute;
+  right: 0;
+  bottom: clamp(5.5rem, 12vh, 7.5rem);
+  max-width: min(22rem, 32vw);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.85rem;
+  text-align: right;
+  pointer-events: auto;
+}
+
+.brand {
+  margin: 0;
+  font-family: var(--ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--ink-faint);
+}
+
+.lead {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1em;
+}
+
+.be {
+  display: block;
+  font-family: var(--display);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--warm-grey);
+}
+
+.word {
+  display: block;
+  font-family: var(--display);
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(2.75rem, 5.2vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+.copy {
+  margin: 0;
+  max-width: 20rem;
+  font-family: var(--ui);
+  font-size: clamp(0.92rem, 1vw, 1.02rem);
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: 0;
+  color: var(--ink-soft);
+}
+
+.echo {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.08em;
+}
+
+.beQuiet {
+  display: block;
+  font-family: var(--display);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(0.95rem, 1.35vw, 1.25rem);
+  line-height: 1.1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.wordQuiet {
+  display: block;
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.55rem, 2.6vw, 2.45rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-transform: none;
+  color: rgba(243, 241, 234, 0.82);
+}
+
+.copyQuiet {
+  margin: 0;
+  max-width: 16rem;
+  font-family: var(--ui);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink-faint);
+}
+
+.floor {
+  position: absolute;
+  left: 0;
+  bottom: clamp(1.25rem, 3vh, 2rem);
+  pointer-events: auto;
+}
+
+.cta {
+  font-family: var(--ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-decoration: none;
+  color: var(--ink-soft);
+  border-bottom: 1px solid rgba(243, 241, 234, 0.25);
+  padding-bottom: 0.15rem;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.cta:hover {
+  color: var(--ink);
+  border-bottom-color: rgba(243, 241, 234, 0.55);
+}
+
+@media (max-width: 900px) {
+  .hero {
+    height: auto;
+    min-height: 100svh;
+    min-height: 100dvh;
+  }
+
+  .stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100svh;
+    min-height: 100dvh;
+    padding: 4.5rem 1.35rem 4rem;
+    gap: 3rem;
+  }
+
+  .primary,
+  .secondary {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    max-width: 100%;
+  }
+
+  .secondary {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .echo {
+    align-items: flex-start;
+  }
+
+  .floor {
+    position: relative;
+    left: auto;
+    bottom: auto;
+  }
+
+  .word {
+    font-size: clamp(2.4rem, 11vw, 3.5rem);
+  }
+
+  .wordQuiet {
+    font-size: clamp(1.5rem, 6.5vw, 2.1rem);
+  }
+}

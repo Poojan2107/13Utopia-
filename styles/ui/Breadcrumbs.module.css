@@ -1,0 +1,31 @@
+.nav {
+  margin-bottom: var(--space-xl);
+  font-size: var(--text-caption);
+  color: var(--color-fg-muted);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  align-items: center;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.item a {
+  text-decoration: none;
+}
+
+.item a:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.sep {
+  opacity: 0.5;
+}
