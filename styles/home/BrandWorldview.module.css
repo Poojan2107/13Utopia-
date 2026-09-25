@@ -216,6 +216,44 @@
   border-bottom-color: var(--gold);
 }
 
+.bridge {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-top: clamp(1.5rem, 3vh, 2.25rem);
+  border-top: 1px solid rgba(243, 241, 234, 0.08);
+}
+
+.bridgeNote {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: rgba(243, 241, 234, 0.32);
+}
+
+.bridgeLink {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(243, 241, 234, 0.55);
+  border-bottom: 1px solid rgba(232, 197, 106, 0.35);
+  padding-bottom: 0.2rem;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.bridgeLink:hover {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
 @media (max-width: 900px) {
   .wrap {
     min-height: auto;
@@ -253,7 +291,8 @@
     margin-top: 0;
   }
 
-  .footer {
+  .footer,
+  .bridge {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
