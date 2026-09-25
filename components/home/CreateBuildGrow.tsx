@@ -11,42 +11,72 @@ gsap.registerPlugin(ScrollTrigger);
 const WORLDS = [
   {
     slug: "create",
-    index: "01",
+    num: "01",
     title: "Create",
-    line: "What should exist.",
-    body: "Brand, design, and experience — how a business is understood, expressed, and felt before a single feature ships.",
+    verb: "What should exist.",
+    body: "Brand. Design. Experience. How a business is understood before it is sold — and felt before it is explained.",
   },
   {
     slug: "build",
-    index: "02",
+    num: "02",
     title: "Build",
-    line: "What does not exist yet.",
-    body: "Products, technology, AI, and systems engineered to work — not to decorate a deck.",
+    verb: "What does not exist yet.",
+    body: "Products. Technology. AI. Systems. Engineering that has to work on day one — not decorate a deck.",
   },
   {
     slug: "grow",
-    index: "03",
+    num: "03",
     title: "Grow",
-    line: "What you have made.",
-    body: "Marketing, performance, SEO, and content that turn attention into momentum — and momentum into market.",
+    verb: "What you have made.",
+    body: "Marketing. Performance. SEO. Content. Attention turned into momentum — momentum into market.",
   },
 ] as const;
 
 /**
  * 03 — Worlds
- * One practice. Three expressions. Pinned chapter scrub.
+ * Immersive sticky chapter. Scroll enters each world.
  */
 export function CreateBuildGrow() {
   const wrapRef = useRef<HTMLElement | null>(null);
   const [active, setActive] = useState(0);
+  const activeRef = useRef(0);
 
   useEffect(() => {
     const wrap = wrapRef.current;
     if (!wrap) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (window.matchMedia("(max-width: 900px)").matches) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const mobile = window.matchMedia("(max-width: 900px)").matches;
+    if (reduce || mobile) {
+      // Show all / first panel accessible without scrub
+      const first = wrap.querySelector<HTMLElement>("[data-world]");
+      if (first) gsap.set(first, { autoAlpha: 1 });
+      return;
+    }
 
     const ctx = gsap.context(() => {
+      const first = wrap.querySelector<HTMLElement>(
+        `[data-world="${WORLDS[0].slug}"]`,
+      );
+      if (first) gsap.set(first, { autoAlpha: 1 });
+
+      const bar = wrap.querySelector(`.${styles.progressFill}`);
+      if (bar) {
+        gsap.fromTo(
+          bar,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: wrap,
+              start: "top top",
+              end: "bottom bottom",
+              scrub: true,
+            },
+          },
+        );
+      }
+
       ScrollTrigger.create({
         trigger: wrap,
         start: "top top",
@@ -56,19 +86,10 @@ export function CreateBuildGrow() {
             WORLDS.length - 1,
             Math.floor(self.progress * WORLDS.length),
           );
-          setActive(next);
-        },
-      });
-
-      gsap.from(wrap.querySelector(`.${styles.stage}`), {
-        opacity: 0,
-        y: 40,
-        duration: 0.9,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: wrap,
-          start: "top 70%",
-          once: true,
+          if (next !== activeRef.current) {
+            activeRef.current = next;
+            setActive(next);
+          }
         },
       });
     }, wrap);
@@ -76,70 +97,112 @@ export function CreateBuildGrow() {
     return () => ctx.revert();
   }, []);
 
-  const world = WORLDS[active];
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+    if (window.matchMedia("(max-width: 900px)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const panel = wrap.querySelector<HTMLElement>(
+      `[data-world="${WORLDS[active].slug}"]`,
+    );
+    if (!panel) return;
+
+    const others = wrap.querySelectorAll<HTMLElement>("[data-world]");
+    others.forEach((p) => {
+      if (p !== panel) gsap.to(p, { autoAlpha: 0, duration: 0.3 });
+    });
+
+    const title = panel.querySelector("[data-world-title]");
+    const rest = panel.querySelectorAll("[data-world-in]");
+
+    gsap.to(panel, { autoAlpha: 1, duration: 0.4 });
+    gsap.fromTo(
+      title,
+      { yPercent: 30, opacity: 0 },
+      { yPercent: 0, opacity: 1, duration: 0.8, ease: "power3.out" },
+    );
+    gsap.fromTo(
+      rest,
+      { y: 18, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.65,
+        stagger: 0.07,
+        ease: "power3.out",
+        delay: 0.1,
+      },
+    );
+  }, [active]);
 
   return (
     <section
       ref={wrapRef}
       id="worlds"
       className={styles.wrap}
-      aria-labelledby="cbg-title"
+      aria-label="Create, Build, and Grow"
     >
       <div className={styles.pin}>
         <div className={styles.stage}>
-          <header className={styles.marker}>
-            <span className={styles.index}>03</span>
-            <span className={styles.markerRule} aria-hidden="true" />
-            <span className={styles.markerLabel}>Worlds</span>
+          <header className={styles.top}>
+            <div className={styles.marker}>
+              <span className={styles.markerIndex}>03</span>
+              <span className={styles.markerRule} aria-hidden="true" />
+              <span className={styles.markerLabel}>Worlds</span>
+            </div>
+            <p className={styles.eyebrow}>One practice. Three expressions.</p>
           </header>
 
-          <div className={styles.intro}>
-            <h2 id="cbg-title" className={styles.heading}>
-              Three worlds.
-              <br />
-              <span className={styles.headingSoft}>One practice.</span>
-            </h2>
-            <p className={styles.lede}>
-              Brand, technology, and growth are not three vendors. They are how
-              ambition becomes real.
-            </p>
-          </div>
-
-          <div className={styles.board}>
-            <nav className={styles.tabs} aria-label="Worlds">
-              {WORLDS.map((w, i) => (
-                <button
-                  key={w.slug}
-                  type="button"
-                  className={i === active ? styles.tabActive : styles.tab}
-                  onClick={() => setActive(i)}
-                  aria-current={i === active ? "true" : undefined}
-                >
-                  <span className={styles.tabIndex}>{w.index}</span>
-                  <span className={styles.tabTitle}>{w.title}</span>
-                </button>
-              ))}
-            </nav>
-
-            <div className={styles.panel} key={world.slug}>
-              <p className={styles.panelLine}>{world.line}</p>
-              <p className={styles.panelBody}>{world.body}</p>
-              <Link
-                href={`/capabilities/${world.slug}`}
-                className={styles.panelLink}
+          <div className={styles.viewport}>
+            {WORLDS.map((w, i) => (
+              <article
+                key={w.slug}
+                className={styles.panel}
+                data-world={w.slug}
+                aria-hidden={i !== active}
               >
-                Explore {world.title}
-                <span aria-hidden="true"> →</span>
-              </Link>
-            </div>
+                <p className={styles.num} data-world-in>
+                  {w.num}
+                </p>
+                <h2 className={styles.title} data-world-title>
+                  {w.title}
+                </h2>
+                <p className={styles.verb} data-world-in>
+                  {w.verb}
+                </p>
+                <p className={styles.body} data-world-in>
+                  {w.body}
+                </p>
+                <Link
+                  href={`/capabilities/${w.slug}`}
+                  className={styles.link}
+                  data-world-in
+                  tabIndex={i === active ? 0 : -1}
+                >
+                  Enter {w.title}
+                  <span aria-hidden="true"> →</span>
+                </Link>
+              </article>
+            ))}
           </div>
 
           <div className={styles.progress} aria-hidden="true">
-            {WORLDS.map((w, i) => (
-              <span
-                key={w.slug}
-                className={i === active ? styles.dotActive : styles.dot}
-              />
+            <span className={styles.progressFill} />
+          </div>
+
+          <div className={styles.mobileStack}>
+            {WORLDS.map((w) => (
+              <article key={w.slug} className={styles.mobileCard}>
+                <p className={styles.num}>{w.num}</p>
+                <h2 className={styles.title}>{w.title}</h2>
+                <p className={styles.verb}>{w.verb}</p>
+                <p className={styles.body}>{w.body}</p>
+                <Link href={`/capabilities/${w.slug}`} className={styles.link}>
+                  Enter {w.title}
+                  <span aria-hidden="true"> →</span>
+                </Link>
+              </article>
             ))}
           </div>
         </div>

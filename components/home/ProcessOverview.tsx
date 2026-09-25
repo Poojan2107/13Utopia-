@@ -43,13 +43,13 @@ const STEPS = [
 
 /**
  * 05 — Method
- * Six beats as a scrubbed editorial sequence (desktop);
- * stacked chapter on mobile.
+ * One word owns the viewport. Scroll advances the beat.
  */
 export function ProcessOverview() {
   const wrapRef = useRef<HTMLElement | null>(null);
   const [active, setActive] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const activeRef = useRef(0);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 900px)");
@@ -74,9 +74,30 @@ export function ProcessOverview() {
             STEPS.length - 1,
             Math.floor(self.progress * STEPS.length),
           );
-          setActive(next);
+          if (next !== activeRef.current) {
+            activeRef.current = next;
+            setActive(next);
+          }
         },
       });
+
+      const fill = wrap.querySelector(`.${styles.trackFill}`);
+      if (fill) {
+        gsap.fromTo(
+          fill,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: wrap,
+              start: "top top",
+              end: "bottom bottom",
+              scrub: true,
+            },
+          },
+        );
+      }
     }, wrap);
 
     return () => ctx.revert();
@@ -93,56 +114,52 @@ export function ProcessOverview() {
     >
       <div className={isMobile ? styles.stack : styles.pin}>
         <div className={styles.stage}>
-          <header className={styles.marker}>
-            <span className={styles.index}>05</span>
-            <span className={styles.markerRule} aria-hidden="true" />
-            <span className={styles.markerLabel}>Method</span>
+          <header className={styles.top}>
+            <div className={styles.marker}>
+              <span className={styles.markerIndex}>05</span>
+              <span className={styles.markerRule} aria-hidden="true" />
+              <span className={styles.markerLabel}>Method</span>
+            </div>
+            <h2 id="process-title" className={styles.heading}>
+              How we think.
+            </h2>
           </header>
-
-          <h2 id="process-title" className={styles.heading}>
-            How we think.
-          </h2>
 
           {isMobile ? (
             <ol className={styles.mobileList}>
               {STEPS.map((s) => (
                 <li key={s.num} className={styles.mobileItem}>
-                  <span className={styles.focusNum}>{s.num}</span>
-                  <h3 className={styles.focusTitle}>{s.title}</h3>
-                  <p className={styles.focusBody}>{s.body}</p>
+                  <span className={styles.beatNum}>{s.num}</span>
+                  <h3 className={styles.beatTitle}>{s.title}</h3>
+                  <p className={styles.beatBody}>{s.body}</p>
                 </li>
               ))}
             </ol>
           ) : (
-            <div className={styles.layout}>
-              <ol className={styles.rail} aria-label="Method steps">
+            <>
+              <div className={styles.beat} key={step.num}>
+                <p className={styles.beatNum}>{step.num} / 06</p>
+                <p className={styles.beatTitle}>{step.title}</p>
+                <p className={styles.beatBody}>{step.body}</p>
+              </div>
+
+              <div className={styles.track} aria-hidden="true">
+                <span className={styles.trackFill} />
+              </div>
+
+              <ol className={styles.dots} aria-hidden="true">
                 {STEPS.map((s, i) => (
-                  <li key={s.num}>
-                    <button
-                      type="button"
-                      className={
-                        i === active ? styles.railActive : styles.railItem
-                      }
-                      onClick={() => setActive(i)}
-                      aria-current={i === active ? "true" : undefined}
-                    >
-                      <span className={styles.railNum}>{s.num}</span>
-                      <span className={styles.railTitle}>{s.title}</span>
-                    </button>
-                  </li>
+                  <li
+                    key={s.num}
+                    className={i === active ? styles.dotActive : styles.dot}
+                  />
                 ))}
               </ol>
-
-              <div className={styles.focus} key={step.num}>
-                <p className={styles.focusNum}>{step.num}</p>
-                <h3 className={styles.focusTitle}>{step.title}</h3>
-                <p className={styles.focusBody}>{step.body}</p>
-              </div>
-            </div>
+            </>
           )}
 
           <Link href="/our-story/process" className={styles.link}>
-            Explore the full process
+            Full process
             <span aria-hidden="true"> →</span>
           </Link>
         </div>

@@ -101,7 +101,7 @@ export function BrandWorldview() {
               </p>
               <p className={styles.body}>
                 We question what already works, find what doesn&rsquo;t, and build
-                what comes next — until the unfamiliar becomes the standard.
+                what comes next.
               </p>
             </div>
           </div>
