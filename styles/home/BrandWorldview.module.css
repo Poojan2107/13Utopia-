@@ -109,13 +109,25 @@
   color: var(--ink);
 }
 
+/* Line masks — GSAP rises type through the cut */
+.lineMask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+
 .titleLine {
   display: block;
 }
 
+.lineInner {
+  display: block;
+  will-change: transform;
+}
+
 .titleResolve {
   display: block;
-  margin-top: 0.28em;
+  margin-top: 0.12em;
   font-weight: 500;
   letter-spacing: -0.02em;
   white-space: nowrap;
@@ -125,18 +137,15 @@
 .swap {
   display: inline-block;
   color: var(--gold-soft);
-  animation: swapIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes swapIn {
-  from {
-    opacity: 0;
-    transform: translateY(0.2em);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.responseRule {
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-line), transparent);
+  margin-bottom: 0.35rem;
+  will-change: transform;
 }
 
 .right {
@@ -146,14 +155,6 @@
   max-width: 26rem;
   margin-top: clamp(0.5rem, 2vh, 1.5rem);
   padding-top: 0.35rem;
-}
-
-.responseRule {
-  display: block;
-  width: 2.5rem;
-  height: 1px;
-  background: linear-gradient(90deg, var(--gold-line), transparent);
-  margin-bottom: 0.35rem;
 }
 
 .lead {
@@ -261,6 +262,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .swap {
-    animation: none;
+    /* static final ending via BeliefHeadline */
+  }
+
+  .lineInner {
+    transform: none !important;
   }
 }

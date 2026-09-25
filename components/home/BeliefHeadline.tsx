@@ -1,51 +1,67 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "@/styles/home/BrandWorldview.module.css";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ENDINGS = ["right", "only", "true"] as const;
 
 /**
- * Scroll-resolved headline — the final word shifts as the chapter holds.
- * Always keeps “the ___ one.” on a single line.
+ * Headline lines + scrubbed gold resolve — driven by ScrollTrigger
+ * so it stays in sync with Lenis.
  */
 export function BeliefHeadline() {
   const rootRef = useRef<HTMLHeadingElement | null>(null);
   const [index, setIndex] = useState(0);
+  const reduceRef = useRef(false);
 
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
+    reduceRef.current = reduce;
+    if (reduce) {
+      setIndex(ENDINGS.length - 1);
+      return;
+    }
 
-    const onScroll = () => {
-      const section = el.closest("section");
-      if (!section) return;
+    const section = el.closest("section");
+    if (!section) return;
 
-      const sRect = section.getBoundingClientRect();
-      const total = sRect.height - window.innerHeight;
-      if (total <= 0) {
-        setIndex(0);
-        return;
-      }
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: (self) => {
+          const next = Math.min(
+            ENDINGS.length - 1,
+            Math.floor(self.progress * ENDINGS.length),
+          );
+          setIndex(next);
+        },
+      });
+    }, section);
 
-      const progressed = Math.min(1, Math.max(0, -sRect.top / total));
-      const next = Math.min(ENDINGS.length - 1, Math.floor(progressed * ENDINGS.length));
-      setIndex(next);
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
+    return () => ctx.revert();
   }, []);
 
   const ending = ENDINGS[index];
+
+  useEffect(() => {
+    if (reduceRef.current) return;
+    const el = rootRef.current?.querySelector(`.${styles.swap}`);
+    if (!el) return;
+    gsap.fromTo(
+      el,
+      { y: "0.35em", opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" },
+    );
+  }, [index]);
 
   return (
     <h2
@@ -54,15 +70,32 @@ export function BeliefHeadline() {
       className={styles.title}
       aria-label={`The obvious answer isn't always the ${ending} one.`}
     >
-      <span className={styles.titleLine}>The obvious</span>
-      <span className={styles.titleLine}>answer isn&rsquo;t</span>
-      <span className={styles.titleLine}>always</span>
-      <span className={styles.titleResolve}>
-        the{" "}
-        <span className={styles.swap} key={ending} aria-live="polite">
-          {ending}
+      <span className={styles.lineMask}>
+        <span className={`${styles.titleLine} ${styles.lineInner}`} data-line>
+          The obvious
         </span>
-        &nbsp;one.
+      </span>
+      <span className={styles.lineMask}>
+        <span className={`${styles.titleLine} ${styles.lineInner}`} data-line>
+          answer isn&rsquo;t
+        </span>
+      </span>
+      <span className={styles.lineMask}>
+        <span className={`${styles.titleLine} ${styles.lineInner}`} data-line>
+          always
+        </span>
+      </span>
+      <span className={styles.lineMask}>
+        <span
+          className={`${styles.titleResolve} ${styles.lineInner}`}
+          data-line
+        >
+          the{" "}
+          <span className={styles.swap} key={ending} aria-live="polite">
+            {ending}
+          </span>
+          &nbsp;one.
+        </span>
       </span>
     </h2>
   );
