@@ -1,44 +1,43 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { getFeaturedCaseStudies } from "@/lib/content";
 import styles from "@/styles/home/FeaturedWork.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const STORIES = [
+const PLATES = [
   {
+    image: "/images/hero/hero-gold-sculpture.jpg",
+    alt: "Gold silk sculpture — case atmosphere",
+    objectPosition: "70% 55%",
     world: "Create",
-    index: "01",
-    title: "Seen before sold.",
-    line: "Identity that makes ambition legible.",
-    body: "When a category challenger needs the market to feel them before they understand them — brand, narrative, and experience become the first product.",
   },
   {
+    image: "/metal-human/metal-human.jpg",
+    alt: "Metallic bust — case atmosphere",
+    objectPosition: "48% 18%",
     world: "Build",
-    index: "02",
-    title: "Real on day one.",
-    line: "Systems over spectacle.",
-    body: "When the brief demands a product that works under pressure — interfaces, infrastructure, and intelligence engineered for use, not applause.",
   },
   {
+    image: "/images/hero/portal.jpg",
+    alt: "Light portal — case atmosphere",
+    objectPosition: "55% 40%",
     world: "Grow",
-    index: "03",
-    title: "Momentum that holds.",
-    line: "Attention into market.",
-    body: "When growth cannot be a campaign that expires — performance, SEO, and content built as a machine that compounds.",
   },
 ] as const;
 
 /**
  * 04 — Proof
- * Cinematic narrative strips. No apology. No fake clients.
- * Proof as how 13 Utopia thinks in public.
+ * Curated case strips from content — honest placeholders, no invented metrics.
  */
 export function FeaturedWork() {
   const ref = useRef<HTMLElement | null>(null);
+  const cases = getFeaturedCaseStudies();
 
   useEffect(() => {
     const el = ref.current;
@@ -48,14 +47,14 @@ export function FeaturedWork() {
     const ctx = gsap.context(() => {
       const strips = el.querySelectorAll("[data-strip]");
       strips.forEach((strip) => {
-        const media = strip.querySelector("[data-strip-media]");
+        const img = strip.querySelector("[data-strip-img]");
         const copy = strip.querySelectorAll("[data-strip-copy]");
 
         gsap.from(copy, {
           opacity: 0,
-          y: 48,
+          y: 40,
           duration: 1,
-          stagger: 0.1,
+          stagger: 0.09,
           ease: "power3.out",
           scrollTrigger: {
             trigger: strip,
@@ -64,13 +63,12 @@ export function FeaturedWork() {
           },
         });
 
-        if (media) {
+        if (img) {
           gsap.fromTo(
-            media,
-            { scale: 1.12, opacity: 0.35 },
+            img,
+            { scale: 1.14 },
             {
               scale: 1,
-              opacity: 1,
               ease: "none",
               scrollTrigger: {
                 trigger: strip,
@@ -110,37 +108,68 @@ export function FeaturedWork() {
       </div>
 
       <ul className={styles.strips}>
-        {STORIES.map((s, i) => (
-          <li
-            key={s.index}
-            className={i % 2 === 1 ? styles.stripAlt : styles.strip}
-            data-strip
-          >
-            <div className={styles.stripMedia} data-strip-media aria-hidden="true">
-              <span className={styles.stripGlow} />
-              <span className={styles.stripWorld}>{s.world}</span>
-            </div>
-            <div className={styles.stripCopy}>
-              <p className={styles.stripIndex} data-strip-copy>
-                {s.index}
-              </p>
-              <h3 className={styles.stripTitle} data-strip-copy>
-                {s.title}
-              </h3>
-              <p className={styles.stripLine} data-strip-copy>
-                {s.line}
-              </p>
-              <p className={styles.stripBody} data-strip-copy>
-                {s.body}
-              </p>
-            </div>
-          </li>
-        ))}
+        {cases.map((item, i) => {
+          const plate = PLATES[i % PLATES.length]!;
+          const index = String(i + 1).padStart(2, "0");
+          return (
+            <li
+              key={item.slug}
+              className={i % 2 === 1 ? styles.stripAlt : styles.strip}
+              data-strip
+            >
+              <div className={styles.stripMedia} data-strip-media>
+                <div className={styles.stripImgWrap} data-strip-img>
+                  <Image
+                    src={plate.image}
+                    alt={plate.alt}
+                    fill
+                    sizes="(max-width: 900px) 100vw, 52vw"
+                    className={styles.stripImg}
+                    style={{ objectPosition: plate.objectPosition }}
+                  />
+                </div>
+                <span className={styles.stripVeil} aria-hidden="true" />
+                <span className={styles.stripWorld}>{plate.world}</span>
+              </div>
+              <div className={styles.stripCopy}>
+                <p className={styles.stripIndex} data-strip-copy>
+                  {index}
+                </p>
+                <p className={styles.stripClient} data-strip-copy>
+                  {item.client}
+                </p>
+                <h3 className={styles.stripTitle} data-strip-copy>
+                  <Link href={`/work/${item.slug}`} className={styles.stripTitleLink}>
+                    {item.title}
+                  </Link>
+                </h3>
+                <dl className={styles.stripMeta} data-strip-copy>
+                  <div>
+                    <dt>Challenge</dt>
+                    <dd>{item.challenge}</dd>
+                  </div>
+                  <div>
+                    <dt>What we did</dt>
+                    <dd>{item.move}</dd>
+                  </div>
+                  <div>
+                    <dt>Outcome</dt>
+                    <dd>{item.result}</dd>
+                  </div>
+                </dl>
+                <Link href={`/work/${item.slug}`} className={styles.stripLink} data-strip-copy>
+                  Full case
+                  <span aria-hidden="true"> →</span>
+                </Link>
+              </div>
+            </li>
+          );
+        })}
       </ul>
 
       <div className={styles.inner}>
         <Link href="/work" className={styles.all}>
-          Enter the work
+          View all work
           <span aria-hidden="true"> →</span>
         </Link>
       </div>

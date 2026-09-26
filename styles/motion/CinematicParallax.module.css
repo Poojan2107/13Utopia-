@@ -1,0 +1,314 @@
+/* Siena-inspired cinematic parallax — sticky stage, SVG mask, scroll scale */
+
+.root {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  /* scroll distance set inline from scene count */
+  --cine-vh: 100;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #050505;
+  isolation: isolate;
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.maskHost {
+  position: absolute;
+  inset: 0;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  will-change: opacity;
+}
+
+.scale {
+  position: absolute;
+  inset: 0;
+  transform: scale(1.28);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.scale :global(figure) {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    radial-gradient(
+      ellipse 70% 60% at 50% 45%,
+      transparent 35%,
+      rgba(0, 0, 0, 0.35) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(5, 5, 5, 0.55) 0%,
+      transparent 22%,
+      transparent 68%,
+      rgba(5, 5, 5, 0.75) 100%
+    );
+}
+
+.letterbox {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: clamp(1.5rem, 4vh, 3rem);
+  z-index: 3;
+  background: #050505;
+  pointer-events: none;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.letterboxTop {
+  top: 0;
+}
+
+.letterboxBottom {
+  bottom: 0;
+}
+
+.play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  width: clamp(3.5rem, 8vw, 5rem);
+  height: clamp(3.5rem, 8vw, 5rem);
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(243, 241, 234, 0.35);
+  border-radius: 50%;
+  background: rgba(5, 5, 5, 0.35);
+  backdrop-filter: blur(8px);
+  color: #f3f1ea;
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.play svg {
+  width: 28%;
+  height: 28%;
+  margin-left: 8%;
+  fill: currentColor;
+}
+
+.chrome {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.5rem, 4vw, 2.75rem) clamp(1.25rem, 4vw, 3rem);
+  pointer-events: none;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(232, 197, 106, 0.8);
+}
+
+.counter {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--color-fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.copyStack {
+  position: relative;
+  max-width: min(36rem, 92vw);
+  align-self: flex-end;
+  width: 100%;
+  min-height: 8rem;
+}
+
+.copyLayer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.copyStack .copyLayer:first-child {
+  position: relative;
+  opacity: 1;
+}
+
+.meta {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 4.5vw, 3.25rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  color: #f3f1ea;
+}
+
+.caption {
+  margin: 0.9rem 0 0;
+  max-width: 28rem;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--color-fg-muted);
+}
+
+.progress {
+  position: absolute;
+  right: clamp(1.25rem, 4vw, 3rem);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  z-index: 6;
+}
+
+.dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: rgba(243, 241, 234, 0.22);
+  transition: background 0.35s ease, transform 0.35s ease;
+}
+
+.dotActive {
+  background: var(--color-gold);
+  transform: scale(1.35);
+}
+
+.reducedList {
+  display: none;
+}
+
+.svgDefs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 699px) {
+  .progress {
+    display: none;
+  }
+
+  .copyStack {
+    align-self: stretch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    height: auto !important;
+    width: auto;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .sticky {
+    position: relative;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  .stage,
+  .maskHost,
+  .vignette,
+  .letterbox,
+  .play,
+  .progress {
+    display: none;
+  }
+
+  .chrome {
+    display: none;
+  }
+
+  .reducedList {
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem) var(--page-pad, 1.25rem);
+  }
+
+  .reducedCard {
+    position: relative;
+    min-height: 14rem;
+    overflow: hidden;
+  }
+
+  .reducedCard :global(figure),
+  .reducedCard :global(.frame) {
+    min-height: 14rem;
+    height: 100%;
+  }
+}

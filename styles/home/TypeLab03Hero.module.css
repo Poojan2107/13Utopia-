@@ -6,8 +6,8 @@
 .hero {
   --edge: clamp(2rem, 5vw, 6.5rem);
   --ink: #f3f1ea;
-  --ink-soft: rgba(243, 241, 234, 0.58);
-  --ink-faint: rgba(243, 241, 234, 0.38);
+  --ink-soft: var(--color-fg-soft);
+  --ink-faint: var(--color-fg-faint);
   --warm-grey: rgba(180, 174, 162, 0.7);
 
   --display: "Tiempos Headline", var(--font-display-face), Georgia, serif;

@@ -1,63 +1,35 @@
-/* 05 — Method: one word owns the room */
+/* 06 — Method: vertical process rail (distinct from Worlds sticky scrub) */
 
 .wrap {
   --ink: #f3f1ea;
-  --ink-dim: rgba(243, 241, 234, 0.42);
-  --gold: #e8c56a;
+  --ink-dim: var(--color-fg-muted);
+  --gold: var(--color-gold);
   --gold-line: rgba(232, 197, 106, 0.5);
   --gold-soft: rgba(232, 197, 106, 0.75);
 
   position: relative;
-  min-height: 360vh;
   background: #000;
   color: var(--ink);
+  padding: clamp(5rem, 12vh, 8rem) 0;
   border-top: 1px solid rgba(243, 241, 234, 0.06);
 }
 
-.wrapMobile {
-  --ink: #f3f1ea;
-  --ink-dim: rgba(243, 241, 234, 0.42);
-  --gold: #e8c56a;
-  --gold-line: rgba(232, 197, 106, 0.5);
-  --gold-soft: rgba(232, 197, 106, 0.75);
-
-  position: relative;
-  min-height: auto;
-  background: #000;
-  color: var(--ink);
-  border-top: 1px solid rgba(243, 241, 234, 0.06);
-}
-
-.pin {
-  position: sticky;
-  top: 0;
-  min-height: 100svh;
-  min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  padding: clamp(4.5rem, 8vh, 6rem) clamp(1.5rem, 5vw, 4.5rem);
-  box-sizing: border-box;
-}
-
-.stack {
-  padding: clamp(4.5rem, 10vh, 6rem) 1.35rem;
-}
-
-.stage {
-  width: 100%;
+.inner {
   max-width: 1200px;
   margin-inline: auto;
+  padding-inline: clamp(1.5rem, 5vw, 4.5rem);
 }
 
-.top {
-  margin-bottom: clamp(2rem, 5vh, 3.5rem);
+.head {
+  margin-bottom: clamp(3rem, 7vh, 4.5rem);
+  max-width: 28rem;
 }
 
 .marker {
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.75rem;
 }
 
 .markerIndex {
@@ -80,138 +52,167 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(243, 241, 234, 0.4);
+  color: var(--color-fg-muted);
 }
 
 .heading {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
-  font-style: italic;
+  font-size: clamp(2.4rem, 5vw, 3.75rem);
   font-weight: 400;
-  color: rgba(243, 241, 234, 0.45);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
 }
 
-.beat {
-  min-height: clamp(18rem, 42vh, 26rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  animation: beatIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes beatIn {
-  from {
-    opacity: 0;
-    transform: translateY(1.25rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.beatNum {
-  margin: 0 0 1rem;
+.lede {
+  margin: 1rem 0 0;
   font-family: var(--font-ui);
-  font-size: 0.75rem;
-  letter-spacing: 0.22em;
-  color: var(--gold-soft);
-}
-
-.beatTitle {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(4rem, 12vw, 8.5rem);
-  font-weight: 400;
-  letter-spacing: -0.04em;
-  line-height: 0.9;
-}
-
-.beatBody {
-  margin: clamp(1.25rem, 2.5vh, 1.75rem) 0 0;
-  max-width: 28rem;
-  font-family: var(--font-ui);
-  font-size: clamp(1.05rem, 1.2vw, 1.15rem);
+  font-size: 1rem;
   line-height: 1.65;
   color: var(--ink-dim);
 }
 
-.track {
-  margin-top: clamp(2.5rem, 5vh, 3.5rem);
-  height: 1px;
+.rail {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  max-width: 42rem;
+}
+
+.spine {
+  position: relative;
+  width: 1px;
+  margin-inline: auto;
   background: rgba(243, 241, 234, 0.1);
+  align-self: stretch;
   overflow: hidden;
 }
 
-.trackFill {
+.spineFill {
   display: block;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, var(--gold-line), var(--gold));
-  transform-origin: left center;
-  transform: scaleX(0);
+  background: linear-gradient(
+    180deg,
+    var(--gold-line) 0%,
+    var(--gold) 50%,
+    var(--gold-line) 100%
+  );
+  transform-origin: top center;
+  transform: scaleY(0);
 }
 
-.dots {
+.steps {
   list-style: none;
-  margin: 1.25rem 0 0;
+  margin: 0;
   padding: 0;
   display: flex;
-  gap: 0.45rem;
+  flex-direction: column;
+  gap: 0;
 }
 
-.dot,
-.dotActive {
-  width: 1.5rem;
-  height: 1px;
-  background: rgba(243, 241, 234, 0.15);
+.step {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 1rem 1.25rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid rgba(243, 241, 234, 0.08);
 }
 
-.dotActive {
-  background: var(--gold-line);
+.step:first-child {
+  padding-top: 0;
+}
+
+.step:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.stepNum {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--gold-soft);
+  padding-top: 0.55rem;
+}
+
+.stepCopy {
+  min-width: 0;
+}
+
+.stepTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 2.8vw, 2.25rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.stepBody {
+  margin: 0.55rem 0 0;
+  max-width: 28rem;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--ink-dim);
 }
 
 .link {
   display: inline-block;
-  margin-top: clamp(2rem, 4vh, 2.75rem);
+  margin-top: clamp(2.5rem, 5vh, 3.5rem);
   font-family: var(--font-ui);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   text-decoration: none;
-  color: rgba(243, 241, 234, 0.55);
+  color: var(--color-fg-muted);
   border-bottom: 1px solid rgba(232, 197, 106, 0.4);
   padding-bottom: 0.25rem;
 }
 
-.link:hover {
+.link:hover,
+.link:focus-visible {
   color: var(--gold);
   border-bottom-color: var(--gold);
+  outline: none;
 }
 
-.mobileList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+@media (min-width: 900px) {
+  .inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-areas:
+      "head rail"
+      "link rail";
+    column-gap: clamp(3rem, 6vw, 5rem);
+    align-items: start;
+  }
 
-.mobileItem {
-  padding: 2rem 0;
-  border-top: 1px solid rgba(243, 241, 234, 0.08);
-}
+  .head {
+    grid-area: head;
+    margin-bottom: 0;
+    position: sticky;
+    top: 6rem;
+  }
 
-.mobileItem:last-child {
-  border-bottom: 1px solid rgba(243, 241, 234, 0.08);
-}
+  .rail {
+    grid-area: rail;
+    max-width: none;
+  }
 
-.mobileItem .beatTitle {
-  font-size: clamp(2.5rem, 12vw, 3.5rem);
+  .link {
+    grid-area: link;
+    margin-top: 2rem;
+    align-self: end;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .beat {
-    animation: none;
+  .spineFill {
+    transform: scaleY(1);
   }
 }

@@ -39,8 +39,8 @@ export const footerNav = {
     { label: "Canada", href: "/connect/canada" },
   ],
   legal: [
-    { label: "Privacy", href: "/connect/general" },
-    { label: "Terms", href: "/connect/general" },
-    { label: "Accessibility", href: "/connect/general" },
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
+    { label: "Accessibility", href: "/accessibility" },
   ],
 };

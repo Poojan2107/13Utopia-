@@ -1,0 +1,40 @@
+/* Custom cursor — Animmaster mouse effect */
+
+.dot,
+.ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 190;
+  pointer-events: none;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-gold);
+  mix-blend-mode: difference;
+}
+
+.ring {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(232, 197, 106, 0.55);
+  background: transparent;
+}
+
+:global(html.has-custom-cursor),
+:global(html.has-custom-cursor body),
+:global(html.has-custom-cursor a),
+:global(html.has-custom-cursor button) {
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  .dot,
+  .ring {
+    display: none !important;
+  }
+}

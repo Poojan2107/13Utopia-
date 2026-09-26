@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
-import { Container } from "@/components/ui/Container";
-import { PageHero, RelatedLinks } from "@/components/ui/PageHero";
-import { ArrowLink } from "@/components/ui/TextLink";
+import { CinematicParallax, ScrollListIndex } from "@/components/motion";
+import {
+  Container,
+  HubBridge,
+  HubCloser,
+  MediaPlaceholder,
+  PageHero,
+} from "@/components/ui";
 import { buildMetadata } from "@/lib/seo";
+import hub from "@/styles/ui/HubBody.module.css";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
@@ -13,6 +19,49 @@ export const metadata: Metadata = buildMetadata({
   path: "/our-story",
 });
 
+const CHAPTERS = [
+  {
+    href: "/our-story/why-13-utopia",
+    title: "Why 13 UTOPIA",
+    body: "The name, the philosophy, and why we exist — founder truth only.",
+    tone: "warm" as const,
+    need: "Why 13 UTOPIA — founding atmosphere",
+    cta: "Enter",
+  },
+  {
+    href: "/our-story/vision",
+    title: "Vision",
+    body: "Where we are pointed — the future we are building toward.",
+    tone: "strategy" as const,
+    need: "Vision — horizon plate",
+    cta: "Enter",
+  },
+  {
+    href: "/our-story/mission",
+    title: "Mission",
+    body: "What we do every day for ambitious businesses.",
+    tone: "create" as const,
+    need: "Mission — practice in motion",
+    cta: "Enter",
+  },
+  {
+    href: "/our-story/process",
+    title: "Process",
+    body: "Question → Imagine → Define → Create → Build → Grow.",
+    tone: "build" as const,
+    need: "Process — method sequence",
+    cta: "Enter",
+  },
+  {
+    href: "/our-story/global-presence",
+    title: "Global Presence",
+    body: "India and Canada — one collective across continents.",
+    tone: "grow" as const,
+    need: "Presence — India × Canada",
+    cta: "Enter",
+  },
+];
+
 export default function OurStoryPage() {
   return (
     <>
@@ -20,30 +69,62 @@ export default function OurStoryPage() {
         eyebrow="Our Story"
         title="Why 13 UTOPIA exists"
         description="We help ambitious businesses move beyond the obvious — Create, Build, Grow."
+        layout="full"
+        media={
+          <MediaPlaceholder
+            aspect="hero"
+            tone="warm"
+            need="Our Story hero — origin atmosphere"
+          />
+        }
       />
-      <Container style={{ paddingBlock: "var(--space-3xl)" }}>
-        <p style={{ color: "var(--color-fg-muted)" }}>
-          Origin of the number 13: [FOUNDER INPUT REQUIRED]. Do not invent mythology.
-        </p>
-        <ul style={{ display: "grid", gap: "1rem", marginTop: "2rem" }}>
-          {[
-            ["/our-story/why-13-utopia", "Why 13 UTOPIA"],
-            ["/our-story/vision", "Vision"],
-            ["/our-story/mission", "Mission"],
-            ["/our-story/process", "Process"],
-            ["/our-story/global-presence", "Global Presence"],
-          ].map(([href, label]) => (
-            <li key={href} style={{ borderTop: "1px solid var(--color-border)", paddingTop: "1rem" }}>
-              <ArrowLink href={href}>{label}</ArrowLink>
-            </li>
-          ))}
-        </ul>
-        <RelatedLinks
-          title="Continue"
-          items={[
-            { href: "/collective", label: "Meet the Collective" },
-            { href: "/connect/start-a-project", label: "Start a Project" },
-          ]}
+      <Container className={hub.bodyTight}>
+        <ScrollListIndex items={CHAPTERS} label="Chapters" />
+      </Container>
+
+      <CinematicParallax
+        eyebrow="Origin"
+        scenes={[
+          {
+            meta: "Mark",
+            title: "A name with weight",
+            caption: "Archive, ritual, and the reason we started.",
+            need: "Story — archive / mark cinematic",
+            tone: "warm",
+          },
+          {
+            meta: "Practice",
+            title: "Work on the floor",
+            caption: "How ambition becomes method.",
+            need: "Story — practice floor cinematic",
+            tone: "create",
+          },
+          {
+            meta: "Presence",
+            title: "Two continents, one collective",
+            caption: "India and Canada — shared standard.",
+            need: "Story — two continents cinematic",
+            tone: "grow",
+          },
+        ]}
+      />
+
+      <Container className={hub.bodyTight}>
+        <HubBridge
+          eyebrow="Belief"
+          statement="The obvious answer isn’t always the right one."
+          support="We question what already works, find what doesn’t, and build what comes next."
+          need="Story — belief atmosphere"
+          tone="strategy"
+        />
+
+        <HubCloser
+          title="Meet the people"
+          lead="The collective is where the story becomes human."
+          primaryHref="/collective"
+          primaryLabel="Meet the Collective"
+          secondaryHref="/connect/start-a-project"
+          secondaryLabel="Start a Project"
         />
       </Container>
     </>

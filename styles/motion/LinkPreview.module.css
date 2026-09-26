@@ -1,0 +1,34 @@
+/* Floating link preview hover */
+
+.root {
+  pointer-events: none;
+}
+
+.float {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 80;
+  width: min(18rem, 42vw);
+  height: min(24rem, 52vh);
+  overflow: hidden;
+  border: 1px solid rgba(243, 241, 234, 0.12);
+  background: #0a0a0a;
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.plate {
+  position: absolute;
+  inset: 0;
+}
+
+.plate :global(figure) {
+  height: 100%;
+}
+
+@media (pointer: coarse) {
+  .float {
+    display: none;
+  }
+}

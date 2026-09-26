@@ -5,5 +5,8 @@ export { BrandWorldview } from "./BrandWorldview";
 export { BeliefHeadline } from "./BeliefHeadline";
 export { CreateBuildGrow } from "./CreateBuildGrow";
 export { FeaturedWork } from "./FeaturedWork";
+export { SolutionsOverview } from "./SolutionsOverview";
 export { ProcessOverview } from "./ProcessOverview";
+export { PerspectivePreview } from "./PerspectivePreview";
+export { CollectivePreview } from "./CollectivePreview";
 export { FinalCTA } from "./FinalCTA";

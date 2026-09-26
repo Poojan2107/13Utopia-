@@ -3,6 +3,17 @@ export { Breadcrumbs } from "./Breadcrumbs";
 export type { Crumb } from "./Breadcrumbs";
 export { PrimaryButton, SecondaryButton } from "./Button";
 export { Container } from "./Container";
+export { HubBridge, HubFilmStrip, HubCloser } from "./HubChrome";
+export {
+  PracticeList,
+  PhaseRail,
+  ProseBlock,
+  MediaBreak,
+  DetailCloser,
+  DetailBridge,
+  DetailCtaRow,
+} from "./DetailKit";
+export { MediaPlaceholder } from "./MediaPlaceholder";
 export { PageHero, RelatedLinks } from "./PageHero";
 export { Section } from "./Section";
 export { SectionHeading } from "./SectionHeading";

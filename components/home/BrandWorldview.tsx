@@ -33,22 +33,31 @@ export function BrandWorldview() {
       gsap.set(lines, { yPercent: 110 });
       if (rule) gsap.set(rule, { scaleX: 0, transformOrigin: "left center" });
 
-      gsap
-        .timeline({
-          defaults: { ease: "power3.out" },
-          scrollTrigger: {
-            trigger: section,
-            start: "top 72%",
-            toggleActions: "play none none none",
-            once: true,
-          },
-        })
+      const enter = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: {
+          trigger: section,
+          start: "top 78%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      });
+
+      enter
         .to(marker, { opacity: 1, y: 0, duration: 0.55 }, 0)
         .to(lines, { yPercent: 0, duration: 0.95, stagger: 0.1 }, 0.12)
         .to(rule, { scaleX: 1, duration: 0.55 }, 0.45)
         .to(lead, { opacity: 1, y: 0, duration: 0.7 }, 0.52)
         .to(body, { opacity: 1, y: 0, duration: 0.7 }, 0.64)
         .to(bridge, { opacity: 1, y: 0, duration: 0.65 }, 0.8);
+
+      // If already past the trigger (hash jump / fast load), show final state
+      requestAnimationFrame(() => {
+        const top = section.getBoundingClientRect().top;
+        if (top < window.innerHeight * 0.78) {
+          enter.progress(1);
+        }
+      });
 
       const atmosphere = section.querySelector(`.${styles.atmosphere}`);
       if (atmosphere) {

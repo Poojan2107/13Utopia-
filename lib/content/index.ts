@@ -117,6 +117,9 @@ export function getAllIndexablePaths(): string[] {
     "/connect/support",
     "/connect/india",
     "/connect/canada",
+    "/privacy",
+    "/terms",
+    "/accessibility",
   ];
 
   const capabilityPaths = getCapabilityRouteSlugs().map((s) => `/capabilities/${s}`);

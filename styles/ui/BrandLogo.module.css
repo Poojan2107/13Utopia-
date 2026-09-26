@@ -10,18 +10,15 @@
   display: block;
 }
 
-/* Dark UI wordmark — no white plate */
-.horizontal {
-  background: transparent;
-  padding: 0;
+.svg {
+  display: block;
+  width: auto;
+  height: 1.65rem;
 }
 
-.horizontal .image {
-  height: 1.85rem;
-  width: auto;
-  /* Black logo → cream; gold sparkle shifts — acceptable until light SVG lands */
-  filter: invert(1) brightness(1.05) contrast(1.05);
-  mix-blend-mode: screen;
+.wordmark {
+  background: transparent;
+  padding: 0;
 }
 
 .mark .image {
@@ -42,7 +39,7 @@
 }
 
 @media (min-width: 1024px) {
-  .horizontal .image {
-    height: 2rem;
+  .svg {
+    height: 1.85rem;
   }
 }

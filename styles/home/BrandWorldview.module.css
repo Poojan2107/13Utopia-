@@ -6,9 +6,9 @@
 
 .wrap {
   --ink: #f3f1ea;
-  --ink-soft: rgba(243, 241, 234, 0.7);
-  --ink-faint: rgba(243, 241, 234, 0.42);
-  --gold: #e8c56a;
+  --ink-soft: var(--color-fg-soft);
+  --ink-faint: var(--color-fg-faint);
+  --gold: var(--color-gold);
   --gold-line: rgba(232, 197, 106, 0.45);
   --gold-soft: rgba(232, 197, 106, 0.72);
 
@@ -43,12 +43,12 @@
   min-height: 100svh;
   min-height: 100dvh;
   box-sizing: border-box;
-  padding: clamp(5.5rem, 10vh, 7.5rem) clamp(1.5rem, 5vw, 4rem);
+  padding: clamp(5.5rem, 10vh, 7.5rem) clamp(1.5rem, 5vw, 4.5rem);
 }
 
 .frame {
   width: 100%;
-  max-width: 1120px;
+  max-width: 1200px;
   margin-inline: auto;
   display: flex;
   flex-direction: column;
@@ -84,7 +84,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(243, 241, 234, 0.45);
+  color: var(--color-fg-muted);
 }
 
 .columns {
@@ -193,7 +193,7 @@
   font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: 0.04em;
-  color: rgba(243, 241, 234, 0.28);
+  color: var(--color-fg-muted);
 }
 
 .footerLink {
@@ -203,7 +203,7 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
-  color: rgba(243, 241, 234, 0.55);
+  color: var(--color-fg-muted);
   border-bottom: 1px solid rgba(232, 197, 106, 0.35);
   padding-bottom: 0.2rem;
   transition:
@@ -231,7 +231,7 @@
   font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: 0.02em;
-  color: rgba(243, 241, 234, 0.32);
+  color: var(--color-fg-muted);
 }
 
 .bridgeLink {
@@ -241,7 +241,7 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
-  color: rgba(243, 241, 234, 0.55);
+  color: var(--color-fg-muted);
   border-bottom: 1px solid rgba(232, 197, 106, 0.35);
   padding-bottom: 0.2rem;
   transition:
@@ -249,9 +249,11 @@
     border-color 0.25s ease;
 }
 
-.bridgeLink:hover {
+.bridgeLink:hover,
+.bridgeLink:focus-visible {
   color: var(--gold);
   border-bottom-color: var(--gold);
+  outline: none;
 }
 
 @media (max-width: 900px) {

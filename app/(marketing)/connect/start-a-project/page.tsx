@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Container } from "@/components/ui/Container";
-import { PageHero } from "@/components/ui/PageHero";
+import { PageReveal } from "@/components/motion";
+import { Container, MediaPlaceholder, PageHero } from "@/components/ui";
 import { ProjectForm } from "@/components/connect/ProjectForm";
 import { buildMetadata } from "@/lib/seo";
+import hub from "@/styles/ui/HubBody.module.css";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
@@ -19,9 +20,25 @@ export default function StartProjectPage() {
         eyebrow="Connect"
         title="Start a Project"
         description="What are you trying to make happen? Qualify the outcome, then tell us what you need."
+        layout="split"
+        media={
+          <MediaPlaceholder
+            aspect="portrait"
+            need="Start a Project — begin atmosphere"
+            brief="Invitation still: blank page, keyed object, or threshold into collaboration."
+          />
+        }
       />
-      <Container style={{ paddingBlock: "var(--space-3xl)" }}>
-        <ProjectForm />
+      <Container className={hub.body}>
+        <PageReveal>
+          <p className={hub.note} data-reveal>
+            <span className={hub.noteEm}>Outcomes first</span> — Launch, Grow, Scale,
+            Modernize, Automate, Transform.
+          </p>
+          <div data-reveal>
+            <ProjectForm />
+          </div>
+        </PageReveal>
       </Container>
     </>
   );

@@ -1,34 +1,52 @@
 import type { Metadata } from "next";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { Container } from "@/components/ui/Container";
-import { PageHero } from "@/components/ui/PageHero";
+import {
+  Container,
+  DetailCloser,
+  DetailCtaRow,
+  MediaBreak,
+  MediaPlaceholder,
+  PageHero,
+  ProseBlock,
+} from "@/components/ui";
+import { STORY_PAGES } from "@/content/narratives";
 import { buildMetadata } from "@/lib/seo";
+import hub from "@/styles/ui/HubBody.module.css";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Mission | Our Story | 13 UTOPIA",
-    description:
-      "Help ambitious businesses turn unconventional ideas into real-world momentum.",
+    description: "What 13 UTOPIA does every day for ambitious businesses.",
   },
   path: "/our-story/mission",
 });
 
 export default function MissionPage() {
+  const copy = STORY_PAGES.mission;
   return (
     <>
       <PageHero
-        eyebrow="Mission"
-        title="What we do every day"
-        description="To help ambitious businesses turn unconventional ideas into real-world momentum through creativity, technology and growth."
+        eyebrow="Our Story"
+        title="Mission"
+        description={copy.lead}
+        layout="full"
+        media={
+          <MediaPlaceholder
+            aspect="hero"
+            tone="create"
+            need="Mission — practice in motion"
+          />
+        }
       />
-      <Container style={{ paddingBlock: "var(--space-3xl)" }}>
-        <Breadcrumbs
-          items={[
-            { name: "Our Story", path: "/our-story" },
-            { name: "Mission", path: "/our-story/mission" },
-          ]}
+      <Container className={hub.body}>
+        <ProseBlock paragraphs={copy.body} />
+        <MediaBreak need="Mission — work on the floor" tone="create" />
+        <DetailCtaRow secondaryHref="/our-story/process" secondaryLabel="Process" />
+        <DetailCloser
+          title="Start with the outcome"
+          lead="Tell us what you are trying to make happen."
+          secondaryHref="/connect/start-a-project"
+          secondaryLabel="Start a Project"
         />
-        <p style={{ color: "var(--color-fg-muted)" }}>[CONTENT NEEDED — refine]</p>
       </Container>
     </>
   );

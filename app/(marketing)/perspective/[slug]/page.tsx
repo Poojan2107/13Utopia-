@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { Container } from "@/components/ui/Container";
-import { PageHero, RelatedLinks } from "@/components/ui/PageHero";
+import { PageReveal } from "@/components/motion";
+import {
+  Breadcrumbs,
+  Container,
+  DetailCloser,
+  DetailCtaRow,
+  MediaBreak,
+  MediaPlaceholder,
+  PageHero,
+  ProseBlock,
+  RelatedLinks,
+} from "@/components/ui";
 import {
   getCapability,
   getCaseStudy,
@@ -11,6 +20,7 @@ import {
   getSolution,
 } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
+import hub from "@/styles/ui/HubBody.module.css";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -30,26 +40,51 @@ export default async function PerspectiveArticlePage({ params }: Props) {
   const article = getPerspectiveArticle(slug);
   if (!article) notFound();
 
+  const paragraphs = article.body
+    .split(/\n\n+/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+
   return (
     <>
       <PageHero
         eyebrow={article.category}
         title={article.title}
         description={article.excerpt}
+        layout="full"
+        media={
+          <MediaPlaceholder
+            aspect="hero"
+            tone="strategy"
+            need={`Article hero — ${article.title}`}
+          />
+        }
       />
-      <Container style={{ paddingBlock: "var(--space-3xl)" }}>
-        <Breadcrumbs
-          items={[
-            { name: "Perspective", path: "/perspective" },
-            { name: article.title, path: `/perspective/${slug}` },
-          ]}
+      <Container className={hub.body}>
+        <PageReveal>
+          <div data-reveal>
+            <Breadcrumbs
+              items={[
+                { name: "Perspective", path: "/perspective" },
+                { name: article.title, path: `/perspective/${slug}` },
+              ]}
+            />
+          </div>
+          <p className={hub.entryMeta} data-reveal>
+            <span>{article.author}</span>
+            <span>{article.publishedAt}</span>
+            <span>{article.readingTime}</span>
+          </p>
+        </PageReveal>
+
+        <ProseBlock paragraphs={paragraphs} />
+
+        <MediaBreak
+          need={`Article figure — ${article.category}`}
+          tone="strategy"
+          aspect="wide"
         />
-        <p style={{ color: "var(--color-fg-muted)", fontSize: "var(--text-caption)" }}>
-          {article.author} · {article.publishedAt} · {article.readingTime}
-        </p>
-        <div style={{ maxWidth: "42rem", marginTop: "2rem" }}>
-          <p>{article.body}</p>
-        </div>
+
         <RelatedLinks
           title="Related capabilities"
           items={article.relatedCapabilitySlugs
@@ -71,9 +106,16 @@ export default async function PerspectiveArticlePage({ params }: Props) {
             .filter(Boolean)
             .map((c) => ({ href: `/work/${c!.slug}`, label: c!.title }))}
         />
-        <RelatedLinks
-          title="Next"
-          items={[{ href: "/connect/start-a-project", label: "Start a Project" }]}
+
+        <DetailCtaRow
+          secondaryHref="/perspective"
+          secondaryLabel="All Perspective"
+        />
+        <DetailCloser
+          title="Have a thesis?"
+          lead="If you’re wrestling with the same intersections, start a conversation."
+          secondaryHref="/connect/discovery"
+          secondaryLabel="Discovery"
         />
       </Container>
     </>

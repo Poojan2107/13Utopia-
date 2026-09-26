@@ -1,11 +1,11 @@
 /* Shared chapter rhythm — used by post-hero homepage sections */
 .chapter {
-  --ink: #f3f1ea;
-  --ink-soft: rgba(243, 241, 234, 0.7);
-  --ink-faint: rgba(243, 241, 234, 0.42);
-  --gold: #e8c56a;
-  --gold-line: rgba(232, 197, 106, 0.45);
-  --gold-soft: rgba(232, 197, 106, 0.72);
+  --ink: var(--color-warm-white);
+  --ink-soft: var(--color-fg-soft);
+  --ink-faint: var(--color-fg-muted);
+  --gold: var(--color-gold);
+  --gold-line: var(--color-gold-line);
+  --gold-soft: var(--color-gold-muted);
   --edge: clamp(1.5rem, 5vw, 4rem);
 
   position: relative;
@@ -51,7 +51,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(243, 241, 234, 0.45);
+  color: var(--color-fg-faint);
 }
 
 .heading {

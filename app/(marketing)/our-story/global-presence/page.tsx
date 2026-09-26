@@ -1,14 +1,24 @@
 import type { Metadata } from "next";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { Container } from "@/components/ui/Container";
-import { PageHero, RelatedLinks } from "@/components/ui/PageHero";
+import Link from "next/link";
+import { PageReveal } from "@/components/motion";
+import {
+  Container,
+  DetailCloser,
+  DetailCtaRow,
+  MediaBreak,
+  MediaPlaceholder,
+  PageHero,
+  ProseBlock,
+} from "@/components/ui";
 import { getOffices } from "@/lib/content";
+import { displayText } from "@/lib/content/display";
 import { buildMetadata } from "@/lib/seo";
+import hub from "@/styles/ui/HubBody.module.css";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Global Presence | Our Story | 13 UTOPIA",
-    description: "Verified geographic presence — India and Canada placeholders pending facts.",
+    description: "India and Canada — one collective across continents.",
   },
   path: "/our-story/global-presence",
 });
@@ -19,36 +29,59 @@ export default function GlobalPresencePage() {
   return (
     <>
       <PageHero
-        eyebrow="Presence"
-        title="Where we operate"
-        description="Only verified geographic facts. Unsupported global-reach claims are omitted."
+        eyebrow="Our Story"
+        title="Global Presence"
+        description="India and Canada — one collective, one standard."
+        layout="full"
+        media={
+          <MediaPlaceholder
+            aspect="hero"
+            tone="grow"
+            need="Presence — India × Canada"
+          />
+        }
       />
-      <Container style={{ paddingBlock: "var(--space-3xl)" }}>
-        <Breadcrumbs
-          items={[
-            { name: "Our Story", path: "/our-story" },
-            { name: "Global Presence", path: "/our-story/global-presence" },
+      <Container className={hub.body}>
+        <ProseBlock
+          paragraphs={[
+            "We work as one practice across continents — Create, Build, and Grow sharing the same bar for craft and delivery.",
+            "Verified street addresses and phone numbers publish when confirmed. Until then, reach us through Connect — the route that fits your ask.",
           ]}
         />
-        <ul style={{ display: "grid", gap: "1.5rem", marginTop: "2rem" }}>
-          {offices.map((office) => (
-            <li
-              key={office.slug}
-              style={{ borderTop: "1px solid var(--color-border)", paddingTop: "1rem" }}
-            >
-              <h2 style={{ fontSize: "var(--text-h3)" }}>{office.title}</h2>
-              <p style={{ color: "var(--color-fg-muted)", margin: 0 }}>
-                {office.address} · {office.email} · {office.phone}
-              </p>
-            </li>
-          ))}
-        </ul>
-        <RelatedLinks
-          title="Connect by location"
-          items={[
-            { href: "/connect/india", label: "India" },
-            { href: "/connect/canada", label: "Canada" },
-          ]}
+        <MediaBreak need="Presence — two continents" tone="grow" aspect="wide" />
+
+        <PageReveal>
+          <ul className={hub.groupsDense}>
+            {offices.map((office, i) => (
+              <li key={office.slug} data-reveal>
+                <Link
+                  href={`/connect/${office.slug}`}
+                  className={hub.groupDense}
+                >
+                  <span className={hub.groupDenseNum}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span>
+                    <h3 className={hub.groupTitle}>{office.title}</h3>
+                    <p className={hub.groupBody}>
+                      {displayText(office.address, office.region)}
+                    </p>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </PageReveal>
+
+        <DetailCtaRow
+          secondaryHref="/connect"
+          secondaryLabel="Connect"
+        />
+        <DetailCloser
+          title="Talk to us"
+          lead="Choose the route — project, discovery, or regional presence."
+          secondaryHref="/connect/start-a-project"
+          secondaryLabel="Start a Project"
         />
       </Container>
     </>

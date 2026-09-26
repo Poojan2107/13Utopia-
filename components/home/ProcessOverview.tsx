@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -42,57 +42,47 @@ const STEPS = [
 ] as const;
 
 /**
- * 05 — Method
- * One word owns the viewport. Scroll advances the beat.
+ * 06 — Method
+ * Vertical process rail — not a sticky scrub (Worlds owns that pattern).
  */
 export function ProcessOverview() {
   const wrapRef = useRef<HTMLElement | null>(null);
-  const [active, setActive] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const activeRef = useRef(0);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 900px)");
-    const sync = () => setIsMobile(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
 
   useEffect(() => {
     const wrap = wrapRef.current;
-    if (!wrap || isMobile) return;
+    if (!wrap) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: wrap,
-        start: "top top",
-        end: "bottom bottom",
-        onUpdate: (self) => {
-          const next = Math.min(
-            STEPS.length - 1,
-            Math.floor(self.progress * STEPS.length),
-          );
-          if (next !== activeRef.current) {
-            activeRef.current = next;
-            setActive(next);
-          }
+      const spine = wrap.querySelector(`.${styles.spineFill}`);
+      const steps = wrap.querySelectorAll("[data-step]");
+
+      gsap.set(steps, { opacity: 0, x: -18 });
+
+      gsap.to(steps, {
+        opacity: 1,
+        x: 0,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: wrap.querySelector(`.${styles.rail}`),
+          start: "top 70%",
+          once: true,
         },
       });
 
-      const fill = wrap.querySelector(`.${styles.trackFill}`);
-      if (fill) {
+      if (spine) {
         gsap.fromTo(
-          fill,
-          { scaleX: 0 },
+          spine,
+          { scaleY: 0 },
           {
-            scaleX: 1,
+            scaleY: 1,
             ease: "none",
             scrollTrigger: {
-              trigger: wrap,
-              start: "top top",
-              end: "bottom bottom",
+              trigger: wrap.querySelector(`.${styles.rail}`),
+              start: "top 65%",
+              end: "bottom 35%",
               scrub: true,
             },
           },
@@ -101,68 +91,52 @@ export function ProcessOverview() {
     }, wrap);
 
     return () => ctx.revert();
-  }, [isMobile]);
-
-  const step = STEPS[active];
+  }, []);
 
   return (
     <section
       ref={wrapRef}
       id="method"
-      className={isMobile ? styles.wrapMobile : styles.wrap}
+      className={styles.wrap}
       aria-labelledby="process-title"
     >
-      <div className={isMobile ? styles.stack : styles.pin}>
-        <div className={styles.stage}>
-          <header className={styles.top}>
-            <div className={styles.marker}>
-              <span className={styles.markerIndex}>05</span>
-              <span className={styles.markerRule} aria-hidden="true" />
-              <span className={styles.markerLabel}>Method</span>
-            </div>
-            <h2 id="process-title" className={styles.heading}>
-              How we think.
-            </h2>
-          </header>
+      <div className={styles.inner}>
+        <header className={styles.head}>
+          <div className={styles.marker}>
+            <span className={styles.markerIndex}>06</span>
+            <span className={styles.markerRule} aria-hidden="true" />
+            <span className={styles.markerLabel}>Method</span>
+          </div>
+          <h2 id="process-title" className={styles.heading}>
+            How we think.
+          </h2>
+          <p className={styles.lede}>
+            A sequence, not a slide deck — six moves from challenge to momentum.
+          </p>
+        </header>
 
-          {isMobile ? (
-            <ol className={styles.mobileList}>
-              {STEPS.map((s) => (
-                <li key={s.num} className={styles.mobileItem}>
-                  <span className={styles.beatNum}>{s.num}</span>
-                  <h3 className={styles.beatTitle}>{s.title}</h3>
-                  <p className={styles.beatBody}>{s.body}</p>
-                </li>
-              ))}
-            </ol>
-          ) : (
-            <>
-              <div className={styles.beat} key={step.num}>
-                <p className={styles.beatNum}>{step.num} / 06</p>
-                <p className={styles.beatTitle}>{step.title}</p>
-                <p className={styles.beatBody}>{step.body}</p>
-              </div>
+        <div className={styles.rail}>
+          <div className={styles.spine} aria-hidden="true">
+            <span className={styles.spineFill} />
+          </div>
 
-              <div className={styles.track} aria-hidden="true">
-                <span className={styles.trackFill} />
-              </div>
-
-              <ol className={styles.dots} aria-hidden="true">
-                {STEPS.map((s, i) => (
-                  <li
-                    key={s.num}
-                    className={i === active ? styles.dotActive : styles.dot}
-                  />
-                ))}
-              </ol>
-            </>
-          )}
-
-          <Link href="/our-story/process" className={styles.link}>
-            Full process
-            <span aria-hidden="true"> →</span>
-          </Link>
+          <ol className={styles.steps}>
+            {STEPS.map((s) => (
+              <li key={s.num} className={styles.step} data-step>
+                <span className={styles.stepNum}>{s.num}</span>
+                <div className={styles.stepCopy}>
+                  <h3 className={styles.stepTitle}>{s.title}</h3>
+                  <p className={styles.stepBody}>{s.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
+
+        <Link href="/our-story/process" className={styles.link}>
+          Full process
+          <span aria-hidden="true"> →</span>
+        </Link>
       </div>
     </section>
   );

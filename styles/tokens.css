@@ -3,18 +3,26 @@
   --color-black-deep: #050505;
   --color-warm-white: #f3f1ea;
   --color-white: #ffffff;
+
+  /* Single gold bind — all accents resolve here */
+  --color-gold: #e8c56a;
   --color-gold-light: #efe0bc;
-  --color-gold: #d4b57a;
   --color-gold-deep: #a8844f;
+  --color-gold-muted: color-mix(in srgb, var(--color-gold) 72%, transparent);
+  --color-gold-line: color-mix(in srgb, var(--color-gold) 45%, transparent);
+
   --color-neutral-900: #141414;
   --color-neutral-800: #1c1c1c;
   --color-neutral-700: #3d3d3a;
-  --color-neutral-500: #8a8780;
+  --color-neutral-500: #a8a49a;
   --color-neutral-200: #d8d4cb;
 
   --color-bg: var(--color-black);
   --color-fg: var(--color-warm-white);
-  --color-fg-muted: var(--color-neutral-500);
+  /* Readable muted floor ≈ 0.65 on black */
+  --color-fg-muted: color-mix(in srgb, var(--color-warm-white) 65%, transparent);
+  --color-fg-soft: color-mix(in srgb, var(--color-warm-white) 70%, transparent);
+  --color-fg-faint: color-mix(in srgb, var(--color-warm-white) 55%, transparent);
   --color-accent: var(--color-gold);
   --color-border: color-mix(in srgb, var(--color-warm-white) 12%, transparent);
   --color-surface: var(--color-neutral-900);

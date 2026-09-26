@@ -1,9 +1,19 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Container } from "@/components/ui/Container";
-import { PageHero } from "@/components/ui/PageHero";
+import {
+  CinematicParallax,
+  CreativeCarousel,
+  ScrollListIndex,
+} from "@/components/motion";
+import {
+  Container,
+  HubBridge,
+  HubCloser,
+  MediaPlaceholder,
+  PageHero,
+} from "@/components/ui";
 import { getPerspectiveArticles } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
+import hub from "@/styles/ui/HubBody.module.css";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
@@ -17,38 +27,102 @@ export const metadata: Metadata = buildMetadata({
 export default function PerspectiveHubPage() {
   const articles = getPerspectiveArticles();
 
+  const items = articles.map((article) => ({
+    href: `/perspective/${article.slug}`,
+    title: article.title,
+    body: article.excerpt,
+    meta: `${article.category} · ${article.readingTime}`,
+    cta: "Read",
+    tone: "strategy" as const,
+    need: `Article — ${article.title}`,
+  }));
+
   return (
     <>
       <PageHero
         eyebrow="Perspective"
         title="Thinking that crosses disciplines"
-        description="Not a blog dump — editorial views at the intersections that matter."
+        description="We publish when we have something to say — Brand × Technology, Product × Growth, and the spaces between."
+        layout="full"
+        media={
+          <MediaPlaceholder
+            aspect="hero"
+            tone="strategy"
+            need="Perspective hero — editorial atmosphere"
+          />
+        }
       />
-      <Container style={{ paddingBlock: "var(--space-3xl)" }}>
-        <ul style={{ display: "grid", gap: "2rem" }}>
-          {articles.map((article) => (
-            <li
-              key={article.slug}
-              style={{ borderTop: "1px solid var(--color-border)", paddingTop: "1.25rem" }}
-            >
-              <Link href={`/perspective/${article.slug}`} style={{ textDecoration: "none" }}>
-                <p
-                  style={{
-                    margin: "0 0 0.5rem",
-                    fontSize: "var(--text-micro)",
-                    color: "var(--color-fg-muted)",
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {article.category} · {article.readingTime}
-                </p>
-                <h2 style={{ fontSize: "var(--text-h3)" }}>{article.title}</h2>
-                <p style={{ color: "var(--color-fg-muted)", margin: 0 }}>{article.excerpt}</p>
-              </Link>
-            </li>
-          ))}
-        </ul>
+      <Container className={hub.bodyTight}>
+        <ScrollListIndex items={items} label="Latest" />
+
+        <CreativeCarousel
+          eyebrow="Intersections"
+          autoplay
+          slides={[
+            ...items.map((item) => ({
+              title: item.title,
+              caption: item.body,
+              need: item.need,
+              tone: item.tone,
+            })),
+            {
+              title: "Brand × Technology",
+              caption: "Where craft meets systems.",
+              need: "Perspective carousel — brand tech",
+              tone: "create",
+            },
+            {
+              title: "Product × Growth",
+              caption: "Shipped and sold as one motion.",
+              need: "Perspective carousel — product growth",
+              tone: "grow",
+            },
+          ]}
+        />
+      </Container>
+
+      <CinematicParallax
+        eyebrow="Field notes"
+        scenes={[
+          {
+            meta: "Brand × Technology",
+            title: "Where craft meets systems",
+            caption: "The intersections we keep returning to.",
+            need: "Editorial still — brand cinematic",
+            tone: "create",
+          },
+          {
+            meta: "Product × Growth",
+            title: "Shipped and sold as one motion",
+            caption: "Thinking that refuses the silo.",
+            need: "Editorial still — product cinematic",
+            tone: "build",
+          },
+          {
+            meta: "Strategy",
+            title: "Before the brief hardens",
+            caption: "Questions that change the work.",
+            need: "Editorial still — growth cinematic",
+            tone: "grow",
+          },
+        ]}
+      />
+
+      <Container className={hub.bodyTight}>
+        <HubBridge
+          eyebrow="Why we write"
+          statement="Execution without thinking is noise. Thinking without execution is decoration."
+          support="Perspective is where the intersections get examined — before the work ships."
+          need="Perspective — writing desk atmosphere"
+          tone="strategy"
+        />
+
+        <HubCloser
+          title="Have a thesis?"
+          lead="If you’re wrestling with the same intersections, start a conversation."
+          secondaryHref="/connect/discovery"
+          secondaryLabel="Discovery"
+        />
       </Container>
     </>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { PrimaryButton } from "@/components/ui/Button";
 import styles from "@/styles/connect/ProjectForm.module.css";
 
@@ -16,20 +16,41 @@ const OUTCOMES = [
 
 const NEEDS = ["Create", "Build", "Grow", "Strategy", "Multiple", "Not sure"] as const;
 
+/** Interim submit via mailto until server action / CRM is wired */
+const INQUIRY_MAIL = "projects@13utopia.com";
+
 export function ProjectForm() {
   const [submitted, setSubmitted] = useState(false);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // Backend deferred — markup + client validation only
+    const fd = new FormData(e.currentTarget);
+    const lines = [
+      `Outcome: ${fd.get("outcome") ?? ""}`,
+      `Need: ${fd.get("need") ?? ""}`,
+      `Name: ${fd.get("name") ?? ""}`,
+      `Email: ${fd.get("email") ?? ""}`,
+      `Company: ${fd.get("company") ?? ""}`,
+      `Website: ${fd.get("website") ?? ""}`,
+      `Timeline: ${fd.get("timeline") ?? ""}`,
+      `Budget: ${fd.get("budget") ?? ""}`,
+      "",
+      String(fd.get("details") ?? ""),
+    ];
+    const subject = encodeURIComponent(
+      `Project inquiry — ${fd.get("company") || fd.get("name") || "13 UTOPIA"}`,
+    );
+    const body = encodeURIComponent(lines.join("\n"));
+    window.location.href = `mailto:${INQUIRY_MAIL}?subject=${subject}&body=${body}`;
     setSubmitted(true);
   }
 
   if (submitted) {
     return (
       <p className={styles.success} role="status">
-        Form received locally. Submission backend: [CONTENT NEEDED] — no data was sent to a
-        server.
+        Your mail client should open with the brief. If it didn’t, email{" "}
+        <a href={`mailto:${INQUIRY_MAIL}`}>{INQUIRY_MAIL}</a> directly — or try
+        again.
       </p>
     );
   }

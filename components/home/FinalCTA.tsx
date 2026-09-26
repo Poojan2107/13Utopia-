@@ -9,7 +9,7 @@ import styles from "@/styles/home/FinalCTA.module.css";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * 06 — Close
+ * 09 — Close
  * Manifesto gravity. The ask after the worldview.
  */
 export function FinalCTA() {
@@ -64,7 +64,7 @@ export function FinalCTA() {
 
       <div className={styles.inner}>
         <header className={styles.marker} data-fade>
-          <span className={styles.markerIndex}>06</span>
+          <span className={styles.markerIndex}>09</span>
           <span className={styles.markerRule} aria-hidden="true" />
           <span className={styles.markerLabel}>Begin</span>
         </header>

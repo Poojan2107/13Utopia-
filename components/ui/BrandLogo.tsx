@@ -2,7 +2,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
 import styles from "@/styles/ui/BrandLogo.module.css";
 
-type Variant = "horizontal" | "hero3d" | "mark";
+type Variant = "horizontal" | "hero3d" | "mark" | "wordmark";
 
 type Props = {
   variant?: Variant;
@@ -10,46 +10,52 @@ type Props = {
   priority?: boolean;
 };
 
-const ASSETS = {
-  horizontal: {
-    src: "/brand/13-utopia-logo-horizontal.jpeg",
-    width: 640,
-    height: 200,
-    alt: "13 UTOPIA",
-  },
-  hero3d: {
-    src: "/brand/13-utopia-logo-3d.jpeg",
-    width: 1200,
-    height: 900,
-    alt: "13 UTOPIA",
-  },
-  mark: {
-    src: "/brand/13-utopia-logo-3d.jpeg",
-    width: 320,
-    height: 240,
-    alt: "13 UTOPIA",
-  },
-} as const;
+/**
+ * Wordmark SVG for dark UI. JPEG assets retained for 3d/archive until photography kit lands.
+ */
+export function BrandLogo({
+  variant = "wordmark",
+  className,
+  priority,
+}: Props) {
+  if (variant === "wordmark" || variant === "horizontal") {
+    return (
+      <span className={cn(styles.wrap, styles.wordmark, className)}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/brand/13-utopia-wordmark.svg"
+          alt="13 UTOPIA"
+          className={styles.svg}
+          width={160}
+          height={28}
+        />
+      </span>
+    );
+  }
 
-export function BrandLogo({ variant = "horizontal", className, priority }: Props) {
-  const asset = ASSETS[variant];
+  const asset =
+    variant === "mark"
+      ? {
+          src: "/brand/13-utopia-logo-3d.jpeg",
+          width: 320,
+          height: 240,
+        }
+      : {
+          src: "/brand/13-utopia-logo-3d.jpeg",
+          width: 1200,
+          height: 900,
+        };
 
   return (
     <span className={cn(styles.wrap, styles[variant], className)}>
       <Image
         src={asset.src}
-        alt={asset.alt}
+        alt="13 UTOPIA"
         width={asset.width}
         height={asset.height}
         className={styles.image}
         priority={priority}
-        sizes={
-          variant === "hero3d"
-            ? "(max-width: 768px) 100vw, 60vw"
-            : variant === "mark"
-              ? "120px"
-              : "180px"
-        }
+        sizes={variant === "mark" ? "120px" : "(max-width: 768px) 100vw, 60vw"}
       />
     </span>
   );

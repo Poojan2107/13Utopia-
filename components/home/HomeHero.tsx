@@ -91,9 +91,18 @@ export function HomeHero() {
             <span className={styles.scrollLine} aria-hidden="true" />
           </a>
 
-          <Link href="/connect/start-a-project" className={styles.floorCta}>
-            Start a Project <span aria-hidden="true">→</span>
-          </Link>
+          <div className={styles.floorActions}>
+            <Link href="/work" className={styles.floorCtaSecondary} data-magnetic>
+              Explore Work
+            </Link>
+            <Link
+              href="/connect/start-a-project"
+              className={styles.floorCta}
+              data-magnetic
+            >
+              Start a Project <span aria-hidden="true">→</span>
+            </Link>
+          </div>
         </div>
       </div>
     </section>

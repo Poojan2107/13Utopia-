@@ -1,5 +1,9 @@
 import { SiteFooter, SiteHeader } from "@/components/layout";
-import { SmoothScrollProvider } from "@/components/motion";
+import {
+  MagneticCursor,
+  PageTransition,
+  SmoothScrollProvider,
+} from "@/components/motion";
 
 export default function MarketingLayout({
   children,
@@ -8,6 +12,8 @@ export default function MarketingLayout({
 }>) {
   return (
     <SmoothScrollProvider>
+      <PageTransition />
+      <MagneticCursor />
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>

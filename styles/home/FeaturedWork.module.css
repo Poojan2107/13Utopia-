@@ -1,9 +1,9 @@
-/* 04 — Proof: cinematic narrative strips */
+/* 04 — Proof: cinematic strips with real plates */
 
 .wrap {
   --ink: #f3f1ea;
-  --ink-dim: rgba(243, 241, 234, 0.42);
-  --gold: #e8c56a;
+  --ink-dim: var(--color-fg-muted);
+  --gold: var(--color-gold);
   --gold-line: rgba(232, 197, 106, 0.5);
   --gold-soft: rgba(232, 197, 106, 0.75);
 
@@ -51,7 +51,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(243, 241, 234, 0.4);
+  color: var(--color-fg-muted);
 }
 
 .heading {
@@ -73,8 +73,8 @@
 .strip,
 .stripAlt {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  min-height: clamp(28rem, 70vh, 38rem);
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  min-height: clamp(28rem, 72vh, 40rem);
   border-top: 1px solid rgba(243, 241, 234, 0.08);
 }
 
@@ -89,37 +89,74 @@
 .stripMedia {
   position: relative;
   overflow: hidden;
-  background: #070707;
-  min-height: 22rem;
+  background: #050505;
+  min-height: 24rem;
 }
 
-.stripGlow {
+.stripImgWrap {
   position: absolute;
-  inset: -20%;
+  inset: 0;
+  will-change: transform;
+}
+
+.stripImg {
+  object-fit: cover;
+}
+
+.stripVeil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
   background:
-    radial-gradient(
-      ellipse 50% 45% at 40% 55%,
-      rgba(180, 130, 45, 0.28) 0%,
-      transparent 60%
+    linear-gradient(
+      90deg,
+      transparent 55%,
+      rgba(0, 0, 0, 0.35) 100%
     ),
-    radial-gradient(
-      ellipse 40% 35% at 70% 30%,
-      rgba(232, 197, 106, 0.12) 0%,
-      transparent 55%
+    linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.45) 0%,
+      transparent 28%
     ),
-    linear-gradient(160deg, #0a0a0a 0%, #12100c 50%, #050505 100%);
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.28) 0%,
+      transparent 24%
+    );
+  box-shadow: inset 0 0 0 1px rgba(232, 197, 106, 0.06);
+}
+
+.stripAlt .stripVeil {
+  background:
+    linear-gradient(
+      270deg,
+      transparent 55%,
+      rgba(0, 0, 0, 0.35) 100%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.45) 0%,
+      transparent 28%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.28) 0%,
+      transparent 24%
+    );
 }
 
 .stripWorld {
   position: absolute;
   left: clamp(1.25rem, 3vw, 2.5rem);
   bottom: clamp(1.25rem, 3vw, 2.5rem);
+  z-index: 1;
   font-family: var(--font-ui);
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--gold-soft);
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.65);
 }
 
 .stripCopy {
@@ -134,33 +171,91 @@
   font-family: var(--font-ui);
   font-size: 0.6875rem;
   letter-spacing: 0.2em;
-  color: rgba(243, 241, 234, 0.3);
+  color: var(--color-fg-muted);
+}
+
+.stripClient {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
 }
 
 .stripTitle {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 4.5vw, 3.75rem);
+  font-size: clamp(1.85rem, 3.4vw, 2.85rem);
   font-weight: 400;
   letter-spacing: -0.03em;
-  line-height: 1.02;
+  line-height: 1.08;
 }
 
-.stripLine {
-  margin: 1rem 0 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
-  font-style: italic;
-  color: rgba(243, 241, 234, 0.78);
+.stripTitleLink {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.25s ease;
 }
 
-.stripBody {
-  margin: 1.25rem 0 0;
+.stripTitleLink:hover,
+.stripTitleLink:focus-visible {
+  color: var(--gold);
+  outline: none;
+}
+
+.stripMeta {
+  margin: 1.5rem 0 0;
   max-width: 28rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.stripMeta div {
+  margin: 0;
+}
+
+.stripMeta dt {
+  margin: 0 0 0.25rem;
   font-family: var(--font-ui);
-  font-size: 1rem;
-  line-height: 1.7;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+.stripMeta dd {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  line-height: 1.65;
   color: var(--ink-dim);
+}
+
+.stripLink {
+  display: inline-block;
+  margin-top: 1.5rem;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-fg-muted);
+  border-bottom: 1px solid rgba(232, 197, 106, 0.35);
+  padding-bottom: 0.2rem;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.stripLink:hover,
+.stripLink:focus-visible {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+  outline: none;
 }
 
 .all {
@@ -172,14 +267,19 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   text-decoration: none;
-  color: rgba(243, 241, 234, 0.55);
+  color: var(--color-fg-muted);
   border-bottom: 1px solid rgba(232, 197, 106, 0.4);
   padding-bottom: 0.25rem;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease;
 }
 
-.all:hover {
+.all:hover,
+.all:focus-visible {
   color: var(--gold);
   border-bottom-color: var(--gold);
+  outline: none;
 }
 
 @media (max-width: 900px) {
@@ -191,10 +291,26 @@
   }
 
   .stripMedia {
-    min-height: 16rem;
+    min-height: 18rem;
+    aspect-ratio: 5 / 4;
   }
 
   .heading {
     max-width: none;
+  }
+
+  .stripVeil,
+  .stripAlt .stripVeil {
+    background:
+      linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.5) 0%,
+        transparent 35%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.25) 0%,
+        transparent 30%
+      );
   }
 }

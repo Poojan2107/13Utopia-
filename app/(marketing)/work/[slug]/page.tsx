@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { Container } from "@/components/ui/Container";
-import { PageHero, RelatedLinks } from "@/components/ui/PageHero";
+import { PageReveal } from "@/components/motion";
+import {
+  Breadcrumbs,
+  Container,
+  DetailCloser,
+  DetailCtaRow,
+  MediaBreak,
+  MediaPlaceholder,
+  PageHero,
+  RelatedLinks,
+} from "@/components/ui";
 import {
   getCapability,
   getCaseStudies,
@@ -10,7 +18,9 @@ import {
   getPerspectiveArticle,
   getSolution,
 } from "@/lib/content";
+import { displayText } from "@/lib/content/display";
 import { buildMetadata } from "@/lib/seo";
+import hub from "@/styles/ui/HubBody.module.css";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -31,31 +41,65 @@ export default async function CaseStudyPage({ params }: Props) {
   if (!item) notFound();
 
   const sections = [
-    { label: "Challenge", body: item.challenge },
-    { label: "Insight", body: item.insight },
-    { label: "Move", body: item.move },
-    { label: "Build", body: item.build },
-    { label: "Result", body: item.result },
-    { label: "Lesson", body: item.lesson },
-  ];
+    { label: "Challenge", body: displayText(item.challenge) },
+    { label: "Insight", body: displayText(item.insight) },
+    { label: "Move", body: displayText(item.move) },
+    { label: "Build", body: displayText(item.build) },
+    {
+      label: "Result",
+      body: displayText(
+        item.result,
+        "Verified outcomes publish with client approval. No invented metrics.",
+      ),
+    },
+    { label: "Lesson", body: displayText(item.lesson) },
+  ].filter((s) => s.body);
 
   return (
     <>
-      <PageHero eyebrow={item.industry} title={item.title} description={item.summary} />
-      <Container style={{ paddingBlock: "var(--space-3xl)" }}>
-        <Breadcrumbs
-          items={[
-            { name: "Work", path: "/work" },
-            { name: item.title, path: `/work/${slug}` },
-          ]}
-        />
-        <p style={{ color: "var(--color-fg-muted)" }}>Client: {item.client}</p>
-        {sections.map((section) => (
-          <section key={section.label} style={{ marginBottom: "2rem" }}>
-            <h2 style={{ fontSize: "var(--text-h3)" }}>{section.label}</h2>
-            <p style={{ color: "var(--color-fg-muted)" }}>{section.body}</p>
-          </section>
-        ))}
+      <PageHero
+        eyebrow={`${item.industry} · ${displayText(item.client, "Confidential")}`}
+        title={item.title}
+        description={item.summary}
+        layout="full"
+        media={
+          <MediaPlaceholder
+            aspect="hero"
+            tone="warm"
+            need={`Case hero — ${item.title}`}
+          />
+        }
+      />
+      <Container className={hub.body}>
+        <PageReveal>
+          <div data-reveal>
+            <Breadcrumbs
+              items={[
+                { name: "Work", path: "/work" },
+                { name: item.title, path: `/work/${slug}` },
+              ]}
+            />
+          </div>
+          <p className={hub.slugLead} data-reveal>
+            {item.summary}
+          </p>
+        </PageReveal>
+
+        <MediaBreak need={`Case detail — ${item.title} context`} aspect="wide" />
+
+        <PageReveal>
+          <div className={hub.narrative}>
+            {sections.map((section) => (
+              <section key={section.label} className={hub.narrativeBlock} data-reveal>
+                <p className={hub.narrativeLabel}>{section.label}</p>
+                <p className={hub.narrativeBody}>{section.body}</p>
+              </section>
+            ))}
+          </div>
+        </PageReveal>
+
+        <MediaBreak need={`Case close — ${item.title} outcome`} aspect="film" />
+
         <RelatedLinks
           title="Capabilities"
           items={item.capabilitySlugs
@@ -77,9 +121,13 @@ export default async function CaseStudyPage({ params }: Props) {
             .filter(Boolean)
             .map((a) => ({ href: `/perspective/${a!.slug}`, label: a!.title }))}
         />
-        <RelatedLinks
-          title="Next"
-          items={[{ href: "/connect/start-a-project", label: "Start a Project" }]}
+
+        <DetailCtaRow secondaryHref="/work" secondaryLabel="All work" />
+        <DetailCloser
+          title="Have a story to write?"
+          lead="Bring the challenge. We’ll find the move."
+          secondaryHref="/capabilities"
+          secondaryLabel="Capabilities"
         />
       </Container>
     </>

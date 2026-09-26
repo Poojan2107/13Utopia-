@@ -54,10 +54,15 @@ export function TransparentBustVideo() {
     if (!canvas || !video) return;
 
     const gl =
-      canvas.getContext("webgl", { alpha: true, premultipliedAlpha: true }) ||
+      canvas.getContext("webgl", {
+        alpha: true,
+        premultipliedAlpha: true,
+        preserveDrawingBuffer: true,
+      }) ||
       (canvas.getContext("experimental-webgl", {
         alpha: true,
         premultipliedAlpha: true,
+        preserveDrawingBuffer: true,
       }) as WebGLRenderingContext | null);
 
     if (!gl) return;

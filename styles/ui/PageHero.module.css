@@ -1,27 +1,158 @@
 .hero {
-  padding-block: var(--space-3xl) var(--space-2xl);
+  position: relative;
+  min-height: clamp(70svh, 78vh, 92svh);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-block: clamp(6rem, 14vh, 9rem) clamp(3.5rem, 8vh, 5.5rem);
   border-bottom: 1px solid var(--color-border);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 78% 8%,
+      rgba(232, 197, 106, 0.2) 0%,
+      transparent 52%
+    ),
+    radial-gradient(
+      ellipse 55% 45% at 8% 92%,
+      rgba(120, 80, 30, 0.16) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 40% 30% at 45% 40%,
+      rgba(243, 241, 234, 0.03) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(10, 10, 10, 0.15) 0%,
+      rgba(0, 0, 0, 0.55) 55%,
+      rgba(0, 0, 0, 0.92) 100%
+    );
+}
+
+.atmosphere::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.28;
+  background-image: radial-gradient(
+    rgba(243, 241, 234, 0.07) 0.6px,
+    transparent 0.6px
+  );
+  background-size: 3px 3px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 75%);
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.copy {
+  max-width: 48rem;
 }
 
 .eyebrow {
-  margin: 0 0 var(--space-sm);
+  margin: 0 0 var(--space-md);
+  font-family: var(--font-ui);
   font-size: var(--text-micro);
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-accent);
 }
 
 .title {
-  font-size: var(--text-h1);
-  margin-bottom: var(--space-md);
-  max-width: 18ch;
+  margin: 0 0 var(--space-lg);
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7.5vw, 5.75rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  max-width: 12ch;
+  color: var(--color-warm-white);
+}
+
+.titleMask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.05em;
+}
+
+.titleMask > span {
+  display: block;
 }
 
 .description {
   margin: 0;
-  max-width: 40rem;
-  color: var(--color-fg-muted);
-  font-size: var(--text-body);
+  max-width: 34rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  font-style: italic;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--color-warm-white) 68%, transparent);
+}
+
+.children {
+  margin-top: var(--space-xl);
+}
+
+.media {
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+}
+
+.full {
+  padding-bottom: 0;
+  border-bottom: none;
+  min-height: auto;
+  justify-content: flex-start;
+}
+
+.full .media {
+  margin-top: clamp(3rem, 7vh, 5rem);
+  margin-inline: calc(var(--page-pad) * -1);
+  width: calc(100% + 2 * var(--page-pad));
+}
+
+.full .media :global(figure),
+.full .media :global(.frame) {
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+
+.split {
+  min-height: clamp(65svh, 72vh, 88svh);
+}
+
+.split .inner {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: end;
+}
+
+.split .media {
+  margin-top: 0;
+}
+
+@media (min-width: 900px) {
+  .split .inner {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  }
+
+  .split .copy {
+    padding-bottom: 0.5rem;
+  }
 }
 
 .related {
@@ -31,12 +162,18 @@
 }
 
 .relatedTitle {
+  font-family: var(--font-display);
   font-size: var(--text-h3);
-  margin-bottom: var(--space-lg);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-lg);
 }
 
 .relatedList {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }

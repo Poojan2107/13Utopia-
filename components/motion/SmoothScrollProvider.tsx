@@ -13,8 +13,8 @@ type Props = {
 };
 
 /**
- * Site-wide Lenis smooth scroll + GSAP ScrollTrigger bridge.
- * Does not animate the hero — only provides the scroll substrate.
+ * Lenis smooth scroll synced to GSAP ScrollTrigger.
+ * Default Lenis scrolls the window — no scrollerProxy needed (proxy desyncs sticky scrub).
  */
 export function SmoothScrollProvider({ children }: Props) {
   useEffect(() => {
@@ -27,10 +27,11 @@ export function SmoothScrollProvider({ children }: Props) {
     document.documentElement.classList.add("has-smooth-scroll");
 
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.15,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      touchMultiplier: 1.4,
+      touchMultiplier: 1.35,
+      autoRaf: false,
     });
 
     lenis.on("scroll", ScrollTrigger.update);
@@ -41,15 +42,18 @@ export function SmoothScrollProvider({ children }: Props) {
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
-    const onLoad = () => ScrollTrigger.refresh();
-    window.addEventListener("load", onLoad);
-    // Fonts settling can shift sticky chapters
-    document.fonts?.ready?.then(() => ScrollTrigger.refresh());
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener("load", refresh);
+    document.fonts?.ready?.then(refresh);
+    requestAnimationFrame(refresh);
+
+    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
     return () => {
-      window.removeEventListener("load", onLoad);
+      window.removeEventListener("load", refresh);
       gsap.ticker.remove(tick);
       lenis.destroy();
+      delete (window as unknown as { __lenis?: Lenis }).__lenis;
       document.documentElement.classList.remove("has-smooth-scroll");
     };
   }, []);
