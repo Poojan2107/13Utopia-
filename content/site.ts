@@ -8,11 +8,11 @@ export const company = {
   legalName: "13UTOPiA",
   tagline: "BE UNREAL. BE UNREASONABLE.",
   positioning:
-    "A creative technology and growth company — brand, web, SEO, and digital marketing for ambitious businesses.",
+    "Brand, technology and growth — for businesses that need more than the usual answer.",
   about:
-    "13 Utopia develops and executes campaigns from concept through launch. We combine strategy, storytelling, and craft across SEO, branding, web development, and digital marketing so brands leave a clear imprint in market.",
+    "13 Utopia builds brands, products and growth systems. Strategy, design, engineering, SEO and marketing — from the first question through launch and what comes after.",
   aboutShort:
-    "Creativity, strategy, and innovation — impactful campaigns that elevate brands in a competitive landscape.",
+    "Brand, web, SEO, products and growth systems — clear work for businesses ready to move.",
   email: "info@13utopia.com",
   phone: "+91 9924131397",
   phoneHref: "tel:+919924131397",

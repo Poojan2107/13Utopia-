@@ -51,7 +51,7 @@ export function buildMetadata({
 }
 
 export const defaultHomeSeo: SeoFields = {
-  title: "13 UTOPIA — Creative Technology & Growth",
+  title: "13 UTOPIA — Brand, Technology & Growth",
   description:
-    "13 UTOPIA is a creative technology and growth company for ambitious businesses. We create brands, build technology and grow businesses.",
+    "13 UTOPIA builds brands, products and growth systems — SEO, web, AI, marketing and dedicated teams for businesses ready to move beyond the obvious.",
 };

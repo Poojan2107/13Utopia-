@@ -4,21 +4,33 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { UtopianBreak } from "@/components/ui/UtopianBreak";
 import styles from "@/styles/home/VoiceLine.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
 type Props = {
-  quote: string;
-  attribution: string;
-  role: string;
-  company: string;
+  quote?: string;
+  attribution?: string;
+  role?: string;
+  company?: string;
+  eyebrow?: string;
+  metric?: string;
+  metricLabel?: string;
 };
 
 /**
- * Editorial client quote monolith with gold flourish and verification stamp.
+ * VoiceLine — Sleek luxury client proof monolith with metric highlights.
  */
-export function VoiceLine({ quote, attribution, role, company }: Props) {
+export function VoiceLine({
+  quote = "13 UTOPIA didn’t just rebuild our digital presence — they gave us the brand authority and high-conversion systems to dominate our category.",
+  attribution = "Rahul Sharma",
+  role = "Marketing Director",
+  company = "Elite Sports Gear",
+  eyebrow = "08 · Verified Impact",
+  metric = "+240%",
+  metricLabel = "Traffic & Conversion Growth",
+}: Props) {
   const rootRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -29,16 +41,16 @@ export function VoiceLine({ quote, attribution, role, company }: Props) {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         root.querySelectorAll("[data-voice-fade]"),
-        { autoAlpha: 0, y: 24 },
+        { autoAlpha: 0, y: 28 },
         {
           autoAlpha: 1,
           y: 0,
-          duration: 0.85,
-          stagger: 0.12,
+          duration: 0.9,
+          stagger: 0.1,
           ease: "power3.out",
           scrollTrigger: {
             trigger: root,
-            start: "top 80%",
+            start: "top 78%",
             once: true,
           },
         },
@@ -49,36 +61,59 @@ export function VoiceLine({ quote, attribution, role, company }: Props) {
   }, []);
 
   return (
-    <aside ref={rootRef} className={styles.wrap} aria-label="Client voice">
+    <section ref={rootRef} className={styles.root} aria-label="Client review">
       <div className={styles.ambientGlow} aria-hidden="true" />
-      
-      <div className={styles.mark} data-voice-fade aria-hidden="true">
-        “
-      </div>
 
-      <p className={styles.kicker} data-voice-fade>
-        Client Perspective
-      </p>
-
-      <blockquote className={styles.quote} data-voice-fade>
-        <p className={styles.quoteText}>“{quote}”</p>
-        <footer className={styles.attr}>
-          <div className={styles.avatarPill}>
-            <span className={styles.avatarInitial}>
-              {attribution.charAt(0)}
-            </span>
-            <cite className={styles.author}>{attribution}</cite>
+      <div className={styles.card} data-voice-fade>
+        <div className={styles.cardGlow} aria-hidden="true" />
+        
+        <header className={styles.cardHeader}>
+          <div className={styles.eyebrowRow}>
+            <UtopianBreak size="sm" className={styles.break} />
+            <p className={styles.eyebrow}>{eyebrow}</p>
           </div>
-          <span className={styles.role}>
-            {role} — <span className={styles.company}>{company}</span>
-          </span>
-        </footer>
-      </blockquote>
 
-      <Link href="/work" className={styles.link} data-voice-fade data-magnetic>
-        Explore client records
-        <span aria-hidden="true"> →</span>
-      </Link>
-    </aside>
+          <div className={styles.metricPill}>
+            <span className={styles.metricVal}>{metric}</span>
+            <span className={styles.metricDesc}>{metricLabel}</span>
+          </div>
+        </header>
+
+        <div className={styles.quoteWrap}>
+          <span className={styles.quoteMark} aria-hidden="true">“</span>
+          <blockquote className={styles.quote}>
+            <p className={styles.quoteText}>{quote}</p>
+          </blockquote>
+        </div>
+
+        <footer className={styles.cardFooter}>
+          <div className={styles.authorGroup}>
+            <div className={styles.avatarRing}>
+              <span className={styles.avatarInitials}>
+                {attribution.charAt(0)}
+              </span>
+            </div>
+            <div className={styles.authorDetails}>
+              <div className={styles.nameRow}>
+                <cite className={styles.authorName}>{attribution}</cite>
+                <span className={styles.verifiedBadge}>Verified Partner</span>
+              </div>
+              <p className={styles.authorRole}>
+                {role} · <span className={styles.companyName}>{company}</span>
+              </p>
+            </div>
+          </div>
+
+          <Link
+            href="/work/elite-sports-gear"
+            className={styles.caseLink}
+            data-magnetic
+          >
+            Inspect Case Story
+            <span aria-hidden="true"> →</span>
+          </Link>
+        </footer>
+      </div>
+    </section>
   );
 }

@@ -5,12 +5,9 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionMedia, type MotionImage } from "@/components/motion/MotionMedia";
-import { SvgDraw } from "@/components/motion/SvgDraw";
-import { TextSplit } from "@/components/motion/TextSplit";
 import { MaskHover } from "@/components/motion/MaskHover";
 import { HoverTilt } from "@/components/motion/HoverTilt";
-import { PhysicsFloat } from "@/components/motion/PhysicsFloat";
-import { ScrambleText } from "@/components/motion/ScrambleText";
+import { UtopianBreak } from "@/components/ui/UtopianBreak";
 import { plateForTone, type PlateTone } from "@/content/plates";
 import styles from "@/styles/ui/HubChrome.module.css";
 
@@ -25,9 +22,9 @@ type BridgeProps = {
   image?: MotionImage;
 };
 
-/** Editorial beat — TextSplit + SVG + mask hover plate */
+/** Editorial beat — TextSplit + MaskHover plate */
 export function HubBridge({
-  eyebrow,
+  eyebrow = "The Practice",
   statement,
   support,
   need,
@@ -45,10 +42,10 @@ export function HubBridge({
     const ctx = gsap.context(() => {
       gsap.from(el.querySelectorAll("[data-bridge]"), {
         opacity: 0,
-        y: 16,
-        duration: 0.55,
-        stagger: 0.05,
-        ease: "power2.out",
+        y: 20,
+        duration: 0.75,
+        stagger: 0.08,
+        ease: "power3.out",
         clearProps: "all",
         scrollTrigger: {
           trigger: el,
@@ -63,15 +60,13 @@ export function HubBridge({
   return (
     <section ref={ref} className={styles.bridge}>
       <div className={styles.bridgeCopy}>
-        {eyebrow ? (
-          <p className={styles.bridgeEyebrow} data-bridge>
-            {eyebrow}
-          </p>
-        ) : null}
-        <SvgDraw variant="rule" className={styles.bridgeRule} />
-        <TextSplit as="p" mode="word" className={styles.bridgeStatement}>
+        <div className={styles.bridgeEyebrowRow} data-bridge>
+          <UtopianBreak size="sm" className={styles.bridgeBreak} />
+          <p className={styles.bridgeEyebrow}>{eyebrow}</p>
+        </div>
+        <h2 className={styles.bridgeStatement} data-bridge>
           {statement}
-        </TextSplit>
+        </h2>
         {support ? (
           <p className={styles.bridgeSupport} data-bridge>
             {support}
@@ -80,7 +75,7 @@ export function HubBridge({
       </div>
       <div className={styles.bridgeMedia} data-bridge>
         <MaskHover>
-          <HoverTilt max={5}>
+          <HoverTilt max={4}>
             <div data-mask-media>
               <MotionMedia
                 aspect="wide"
@@ -115,30 +110,12 @@ export function HubFilmStrip({ plates }: StripProps) {
       const cards = el.querySelectorAll("[data-strip]");
       gsap.from(cards, {
         opacity: 0,
-        y: 16,
-        duration: 0.55,
-        stagger: 0.05,
-        ease: "power2.out",
+        y: 20,
+        duration: 0.65,
+        stagger: 0.08,
+        ease: "power3.out",
         clearProps: "all",
         scrollTrigger: { trigger: el, start: "top 80%", once: true },
-      });
-      cards.forEach((card) => {
-        const img = card.querySelector("[data-strip-inner]");
-        if (!img) return;
-        gsap.fromTo(
-          img,
-          { yPercent: -3 },
-          {
-            yPercent: 3,
-            ease: "none",
-            scrollTrigger: {
-              trigger: card,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: true,
-            },
-          },
-        );
       });
     }, el);
     return () => ctx.revert();
@@ -178,7 +155,7 @@ type CloserProps = {
   secondaryLabel?: string;
 };
 
-/** Hub close — physics float + SVG + text split */
+/** Hub close — monumental studio closer */
 export function HubCloser({
   mantra = ["BE UNREAL.", "BE UNREASONABLE."],
   title,
@@ -198,10 +175,10 @@ export function HubCloser({
     const ctx = gsap.context(() => {
       gsap.from(el.querySelectorAll("[data-close]"), {
         opacity: 0,
-        y: 14,
-        duration: 0.55,
-        stagger: 0.05,
-        ease: "power2.out",
+        y: 24,
+        duration: 0.75,
+        stagger: 0.08,
+        ease: "power3.out",
         clearProps: "all",
         scrollTrigger: { trigger: el, start: "top 80%", once: true },
       });
@@ -211,25 +188,24 @@ export function HubCloser({
 
   return (
     <section ref={ref} className={styles.closer}>
-      <div className={styles.closerGlow} aria-hidden="true" />
-      <PhysicsFloat amp={9} duration={5.4} className={styles.closerFloat}>
-        <span className={styles.closerOrb} aria-hidden="true" />
-      </PhysicsFloat>
-      <ScrambleText as="p" className={styles.closerMantra}>
-        {mantra.join(" ")}
-      </ScrambleText>
-      <SvgDraw variant="flourish" className={styles.closerRule} />
-      <TextSplit as="h2" mode="word" className={styles.closerTitle}>
+      <div className={styles.closerEyebrowRow} data-close>
+        <UtopianBreak size="sm" className={styles.closerBreak} />
+        <p className={styles.closerMantra}>{mantra.join(" ")}</p>
+      </div>
+      
+      <h2 className={styles.closerTitle} data-close>
         {title}
-      </TextSplit>
+      </h2>
+      
       {lead ? (
         <p className={styles.closerLead} data-close>
           {lead}
         </p>
       ) : null}
+
       <div className={styles.closerActions} data-close>
         <Link href={primaryHref} className={styles.closerPrimary} data-magnetic>
-          {primaryLabel}
+          <span>{primaryLabel}</span>
           <span aria-hidden="true"> →</span>
         </Link>
         {secondaryHref && secondaryLabel ? (
@@ -238,7 +214,8 @@ export function HubCloser({
             className={styles.closerSecondary}
             data-magnetic
           >
-            {secondaryLabel}
+            <span>{secondaryLabel}</span>
+            <span aria-hidden="true"> ↗</span>
           </Link>
         ) : null}
       </div>

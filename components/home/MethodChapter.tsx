@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { UtopianBreak } from "@/components/ui/UtopianBreak";
+import { cn } from "@/lib/utils/cn";
 import styles from "@/styles/home/MethodChapter.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -20,14 +21,54 @@ type Props = {
   eyebrow?: string;
 };
 
+const BLIND_DETAILS = [
+  {
+    phase: "Phase 01 · Diagnostic",
+    directive: "Start with the root problem. Question defaults, test assumptions, and identify the true barrier to growth.",
+    deliverable: "Problem Architecture & Assumption Audit",
+    tags: ["Root Cause", "Assumption Audit", "Core Problem"],
+  },
+  {
+    phase: "Phase 02 · Concept",
+    directive: "Explore unconstrained possibilities. Imagine bolder directions, concept architectures, and differentiated angles.",
+    deliverable: "Strategic Concepts & Visual Territory",
+    tags: ["Creative Direction", "Hypotheses", "Differentiation"],
+  },
+  {
+    phase: "Phase 03 · Strategy",
+    directive: "Cut the noise and decide. Turn high-potential concepts into an unambiguous roadmap, technical scope, and brief.",
+    deliverable: "Scope Specification & System Roadmap",
+    tags: ["Clarity", "Scope Definition", "Roadmap"],
+  },
+  {
+    phase: "Phase 04 · Formation",
+    directive: "Give the vision tangible form. Craft high-end brand identity, digital UI/UX, CGI motion, and persuasive copy.",
+    deliverable: "Brand Identity, UI/UX System & Content",
+    tags: ["Design Craft", "UI/UX", "CGI Motion"],
+  },
+  {
+    phase: "Phase 05 · Engineering",
+    directive: "Build high-performance reality. Engineer robust platforms, custom AI systems, automation pipelines, and infrastructure.",
+    deliverable: "Production Code, AI Pipelines & Systems",
+    tags: ["Modern Stack", "AI Workflows", "Performance"],
+  },
+  {
+    phase: "Phase 06 · Velocity",
+    directive: "Put the engine to work. Drive organic demand with technical SEO, conversion optimization, and continuous improvement.",
+    deliverable: "Demand Engine, SEO Strategy & Growth Loops",
+    tags: ["SEO Dominance", "Conversion Loops", "Scale"],
+  },
+];
+
 /**
- * Method — creed design language.
- * Break · meta · monumental lead · editorial step list. No chat bubbles.
+ * MethodChapter — Kinetic Vertical Blinds (Awwwards 009).
+ * 6 full-height interactive vertical columns spanning the screen with fluid hover expansion.
  */
 export function MethodChapter({
   items,
-  eyebrow = "04 · Method",
+  eyebrow = "06 · Method",
 }: Props) {
+  const [activeBlind, setActiveBlind] = useState(0);
   const rootRef = useRef<HTMLElement | null>(null);
   const list = [...items];
 
@@ -39,63 +80,112 @@ export function MethodChapter({
     const ctx = gsap.context(() => {
       gsap.from(root.querySelectorAll("[data-method-rise]"), {
         autoAlpha: 0,
-        y: 26,
-        duration: 0.8,
+        y: 28,
+        duration: 0.85,
         stagger: 0.08,
         ease: "power3.out",
         scrollTrigger: {
           trigger: root,
-          start: "top 76%",
+          start: "top 75%",
           once: true,
         },
       });
     }, root);
 
     return () => ctx.revert();
-  }, [list.length]);
+  }, []);
 
   return (
     <section ref={rootRef} className={styles.root} aria-label="Method">
-      <div className={styles.inner}>
-        <div className={styles.mark} data-method-rise>
-          <UtopianBreak size="md" />
+      <div className={styles.ambientGlow} aria-hidden="true" />
+
+      {/* Header */}
+      <header className={styles.header} data-method-rise>
+        <div className={styles.headLeft}>
+          <div className={styles.eyebrowRow}>
+            <UtopianBreak size="sm" className={styles.break} />
+            <p className={styles.meta}>{eyebrow}</p>
+          </div>
+          <h2 className={styles.lead}>How We Work.</h2>
         </div>
-        <p className={styles.meta} data-method-rise>
-          {eyebrow}
+        <p className={styles.headSub}>
+          Six deliberate moves that turn ambition into shipped reality. Hover each phase to inspect the system.
         </p>
+      </header>
 
-        <h2 className={styles.lead} data-method-rise>
-          <span className={styles.leadLine}>Six moves.</span>
-          <span className={styles.leadLine}>One practice.</span>
-          <span className={styles.hair} aria-hidden="true" />
-        </h2>
+      {/* Kinetic Vertical Blinds Stage */}
+      <div className={styles.blindsStage} data-method-rise>
+        {list.map((step, i) => {
+          const detail = BLIND_DETAILS[i] ?? BLIND_DETAILS[0];
+          const isActive = i === activeBlind;
 
-        <ol className={styles.list}>
-          {list.map((step, i) => (
-            <li key={step.title} className={styles.item} data-method-rise>
-              <span className={styles.num}>
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div className={styles.copy}>
-                <p className={styles.titleRow}>
-                  <span className={styles.title}>{step.title}</span>
-                  <span className={styles.stepMeta}>{step.meta}</span>
-                </p>
-                <p className={styles.body}>{step.body}</p>
+          return (
+            <article
+              key={step.title}
+              className={cn(styles.blind, isActive && styles.blindActive)}
+              onMouseEnter={() => setActiveBlind(i)}
+              onFocus={() => setActiveBlind(i)}
+              onClick={() => setActiveBlind(i)}
+            >
+              <div className={styles.blindGlow} aria-hidden="true" />
+
+              {/* Compressed Vertical Spine */}
+              <div className={styles.spine}>
+                <span className={styles.spineNum}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className={styles.spineTitle}>{step.title}</span>
+                <span className={styles.spineDot} aria-hidden="true" />
               </div>
-            </li>
-          ))}
-        </ol>
 
-        <Link
-          href="/connect/start-a-project"
-          className={styles.cta}
-          data-method-rise
-          data-magnetic
-        >
-          Put the method to work
-          <span aria-hidden="true"> →</span>
-        </Link>
+              {/* Expanded Narrative Panel */}
+              <div className={styles.expandedContent}>
+                <div className={styles.contentHead}>
+                  <div className={styles.numRow}>
+                    <span className={styles.contentNum}>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className={styles.phaseTag}>{detail.phase}</span>
+                  </div>
+                  
+                  <h3 className={styles.contentTitle}>
+                    {step.title}
+                    <span className={styles.goldDot}>.</span>
+                  </h3>
+                  <p className={styles.directive}>{detail.directive}</p>
+                </div>
+
+                <div className={styles.contentMiddle}>
+                  <p className={styles.bodyCopy}>{step.body}</p>
+                  
+                  <div className={styles.deliverablePill}>
+                    <span className={styles.deliverableLabel}>Milestone Deliverable</span>
+                    <span className={styles.deliverableText}>{detail.deliverable}</span>
+                  </div>
+                </div>
+
+                <div className={styles.contentFoot}>
+                  <div className={styles.tagsGroup}>
+                    {detail.tags.map((t) => (
+                      <span key={t} className={styles.tagItem}>
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <Link
+                    href="/connect/start-a-project"
+                    className={styles.ctaButton}
+                    data-magnetic
+                  >
+                    <span>Put this to work</span>
+                    <span aria-hidden="true">→</span>
+                  </Link>
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </section>
   );

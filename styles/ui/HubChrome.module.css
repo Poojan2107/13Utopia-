@@ -3,57 +3,73 @@
 .bridge {
   display: grid;
   gap: clamp(2rem, 5vw, 3.5rem);
-  padding-block: clamp(4rem, 10vh, 7rem);
-  border-top: 1px solid rgba(243, 241, 234, 0.08);
+  padding-block: clamp(4.5rem, 10vh, 7.5rem);
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 16%, transparent);
 }
 
 .bridgeCopy {
-  max-width: 40rem;
+  max-width: 42rem;
+}
+
+.bridgeEyebrowRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+
+.bridgeBreak {
+  color: var(--color-gold);
 }
 
 .bridgeEyebrow {
-  margin: 0 0 1.25rem;
+  margin: 0;
   font-family: var(--font-ui);
   font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
+  font-weight: 700;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-gold) 75%, transparent);
+  color: color-mix(in srgb, var(--color-gold) 90%, transparent);
 }
 
 .bridgeStatement {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-size: clamp(2.25rem, 4.5vw, 3.75rem);
   font-weight: 400;
-  font-style: italic;
-  letter-spacing: -0.03em;
-  line-height: 1.12;
-  color: #f3f1ea;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  color: #f7f4ec;
+  text-wrap: balance;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.7);
 }
 
 .bridgeSupport {
-  margin: 1.25rem 0 0;
-  max-width: 32rem;
-  font-family: var(--font-ui);
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: var(--color-fg-muted);
+  margin: 1.5rem 0 0;
+  max-width: 34rem;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.3vw, 1.125rem);
+  line-height: 1.65;
+  color: color-mix(in srgb, #f3f1ea 75%, transparent);
+  text-wrap: pretty;
 }
 
 .bridgeRule {
-  margin: 0 0 1.25rem;
-  max-width: 5.5rem;
+  display: none;
 }
 
 .bridgeMedia {
   width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 24%, transparent);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
 }
 
 @media (min-width: 900px) {
   .bridge {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-    align-items: end;
+    align-items: center;
     gap: clamp(3rem, 6vw, 5rem);
   }
 }
@@ -61,14 +77,16 @@
 .strip {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.75rem;
-  padding-block: clamp(2rem, 5vh, 3.5rem);
-  margin-inline: calc(var(--page-pad) * -0.35);
+  gap: 1rem;
+  padding-block: clamp(2.5rem, 6vh, 4rem);
 }
 
 .stripCard {
   overflow: hidden;
   min-height: 16rem;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 20%, transparent);
+  background: #080808;
 }
 
 .stripMask,
@@ -95,8 +113,7 @@
 @media (min-width: 700px) {
   .strip {
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.85rem;
-    margin-inline: 0;
+    gap: 1.25rem;
   }
 
   .stripCard {
@@ -108,122 +125,136 @@
   }
 }
 
+/* Hub Closer — Monumental Final Section */
 .closer {
   position: relative;
-  margin-top: clamp(3.5rem, 8vh, 6rem);
-  padding: clamp(5rem, 12vh, 8.5rem) 0;
-  border-top: 1px solid color-mix(in srgb, var(--color-gold) 16%, transparent);
+  margin-top: clamp(4rem, 9vh, 7rem);
+  padding: clamp(5rem, 12vh, 8.5rem) clamp(1.5rem, 4vw, 3.5rem);
+  border-radius: 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 25%, transparent);
   overflow: hidden;
   background:
     radial-gradient(
-      ellipse 70% 55% at 20% 100%,
-      color-mix(in srgb, var(--color-gold) 10%, transparent) 0%,
-      transparent 60%
+      ellipse 80% 60% at 50% 0%,
+      rgba(45, 32, 14, 0.45) 0%,
+      transparent 70%
     ),
-    #000;
+    linear-gradient(180deg, #0d0c0a 0%, #040404 100%);
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(232, 197, 106, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-.closerGlow {
-  display: none;
+.closerEyebrowRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
 }
 
-.closerFloat {
-  display: none;
-}
-
-.closerOrb {
-  display: block;
-  width: clamp(5rem, 12vw, 9rem);
-  height: clamp(5rem, 12vw, 9rem);
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--color-gold) 36%, transparent) 0%,
-    transparent 70%
-  );
-  opacity: 0.55;
-}
-
-.closerRule {
-  position: relative;
-  margin: 0 0 1.5rem;
-  max-width: 12rem;
+.closerBreak {
+  color: var(--color-gold);
 }
 
 .closerMantra {
-  position: relative;
-  margin: 0 0 1.5rem;
-  font-family: var(--font-display);
-  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
-  letter-spacing: 0.14em;
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-gold) 78%, transparent);
+  color: color-mix(in srgb, var(--color-gold) 90%, #ffffff);
 }
 
 .closerTitle {
-  position: relative;
   margin: 0 0 1.25rem;
-  max-width: 14ch;
+  max-width: 18ch;
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-size: clamp(2.5rem, 5.5vw, 4.75rem);
   font-weight: 400;
-  letter-spacing: -0.035em;
-  line-height: 1.02;
-  color: #f3f1ea;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  color: #f7f4ec;
+  text-transform: uppercase;
+  text-wrap: balance;
+  text-shadow:
+    0 4px 50px rgba(0, 0, 0, 0.9),
+    0 0 40px rgba(232, 197, 106, 0.15);
 }
 
 .closerLead {
-  position: relative;
-  margin: 0 0 2.5rem;
-  max-width: 30rem;
-  font-family: var(--font-ui);
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: var(--color-fg-muted);
+  margin: 0 0 clamp(2rem, 4vh, 2.75rem);
+  max-width: 36rem;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.35vw, 1.15rem);
+  line-height: 1.6;
+  color: color-mix(in srgb, #f3f1ea 80%, transparent);
+  text-wrap: pretty;
 }
 
 .closerActions {
-  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1.25rem 2rem;
+  justify-content: center;
+  gap: 1.25rem 1.75rem;
 }
 
 .closerPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: var(--font-ui);
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
   color: #050505;
-  background: #f3f1ea;
-  padding: 1.05rem 1.65rem;
-  transition: background 0.3s ease;
+  background: var(--color-gold);
+  padding: 1.05rem 1.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-gold);
+  box-shadow: 0 10px 30px rgba(232, 197, 106, 0.25);
+  transition: all 0.25s ease;
 }
 
 .closerPrimary:hover,
 .closerPrimary:focus-visible {
-  background: var(--color-gold);
+  background: #ffffff;
+  border-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(232, 197, 106, 0.45);
   outline: none;
 }
 
 .closerSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   font-family: var(--font-ui);
   font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--color-fg-muted);
-  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 40%, transparent);
-  padding-bottom: 0.25rem;
+  color: #f3f1ea;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1.05rem 1.85rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 35%, transparent);
+  transition: all 0.25s ease;
 }
 
 .closerSecondary:hover,
 .closerSecondary:focus-visible {
   color: var(--color-gold);
-  border-bottom-color: var(--color-gold);
+  border-color: var(--color-gold);
+  background: rgba(232, 197, 106, 0.08);
+  transform: translateY(-2px);
   outline: none;
 }

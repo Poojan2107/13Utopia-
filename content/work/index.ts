@@ -1,45 +1,65 @@
 import type { CaseStudy } from "@/lib/content/types";
 
 /**
- * Work sourced from published live-site testimonials / offerings.
- * Outcomes stay qualitative — no invented counters.
+ * Work from published live-site projects.
+ * Outcomes stay qualitative — no invented counters or unverified claims.
  * Source: https://13utopia.com/
  */
 export const caseStudies: CaseStudy[] = [
   {
     slug: "elite-sports-gear",
-    title: "High-Performance Commerce & Technical SEO",
+    title: "Commerce site and search for athletic retail",
     client: "Elite Sports Gear",
     industry: "Retail / Performance Athletic",
     year: "2025",
     liveUrl: "https://elitesportsgear.com",
     image: "/images/work/elite-sports-gear.jpg",
     summary:
-      "A headless Next.js commerce platform engineered for athletic gear. Combines haute dark-mode visual craft, sub-800ms speed, and an authoritative technical SEO architecture that drove category dominance.",
+      "A new storefront and technical SEO foundation for an athletic retailer — faster pages, clearer product discovery, and a checkout path that matches how people actually shop.",
     challenge:
-      "The client possessed high-performance apparel and athletic footwear, but operated on a sluggish legacy store suffering from poor Core Web Vitals, fragmented category navigation, and zero organic search visibility against tier-1 sporting goods competitors.",
+      "Elite Sports Gear had strong products on a slow legacy store. Category navigation was hard to use, search visibility was weak, and the site couldn't keep up with how customers browse on mobile.",
     insight:
-      "Athletic commerce requires visceral speed and editorial prestige. When technical SEO schema, instant faceted search, and high-performance frontend architecture are designed from the same blueprint, organic discovery compounds directly into checkout conversion.",
+      "Athletic commerce has to feel quick and clear. Brand presentation and technical SEO work best when they share one brief — not two separate projects.",
     move:
-      "Architected a custom headless Next.js storefront powered by Shopify Storefront API and Algolia. Rebuilt the information architecture around search intent clusters, optimized mobile checkout paths, and introduced interactive product comparison cards.",
+      "Rebuilt the storefront around how people search and shop: clearer category structure, faster browsing, and product pages written for both customers and search engines.",
     build:
-      "Custom Next.js App Router storefront, headless Shopify cart & checkout integration, Algolia instant filtering, dynamic Product & Organization schema markup, and Edge caching on Vercel.",
+      "Headless Next.js storefront with Shopify checkout, Algolia filtering, structured product markup, and edge caching.",
     result:
-      "184% lift in organic traffic within 90 days, 99 Mobile Performance Core Web Vitals score, and a 42% lift in checkout conversion rate.",
-    lesson: "Ambition compounds when brand presentation and technical SEO share one uncompromised brief.",
+      "A faster, clearer shopping experience and stronger organic visibility — with measurable lifts in traffic and conversion after launch.",
+    lesson:
+      "Brand and technical SEO should be designed together, not bolted on after the fact.",
     stats: [
-      { value: "+184%", label: "Organic Search Lift", detail: "Verified Google Search Console data" },
-      { value: "< 750ms", label: "Time-to-Interactive", detail: "Lighthouse mobile 99 performance" },
-      { value: "+42%", label: "Checkout Conversion", detail: "Mobile funnel optimization" },
-      { value: "#1 Rank", label: "Core Category Keywords", detail: "Top 14 commercial search queries" },
+      { value: "Faster", label: "Storefront", detail: "Rebuilt for mobile performance" },
+      { value: "Clearer", label: "Discovery", detail: "Search and category structure rewritten" },
+      { value: "Stronger", label: "SEO base", detail: "Product and merchant schema in place" },
+      { value: "Live", label: "Checkout", detail: "Headless Shopify path" },
     ],
     deliverables: [
-      { title: "Headless Commerce Architecture", description: "Edge-rendered Next.js storefront integrated with headless Shopify checkout." },
-      { title: "Technical SEO & Schema Engine", description: "Structured product, breadcrumb, review, and merchant return policy schema markup." },
-      { title: "Sub-Second Faceted Search", description: "Algolia-powered instant filter by athletic discipline, fit, and technical fabric." },
-      { title: "Dark-Mode Performance UI", description: "Tailored luxury athletic aesthetic with micro-interactions and smooth product reveals." },
+      {
+        title: "Headless commerce storefront",
+        description: "Next.js storefront integrated with Shopify checkout.",
+      },
+      {
+        title: "Technical SEO foundation",
+        description: "Product, breadcrumb and organization schema for search.",
+      },
+      {
+        title: "Faceted product search",
+        description: "Algolia filtering by sport, fit and fabric.",
+      },
+      {
+        title: "Performance-minded UI",
+        description: "Dark athletic aesthetic with responsive product flows.",
+      },
     ],
-    stack: ["Next.js 15", "React 19", "TypeScript", "Shopify Storefront API", "Algolia", "GSAP", "Vercel Edge"],
+    stack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Shopify Storefront API",
+      "Algolia",
+      "Vercel",
+    ],
     testimonial: {
       quote:
         "13 Utopia took our business to the next level with a well-designed and fully optimized website. Their understanding of our industry and technical expertise helped us stand out online. We’ve seen a notable increase in both organic traffic and sales since the site went live.",
@@ -52,45 +72,58 @@ export const caseStudies: CaseStudy[] = [
     seo: {
       title: "Elite Sports Gear — Case Story | 13 UTOPIA",
       description:
-        "How 13 UTOPIA built a high-performance headless commerce and technical SEO engine for Elite Sports Gear.",
+        "Commerce storefront and technical SEO for Elite Sports Gear by 13 UTOPIA.",
     },
     status: "published",
     featured: true,
   },
   {
     slug: "kumar-cotton-textiles",
-    title: "Global Architectural B2B Digital Showroom",
+    title: "B2B digital showroom for textile export",
     client: "Kumar Cotton Textiles",
     industry: "Textiles / Global Manufacturing",
     year: "2024",
     liveUrl: "https://kumarcotton.com",
     image: "/images/work/kumar-cotton-textiles.jpg",
     summary:
-      "A digital transformation for an established international textile exporter. Replaced static PDF line sheets with an interactive fabric showroom, weave texture zoom, and streamlined B2B sample inquiry engine.",
+      "Replaced PDF line sheets with an interactive fabric showroom — so buyers can inspect weaves, check certifications and request samples online.",
     challenge:
-      "Kumar Cotton had manufactured premium organic cotton and luxury yarns for decades, but conducted international sales via clunky PDF attachments and trade shows. Global enterprise buyers could not easily inspect weave details, verify certifications, or request samples online.",
+      "Kumar Cotton sold premium cotton and yarns through PDFs and trade shows. International buyers couldn't inspect weave detail, verify certifications or request samples without a long email chain.",
     insight:
-      "Tactile products like luxury textiles need digital physical presence. High-resolution macro photography, weave technical data sheets, and a frictionless 'Sample Request Drawer' turn passive visitors into qualified commercial procurement leads.",
+      "Tactile products need digital presence that feels physical — clear photography, technical specs and a simple sample request path.",
     move:
-      "Designed an architectural, warm-stone digital catalog with ultra-detailed macro weave inspection, categorized organic certifications, and an integrated sample request workflow tailored for fashion houses and international textile brokers.",
+      "Designed a catalog around how buyers actually evaluate fabric: macro detail, certifications and a sample workflow built for procurement teams.",
     build:
-      "Custom responsive catalog interface, interactive fabric swatch drawer, multi-currency specification sheets, global CDN image optimization, and CRM lead routing.",
+      "Responsive catalog, fabric swatch drawer, specification sheets and CRM routing for sample requests.",
     result:
-      "240% increase in qualified inbound international sample inquiries, 3.2x longer average session duration, and adoption across 6 global export markets.",
-    lesson: "Brand match only matters if the digital tool simplifies real-world commerce on day one.",
+      "Buyers can evaluate product and request samples without waiting on a line sheet — and the team spends less time chasing the same questions.",
+    lesson:
+      "A digital tool only matters if it makes real commerce easier on day one.",
     stats: [
-      { value: "+240%", label: "Inbound B2B Inquiries", detail: "Qualified enterprise sample requests" },
-      { value: "3.2x", label: "Session Engagement", detail: "Interactive swatch & spec sheet exploration" },
-      { value: "6", label: "Global Export Markets", detail: "Direct inquiries from EU, NA, and APAC" },
-      { value: "100%", label: "Digital Catalog Adoption", detail: "Replaced 40-page printed line sheets" },
+      { value: "Digital", label: "Catalog", detail: "Replaced printed line sheets" },
+      { value: "Sample", label: "Requests", detail: "Built into the browsing flow" },
+      { value: "Export", label: "Ready", detail: "Specs and certifications on every product" },
+      { value: "B2B", label: "Focus", detail: "Designed for procurement, not retail browsing" },
     ],
     deliverables: [
-      { title: "B2B Digital Showroom", description: "Structured product catalog for organic yarns, combed cotton, and luxury weave patterns." },
-      { title: "Sample Request Drawer", description: "Frictionless multi-item swatch sample cart with direct procurement CRM integration." },
-      { title: "Technical Data Specification Kit", description: "Automated downloadable spec sheets for yarn count, tensile strength, and weave density." },
-      { title: "Architectural Identity System", description: "Restrained stone and charcoal luxury aesthetic aligning with global couture suppliers." },
+      {
+        title: "B2B digital showroom",
+        description: "Catalog for yarns, cotton and weave patterns.",
+      },
+      {
+        title: "Sample request flow",
+        description: "Multi-item sample cart with CRM handoff.",
+      },
+      {
+        title: "Technical spec sheets",
+        description: "Downloadable yarn and weave data for buyers.",
+      },
+      {
+        title: "Brand system for the catalog",
+        description: "Restrained visual language for a global supplier.",
+      },
     ],
-    stack: ["Next.js", "TypeScript", "Tailwind / CSS Modules", "Headless CMS", "Sanity", "Cloudflare CDN"],
+    stack: ["Next.js", "TypeScript", "CSS Modules", "Headless CMS", "CDN"],
     testimonial: {
       quote:
         "Working with 13 Utopia has been an absolute game-changer for our business. The team took the time to understand our vision and developed a website that perfectly matches our brand identity. The functionality and design are both seamless, and we’ve seen a significant increase in user engagement since the launch.",
@@ -103,45 +136,58 @@ export const caseStudies: CaseStudy[] = [
     seo: {
       title: "Kumar Cotton Textiles — Case Story | 13 UTOPIA",
       description:
-        "Global B2B showroom and digital transformation for Kumar Cotton Textiles by 13 UTOPIA.",
+        "B2B digital showroom for Kumar Cotton Textiles by 13 UTOPIA.",
     },
     status: "published",
     featured: true,
   },
   {
     slug: "trendy-fashion-hub",
-    title: "Couture Editorial E-Commerce & Omnichannel Experience",
+    title: "Editorial storefront and checkout rebuild",
     client: "Trendy Fashion Hub",
     industry: "Fashion / Direct-to-Consumer",
     year: "2025",
     liveUrl: "https://trendyfashionhub.com",
     image: "/images/work/trendy-fashion-hub.jpg",
     summary:
-      "A complete digital rebuild combining haute editorial lookbooks with friction-free direct checkout. Designed for cross-platform visual excellence with seamless mobile browsing and real-time inventory management.",
+      "An editorial fashion storefront with a cleaner mobile browse path and a checkout that doesn't fight the brand.",
     challenge:
-      "The client's previous platform felt clunky on mobile devices, suffered from slow page transitions that degraded the luxury feel, and suffered a 74% cart abandonment rate due to an outdated checkout funnel.",
+      "The previous site felt slow on mobile, collections didn't hold attention, and checkout friction was costing completed orders.",
     insight:
-      "Luxury fashion brands feel unfinished when visual craft and checkout UX disagree. Every transition must feel like turning the pages of an art magazine, while the cart and payment actions must execute in milliseconds.",
+      "Fashion retail needs lookbook-quality browsing and a checkout that gets out of the way. Visual craft and purchase UX have to agree.",
     move:
-      "Engineered an avant-garde editorial storefront featuring fluid collection grids, slide-out shopping bag drawer, 60fps micro-animations, Apple Pay / Google Pay one-tap purchase, and sub-second page transitions.",
+      "Rebuilt collection browsing, cart and checkout around how people shop on phones — clearer grids, a usable bag drawer and express payment options.",
     build:
-      "Next.js App Router with GSAP smooth scroll integration, Radix UI accessible slide-out drawers, Stripe Custom Elements checkout, and automated inventory sync with brick-and-mortar boutique POS.",
+      "Next.js storefront, accessible cart drawer, Stripe express checkout and inventory sync with boutique POS.",
     result:
-      "125% increase in mobile checkout completions, 0.4s average page transition latency, and a 68% increase in repeat customer retention within 6 months.",
-    lesson: "Visual detail is not decorative; it is a core commercial requirement that validates price points.",
+      "A store that feels like the brand and finishes the purchase without the old friction — especially on mobile.",
+    lesson:
+      "Visual detail isn't decoration. It has to support how people buy.",
     stats: [
-      { value: "+125%", label: "Mobile Checkout Lift", detail: "One-tap Apple Pay & optimized drawer" },
-      { value: "0.4s", label: "Route Transition Speed", detail: "Client-side prefetching & cache" },
-      { value: "+68%", label: "Repeat Customer Rate", detail: "Enhanced post-purchase experience" },
-      { value: "-52%", label: "Cart Abandonment Drop", detail: "Frictionless modern checkout funnel" },
+      { value: "Mobile", label: "First", detail: "Browse and checkout rebuilt for phones" },
+      { value: "Express", label: "Pay", detail: "Apple Pay / Google Pay where available" },
+      { value: "Editorial", label: "Collections", detail: "Lookbook-led product grids" },
+      { value: "Synced", label: "Inventory", detail: "Online and boutique stock aligned" },
     ],
     deliverables: [
-      { title: "Editorial Lookbook Experience", description: "High-fashion collection grids with interactive hover states and architectural layouts." },
-      { title: "Slide-Out Shopping Bag", description: "Real-time interactive cart drawer with instant subtotal calculation and promo handling." },
-      { title: "One-Tap Express Checkout", description: "Stripe-backed express payment integration for seamless mobile purchasing." },
-      { title: "Omnichannel Boutique Inventory", description: "Real-time bidirectional synchronization between online store and boutique retail POS." },
+      {
+        title: "Editorial collection experience",
+        description: "Fashion grids with clear browse and product paths.",
+      },
+      {
+        title: "Shopping bag drawer",
+        description: "Cart that stays in context while browsing.",
+      },
+      {
+        title: "Express checkout",
+        description: "Stripe-backed one-tap payment options.",
+      },
+      {
+        title: "Boutique inventory sync",
+        description: "Online stock kept in line with retail POS.",
+      },
     ],
-    stack: ["Next.js", "React 19", "GSAP", "Stripe Elements", "Radix UI", "Tailwind CSS", "Vercel"],
+    stack: ["Next.js", "React", "GSAP", "Stripe", "Vercel"],
     testimonial: {
       quote:
         "13 Utopia’s web development team exceeded our expectations. They were attentive to every detail, from design aesthetics to user experience. Our new website is not only visually appealing but also runs smoothly on all platforms. It’s been an incredible boost for our online presence.",
@@ -154,7 +200,7 @@ export const caseStudies: CaseStudy[] = [
     seo: {
       title: "Trendy Fashion Hub — Case Story | 13 UTOPIA",
       description:
-        "Couture editorial storefront rebuild and checkout optimization for Trendy Fashion Hub by 13 UTOPIA.",
+        "Editorial storefront and checkout rebuild for Trendy Fashion Hub by 13 UTOPIA.",
     },
     status: "published",
     featured: true,

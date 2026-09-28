@@ -11,13 +11,14 @@ gsap.registerPlugin(ScrollTrigger);
 
 type Props = {
   className?: string;
+  eyebrow?: string;
 };
 
 /**
- * Studio Creed — brand design language (1:3 Word System).
- * Utopian Break · gold meta · monumental Didone · hairline.
+ * Studio Creed — Centered Brand Word System.
+ * Tight, high-impact scroll reveal without dead pinned spaces.
  */
-export function StudioCreed({ className }: Props) {
+export function StudioCreed({ className, eyebrow = "04 · Creed" }: Props) {
   const rootRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -30,55 +31,49 @@ export function StudioCreed({ className }: Props) {
     const lines = Array.from(
       root.querySelectorAll<HTMLElement>("[data-creed-line]"),
     );
-    const hair = root.querySelector<HTMLElement>("[data-creed-hair]");
 
     if (!stage || lines.length === 0) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
-      gsap.set([breakEl, meta, hair, ...lines].filter(Boolean), {
+      gsap.set([breakEl, meta, ...lines].filter(Boolean), {
         autoAlpha: 1,
-        clearProps: "y,scaleX",
+        clearProps: "y,scale",
       });
       return;
     }
 
     const ctx = gsap.context(() => {
-      if (breakEl) gsap.set(breakEl, { autoAlpha: 0, y: -12 });
-      if (meta) gsap.set(meta, { autoAlpha: 0, y: 10 });
-      gsap.set(lines, { autoAlpha: 0, y: 36 });
-      if (hair) gsap.set(hair, { scaleX: 0, autoAlpha: 0.9 });
+      if (breakEl) gsap.set(breakEl, { autoAlpha: 0, y: -16, scale: 0.9 });
+      if (meta) gsap.set(meta, { autoAlpha: 0, y: 12 });
+      gsap.set(lines, { autoAlpha: 0, y: 40, scale: 0.96 });
 
       const tl = gsap.timeline({
-        defaults: { ease: "power3.out" },
         scrollTrigger: {
-          trigger: stage,
-          start: "top top",
-          end: () => `+=${Math.round(window.innerHeight * 2.4)}`,
-          pin: true,
-          pinSpacing: true,
-          scrub: 0.65,
-          anticipatePin: 1,
+          trigger: root,
+          start: "top 75%",
+          end: "bottom 30%",
+          scrub: 0.5,
           invalidateOnRefresh: true,
         },
       });
 
-      if (breakEl) tl.to(breakEl, { autoAlpha: 1, y: 0, duration: 0.4 }, 0);
-      if (meta) tl.to(meta, { autoAlpha: 1, y: 0, duration: 0.45 }, 0.15);
+      if (breakEl) {
+        tl.to(breakEl, { autoAlpha: 1, y: 0, scale: 1, duration: 0.35, ease: "power2.out" }, 0);
+      }
+      if (meta) {
+        tl.to(meta, { autoAlpha: 1, y: 0, duration: 0.35, ease: "power2.out" }, 0.08);
+      }
       lines.forEach((el, i) => {
-        tl.to(el, { autoAlpha: 1, y: 0, duration: 0.7 }, 0.35 + i * 0.18);
+        tl.to(
+          el,
+          { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, ease: "power3.out" },
+          0.15 + i * 0.15,
+        );
       });
-      if (hair) tl.to(hair, { scaleX: 1, autoAlpha: 1, duration: 0.8 }, 0.55);
-      tl.to({}, { duration: 0.7 });
     }, root);
 
-    requestAnimationFrame(() => ScrollTrigger.refresh());
-    const t = window.setTimeout(() => ScrollTrigger.refresh(), 180);
-
-    return () => {
-      window.clearTimeout(t);
-      ctx.revert();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -93,17 +88,16 @@ export function StudioCreed({ className }: Props) {
         </div>
 
         <p className={styles.meta} data-creed-meta>
-          01 · Creed
+          {eyebrow}
         </p>
 
         <h2 className={styles.lockup}>
           <span className={styles.line} data-creed-line>
-            Be unreal. Be. Be
+            BE UNREAL.
           </span>
           <span className={styles.line} data-creed-line>
-            unreasonable.
+            BE UNREASONABLE.
           </span>
-          <span className={styles.hair} data-creed-hair aria-hidden="true" />
         </h2>
       </div>
     </section>

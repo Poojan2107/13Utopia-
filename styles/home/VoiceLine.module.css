@@ -1,126 +1,235 @@
-/* Editorial VoiceLine styling */
+/* VoiceLine — Sleek Luxury Testimonial Card */
 
-.wrap {
+.root {
   position: relative;
-  display: grid;
-  gap: clamp(1.5rem, 3vh, 2.25rem);
-  max-width: 58rem;
-  margin-inline: auto;
-  padding: clamp(6rem, 15vh, 9.5rem) clamp(1.5rem, 5vw, 4.5rem);
-  background: #000;
+  isolation: isolate;
+  width: 100%;
+  background: #030303;
+  color: #f3f1ea;
+  padding: clamp(5.5rem, 12vh, 8.5rem) clamp(1.25rem, 4vw, 2.5rem);
   border-top: 1px solid color-mix(in srgb, var(--color-gold) 14%, transparent);
-  text-align: center;
-  justify-items: center;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
 }
 
 .ambientGlow {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 65% 50% at 50% 50%,
+      color-mix(in srgb, var(--color-gold) 10%, transparent) 0%,
+      transparent 65%
+    );
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  max-width: 54rem;
+  width: 100%;
+  background: rgba(14, 13, 10, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 28%, transparent);
+  border-radius: 1.5rem;
+  padding: clamp(2.5rem, 6vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 4vh, 2.75rem);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.8),
+    0 0 50px rgba(232, 197, 106, 0.08);
+}
+
+.cardGlow {
+  position: absolute;
+  inset: 0;
+  border-radius: 1.5rem;
+  pointer-events: none;
   background: radial-gradient(
-    60% 45% at 50% 50%,
+    ellipse 80% 50% at 50% 0%,
     color-mix(in srgb, var(--color-gold) 12%, transparent) 0%,
-    transparent 65%
+    transparent 60%
   );
 }
 
-.mark {
-  font-family: var(--font-display);
-  font-size: clamp(4.5rem, 9vw, 7rem);
-  line-height: 0.8;
-  color: var(--color-gold);
-  opacity: 0.85;
-  user-select: none;
-  text-shadow: 0 0 30px rgba(232, 197, 106, 0.4);
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-bottom: 1px solid color-mix(in srgb, #f3f1ea 10%, transparent);
+  padding-bottom: 1.25rem;
 }
 
-.kicker {
+.eyebrowRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.break {
+  color: var(--color-gold);
+}
+
+.eyebrow {
   margin: 0;
   font-family: var(--font-ui);
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-gold) 85%, transparent);
+  color: color-mix(in srgb, var(--color-gold) 88%, transparent);
+}
+
+.metricPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(232, 197, 106, 0.08);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 40%, transparent);
+}
+
+.metricVal {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--color-gold);
+  line-height: 1;
+}
+
+.metricDesc {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f3f1ea;
+}
+
+.quoteWrap {
+  position: relative;
+}
+
+.quoteMark {
+  position: absolute;
+  top: -1.25rem;
+  left: -0.5rem;
+  font-family: var(--font-display);
+  font-size: 4.5rem;
+  line-height: 0.5;
+  color: var(--color-gold);
+  opacity: 0.25;
+  pointer-events: none;
 }
 
 .quote {
   margin: 0;
-  max-width: 42ch;
   position: relative;
   z-index: 1;
 }
 
 .quoteText {
-  margin: 0 0 2rem;
+  margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.45rem, 2.9vw, 2.35rem);
+  font-size: clamp(1.4rem, 2.7vw, 2.1rem);
   font-style: italic;
   font-weight: 400;
-  line-height: 1.32;
+  line-height: 1.35;
   letter-spacing: -0.025em;
-  color: #f3f1ea;
+  color: #f7f4ec;
   text-wrap: pretty;
 }
 
-.attr {
+.cardFooter {
   display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-  font-style: normal;
+  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  border-top: 1px solid color-mix(in srgb, #f3f1ea 10%, transparent);
+  padding-top: 1.5rem;
 }
 
-.avatarPill {
-  display: inline-flex;
+.authorGroup {
+  display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.35rem 0.85rem 0.35rem 0.45rem;
-  border-radius: 999px;
-  background: rgba(232, 197, 106, 0.08);
-  border: 1px solid color-mix(in srgb, var(--color-gold) 35%, transparent);
+  gap: 1rem;
 }
 
-.avatarInitial {
-  width: 22px;
-  height: 22px;
+.avatarRing {
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: var(--color-gold);
-  color: #050505;
-  font-family: var(--font-ui);
-  font-size: 0.6875rem;
-  font-weight: 800;
+  background: linear-gradient(135deg, rgba(232, 197, 106, 0.3), rgba(0, 0, 0, 0.9));
+  border: 1.5px solid var(--color-gold);
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 15px rgba(232, 197, 106, 0.25);
 }
 
-.author {
+.avatarInitials {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--color-gold);
+}
+
+.authorDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.authorName {
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-style: normal;
+  color: #f7f4ec;
+}
+
+.verifiedBadge {
+  font-family: var(--font-ui);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #050505;
+  background: var(--color-gold);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
+.authorRole {
+  margin: 0;
   font-family: var(--font-ui);
   font-size: 0.8125rem;
-  font-weight: 700;
-  font-style: normal;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #f3f1ea;
-}
-
-.role {
-  font-family: var(--font-ui);
-  font-size: 0.85rem;
   color: rgba(243, 241, 234, 0.65);
 }
 
-.company {
+.companyName {
   color: var(--color-gold);
   font-weight: 600;
 }
 
-.link {
-  position: relative;
-  z-index: 1;
-  justify-self: center;
+.caseLink {
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-ui);
   font-size: 0.75rem;
   font-weight: 700;
@@ -129,14 +238,25 @@
   text-decoration: none;
   color: var(--color-gold);
   border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 50%, transparent);
-  padding-bottom: 0.4rem;
+  padding-bottom: 0.25rem;
   transition: all 0.25s ease;
 }
 
-.link:hover,
-.link:focus-visible {
-  color: #fff;
-  border-bottom-color: #fff;
+.caseLink:hover,
+.caseLink:focus-visible {
+  color: #ffffff;
+  border-bottom-color: #ffffff;
   outline: none;
   transform: translateY(-1px);
+}
+
+@media (max-width: 700px) {
+  .card {
+    padding: 1.75rem;
+  }
+
+  .cardFooter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

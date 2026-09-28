@@ -32,14 +32,13 @@ type Props = {
 };
 
 /**
- * Faithful port — Awwwards Scroll / 071 Sticky Cards (amped cinema).
- * Longer pin, deeper 3D exit, live copy crossfade.
+ * ProofArchive — Luxury Awwwards 3D Project Theater with Browser Chrome & Live Synchronization.
  * @see Awwwards_Master_Pack/01 - Scroll Animation/071 - Sticky Cards
  */
 export function ProofArchive({
   cases,
-  eyebrow = "Proof",
-  lead = "Shipped work. Scroll the records.",
+  eyebrow = "05 · Work",
+  lead = "Selected Projects.",
 }: Props) {
   const rootRef = useRef<HTMLElement | null>(null);
   const metaRef = useRef<HTMLDivElement | null>(null);
@@ -50,7 +49,6 @@ export function ProofArchive({
     if (!root || cases.length === 0) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    // Mobile: stacked editorial list — pin theaters collapse readability
     if (window.matchMedia("(max-width: 900px)").matches) {
       root.dataset.mode = "stack";
       return;
@@ -66,12 +64,12 @@ export function ProofArchive({
     const transitions = Math.max(1, totalCards - 1);
     const segmentSize = 1 / transitions;
 
-    const cardYOffset = 12;
-    const cardScaleStep = 0.15;
-    const cardExitRotation = 20;
-    const cardExitZ = 350;
-    const cardExitY = -200;
-    const cardParkedY = -250;
+    const cardYOffset = 16;
+    const cardScaleStep = 0.1;
+    const cardExitRotation = 12;
+    const cardExitZ = 320;
+    const cardExitY = -180;
+    const cardParkedY = -240;
 
     cards.forEach((card, i) => {
       gsap.set(card, {
@@ -91,10 +89,10 @@ export function ProofArchive({
         trigger: root,
         start: "top top",
         end: () =>
-          `+=${Math.round(window.innerHeight * Math.max(3.2, totalCards * 1.35))}`,
+          `+=${Math.round(window.innerHeight * Math.max(2.0, (totalCards - 1) * 1.1 + 0.6))}`,
         pin: true,
         pinSpacing: true,
-        scrub: 0.35,
+        scrub: 0.45,
         anticipatePin: 1,
         onUpdate: (self) => {
           const progress = self.progress;
@@ -105,7 +103,10 @@ export function ProofArchive({
           const segProgress =
             (progress - activeCardIndex * segmentSize) / segmentSize;
 
-          const nextActive = Math.min(activeCardIndex, totalCards - 1);
+          const nextActive = Math.min(
+            progress >= 0.95 ? totalCards - 1 : activeCardIndex,
+            totalCards - 1,
+          );
           if (nextActive !== lastActive) {
             lastActive = nextActive;
             setActive(nextActive);
@@ -113,8 +114,8 @@ export function ProofArchive({
             if (meta) {
               gsap.fromTo(
                 meta,
-                { autoAlpha: 0, y: 18 },
-                { autoAlpha: 1, y: 0, duration: 0.45, ease: "power3.out" },
+                { autoAlpha: 0, y: 14 },
+                { autoAlpha: 1, y: 0, duration: 0.4, ease: "power3.out" },
               );
             }
           }
@@ -127,7 +128,7 @@ export function ProofArchive({
                 z: cardExitZ,
                 scale: 1,
               });
-            } else if (i === activeCardIndex) {
+            } else if (i === activeCardIndex && i < totalCards - 1) {
               const exitProgress = gsap.parseEase("power2.in")(segProgress);
               gsap.set(card, {
                 yPercent: gsap.utils.interpolate(-50, cardExitY, exitProgress),
@@ -144,9 +145,9 @@ export function ProofArchive({
               const delayedSeg = gsap.utils.clamp(
                 0,
                 1,
-                (segProgress - 0.3) / 0.7,
+                (segProgress - 0.2) / 0.8,
               );
-              const easedSeg = gsap.parseEase("back.out(2)")(delayedSeg);
+              const easedSeg = gsap.parseEase("back.out(1.5)")(delayedSeg);
               const currentYOffset = (behindIndex - easedSeg) * cardYOffset;
               const currentScale =
                 1 - (behindIndex - easedSeg) * cardScaleStep;
@@ -171,84 +172,111 @@ export function ProofArchive({
   return (
     <section ref={rootRef} className={styles.root} aria-label={eyebrow}>
       <div className={styles.glow} aria-hidden="true" />
+      
       <div className={styles.stage}>
         <aside className={styles.copy}>
           <div className={styles.copyTop}>
             <UtopianBreak size="sm" className={styles.break} />
             <p className={styles.eyebrow}>{eyebrow}</p>
           </div>
-          {lead ? <p className={styles.lead}>{lead}</p> : null}
+          
+          <h2 className={styles.lead}>{lead}</h2>
+
           <div
             ref={metaRef}
             className={styles.activeMeta}
             aria-live="polite"
             key={activeCase?.need}
           >
-            <span className={styles.counter}>
-              {String(active + 1).padStart(2, "0")}
-              <span className={styles.counterSep}>/</span>
-              {String(cases.length).padStart(2, "0")}
-            </span>
-            {activeCase?.meta ? (
-              <p className={styles.meta}>{activeCase.meta}</p>
-            ) : null}
+            <div className={styles.counterRow}>
+              <span className={styles.counter}>
+                {String(active + 1).padStart(2, "0")}
+                <span className={styles.counterSep}>/</span>
+                {String(cases.length).padStart(2, "0")}
+              </span>
+              {activeCase?.meta ? (
+                <span className={styles.metaBadge}>{activeCase.meta}</span>
+              ) : null}
+            </div>
+
             <h3 className={styles.activeTitle}>{activeCase?.title}</h3>
+            
             {activeCase?.body ? (
               <p className={styles.activeBody}>{activeCase.body}</p>
             ) : null}
-            {activeCase?.href ? (
-              <Link
-                href={activeCase.href}
-                className={styles.cta}
-                data-magnetic
-              >
-                Inspect case
-                <span aria-hidden="true"> →</span>
+
+            <div className={styles.actionRow}>
+              {activeCase?.href ? (
+                <Link
+                  href={activeCase.href}
+                  className={styles.cta}
+                  data-magnetic
+                >
+                  Inspect Case Story
+                  <span aria-hidden="true"> →</span>
+                </Link>
+              ) : null}
+              <Link href="/work" className={styles.allWorkLink}>
+                View All Work
               </Link>
-            ) : null}
+            </div>
           </div>
         </aside>
 
         <div className={styles.cards}>
           {cases.map((c, i) => {
-            const cardInner = (
-              <>
-                {c.image?.src ? (
-                  <Image
-                    src={c.image.src}
-                    alt={c.image.alt || c.title}
-                    fill
-                    sizes="(max-width: 1000px) 78vw, 42vw"
-                    className={styles.cardImg}
-                    priority={i === 0}
-                  />
-                ) : (
-                  <div className={styles.cardFallback} />
-                )}
-                <span className={styles.cardVeil} aria-hidden="true" />
-                <div className={styles.cardCopy}>
-                  <span className={styles.cardNum}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h4 className={styles.cardTitle}>{c.title}</h4>
-                </div>
-              </>
-            );
-
+            const isActive = i === active;
             return (
               <article
                 key={c.need}
-                className={cn(styles.card, i === active && styles.cardActive)}
+                className={cn(styles.card, isActive && styles.cardActive)}
                 data-card
                 style={{ zIndex: cases.length - i }}
               >
+                {/* Browser Frame Chrome */}
+                <div className={styles.browserHeader}>
+                  <div className={styles.browserDots} aria-hidden="true">
+                    <span className={styles.dot} />
+                    <span className={styles.dot} />
+                    <span className={styles.dot} />
+                  </div>
+                  <div className={styles.browserUrl}>
+                    <span className={styles.lockIcon} aria-hidden="true">🔒</span>
+                    <span>13utopia.com/work/{c.need.toLowerCase().replace(/[^a-z0-9]/g, "-")}</span>
+                  </div>
+                  <span className={styles.caseNum}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+
+                <div className={styles.cardPreviewWrap}>
+                  {c.image?.src ? (
+                    <Image
+                      src={c.image.src}
+                      alt={c.image.alt || c.title}
+                      fill
+                      sizes="(max-width: 1000px) 90vw, 48vw"
+                      className={styles.cardImg}
+                      priority={i === 0}
+                    />
+                  ) : (
+                    <div className={styles.cardFallback} />
+                  )}
+                  <span className={styles.cardVeil} aria-hidden="true" />
+                </div>
+
+                <div className={styles.cardFoot}>
+                  <span className={styles.footClient}>{c.need}</span>
+                  <span className={styles.footAction}>Inspect Case ↗</span>
+                </div>
+
                 {c.href ? (
-                  <Link href={c.href} className={styles.cardLink}>
-                    {cardInner}
-                  </Link>
-                ) : (
-                  <div className={styles.cardLink}>{cardInner}</div>
-                )}
+                  <Link
+                    href={c.href}
+                    className={styles.cardCoverLink}
+                    aria-label={`View ${c.title}`}
+                  />
+                ) : null}
               </article>
             );
           })}

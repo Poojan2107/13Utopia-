@@ -51,9 +51,9 @@ export function HomeHero() {
               <span className={styles.rule} aria-hidden="true" data-hero-rule />
 
               <p className={styles.descriptor}>
-                Creative technology and growth —
+                We build brands, technology and growth systems
                 <br />
-                brand, web, SEO, and digital marketing.
+                for businesses ready to move beyond the obvious.
               </p>
             </div>
           </aside>
@@ -82,9 +82,9 @@ export function HomeHero() {
               />
 
               <p className={`${styles.descriptor} ${styles.descriptorRight}`}>
-                We question the obvious, then build
+                Question what exists. Find what could work better.
                 <br />
-                what others couldn&rsquo;t imagine.
+                Then build it.
               </p>
             </div>
           </aside>
@@ -93,7 +93,7 @@ export function HomeHero() {
             <p className={styles.brandWhisper}>13 UTOPIA</p>
 
             <a
-              href="#worldview"
+              href="#main-after-hero"
               className={styles.scrollCue}
               aria-label="Scroll to explore"
             >

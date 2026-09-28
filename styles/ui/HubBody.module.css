@@ -676,49 +676,62 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem 1.75rem;
-  margin-top: var(--space-2xl);
+  gap: 1.25rem 1.75rem;
+  margin-top: clamp(2.5rem, 5vh, 4rem);
 }
 
 .ctaPrimary {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: var(--font-ui);
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--color-black);
-  background: var(--color-warm-white);
-  padding: 0.95rem 1.45rem;
-  transition: background var(--motion-quick) var(--ease-standard);
+  color: #050505;
+  background: var(--color-gold);
+  padding: 1.05rem 1.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-gold);
+  box-shadow: 0 10px 30px rgba(232, 197, 106, 0.25);
+  transition: all 0.25s ease;
 }
 
 .ctaPrimary:hover,
 .ctaPrimary:focus-visible {
-  background: var(--color-accent);
+  background: #ffffff;
+  border-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(232, 197, 106, 0.45);
   outline: none;
 }
 
 .ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   font-family: var(--font-ui);
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--color-fg-muted);
-  border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
-  padding-bottom: 0.2rem;
-  transition:
-    color var(--motion-quick) var(--ease-standard),
-    border-color var(--motion-quick) var(--ease-standard);
+  color: #f3f1ea;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1.05rem 1.85rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 35%, transparent);
+  transition: all 0.25s ease;
 }
 
 .ctaSecondary:hover,
 .ctaSecondary:focus-visible {
-  color: var(--color-accent);
-  border-bottom-color: var(--color-accent);
+  color: var(--color-gold);
+  border-color: var(--color-gold);
+  background: rgba(232, 197, 106, 0.08);
+  transform: translateY(-2px);
   outline: none;
 }
 
