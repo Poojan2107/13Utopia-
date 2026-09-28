@@ -4,8 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Container } from "@/components/ui/Container";
 import { ArrowLink } from "@/components/ui/TextLink";
-import { SvgDraw } from "@/components/motion/SvgDraw";
-import { PhysicsFloat } from "@/components/motion/PhysicsFloat";
 import { cn } from "@/lib/utils/cn";
 import { REVEAL } from "@/lib/motion/reveal";
 import styles from "@/styles/ui/PageHero.module.css";
@@ -21,8 +19,8 @@ type Props = {
 };
 
 /**
- * Inner-page hero — Animmaster hero + SVG + physics DNA.
- * @see https://animmasterlib.dev/ (Hero / SVG / Physics)
+ * Inner-page hero — cinema plate for hub/detail routes.
+ * `full` = edge-to-edge media with copy overlaid (default for marketing hubs).
  */
 export function PageHero({
   eyebrow,
@@ -42,7 +40,6 @@ export function PageHero({
 
     const lines = el.querySelectorAll("[data-hero-line]");
     const fades = el.querySelectorAll("[data-hero-reveal]");
-    const plate = el.querySelector<HTMLElement>("[data-hero-media]");
 
     const tl = gsap.timeline({ defaults: { ease: REVEAL.ease } });
 
@@ -69,32 +66,33 @@ export function PageHero({
       },
       0.12,
     );
-
-    if (plate) {
-      tl.fromTo(
-        plate,
-        { clipPath: "inset(10% 8% 10% 8%)", opacity: 0.4, scale: 1.04 },
-        {
-          clipPath: "inset(0% 0% 0% 0%)",
-          opacity: 1,
-          scale: 1,
-          duration: 1.05,
-          ease: "power3.out",
-        },
-        0.18,
-      );
-    }
   }, []);
 
   const displayLines = splitTitle(title);
+  const isCinema = layout === "full" && Boolean(media);
 
   return (
-    <header ref={ref} className={cn(styles.hero, styles[layout], className)}>
-      <div className={styles.atmosphere} aria-hidden="true">
-        <PhysicsFloat amp={14} duration={6.5} className={styles.floatOrb}>
-          <span className={styles.orb} />
-        </PhysicsFloat>
-      </div>
+    <header
+      ref={ref}
+      className={cn(
+        styles.hero,
+        styles[layout],
+        isCinema && styles.cinema,
+        className,
+      )}
+    >
+      {isCinema ? (
+        <>
+          <div className={styles.cinemaMedia} data-hero-media aria-hidden="true">
+            {media}
+          </div>
+          <div className={styles.cinemaVeil} aria-hidden="true" />
+          <div className={styles.cinemaGrain} aria-hidden="true" />
+        </>
+      ) : (
+        <div className={styles.atmosphere} aria-hidden="true" />
+      )}
+
       <Container className={styles.inner}>
         <div className={styles.copy}>
           {eyebrow ? (
@@ -102,7 +100,7 @@ export function PageHero({
               {eyebrow}
             </p>
           ) : null}
-          <SvgDraw variant="rule" className={styles.rule} />
+          <span className={styles.rule} aria-hidden="true" />
           <h1 className={styles.title}>
             {displayLines.map((line) => (
               <span key={line} className={styles.titleLine}>
@@ -121,7 +119,8 @@ export function PageHero({
             </div>
           ) : null}
         </div>
-        {media ? (
+
+        {!isCinema && media ? (
           <div className={styles.media} data-hero-reveal data-hero-media>
             {media}
           </div>
@@ -153,12 +152,20 @@ type RelatedProps = {
 export function RelatedLinks({ title, items }: RelatedProps) {
   if (!items.length) return null;
   return (
-    <aside className={styles.related} aria-label={title} data-reveal>
-      <h2 className={styles.relatedTitle}>{title}</h2>
+    <aside className={styles.related} aria-label={title}>
+      <div className={styles.relatedHead}>
+        <p className={styles.relatedEyebrow}>Continue</p>
+        <h2 className={styles.relatedTitle}>{title}</h2>
+      </div>
       <ul className={styles.relatedList}>
-        {items.map((item) => (
-          <li key={item.href}>
-            <ArrowLink href={item.href}>{item.label}</ArrowLink>
+        {items.map((item, i) => (
+          <li key={item.href} className={styles.relatedItem}>
+            <ArrowLink href={item.href} className={styles.relatedLink}>
+              <span className={styles.relatedIndex} aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className={styles.relatedLabel}>{item.label}</span>
+            </ArrowLink>
           </li>
         ))}
       </ul>

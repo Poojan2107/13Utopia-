@@ -1,11 +1,11 @@
 /* Shared marketing hub / slug body patterns */
 
 .body {
-  padding-block: clamp(3rem, 7vh, 5rem) var(--space-section);
+  padding-block: clamp(3.5rem, 8vh, 5.5rem) var(--space-section);
 }
 
 .bodyTight {
-  padding-block: clamp(2rem, 4vh, 3rem) var(--space-section);
+  padding-block: clamp(2.5rem, 5vh, 3.5rem) var(--space-section);
 }
 
 .noteLead {
@@ -477,13 +477,16 @@
 }
 
 .slugLead {
-  margin: var(--space-xl) 0 var(--space-2xl);
-  max-width: 38rem;
+  margin: 0 0 clamp(2.5rem, 6vh, 4rem);
+  max-width: 28ch;
   font-family: var(--font-display);
-  font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+  font-size: clamp(1.85rem, 3.8vw, 2.85rem);
   font-style: italic;
-  line-height: 1.45;
-  color: color-mix(in srgb, var(--color-warm-white) 78%, transparent);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  color: #f3f1ea;
+  text-wrap: balance;
 }
 
 .placeholder {
@@ -535,7 +538,23 @@
 }
 
 .mediaBreak {
-  margin: clamp(2rem, 5vh, 3.5rem) 0;
+  margin: clamp(3rem, 7vh, 5rem) 0;
+  margin-inline: calc(var(--page-pad) * -1);
+  width: calc(100% + 2 * var(--page-pad));
+}
+
+.mediaBreak :global(figure),
+.mediaBreak :global(.frame) {
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+
+@media (max-width: 700px) {
+  .mediaBreak {
+    margin-inline: 0;
+    width: 100%;
+  }
 }
 
 .prose {

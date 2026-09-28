@@ -83,6 +83,7 @@ export default async function CapabilitySlugPage({ params }: Props) {
                 aspect="hero"
                 tone={media.tone}
                 need={media.need}
+                fill
               />
             ) : undefined
           }
@@ -183,6 +184,7 @@ export default async function CapabilitySlugPage({ params }: Props) {
             aspect="hero"
             tone={tone}
             need={`${cap.title} — practice imagery`}
+            fill
           />
         }
       />

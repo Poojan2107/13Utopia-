@@ -1,35 +1,37 @@
-/* Nav.Supply accordion + DesignCode expand — 13U DNA */
+/* Phase accordion — editorial index for detail pages */
 
 .root {
   width: 100%;
   max-width: none;
-  margin-inline: 0;
-  padding: 0;
+  margin: clamp(2.5rem, 6vh, 4rem) 0;
+  padding: clamp(2rem, 5vh, 3rem) 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 14%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 14%, transparent);
 }
 
 .head {
-  margin-bottom: clamp(2rem, 4vh, 3rem);
+  margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
   max-width: 36rem;
 }
 
 .eyebrow {
-  margin: 0 0 1rem;
+  margin: 0 0 0.85rem;
   font-family: var(--font-ui);
   font-size: 0.6875rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-gold) 80%, transparent);
+  color: color-mix(in srgb, var(--color-gold) 85%, transparent);
 }
 
 .lead {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+  font-size: clamp(1.85rem, 3.4vw, 2.65rem);
   font-style: italic;
   font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
   color: #f3f1ea;
   text-wrap: balance;
 }
@@ -38,11 +40,11 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid rgba(243, 241, 234, 0.12);
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 12%, transparent);
 }
 
 .item {
-  border-bottom: 1px solid rgba(243, 241, 234, 0.12);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 12%, transparent);
 }
 
 .trigger {
@@ -51,13 +53,18 @@
   grid-template-columns: 3rem minmax(0, 1fr) auto auto;
   gap: 1rem;
   align-items: center;
-  padding: 1.35rem 0;
+  padding: 1.5rem 0;
   background: transparent;
   border: 0;
   color: var(--color-warm-white);
   cursor: pointer;
   text-align: left;
   font: inherit;
+  transition: background 0.25s ease;
+}
+
+.trigger:hover {
+  background: color-mix(in srgb, var(--color-gold) 3%, transparent);
 }
 
 .trigger:focus-visible {
@@ -67,22 +74,25 @@
 
 .num {
   font-family: var(--font-ui);
-  font-size: 0.8125rem;
-  letter-spacing: 0.08em;
-  color: var(--color-gold-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: color-mix(in srgb, var(--color-gold) 65%, transparent);
 }
 
 .title {
   font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  font-size: clamp(1.55rem, 2.6vw, 2.15rem);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  transition: color 0.25s ease;
 }
 
 .meta {
   font-family: var(--font-ui);
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-fg-muted);
 }
@@ -108,8 +118,8 @@
 }
 
 .panelOpen {
-  max-height: 12rem;
-  padding: 0 0 1.5rem 4rem;
+  max-height: 14rem;
+  padding: 0 0 1.75rem 4rem;
   opacity: 1;
 }
 
@@ -118,7 +128,7 @@
   font-family: var(--font-ui);
   font-size: 1.05rem;
   line-height: 1.65;
-  color: var(--color-fg-soft);
+  color: color-mix(in srgb, #f3f1ea 72%, transparent);
 }
 
 .itemOpen .title {
@@ -132,6 +142,11 @@
 @media (max-width: 700px) {
   .trigger {
     grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+    padding: 1.25rem 0;
+  }
+
+  .title {
+    font-size: clamp(1.35rem, 6vw, 1.75rem);
   }
 
   .meta {

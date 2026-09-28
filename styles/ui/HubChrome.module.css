@@ -110,29 +110,25 @@
 
 .closer {
   position: relative;
-  margin-top: clamp(3rem, 7vh, 5rem);
-  padding: clamp(4.5rem, 12vh, 8rem) 0;
-  border-top: 1px solid rgba(243, 241, 234, 0.08);
+  margin-top: clamp(3.5rem, 8vh, 6rem);
+  padding: clamp(5rem, 12vh, 8.5rem) 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 16%, transparent);
   overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 20% 100%,
+      color-mix(in srgb, var(--color-gold) 10%, transparent) 0%,
+      transparent 60%
+    ),
+    #000;
 }
 
 .closerGlow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 70% 55% at 50% 110%,
-    rgba(140, 95, 30, 0.2) 0%,
-    transparent 60%
-  );
+  display: none;
 }
 
 .closerFloat {
-  position: absolute;
-  right: clamp(1rem, 6vw, 4rem);
-  top: 1.5rem;
-  pointer-events: none;
-  z-index: 0;
+  display: none;
 }
 
 .closerOrb {

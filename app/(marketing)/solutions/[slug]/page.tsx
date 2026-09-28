@@ -56,6 +56,7 @@ export default async function SolutionPage({ params }: Props) {
             aspect="hero"
             tone="warm"
             need={`${solution.title} — outcome atmosphere`}
+            fill
           />
         }
       />
