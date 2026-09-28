@@ -1,27 +1,49 @@
-/* Skiper52 — horizontal expand on hover */
+/* Expand gallery — premium, soft entry, crafted expand */
 
 .root {
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  padding: clamp(2.5rem, 7vh, 5rem) clamp(1rem, 3vw, 2rem);
+  padding: clamp(4rem, 10vh, 7rem) clamp(1rem, 3vw, 2.25rem)
+    clamp(3.5rem, 8vh, 5.5rem);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, transparent 18%),
+    #050505;
+  border-top: 1px solid rgba(243, 241, 234, 0.06);
+  scroll-margin-top: 5rem;
+}
+
+.head {
+  max-width: 42rem;
+  margin: 0 0 clamp(1.75rem, 4vh, 2.75rem);
+  padding-inline: clamp(0.5rem, 2vw, 1.5rem);
 }
 
 .eyebrow {
-  margin: 0 0 1.25rem;
-  padding-inline: clamp(0.5rem, 2vw, 1.5rem);
+  margin: 0 0 0.85rem;
   font-family: var(--font-ui);
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(232, 197, 106, 0.75);
+  color: color-mix(in srgb, var(--color-gold) 78%, transparent);
+}
+
+.lead {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.4vw, 2rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: rgba(243, 241, 234, 0.88);
+  text-wrap: balance;
 }
 
 .row {
   display: flex;
-  gap: 0.55rem;
-  height: clamp(22rem, 58vh, 36rem);
+  gap: 0.65rem;
+  height: clamp(24rem, 60vh, 38rem);
   width: 100%;
 }
 
@@ -30,27 +52,69 @@
   flex: 1 1 0;
   min-width: 0;
   padding: 0;
-  border: 1px solid rgba(243, 241, 234, 0.08);
+  border: 1px solid rgba(243, 241, 234, 0.07);
   background: #080808;
   overflow: hidden;
   cursor: pointer;
-  transition: flex 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    flex 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.5s ease;
   color: #f3f1ea;
   text-align: left;
+  text-decoration: none;
+  display: block;
+  will-change: clip-path, transform, opacity;
 }
 
 .panelActive {
-  flex: 3.2 1 0;
-  border-color: rgba(232, 197, 106, 0.28);
+  flex: 3.4 1 0;
+  border-color: color-mix(in srgb, var(--color-gold) 32%, transparent);
 }
 
 .media {
   position: absolute;
   inset: 0;
+  transform: scale(1.06);
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.media :global(figure) {
+.tilt {
+  position: absolute;
+  inset: 0;
   height: 100%;
+}
+
+.tilt > div:first-child,
+.tilt :global(figure) {
+  height: 100%;
+}
+
+.panelActive .media {
+  transform: scale(1);
+}
+
+.media :global(figure),
+.media > div {
+  height: 100%;
+}
+
+.veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 35%,
+    rgba(5, 5, 5, 0.55) 72%,
+    rgba(5, 5, 5, 0.92) 100%
+  );
+  opacity: 0.85;
+  transition: opacity 0.5s ease;
+}
+
+.panelActive .veil {
+  opacity: 1;
 }
 
 .meta {
@@ -61,13 +125,8 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  padding: 1.25rem 1.1rem;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(5, 5, 5, 0.85) 100%
-  );
+  gap: 0.45rem;
+  padding: 1.5rem 1.25rem;
 }
 
 .code {
@@ -75,12 +134,12 @@
   font-size: 0.625rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(232, 197, 106, 0.7);
+  color: color-mix(in srgb, var(--color-gold) 72%, transparent);
 }
 
 .title {
   font-family: var(--font-display);
-  font-size: clamp(1rem, 1.8vw, 1.45rem);
+  font-size: clamp(1.05rem, 1.9vw, 1.5rem);
   letter-spacing: -0.02em;
   line-height: 1.15;
   white-space: nowrap;
@@ -90,28 +149,33 @@
 
 .panelActive .title {
   white-space: normal;
-  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  font-size: clamp(1.45rem, 2.6vw, 2.05rem);
 }
 
 @media (max-width: 700px) {
   .row {
     flex-direction: column;
     height: auto;
-    gap: 0.65rem;
+    gap: 0.7rem;
   }
 
   .panel {
     flex: none !important;
-    min-height: 11rem;
+    min-height: 12rem;
   }
 
   .panelActive {
-    min-height: 18rem;
+    min-height: 20rem;
+  }
+
+  .media {
+    transform: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .panel {
+  .panel,
+  .media {
     transition: none;
   }
 }

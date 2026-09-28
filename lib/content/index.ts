@@ -2,7 +2,7 @@ import {
   capabilities,
   capabilityCategories,
 } from "@/content/capabilities";
-import { offices, people } from "@/content/people";
+import { offices, people, testimonials } from "@/content/people";
 import { perspectiveArticles } from "@/content/perspective";
 import { solutions } from "@/content/solutions";
 import { caseStudies } from "@/content/work";
@@ -14,6 +14,7 @@ import type {
   Person,
   PerspectiveArticle,
   Solution,
+  Testimonial,
 } from "@/lib/content/types";
 
 export function getCapabilityCategories(): CapabilityCategory[] {
@@ -49,7 +50,7 @@ export function getCaseStudies(): CaseStudy[] {
 }
 
 export function getFeaturedCaseStudies(): CaseStudy[] {
-  return caseStudies.filter((c) => c.featured);
+  return caseStudies.filter((c) => c.featured && c.status === "published");
 }
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
@@ -80,6 +81,10 @@ export function getOffices(): Office[] {
 
 export function getOffice(slug: string): Office | undefined {
   return offices.find((o) => o.slug === slug);
+}
+
+export function getTestimonials(): Testimonial[] {
+  return testimonials.filter((t) => t.status === "published");
 }
 
 /** Capability hub + world + group slugs that resolve under /capabilities/[slug] */

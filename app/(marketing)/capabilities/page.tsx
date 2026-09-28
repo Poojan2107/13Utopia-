@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
 import {
-  CinematicParallax,
-  PageReveal,
-  ScrollListIndex,
-  StaggerGrid,
-  StickyCardStack,
+  ClipReveal,
+  EdgeMarquee,
+  MotionMedia,
 } from "@/components/motion";
 import {
   Container,
   HubBridge,
   HubCloser,
-  MediaPlaceholder,
   PageHero,
 } from "@/components/ui";
-import { getCapabilities, getCapabilityCategories } from "@/lib/content";
+import { plates } from "@/content/plates";
+import { getCapabilityCategories } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 import hub from "@/styles/ui/HubBody.module.css";
 
@@ -26,115 +24,75 @@ export const metadata: Metadata = buildMetadata({
   path: "/capabilities",
 });
 
-const WORLD_TONE = {
-  create: "create",
-  build: "build",
-  grow: "grow",
-  strategy: "strategy",
+const WORLD_TAGS: Record<string, string[]> = {
+  create: ["Brand", "Design", "CGI", "Experience"],
+  build: ["Web", "Product", "Systems", "AI"],
+  grow: ["SEO", "Campaigns", "Content", "Demand"],
+  strategy: ["Direction", "Advisory", "Brief", "Clarity"],
+};
+
+const plateByWorld = {
+  create: plates.create,
+  build: plates.build,
+  grow: plates.grow,
+  strategy: plates.work,
 } as const;
 
+/**
+ * Hub craft: Hero → one index → bridge → close.
+ * No duplicate stacks.
+ */
 export default function CapabilitiesHubPage() {
   const categories = getCapabilityCategories();
-  const capabilities = getCapabilities();
-
-  const worldItems = categories.map((cat) => ({
-    href: `/capabilities/${cat.slug}`,
-    title: cat.title,
-    body: cat.description,
-    cta: `Enter ${cat.title}`,
-    tone: WORLD_TONE[cat.slug] ?? ("warm" as const),
-    need: `${cat.title} world atmosphere`,
-  }));
 
   return (
     <>
       <PageHero
         eyebrow="Capabilities"
         title="What can 13 UTOPIA do?"
-        description="The company lens — Create, Build, Grow, connected by Strategy & Consulting."
+        description="Create, Build, Grow — connected by Strategy & Consulting."
         layout="full"
         media={
-          <MediaPlaceholder
+          <MotionMedia
             aspect="hero"
             tone="warm"
-            need="Capabilities hero — one practice, three worlds"
+            need="Capabilities hero"
+            image={plates.create}
+            fill={false}
+            sizes="100vw"
+            priority
           />
         }
       />
 
-      <Container className={hub.bodyTight}>
-        <ScrollListIndex items={worldItems} label="Worlds" />
-      </Container>
-
-      <CinematicParallax
+      <EdgeMarquee
         eyebrow="Worlds"
-        scenes={[
-          {
-            meta: "01 — Create",
-            title: "Form with intent",
-            caption: "Brand, design, and experience — the surface people feel first.",
-            need: "Create craft — cinematic still",
-            tone: "create",
-          },
-          {
-            meta: "02 — Build",
-            title: "Systems that hold",
-            caption: "Product, engineering, and infrastructure made to last.",
-            need: "Build systems — cinematic still",
-            tone: "build",
-          },
-          {
-            meta: "03 — Grow",
-            title: "Momentum in market",
-            caption: "Demand, content, and performance that compound.",
-            need: "Grow momentum — cinematic still",
-            tone: "grow",
-          },
-        ]}
+        lead="Three worlds. One practice."
+        items={categories.map((cat) => {
+          const slug = cat.slug as keyof typeof plateByWorld;
+          return {
+            href: `/capabilities/${cat.slug}`,
+            title: cat.title,
+            tags: WORLD_TAGS[cat.slug] ?? [cat.title],
+            image: plateByWorld[slug] ?? plates.work,
+          };
+        })}
       />
 
       <Container className={hub.bodyTight}>
-        <HubBridge
-          eyebrow="The practice"
-          statement="Let’s imagine what’s possible — then make it work."
-          support="Strategy decides direction. Create gives it form. Build makes it real. Grow turns it into market."
-          need="Practice — collaborative atmosphere"
-          tone="warm"
-        />
-
-        <StickyCardStack
-          eyebrow="Capability groups"
-          rotate
-          cards={capabilities.slice(0, 5).map((cap, i) => ({
-            href: `/capabilities/${cap.slug}`,
-            title: cap.title,
-            body: cap.description,
-            meta: String(i + 1).padStart(2, "0"),
-            need: `Capability group — ${cap.title}`,
-            tone: (["create", "build", "grow", "strategy", "warm"] as const)[
-              i % 5
-            ],
-          }))}
-        />
-
-        <PageReveal>
-          <StaggerGrid
-            eyebrow="All groups"
-            cells={capabilities.map((cap, i) => ({
-              href: `/capabilities/${cap.slug}`,
-              title: cap.title,
-              body: cap.description,
-              need: `Capability grid — ${cap.title}`,
-              tone: (["create", "build", "grow", "strategy", "warm", "dark"] as const)[
-                i % 6
-              ],
-            }))}
+        <ClipReveal>
+          <HubBridge
+            eyebrow="The practice"
+            statement="Let’s imagine what’s possible — then make it work."
+            support="Strategy decides. Create forms. Build ships. Grow compounds."
+            need="Practice atmosphere"
+            tone="warm"
           />
-        </PageReveal>
+        </ClipReveal>
 
         <HubCloser
           title="Ready to begin?"
-          lead="Bring the problem. We’ll question the obvious — then create, build, and grow what comes next."
+          lead="Bring the problem. We’ll question the obvious."
           secondaryHref="/solutions"
           secondaryLabel="Browse solutions"
         />

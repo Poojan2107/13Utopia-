@@ -9,15 +9,16 @@ import {
   PageHero,
   ProseBlock,
 } from "@/components/ui";
+import { company } from "@/content/site";
 import { getOffice } from "@/lib/content";
-import { displayText } from "@/lib/content/display";
 import { buildMetadata } from "@/lib/seo";
 import hub from "@/styles/ui/HubBody.module.css";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Canada | Connect | 13 UTOPIA",
-    description: "13 UTOPIA Canada presence.",
+    description:
+      "13 UTOPIA Canada — Scarborough / Markham Corners, Greater Toronto.",
   },
   path: "/connect/canada",
 });
@@ -31,7 +32,7 @@ export default function CanadaPage() {
       <PageHero
         eyebrow="Connect"
         title="Canada"
-        description="Strategy and client partnership — Canada presence."
+        description="Greater Toronto — strategy and client partnership."
         layout="full"
         media={
           <MediaPlaceholder aspect="hero" tone="warm" need="Canada presence" />
@@ -40,15 +41,19 @@ export default function CanadaPage() {
       <Container className={hub.body}>
         <ProseBlock
           paragraphs={[
-            displayText(office.address, "Canada presence across the practice."),
-            "Verified street address and phone publish when confirmed. Reach us through Start a Project or Discovery.",
+            office.address,
+            "Reach us by phone or email, or start a project online — we respond from the Canada desk.",
           ]}
         />
         <p className={hub.note}>
-          <span className={hub.noteEm}>Contact — </span>
-          {displayText(office.email, "Via Start a Project or Discovery")}
+          <span className={hub.noteEm}>Phone — </span>
+          <a href={company.phoneHref}>{office.phone}</a>
         </p>
-        <MediaBreak need="Canada — place" tone="warm" />
+        <p className={hub.note}>
+          <span className={hub.noteEm}>Email — </span>
+          <a href={`mailto:${office.email}`}>{office.email}</a>
+        </p>
+        <MediaBreak need="Canada — Markham Corners" tone="warm" />
         <DetailCtaRow
           secondaryHref="/connect/india"
           secondaryLabel="India"

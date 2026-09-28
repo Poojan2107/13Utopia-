@@ -4,7 +4,14 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MediaPlaceholder } from "@/components/ui/MediaPlaceholder";
+import { MotionMedia, type MotionImage } from "@/components/motion/MotionMedia";
+import { SvgDraw } from "@/components/motion/SvgDraw";
+import { TextSplit } from "@/components/motion/TextSplit";
+import { MaskHover } from "@/components/motion/MaskHover";
+import { HoverTilt } from "@/components/motion/HoverTilt";
+import { PhysicsFloat } from "@/components/motion/PhysicsFloat";
+import { ScrambleText } from "@/components/motion/ScrambleText";
+import { plateForTone, type PlateTone } from "@/content/plates";
 import styles from "@/styles/ui/HubChrome.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -14,18 +21,21 @@ type BridgeProps = {
   statement: string;
   support?: string;
   need: string;
-  tone?: "dark" | "warm" | "create" | "build" | "grow" | "strategy";
+  tone?: PlateTone;
+  image?: MotionImage;
 };
 
-/** Goodside-style editorial beat — big statement + atmosphere plate */
+/** Editorial beat — TextSplit + SVG + mask hover plate */
 export function HubBridge({
   eyebrow,
   statement,
   support,
   need,
   tone = "warm",
+  image,
 }: BridgeProps) {
   const ref = useRef<HTMLElement | null>(null);
+  const plate = image ?? plateForTone(tone);
 
   useEffect(() => {
     const el = ref.current;
@@ -35,11 +45,16 @@ export function HubBridge({
     const ctx = gsap.context(() => {
       gsap.from(el.querySelectorAll("[data-bridge]"), {
         opacity: 0,
-        y: 36,
-        duration: 1,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 72%", once: true },
+        y: 16,
+        duration: 0.55,
+        stagger: 0.05,
+        ease: "power2.out",
+        clearProps: "all",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 80%",
+          once: true,
+        },
       });
     }, el);
     return () => ctx.revert();
@@ -53,9 +68,10 @@ export function HubBridge({
             {eyebrow}
           </p>
         ) : null}
-        <p className={styles.bridgeStatement} data-bridge>
+        <SvgDraw variant="rule" className={styles.bridgeRule} />
+        <TextSplit as="p" mode="word" className={styles.bridgeStatement}>
           {statement}
-        </p>
+        </TextSplit>
         {support ? (
           <p className={styles.bridgeSupport} data-bridge>
             {support}
@@ -63,17 +79,30 @@ export function HubBridge({
         ) : null}
       </div>
       <div className={styles.bridgeMedia} data-bridge>
-        <MediaPlaceholder aspect="wide" tone={tone} need={need} />
+        <MaskHover>
+          <HoverTilt max={5}>
+            <div data-mask-media>
+              <MotionMedia
+                aspect="wide"
+                tone={tone}
+                need={need}
+                image={plate}
+                fill={false}
+                sizes="(max-width: 900px) 100vw, 50vw"
+              />
+            </div>
+          </HoverTilt>
+        </MaskHover>
       </div>
     </section>
   );
 }
 
 type StripProps = {
-  plates: { need: string; tone?: BridgeProps["tone"] }[];
+  plates: { need: string; tone?: PlateTone; image?: MotionImage }[];
 };
 
-/** Dense visual strip — three atmospheric plates */
+/** Dense visual strip — hover tilt + mask DNA */
 export function HubFilmStrip({ plates }: StripProps) {
   const ref = useRef<HTMLElement | null>(null);
 
@@ -86,20 +115,21 @@ export function HubFilmStrip({ plates }: StripProps) {
       const cards = el.querySelectorAll("[data-strip]");
       gsap.from(cards, {
         opacity: 0,
-        y: 48,
-        duration: 0.9,
-        stagger: 0.12,
-        ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 78%", once: true },
+        y: 16,
+        duration: 0.55,
+        stagger: 0.05,
+        ease: "power2.out",
+        clearProps: "all",
+        scrollTrigger: { trigger: el, start: "top 80%", once: true },
       });
       cards.forEach((card) => {
         const img = card.querySelector("[data-strip-inner]");
         if (!img) return;
         gsap.fromTo(
           img,
-          { yPercent: -6 },
+          { yPercent: -3 },
           {
-            yPercent: 6,
+            yPercent: 3,
             ease: "none",
             scrollTrigger: {
               trigger: card,
@@ -118,9 +148,20 @@ export function HubFilmStrip({ plates }: StripProps) {
     <section ref={ref} className={styles.strip} aria-hidden="true">
       {plates.map((p) => (
         <div key={p.need} className={styles.stripCard} data-strip>
-          <div className={styles.stripInner} data-strip-inner>
-            <MediaPlaceholder aspect="portrait" tone={p.tone ?? "dark"} need={p.need} />
-          </div>
+          <MaskHover className={styles.stripMask}>
+            <HoverTilt max={4} className={styles.stripTilt}>
+              <div className={styles.stripInner} data-strip-inner data-mask-media>
+                <MotionMedia
+                  aspect="portrait"
+                  tone={p.tone ?? "dark"}
+                  need={p.need}
+                  image={p.image ?? plateForTone(p.tone ?? "dark")}
+                  fill={false}
+                  sizes="(max-width: 900px) 45vw, 28vw"
+                />
+              </div>
+            </HoverTilt>
+          </MaskHover>
         </div>
       ))}
     </section>
@@ -137,7 +178,7 @@ type CloserProps = {
   secondaryLabel?: string;
 };
 
-/** Airvoir / homepage FinalCTA energy for hubs */
+/** Hub close — physics float + SVG + text split */
 export function HubCloser({
   mantra = ["BE UNREAL.", "BE UNREASONABLE."],
   title,
@@ -157,11 +198,12 @@ export function HubCloser({
     const ctx = gsap.context(() => {
       gsap.from(el.querySelectorAll("[data-close]"), {
         opacity: 0,
-        y: 32,
-        duration: 0.95,
-        stagger: 0.09,
-        ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 70%", once: true },
+        y: 14,
+        duration: 0.55,
+        stagger: 0.05,
+        ease: "power2.out",
+        clearProps: "all",
+        scrollTrigger: { trigger: el, start: "top 80%", once: true },
       });
     }, el);
     return () => ctx.revert();
@@ -170,26 +212,32 @@ export function HubCloser({
   return (
     <section ref={ref} className={styles.closer}>
       <div className={styles.closerGlow} aria-hidden="true" />
-      <p className={styles.closerMantra} data-close>
-        {mantra.map((line) => (
-          <span key={line}>{line}</span>
-        ))}
-      </p>
-      <h2 className={styles.closerTitle} data-close>
+      <PhysicsFloat amp={9} duration={5.4} className={styles.closerFloat}>
+        <span className={styles.closerOrb} aria-hidden="true" />
+      </PhysicsFloat>
+      <ScrambleText as="p" className={styles.closerMantra}>
+        {mantra.join(" ")}
+      </ScrambleText>
+      <SvgDraw variant="flourish" className={styles.closerRule} />
+      <TextSplit as="h2" mode="word" className={styles.closerTitle}>
         {title}
-      </h2>
+      </TextSplit>
       {lead ? (
         <p className={styles.closerLead} data-close>
           {lead}
         </p>
       ) : null}
       <div className={styles.closerActions} data-close>
-        <Link href={primaryHref} className={styles.closerPrimary}>
+        <Link href={primaryHref} className={styles.closerPrimary} data-magnetic>
           {primaryLabel}
           <span aria-hidden="true"> →</span>
         </Link>
         {secondaryHref && secondaryLabel ? (
-          <Link href={secondaryHref} className={styles.closerSecondary}>
+          <Link
+            href={secondaryHref}
+            className={styles.closerSecondary}
+            data-magnetic
+          >
             {secondaryLabel}
           </Link>
         ) : null}

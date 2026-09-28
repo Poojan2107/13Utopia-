@@ -1,5 +1,6 @@
 import { SiteFooter, SiteHeader } from "@/components/layout";
 import {
+  AmbientField,
   MagneticCursor,
   PageTransition,
   SmoothScrollProvider,
@@ -12,14 +13,17 @@ export default function MarketingLayout({
 }>) {
   return (
     <SmoothScrollProvider>
-      <PageTransition />
+      <AmbientField />
       <MagneticCursor />
+      <PageTransition />
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>
-      <SiteHeader />
-      <main id="main-content">{children}</main>
-      <SiteFooter />
+      <div className="marketing-shell">
+        <SiteHeader />
+        <main id="main-content">{children}</main>
+        <SiteFooter />
+      </div>
     </SmoothScrollProvider>
   );
 }

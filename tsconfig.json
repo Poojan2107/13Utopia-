@@ -30,5 +30,10 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "_recovered_hero"]
+  "exclude": [
+    "node_modules",
+    "_recovered_hero",
+    "Awwwards_Master_Pack",
+    "animmaster"
+  ]
 }

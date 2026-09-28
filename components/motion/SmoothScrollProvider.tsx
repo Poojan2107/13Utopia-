@@ -14,7 +14,7 @@ type Props = {
 
 /**
  * Lenis smooth scroll synced to GSAP ScrollTrigger.
- * Default Lenis scrolls the window — no scrollerProxy needed (proxy desyncs sticky scrub).
+ * Tuned for pinned scrub theaters — shorter ease, lag smoothing on.
  */
 export function SmoothScrollProvider({ children }: Props) {
   useEffect(() => {
@@ -27,10 +27,10 @@ export function SmoothScrollProvider({ children }: Props) {
     document.documentElement.classList.add("has-smooth-scroll");
 
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 0.92,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      touchMultiplier: 1.35,
+      touchMultiplier: 1.2,
       autoRaf: false,
     });
 
@@ -40,7 +40,8 @@ export function SmoothScrollProvider({ children }: Props) {
       lenis.raf(time * 1000);
     };
     gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
+    // Allow GSAP to skip catch-up frames under load (was 0 — felt laggy)
+    gsap.ticker.lagSmoothing(500, 33);
 
     const refresh = () => ScrollTrigger.refresh();
     window.addEventListener("load", refresh);

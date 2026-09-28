@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   Breadcrumbs,
   Container,
@@ -16,7 +17,7 @@ import hub from "@/styles/ui/HubBody.module.css";
 export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Leadership | Collective | 13 UTOPIA",
-    description: "Leadership at 13 UTOPIA — named people publish when verified.",
+    description: "Leadership at 13 UTOPIA — partners across Create, Build, and Grow.",
   },
   path: "/collective/leadership",
 });
@@ -28,7 +29,7 @@ export default function LeadershipPage() {
       <PageHero
         eyebrow="Collective"
         title="Leadership"
-        description="Direction for Create, Build, and Grow — named founders publish with verified portraits."
+        description="Partners shaping the standard across Create, Build, and Grow."
         layout="full"
         media={
           <MediaPlaceholder
@@ -54,23 +55,41 @@ export default function LeadershipPage() {
           {people.map((person) => (
             <li key={person.slug}>
               <div className={hub.entry}>
-                <MediaPlaceholder
-                  aspect="square"
-                  tone="warm"
-                  need={`Portrait — ${person.name}`}
-                />
-                <div>
+                {person.image ? (
+                  <div className={hub.portraitFrame}>
+                    <Image
+                      src={person.image}
+                      alt={person.name}
+                      fill
+                      priority
+                      sizes="(max-width: 768px) 100vw, 260px"
+                      className={hub.portraitImg}
+                    />
+                  </div>
+                ) : (
+                  <MediaPlaceholder
+                    aspect="square"
+                    tone="warm"
+                    need={`Portrait — ${person.name}`}
+                  />
+                )}
+                <div className={hub.entryContent}>
                   <h2 className={hub.entryTitle}>{person.name}</h2>
-                  <p className={hub.entryMeta}>
+                  <div className={hub.entryMeta}>
                     <span>{person.role}</span>
-                  </p>
+                    {person.location ? (
+                      <span className={hub.entryLocation}>· {person.location}</span>
+                    ) : null}
+                  </div>
                   <p className={hub.entryBody}>{person.bio}</p>
                   {person.expertise.length ? (
-                    <p className={hub.entryMeta}>
+                    <div className={hub.expertiseList}>
                       {person.expertise.map((e) => (
-                        <span key={e}>{e}</span>
+                        <span key={e} className={hub.expertiseTag}>
+                          {e}
+                        </span>
                       ))}
-                    </p>
+                    </div>
                   ) : null}
                 </div>
               </div>

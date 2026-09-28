@@ -1,0 +1,24 @@
+.root {
+  display: block;
+  text-wrap: balance;
+}
+
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.unit {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unit {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

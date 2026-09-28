@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
+import { plateForTone, type PlateTone } from "@/content/plates";
 import styles from "@/styles/ui/MediaPlaceholder.module.css";
 
 type Props = {
@@ -7,7 +9,7 @@ type Props = {
   brief?: string;
   aspect?: "hero" | "wide" | "square" | "portrait" | "film";
   className?: string;
-  tone?: "dark" | "warm" | "create" | "build" | "grow" | "strategy";
+  tone?: PlateTone;
   /** Show art-direction caption (off by default — pages should feel finished) */
   annotate?: boolean;
   /** Stretch frame to parent (cinematic stages) */
@@ -15,7 +17,7 @@ type Props = {
 };
 
 /**
- * Atmospheric media plate. Looks designed now; swap for real imagery later.
+ * Atmospheric media plate — sculpt kit by tone until photography lands.
  * `need` documents intent without painting "IMAGE NEEDED" on the page.
  */
 export function MediaPlaceholder({
@@ -27,6 +29,8 @@ export function MediaPlaceholder({
   annotate = false,
   fill = false,
 }: Props) {
+  const plate = plateForTone(tone);
+
   return (
     <figure
       className={cn(
@@ -40,6 +44,20 @@ export function MediaPlaceholder({
       title={annotate ? undefined : need}
     >
       <div className={styles.frame}>
+        <Image
+          src={plate.src}
+          alt={plate.alt ?? need}
+          fill
+          sizes={
+            aspect === "hero"
+              ? "100vw"
+              : "(max-width: 900px) 100vw, 60vw"
+          }
+          style={{
+            objectFit: "cover",
+            objectPosition: plate.objectPosition ?? "50% 50%",
+          }}
+        />
         <span className={styles.grain} aria-hidden="true" />
         <span className={styles.glow} aria-hidden="true" />
         <span className={styles.rule} aria-hidden="true" />

@@ -59,16 +59,16 @@
   z-index: 3;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, transparent 18%),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.35) 18%, transparent 32%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.68) 0%, transparent 18%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.68) 18%, transparent 32%),
     linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.78) 0%,
-      rgba(0, 0, 0, 0.35) 20%,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.65) 20%,
       transparent 34%,
       transparent 66%,
-      rgba(0, 0, 0, 0.35) 80%,
-      rgba(0, 0, 0, 0.78) 100%
+      rgba(0, 0, 0, 0.65) 80%,
+      rgba(0, 0, 0, 0.8) 100%
     );
 }
 

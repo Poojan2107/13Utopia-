@@ -1,111 +1,96 @@
-/* 08 — Collective / Story preview */
-
 .wrap {
   --ink: #f3f1ea;
   --ink-dim: var(--color-fg-muted);
   --gold: var(--color-gold);
-  --gold-line: rgba(232, 197, 106, 0.5);
-  --gold-soft: rgba(232, 197, 106, 0.75);
 
   position: relative;
+  isolation: isolate;
   background: #000;
   color: var(--ink);
-  padding: clamp(5rem, 12vh, 8rem) 0;
-  border-top: 1px solid rgba(243, 241, 234, 0.06);
+  padding: clamp(5.5rem, 12vh, 9rem) 0;
+  border-top: 1px solid rgba(243, 241, 234, 0.08);
   overflow: hidden;
 }
 
-.atmosphere {
+.media {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      ellipse 50% 40% at 15% 80%,
-      rgba(100, 70, 20, 0.18) 0%,
-      transparent 70%
-    ),
-    linear-gradient(
-      180deg,
-      transparent 0%,
-      rgba(0, 0, 0, 0.4) 100%
-    );
+  z-index: 0;
+}
+
+.mediaImg {
+  object-fit: cover;
+  opacity: 0.45;
+}
+
+.mediaVeil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.92) 0%,
+    rgba(0, 0, 0, 0.72) 42%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
 }
 
 .inner {
   position: relative;
   z-index: 1;
-  max-width: 1200px;
+  max-width: 1240px;
   margin-inline: auto;
   padding-inline: clamp(1.5rem, 5vw, 4.5rem);
 }
 
 .head {
   margin-bottom: clamp(2.5rem, 5vh, 3.5rem);
+  max-width: 18ch;
 }
 
-.marker {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  margin-bottom: 1.75rem;
-}
-
-.markerIndex {
+.kicker {
+  margin: 0 0 1rem;
   font-family: var(--font-ui);
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--gold-soft);
-}
-
-.markerRule {
-  width: 1.75rem;
-  height: 1px;
-  background: var(--gold-line);
-}
-
-.markerLabel {
-  font-family: var(--font-ui);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-fg-muted);
+  color: var(--color-gold-muted);
 }
 
 .heading {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-size: clamp(2.4rem, 4.8vw, 3.75rem);
   font-weight: 400;
   letter-spacing: -0.03em;
-  line-height: 1.05;
-  max-width: 14ch;
+  line-height: 1.06;
+  text-wrap: balance;
 }
 
 .split {
   display: grid;
-  gap: 1.5rem;
-  max-width: 40rem;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  max-width: 52rem;
   margin-bottom: clamp(2.5rem, 5vh, 3.5rem);
 }
 
 .body {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+  font-size: clamp(1.15rem, 1.7vw, 1.35rem);
   font-style: italic;
   line-height: 1.45;
-  color: rgba(243, 241, 234, 0.82);
+  color: color-mix(in srgb, var(--color-warm-white) 90%, transparent);
 }
 
 .note {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 0.975rem;
+  line-height: 1.65;
   color: var(--ink-dim);
+  align-self: end;
 }
 
 .actions {
@@ -117,56 +102,48 @@
 
 .primary {
   font-family: var(--font-ui);
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
   font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   text-decoration: none;
   color: #050505;
   background: var(--ink);
-  padding: 1.05rem 1.65rem;
-  transition:
-    background 0.3s ease,
-    color 0.3s ease;
+  padding: 0.95rem 1.5rem;
+  border: 1px solid var(--ink);
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .primary:hover,
 .primary:focus-visible {
   background: var(--gold);
-  outline: none;
+  border-color: var(--gold);
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
 }
 
 .secondary {
   font-family: var(--font-ui);
-  font-size: 0.75rem;
+  font-size: 0.9375rem;
   font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
   text-decoration: none;
-  color: var(--color-fg-muted);
-  border-bottom: 1px solid rgba(232, 197, 106, 0.4);
-  padding-bottom: 0.25rem;
-  transition:
-    color 0.25s ease,
-    border-color 0.25s ease;
+  color: var(--ink);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 40%, transparent);
+  padding-bottom: 0.2rem;
 }
 
 .secondary:hover,
 .secondary:focus-visible {
   color: var(--gold);
   border-bottom-color: var(--gold);
-  outline: none;
+  outline: 2px solid var(--color-gold);
+  outline-offset: 4px;
 }
 
-@media (min-width: 900px) {
-  .heading {
-    max-width: 16ch;
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: 1fr;
   }
 
-  .split {
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 3rem;
+  .heading {
     max-width: none;
-    align-items: start;
   }
 }

@@ -14,6 +14,7 @@ export {
   DetailCtaRow,
 } from "./DetailKit";
 export { MediaPlaceholder } from "./MediaPlaceholder";
+export { HeroPlate } from "./HeroPlate";
 export { PageHero, RelatedLinks } from "./PageHero";
 export { Section } from "./Section";
 export { SectionHeading } from "./SectionHeading";

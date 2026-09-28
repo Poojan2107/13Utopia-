@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
 import gsap from "gsap";
-import { MediaPlaceholder } from "@/components/ui/MediaPlaceholder";
+import { MotionMedia, type MotionImage } from "@/components/motion/MotionMedia";
 import { TextRoll } from "@/components/motion/TextRoll";
 import { cn } from "@/lib/utils/cn";
 import styles from "@/styles/motion/CreativeCarousel.module.css";
@@ -12,6 +12,7 @@ export type CarouselSlide = {
   caption?: string;
   need: string;
   tone?: "dark" | "warm" | "create" | "build" | "grow" | "strategy";
+  image?: MotionImage;
 };
 
 type Props = {
@@ -116,6 +117,7 @@ export function CreativeCarousel({
       <div
         ref={stageRef}
         className={styles.stage}
+        data-cursor="drag"
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
         onPointerCancel={() => {
@@ -130,11 +132,13 @@ export function CreativeCarousel({
             aria-hidden={i !== index}
           >
             <div className={styles.media}>
-              <MediaPlaceholder
+              <MotionMedia
                 aspect="wide"
                 tone={slide.tone ?? "warm"}
                 need={slide.need}
+                image={slide.image}
                 fill
+                sizes="(max-width: 900px) 100vw, 60vw"
               />
             </div>
             <div className={styles.copy}>

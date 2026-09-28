@@ -359,12 +359,26 @@ export function GoldSilkCurtain() {
       animId = requestAnimationFrame(render);
     };
 
-    animId = requestAnimationFrame(render);
+    let isIntersecting = true;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        isIntersecting = entries[0]?.isIntersecting ?? true;
+        if (isIntersecting && !document.hidden) {
+          cancelAnimationFrame(animId);
+          animId = requestAnimationFrame(render);
+        } else {
+          cancelAnimationFrame(animId);
+        }
+      },
+      { threshold: 0.01 },
+    );
+    observer.observe(canvas);
 
     const onVis = () => {
-      if (document.hidden) {
+      if (document.hidden || !isIntersecting) {
         cancelAnimationFrame(animId);
       } else {
+        cancelAnimationFrame(animId);
         animId = requestAnimationFrame(render);
       }
     };
@@ -372,6 +386,7 @@ export function GoldSilkCurtain() {
 
     return () => {
       cancelAnimationFrame(animId);
+      observer.disconnect();
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVis);
     };

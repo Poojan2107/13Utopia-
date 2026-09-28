@@ -43,5 +43,10 @@ next-env.d.ts
 # local recovery / scratch
 /_recovered_hero/
 
+# Animmaster pack binaries + extracted labs (keep CATALOG.md)
+/animmaster/Awwwards Pack-*/
+/animmaster/_lab/
+/Awwwards_Master_Pack/
+
 # large / stray media not needed in repo (keep metal-human assets)
 /public/20260924-*.mp4

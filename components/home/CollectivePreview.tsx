@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { plates } from "@/content/plates";
+import { company } from "@/content/site";
+import { REVEAL } from "@/lib/motion/reveal";
 import styles from "@/styles/home/CollectivePreview.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/**
- * 08 — Collective / Story
- * Human bridge — typography-led until people content ships.
- */
 export function CollectivePreview() {
   const ref = useRef<HTMLElement | null>(null);
 
@@ -23,15 +23,12 @@ export function CollectivePreview() {
     const ctx = gsap.context(() => {
       gsap.from(el.querySelectorAll("[data-rise]"), {
         opacity: 0,
-        y: 28,
-        duration: 0.85,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 72%",
-          once: true,
-        },
+        y: REVEAL.y,
+        duration: REVEAL.duration,
+        stagger: REVEAL.stagger,
+        ease: REVEAL.ease,
+        clearProps: "all",
+        scrollTrigger: { trigger: el, start: REVEAL.start, once: true },
       });
     }, el);
 
@@ -45,40 +42,43 @@ export function CollectivePreview() {
       className={styles.wrap}
       aria-labelledby="collective-title"
     >
-      <div className={styles.atmosphere} aria-hidden="true" />
+      <div className={styles.media} aria-hidden="true">
+        <Image
+          src={plates.collective.src}
+          alt=""
+          fill
+          sizes="100vw"
+          className={styles.mediaImg}
+          style={{ objectPosition: plates.collective.objectPosition }}
+        />
+        <span className={styles.mediaVeil} />
+      </div>
+
       <div className={styles.inner}>
         <header className={styles.head} data-rise>
-          <div className={styles.marker}>
-            <span className={styles.markerIndex}>08</span>
-            <span className={styles.markerRule} aria-hidden="true" />
-            <span className={styles.markerLabel}>People</span>
-          </div>
+          <p className={styles.kicker}>People</p>
           <h2 id="collective-title" className={styles.heading}>
-            Built by people
-            <br />
-            who refuse default.
+            Built by people who refuse default.
           </h2>
         </header>
 
         <div className={styles.split}>
           <p className={styles.body} data-rise>
-            Creative, technology, and growth practitioners working as one
-            collective — across India and Canada — to question the obvious and
-            make ambitious work real.
+            {company.about}
           </p>
           <p className={styles.note} data-rise>
-            India and Canada. Creative, technology, and growth — one practice
-            across two continents.
+            Based in Greater Toronto with practice across India and Canada.
+            Named portraits ship with the next photography pass.
           </p>
         </div>
 
         <div className={styles.actions} data-rise>
-          <Link href="/collective" className={styles.primary}>
-            Meet the Collective
+          <Link href="/collective/leadership" className={styles.primary}>
+            Meet leadership
             <span aria-hidden="true"> →</span>
           </Link>
           <Link href="/our-story" className={styles.secondary}>
-            Our Story
+            Read our story
           </Link>
         </div>
       </div>

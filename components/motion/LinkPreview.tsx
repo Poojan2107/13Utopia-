@@ -2,23 +2,21 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { MediaPlaceholder } from "@/components/ui/MediaPlaceholder";
+import { MotionMedia, type MotionImage } from "@/components/motion/MotionMedia";
 import styles from "@/styles/motion/LinkPreview.module.css";
 
 export type PreviewItem = {
   selector: string;
   need: string;
   tone?: "dark" | "warm" | "create" | "build" | "grow" | "strategy";
+  image?: MotionImage;
 };
 
 type Props = {
   items: PreviewItem[];
 };
 
-/**
- * Animmaster hover — floating media preview that follows the cursor on list links.
- * Parent links should use `data-preview-id` matching item.selector.
- */
+/** Animmaster hover — floating media preview that follows the cursor */
 export function LinkPreview({ items }: Props) {
   const rootRef = useRef<HTMLDivElement | null>(null);
 
@@ -89,11 +87,13 @@ export function LinkPreview({ items }: Props) {
       <div className={styles.float} data-float>
         {items.map((item) => (
           <div key={item.selector} className={styles.plate} data-plate>
-            <MediaPlaceholder
+            <MotionMedia
               aspect="portrait"
               tone={item.tone ?? "warm"}
               need={item.need}
+              image={item.image}
               fill
+              sizes="240px"
             />
           </div>
         ))}

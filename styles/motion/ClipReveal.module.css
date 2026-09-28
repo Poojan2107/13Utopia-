@@ -1,0 +1,4 @@
+.root {
+  width: 100%;
+  will-change: clip-path, transform, opacity;
+}

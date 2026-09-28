@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MediaPlaceholder } from "@/components/ui/MediaPlaceholder";
+import { MotionMedia, type MotionImage } from "@/components/motion/MotionMedia";
 import styles from "@/styles/motion/CinematicParallax.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -14,6 +14,7 @@ export type CinematicScene = {
   meta?: string;
   need: string;
   tone?: "dark" | "warm" | "create" | "build" | "grow" | "strategy";
+  image?: MotionImage;
 };
 
 type Props = {
@@ -66,7 +67,7 @@ export function CinematicParallax({ scenes, eyebrow = "Reel" }: Props) {
           trigger: root,
           start: "top top",
           end: "bottom bottom",
-          scrub: 1.1,
+          scrub: 0.85,
           onUpdate: (self) => {
             const i = Math.min(
               scenes.length - 1,
@@ -162,7 +163,7 @@ export function CinematicParallax({ scenes, eyebrow = "Reel" }: Props) {
     return () => ctx.revert();
   }, [scenes]);
 
-  const scrollVh = Math.max(240, scenes.length * 120);
+  const scrollVh = Math.max(180, scenes.length * 85);
 
   return (
     <section
@@ -207,11 +208,14 @@ export function CinematicParallax({ scenes, eyebrow = "Reel" }: Props) {
                 style={{ opacity: i === 0 ? 1 : 0, zIndex: i }}
               >
                 <div className={styles.scale} data-plate-scale>
-                  <MediaPlaceholder
+                  <MotionMedia
                     aspect="hero"
                     tone={scene.tone ?? "warm"}
                     need={scene.need}
+                    image={scene.image}
                     fill
+                    sizes="100vw"
+                    priority={i === 0}
                   />
                 </div>
               </div>
@@ -271,10 +275,11 @@ export function CinematicParallax({ scenes, eyebrow = "Reel" }: Props) {
         <div className={styles.reducedList} aria-hidden="true">
           {scenes.map((scene) => (
             <div key={`rm-${scene.need}`} className={styles.reducedCard}>
-              <MediaPlaceholder
+              <MotionMedia
                 aspect="wide"
                 tone={scene.tone ?? "warm"}
                 need={scene.need}
+                image={scene.image}
               />
               {scene.meta ? <p className={styles.meta}>{scene.meta}</p> : null}
               <h2 className={styles.title}>{scene.title}</h2>

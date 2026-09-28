@@ -34,7 +34,7 @@
   background:
     radial-gradient(
       ellipse 60% 52% at 82% 12%,
-      rgba(232, 197, 106, 0.28) 0%,
+      color-mix(in srgb, var(--color-gold) 28%, transparent) 0%,
       transparent 58%
     ),
     radial-gradient(
@@ -45,7 +45,7 @@
     linear-gradient(
       125deg,
       transparent 40%,
-      rgba(232, 197, 106, 0.04) 70%,
+      color-mix(in srgb, var(--color-gold) 4%, transparent) 70%,
       transparent 100%
     ),
     linear-gradient(155deg, #1f1a12 0%, #0e0c09 48%, #050505 100%);
@@ -90,7 +90,7 @@
     ),
     radial-gradient(
       ellipse 38% 32% at 20% 20%,
-      rgba(232, 197, 106, 0.12) 0%,
+      color-mix(in srgb, var(--color-gold) 12%, transparent) 0%,
       transparent 50%
     ),
     linear-gradient(160deg, #16120c 0%, #0a0908 55%, #050505 100%);
@@ -105,7 +105,7 @@
     ),
     radial-gradient(
       ellipse 40% 35% at 85% 70%,
-      rgba(232, 197, 106, 0.08) 0%,
+      color-mix(in srgb, var(--color-gold) 8%, transparent) 0%,
       transparent 50%
     ),
     linear-gradient(160deg, #141414 0%, #090909 55%, #050505 100%);
@@ -188,8 +188,8 @@
   z-index: 3;
   background: linear-gradient(
     90deg,
-    rgba(232, 197, 106, 0.75),
-    rgba(232, 197, 106, 0.15)
+    color-mix(in srgb, var(--color-gold) 75%, transparent),
+    color-mix(in srgb, var(--color-gold) 15%, transparent)
   );
 }
 
@@ -210,7 +210,7 @@
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(232, 197, 106, 0.55);
+  color: color-mix(in srgb, var(--color-gold) 55%, transparent);
 }
 
 .need {

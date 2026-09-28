@@ -47,6 +47,8 @@ export type CaseStudy = {
   title: string;
   client: string;
   industry: string;
+  year?: string;
+  liveUrl?: string;
   summary: string;
   challenge: string;
   insight: string;
@@ -54,6 +56,11 @@ export type CaseStudy = {
   build: string;
   result: string;
   lesson: string;
+  image?: string;
+  stats?: { value: string; label: string; detail?: string }[];
+  deliverables?: { title: string; description: string }[];
+  stack?: string[];
+  testimonial?: { quote: string; author: string; role: string };
   capabilitySlugs: string[];
   solutionSlugs: string[];
   perspectiveSlugs: string[];
@@ -86,6 +93,8 @@ export type Person = {
   discipline: "leadership" | "creative" | "technology" | "growth" | "culture";
   bio: string;
   expertise: string[];
+  image?: string;
+  location?: string;
   seo: SeoFields;
   status: ContentStatus;
 };

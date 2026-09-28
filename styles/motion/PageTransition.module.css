@@ -1,57 +1,47 @@
-/* Route curtain — Animmaster page transition spirit */
+/* Soft route change — clip block + gold edge */
 
-.curtain {
+.root {
   position: fixed;
   inset: 0;
-  z-index: 200;
+  z-index: 180;
   pointer-events: none;
   visibility: hidden;
-  overflow: hidden;
 }
 
-.panel {
+.veil {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, #050505 78%, transparent);
+  opacity: 0;
+}
+
+.block {
+  position: absolute;
+  inset: 0;
+  background: #050505;
+  opacity: 0;
+  clip-path: inset(50% 0 50% 0);
+}
+
+.edge {
   position: absolute;
   left: 0;
-  width: 100%;
-  height: 34%;
-  background: #050505;
-}
-
-.panel:nth-child(1) {
-  top: 0;
-}
-
-.panel:nth-child(2) {
-  top: 33%;
-  height: 34%;
-}
-
-.panel:nth-child(3) {
-  bottom: 0;
-  height: 34%;
-}
-
-.panelGold {
+  right: 0;
+  top: 50%;
+  height: 1px;
   background: linear-gradient(
     90deg,
-    #0a0906 0%,
-    #1a160e 40%,
-    #2a2214 50%,
-    #1a160e 60%,
-    #0a0906 100%
+    transparent 0%,
+    color-mix(in srgb, var(--color-gold) 55%, transparent) 18%,
+    var(--color-gold) 50%,
+    color-mix(in srgb, var(--color-gold) 55%, transparent) 82%,
+    transparent 100%
   );
-  border-block: 1px solid rgba(232, 197, 106, 0.22);
+  transform: scaleX(0);
 }
 
-.mark {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-  letter-spacing: 0.28em;
-  color: rgba(232, 197, 106, 0.9);
-  white-space: nowrap;
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    display: none;
+  }
 }

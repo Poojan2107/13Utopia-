@@ -1,0 +1,37 @@
+.root {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+  isolation: isolate;
+}
+
+.shine {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--color-gold) 22%, transparent) 0%,
+    transparent 55%
+  );
+  background-size: 140% 140%;
+  background-position: 50% 50%;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  mix-blend-mode: soft-light;
+}
+
+.root:hover .shine {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    transform: none !important;
+  }
+
+  .shine {
+    display: none;
+  }
+}

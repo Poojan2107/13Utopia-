@@ -1,9 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { HubBridge, HubCloser } from "@/components/ui/HubChrome";
-import { MediaPlaceholder } from "@/components/ui/MediaPlaceholder";
+import { MotionMedia, type MotionImage } from "@/components/motion/MotionMedia";
 import { PageReveal } from "@/components/motion/PageReveal";
+import { ClipReveal } from "@/components/motion/ClipReveal";
+import { MaskHover } from "@/components/motion/MaskHover";
+import { HoverTilt } from "@/components/motion/HoverTilt";
+import { SvgDraw } from "@/components/motion/SvgDraw";
+import { TextSplit } from "@/components/motion/TextSplit";
+import { AccordionRail } from "@/components/motion/AccordionRail";
+import { HubBridge, HubCloser } from "@/components/ui/HubChrome";
+import { plateForTone, type PlateTone } from "@/content/plates";
 import hub from "@/styles/ui/HubBody.module.css";
 
 type PracticeListProps = {
@@ -14,9 +21,10 @@ type PracticeListProps = {
 export function PracticeList({ title = "Practices", items }: PracticeListProps) {
   return (
     <PageReveal>
-      <h2 className={hub.subhead} data-reveal>
+      <SvgDraw variant="rule" className={hub.detailRule} />
+      <TextSplit as="h2" mode="word" className={hub.subhead}>
         {title}
-      </h2>
+      </TextSplit>
       <ul className={hub.practiceList} data-reveal>
         {items.map((item) => (
           <li key={item}>{item}</li>
@@ -32,19 +40,14 @@ type PhaseProps = {
 
 export function PhaseRail({ phases }: PhaseProps) {
   return (
-    <PageReveal>
-      <ol className={hub.phaseRail}>
-        {phases.map((phase, i) => (
-          <li key={phase.title} data-reveal>
-            <span className={hub.phaseNum}>{String(i + 1).padStart(2, "0")}</span>
-            <div>
-              <h3 className={hub.phaseTitle}>{phase.title}</h3>
-              <p className={hub.phaseBody}>{phase.body}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </PageReveal>
+    <AccordionRail
+      eyebrow="Phases"
+      lead="How the engagement moves."
+      items={phases.map((phase) => ({
+        title: phase.title,
+        body: phase.body,
+      }))}
+    />
   );
 }
 
@@ -55,6 +58,7 @@ type ProseProps = {
 export function ProseBlock({ paragraphs }: ProseProps) {
   return (
     <PageReveal>
+      <SvgDraw variant="flourish" className={hub.detailFlourish} />
       <div className={hub.prose} data-reveal>
         {paragraphs.map((p) => (
           <p key={p.slice(0, 48)}>{p}</p>
@@ -67,20 +71,36 @@ export function ProseBlock({ paragraphs }: ProseProps) {
 type MediaBreakProps = {
   need: string;
   brief?: string;
-  tone?: "dark" | "warm" | "create" | "build" | "grow" | "strategy";
+  tone?: PlateTone;
   aspect?: "hero" | "wide" | "square" | "portrait" | "film";
+  image?: MotionImage;
 };
 
 export function MediaBreak({
   need,
-  brief,
   tone = "warm",
   aspect = "wide",
+  image,
 }: MediaBreakProps) {
   return (
-    <div className={hub.mediaBreak}>
-      <MediaPlaceholder aspect={aspect} tone={tone} need={need} brief={brief} />
-    </div>
+    <ClipReveal>
+      <div className={hub.mediaBreak}>
+        <MaskHover>
+          <HoverTilt max={4}>
+            <div data-mask-media>
+              <MotionMedia
+                aspect={aspect}
+                tone={tone}
+                need={need}
+                image={image ?? plateForTone(tone)}
+                fill={false}
+                sizes="100vw"
+              />
+            </div>
+          </HoverTilt>
+        </MaskHover>
+      </div>
+    </ClipReveal>
   );
 }
 
@@ -112,7 +132,8 @@ export function DetailBridge(props: {
   statement: string;
   support?: string;
   need: string;
-  tone?: "dark" | "warm" | "create" | "build" | "grow" | "strategy";
+  tone?: PlateTone;
+  image?: MotionImage;
 }) {
   return <HubBridge {...props} />;
 }
@@ -135,7 +156,7 @@ export function DetailCtaRow({
         <span aria-hidden="true"> →</span>
       </Link>
       {secondaryHref && secondaryLabel ? (
-        <Link href={secondaryHref} className={hub.ctaSecondary}>
+        <Link href={secondaryHref} className={hub.ctaSecondary} data-magnetic>
           {secondaryLabel}
         </Link>
       ) : null}

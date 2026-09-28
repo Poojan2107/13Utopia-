@@ -11,14 +11,16 @@ type Props = {
 };
 
 /**
- * Wordmark SVG for dark UI. JPEG assets retained for 3d/archive until photography kit lands.
+ * Official brand mark.
+ * horizontal = JPEG wordmark (black + gold sparkle) — use on light plate in dark UI.
+ * wordmark = path SVG fallback for mono contexts.
  */
 export function BrandLogo({
-  variant = "wordmark",
+  variant = "horizontal",
   className,
   priority,
 }: Props) {
-  if (variant === "wordmark" || variant === "horizontal") {
+  if (variant === "wordmark") {
     return (
       <span className={cn(styles.wrap, styles.wordmark, className)}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -28,6 +30,22 @@ export function BrandLogo({
           className={styles.svg}
           width={160}
           height={28}
+        />
+      </span>
+    );
+  }
+
+  if (variant === "horizontal") {
+    return (
+      <span className={cn(styles.wrap, styles.horizontal, className)}>
+        <Image
+          src="/brand/13-utopia-logo-horizontal.jpeg"
+          alt="13 UTOPIA"
+          width={320}
+          height={72}
+          className={styles.image}
+          priority={priority}
+          sizes="180px"
         />
       </span>
     );

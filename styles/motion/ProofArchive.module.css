@@ -1,0 +1,311 @@
+/* Scroll/071 — pinned sticky card spotlight, cinema grade */
+
+.root {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #030303;
+  color: #f3f1ea;
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 14%, transparent);
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      70% 55% at 78% 45%,
+      color-mix(in srgb, var(--color-gold) 16%, transparent) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      50% 40% at 15% 80%,
+      color-mix(in srgb, var(--color-gold) 8%, transparent) 0%,
+      transparent 55%
+    );
+}
+
+.stage {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  max-width: 1480px;
+  margin-inline: auto;
+  padding: 2rem clamp(1.25rem, 4vw, 3rem);
+  display: flex;
+  gap: clamp(1.5rem, 3.5vw, 3rem);
+}
+
+.copy {
+  flex: 0.95;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 30rem;
+  z-index: 2;
+}
+
+.eyebrow {
+  margin: 0 0 1rem;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-gold) 85%, transparent);
+}
+
+.lead {
+  margin: 0 0 2.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4.5vw, 4rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  text-transform: uppercase;
+  color: #f3f1ea;
+  text-wrap: balance;
+}
+
+.activeMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.counter {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  color: var(--color-gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.counterSep {
+  margin-inline: 0.35rem;
+  opacity: 0.45;
+  color: rgba(243, 241, 234, 0.45);
+}
+
+.meta {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.45);
+}
+
+.activeTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 3.2vw, 2.75rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: #f3f1ea;
+}
+
+.activeBody {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: rgba(243, 241, 234, 0.58);
+  max-width: 36ch;
+}
+
+.cta {
+  margin-top: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #050505;
+  background: var(--color-gold);
+  padding: 0.9rem 1.35rem;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.cta:hover {
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.cards {
+  flex: 1.15;
+  position: relative;
+  min-height: 0;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 78%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 30%, transparent);
+  background: #0a0a0a;
+  color: #f3f1ea;
+  will-change: transform;
+  transform-style: preserve-3d;
+  box-shadow:
+    0 50px 120px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(0, 0, 0, 0.45);
+}
+
+.cardActive {
+  border-color: color-mix(in srgb, var(--color-gold) 70%, transparent);
+}
+
+.cardLink {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cardImg {
+  object-fit: cover;
+  object-position: top center;
+  transform: scale(1.04);
+}
+
+.cardFallback {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    145deg,
+    #1a160e 0%,
+    #050505 60%,
+    color-mix(in srgb, var(--color-gold) 16%, #0a0a0a) 100%
+  );
+}
+
+.cardVeil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      transparent 35%,
+      rgba(5, 5, 5, 0.55) 70%,
+      rgba(5, 5, 5, 0.92) 100%
+    ),
+    radial-gradient(
+      80% 50% at 50% 0%,
+      color-mix(in srgb, var(--color-gold) 12%, transparent),
+      transparent 60%
+    );
+  pointer-events: none;
+}
+
+.cardCopy {
+  position: absolute;
+  left: 1.5rem;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.cardNum {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  color: var(--color-gold);
+}
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2.15rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1000px) {
+  .stage {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-block: 1.25rem;
+  }
+
+  .copy {
+    max-width: none;
+    flex: 0 0 auto;
+    justify-content: flex-start;
+    padding-top: 0.5rem;
+  }
+
+  .lead {
+    margin-bottom: 1rem;
+    font-size: clamp(1.65rem, 6vw, 2.35rem);
+  }
+
+  .activeBody {
+    display: none;
+  }
+
+  .cards {
+    flex: 1;
+    min-height: 55%;
+  }
+
+  .card {
+    height: auto;
+    width: 78%;
+    aspect-ratio: 4 / 5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    height: auto;
+    overflow: visible;
+  }
+
+  .stage {
+    display: grid;
+    grid-template-columns: 1fr;
+    height: auto;
+    gap: 2rem;
+    padding-block: 4rem;
+  }
+
+  .cards {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    perspective: none;
+  }
+
+  .card {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    transform: none !important;
+  }
+}

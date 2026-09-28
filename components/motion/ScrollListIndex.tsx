@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MediaPlaceholder } from "@/components/ui/MediaPlaceholder";
+import { MotionMedia, type MotionImage } from "@/components/motion/MotionMedia";
 import { TextRoll } from "@/components/motion/TextRoll";
 import { LinkPreview } from "@/components/motion/LinkPreview";
 import { cn } from "@/lib/utils/cn";
@@ -20,6 +20,7 @@ export type ScrollListItem = {
   cta?: string;
   tone?: "dark" | "warm" | "create" | "build" | "grow" | "strategy";
   need: string;
+  image?: MotionImage;
 };
 
 type Props = {
@@ -28,9 +29,7 @@ type Props = {
   label?: string;
 };
 
-/**
- * Dense scroll list + sticky preview (MWG 105 spirit, 13 UTOPIA system).
- */
+/** Dense scroll list + sticky preview + Animmaster link float */
 export function ScrollListIndex({ items, className, label }: Props) {
   const rootRef = useRef<HTMLElement | null>(null);
 
@@ -97,20 +96,20 @@ export function ScrollListIndex({ items, className, label }: Props) {
       };
 
       lines.forEach((line, i) => {
-        const drift = i % 2 === 0 ? -42 : 42;
+        const drift = i % 2 === 0 ? -28 : 28;
 
         ScrollTrigger.create({
           trigger: line,
           start: "top bottom",
           end: "bottom top",
-          scrub: 0.6,
+          scrub: 0.55,
           onUpdate: (self) => {
             const p = self.progress;
             const wave = Math.sin(p * Math.PI);
             const center = 1 - Math.min(1, Math.abs(p - 0.5) * 2.2);
             gsap.set(line, {
               x: drift * wave,
-              opacity: 0.28 + 0.72 * center,
+              opacity: 0.35 + 0.65 * center,
             });
           },
         });
@@ -127,10 +126,11 @@ export function ScrollListIndex({ items, className, label }: Props) {
 
       gsap.from(lines, {
         opacity: 0,
-        y: 56,
-        duration: 1,
-        stagger: 0.08,
-        ease: "power3.out",
+        y: 32,
+        duration: 0.65,
+        stagger: 0.06,
+        ease: "power2.out",
+        clearProps: "transform",
         scrollTrigger: {
           trigger: root,
           start: "top 78%",
@@ -155,6 +155,7 @@ export function ScrollListIndex({ items, className, label }: Props) {
                 className={styles.link}
                 data-preview-id={item.href}
                 data-cursor="hover"
+                data-magnetic
               >
                 <span className={styles.num}>
                   {String(i + 1).padStart(2, "0")}
@@ -183,13 +184,17 @@ export function ScrollListIndex({ items, className, label }: Props) {
           <div className={styles.previewPin}>
             {items.map((item, i) => (
               <div key={item.href} className={styles.previewPlate} data-preview>
-                <MediaPlaceholder
+                <MotionMedia
                   aspect="portrait"
                   tone={item.tone ?? "warm"}
                   need={item.need}
+                  image={item.image}
+                  fill
+                  sizes="(max-width: 900px) 100vw, 36vw"
                 />
                 <span className={styles.previewCaption}>
-                  {String(i + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+                  {String(i + 1).padStart(2, "0")} /{" "}
+                  {String(items.length).padStart(2, "0")}
                 </span>
               </div>
             ))}
@@ -202,6 +207,7 @@ export function ScrollListIndex({ items, className, label }: Props) {
           selector: item.href,
           need: item.need,
           tone: item.tone,
+          image: item.image,
         }))}
       />
     </section>

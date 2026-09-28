@@ -39,13 +39,14 @@ export function PageReveal({
       if (stagger && items.length) {
         gsap.from(items, {
           opacity: 0,
-          y,
-          duration: 0.85,
-          stagger: 0.08,
-          ease: "power3.out",
+          y: 16,
+          duration: 0.55,
+          stagger: 0.05,
+          ease: "power2.out",
+          clearProps: "all",
           scrollTrigger: {
             trigger: root,
-            start,
+            start: "top 82%",
             once: true,
           },
         });
@@ -54,12 +55,13 @@ export function PageReveal({
 
       gsap.from(root, {
         opacity: 0,
-        y,
-        duration: 0.9,
-        ease: "power3.out",
+        y: 16,
+        duration: 0.55,
+        ease: "power2.out",
+        clearProps: "all",
         scrollTrigger: {
           trigger: root,
-          start,
+          start: "top 82%",
           once: true,
         },
       });

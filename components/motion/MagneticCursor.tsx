@@ -5,112 +5,232 @@ import gsap from "gsap";
 import styles from "@/styles/motion/MagneticCursor.module.css";
 
 /**
- * Animmaster mouse effect — soft gold cursor + magnetic pull on [data-magnetic].
+ * Gold cursor + light magnetic pull.
+ * rAF-throttled move; no MutationObserver thrash; sticky stretch via quickTo.
  */
 export function MagneticCursor() {
   const dotRef = useRef<HTMLDivElement | null>(null);
   const ringRef = useRef<HTMLDivElement | null>(null);
+  const labelRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
     const dot = dotRef.current;
     const ring = ringRef.current;
-    if (!dot || !ring) return;
+    const label = labelRef.current;
+    if (!dot || !ring || !label) return;
 
     const fine = window.matchMedia("(pointer: fine)").matches;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!fine || reduce) {
       dot.style.display = "none";
       ring.style.display = "none";
+      label.style.display = "none";
       return;
     }
 
     document.documentElement.classList.add("has-custom-cursor");
 
-    const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    const ringPos = { x: pos.x, y: pos.y };
+    const moveDot = gsap.quickTo(dot, "x", { duration: 0.14, ease: "power3.out" });
+    const moveDotY = gsap.quickTo(dot, "y", { duration: 0.14, ease: "power3.out" });
+    const moveRing = gsap.quickTo(ring, "x", { duration: 0.38, ease: "power3.out" });
+    const moveRingY = gsap.quickTo(ring, "y", { duration: 0.38, ease: "power3.out" });
+    const moveLabel = gsap.quickTo(label, "x", { duration: 0.28, ease: "power3.out" });
+    const moveLabelY = gsap.quickTo(label, "y", { duration: 0.28, ease: "power3.out" });
+    const stretchX = gsap.quickTo(ring, "scaleX", { duration: 0.18, ease: "power2.out" });
+    const stretchY = gsap.quickTo(ring, "scaleY", { duration: 0.18, ease: "power2.out" });
+    const ringRot = gsap.quickTo(ring, "rotation", { duration: 0.18, ease: "power2.out" });
 
-    const moveDot = gsap.quickTo(dot, "x", { duration: 0.16, ease: "power3.out" });
-    const moveDotY = gsap.quickTo(dot, "y", { duration: 0.16, ease: "power3.out" });
-    const moveRing = gsap.quickTo(ring, "x", { duration: 0.45, ease: "power3.out" });
-    const moveRingY = gsap.quickTo(ring, "y", { duration: 0.45, ease: "power3.out" });
+    let sticky: HTMLElement | null = null;
+    let mode: "default" | "hover" | "view" | "drag" = "default";
+    let scrolling = false;
+    let scrollTimer = 0;
+    let raf = 0;
+    let pendingX = 0;
+    let pendingY = 0;
+    let hasPending = false;
+
+    const applyMove = () => {
+      raf = 0;
+      if (!hasPending || scrolling) return;
+      hasPending = false;
+      const x = pendingX;
+      const y = pendingY;
+
+      if (sticky) {
+        const rect = sticky.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = x - cx;
+        const dy = y - cy;
+        const abs = Math.max(Math.abs(dx), Math.abs(dy));
+        const stretch = Math.min(1.18, 1 + abs / Math.max(rect.height, 64));
+        const squash = Math.max(0.84, 1 - abs / Math.max(rect.width * 2.5, 120));
+        const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+        const px = cx + dx * 0.08;
+        const py = cy + dy * 0.08;
+        moveDot(px);
+        moveDotY(py);
+        moveRing(px);
+        moveRingY(py);
+        moveLabel(px);
+        moveLabelY(py);
+        stretchX(stretch);
+        stretchY(squash);
+        ringRot(angle);
+        return;
+      }
+
+      moveDot(x);
+      moveDotY(y);
+      moveRing(x);
+      moveRingY(y);
+      moveLabel(x);
+      moveLabelY(y);
+    };
 
     const onMove = (e: MouseEvent) => {
-      pos.x = e.clientX;
-      pos.y = e.clientY;
-      moveDot(pos.x);
-      moveDotY(pos.y);
-      moveRing(pos.x);
-      moveRingY(pos.y);
-      ringPos.x = pos.x;
-      ringPos.y = pos.y;
+      pendingX = e.clientX;
+      pendingY = e.clientY;
+      hasPending = true;
+      if (!raf) raf = requestAnimationFrame(applyMove);
+    };
+
+    const onScroll = () => {
+      scrolling = true;
+      window.clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(() => {
+        scrolling = false;
+      }, 120);
+    };
+
+    const setState = (next: typeof mode) => {
+      mode = next;
+      const map = {
+        default: { scale: 1, opacity: 1, text: "" },
+        hover: { scale: 2.1, opacity: 0.55, text: "" },
+        view: { scale: 3, opacity: 0.9, text: "View" },
+        drag: { scale: 3.2, opacity: 0.9, text: "Drag" },
+      } as const;
+      const s = map[next];
+      if (!sticky) {
+        gsap.to(ring, {
+          scale: s.scale,
+          scaleX: s.scale,
+          scaleY: s.scale,
+          rotation: 0,
+          opacity: s.opacity,
+          duration: 0.28,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      }
+      gsap.to(dot, {
+        scale: next === "default" ? 1 : 0.35,
+        duration: 0.25,
+        overwrite: "auto",
+      });
+      label.textContent = s.text;
+      gsap.to(label, {
+        autoAlpha: s.text ? 1 : 0,
+        duration: 0.2,
+        overwrite: "auto",
+      });
     };
 
     const onOver = (e: MouseEvent) => {
       const t = (e.target as HTMLElement | null)?.closest?.(
-        "a, button, [data-magnetic], [data-cursor='hover']",
-      );
-      if (t) {
-        gsap.to(ring, { scale: 2.4, opacity: 0.55, duration: 0.35, ease: "power2.out" });
-        gsap.to(dot, { scale: 0.4, duration: 0.3 });
+        "[data-cursor], a, button, [data-magnetic]",
+      ) as HTMLElement | null;
+      if (!t) return;
+      if (t.hasAttribute("data-magnetic") || t.hasAttribute("data-sticky-cursor")) {
+        sticky = t;
       }
+      const next = (t.getAttribute("data-cursor") as "hover" | "view" | "drag") || "hover";
+      setState(next === "view" || next === "drag" || next === "hover" ? next : "hover");
     };
 
     const onOut = (e: MouseEvent) => {
       const related = e.relatedTarget as HTMLElement | null;
-      if (related?.closest?.("a, button, [data-magnetic], [data-cursor='hover']")) return;
-      gsap.to(ring, { scale: 1, opacity: 1, duration: 0.35, ease: "power2.out" });
-      gsap.to(dot, { scale: 1, duration: 0.3 });
+      if (related?.closest?.("[data-cursor], a, button, [data-magnetic]")) return;
+      sticky = null;
+      gsap.to(ring, {
+        scaleX: 1,
+        scaleY: 1,
+        rotation: 0,
+        duration: 0.28,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+      setState("default");
     };
 
     const onMagnetic = (e: MouseEvent) => {
-      const el = (e.currentTarget as HTMLElement);
+      if (scrolling) return;
+      const el = e.currentTarget as HTMLElement;
       const rect = el.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
-      const dx = (e.clientX - cx) * 0.28;
-      const dy = (e.clientY - cy) * 0.28;
-      gsap.to(el, { x: dx, y: dy, duration: 0.35, ease: "power2.out" });
+      gsap.to(el, {
+        x: (e.clientX - cx) * 0.12,
+        y: (e.clientY - cy) * 0.12,
+        duration: 0.28,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
     };
 
     const onMagneticLeave = (e: MouseEvent) => {
+      sticky = null;
       gsap.to(e.currentTarget as HTMLElement, {
         x: 0,
         y: 0,
-        duration: 0.55,
-        ease: "elastic.out(1, 0.45)",
+        duration: 0.28,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+      gsap.to(ring, {
+        scaleX: mode === "default" ? 1 : 2.1,
+        scaleY: mode === "default" ? 1 : 2.1,
+        rotation: 0,
+        duration: 0.25,
+        overwrite: "auto",
       });
     };
 
-    window.addEventListener("mousemove", onMove);
-    document.addEventListener("mouseover", onOver);
-    document.addEventListener("mouseout", onOut);
-
-    const magnets = document.querySelectorAll<HTMLElement>("[data-magnetic]");
-    magnets.forEach((el) => {
-      el.addEventListener("mousemove", onMagnetic);
-      el.addEventListener("mouseleave", onMagneticLeave);
-    });
-
-    const mo = new MutationObserver(() => {
-      document.querySelectorAll<HTMLElement>("[data-magnetic]").forEach((el) => {
-        el.removeEventListener("mousemove", onMagnetic);
-        el.removeEventListener("mouseleave", onMagneticLeave);
+    const magnets = new WeakSet<HTMLElement>();
+    const bindMagnets = (root: ParentNode = document) => {
+      root.querySelectorAll?.<HTMLElement>("[data-magnetic]").forEach((el) => {
+        if (magnets.has(el)) return;
+        magnets.add(el);
         el.addEventListener("mousemove", onMagnetic);
         el.addEventListener("mouseleave", onMagneticLeave);
       });
+    };
+
+    let moTimer = 0;
+    const mo = new MutationObserver(() => {
+      window.clearTimeout(moTimer);
+      moTimer = window.setTimeout(() => bindMagnets(), 80);
     });
     mo.observe(document.body, { childList: true, subtree: true });
 
-    gsap.set([dot, ring], { xPercent: -50, yPercent: -50 });
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    document.addEventListener("mouseover", onOver);
+    document.addEventListener("mouseout", onOut);
+    bindMagnets();
+
+    gsap.set([dot, ring, label], { xPercent: -50, yPercent: -50 });
+    gsap.set(label, { autoAlpha: 0 });
 
     return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(scrollTimer);
+      window.clearTimeout(moTimer);
       window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("scroll", onScroll);
       document.removeEventListener("mouseover", onOver);
       document.removeEventListener("mouseout", onOut);
-      magnets.forEach((el) => {
-        el.removeEventListener("mousemove", onMagnetic);
-        el.removeEventListener("mouseleave", onMagneticLeave);
-      });
       mo.disconnect();
       document.documentElement.classList.remove("has-custom-cursor");
     };
@@ -120,6 +240,7 @@ export function MagneticCursor() {
     <>
       <div ref={ringRef} className={styles.ring} aria-hidden="true" />
       <div ref={dotRef} className={styles.dot} aria-hidden="true" />
+      <span ref={labelRef} className={styles.label} aria-hidden="true" />
     </>
   );
 }

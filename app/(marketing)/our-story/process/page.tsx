@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageReveal } from "@/components/motion";
+import {
+  AccordionRail,
+  ClipReveal,
+  MotionMedia,
+  PageReveal,
+} from "@/components/motion";
 import {
   Breadcrumbs,
   Container,
-  MediaPlaceholder,
   PageHero,
 } from "@/components/ui";
+import { plates } from "@/content/plates";
 import { buildMetadata } from "@/lib/seo";
 import hub from "@/styles/ui/HubBody.module.css";
 
@@ -21,33 +26,33 @@ export const metadata: Metadata = buildMetadata({
 
 const STEPS = [
   {
-    n: "01",
     title: "Question",
+    meta: "Discover",
     body: "Challenge the obvious. Find what is assumed — and what is broken.",
   },
   {
-    n: "02",
     title: "Imagine",
+    meta: "Explore",
     body: "Explore possibility beyond the familiar brief.",
   },
   {
-    n: "03",
     title: "Define",
+    meta: "Decide",
     body: "Choose direction with conviction. Ambition without a decision is noise.",
   },
   {
-    n: "04",
     title: "Create",
+    meta: "Form",
     body: "Give the idea form — brand, experience, language people can feel.",
   },
   {
-    n: "05",
     title: "Build",
+    meta: "Ship",
     body: "Make the idea real. Systems, products, and technology that hold.",
   },
   {
-    n: "06",
     title: "Grow",
+    meta: "Compound",
     body: "Create momentum. Attention into demand into durable market.",
   },
 ] as const;
@@ -61,10 +66,14 @@ export default function ProcessPage() {
         description="A clear method that connects thinking to execution."
         layout="split"
         media={
-          <MediaPlaceholder
+          <MotionMedia
             aspect="portrait"
+            tone="build"
             need="Process — six-step method environment"
-            brief="Wall, board, or sequence that makes the method feel physical."
+            image={plates.build}
+            fill={false}
+            sizes="(max-width: 900px) 100vw, 45vw"
+            priority
           />
         }
       />
@@ -78,35 +87,36 @@ export default function ProcessPage() {
               ]}
             />
           </div>
+        </PageReveal>
 
-          <div className={hub.narrative}>
-            {STEPS.map((step) => (
-              <section key={step.n} className={hub.narrativeBlock} data-reveal>
-                <p className={hub.narrativeLabel}>{step.n}</p>
-                <h2 className={hub.narrativeTitle}>{step.title}</h2>
-                <p className={hub.narrativeBody}>{step.body}</p>
-              </section>
-            ))}
-          </div>
+        <AccordionRail
+          eyebrow="Method"
+          lead="Question → Imagine → Define → Create → Build → Grow."
+          items={[...STEPS]}
+        />
 
-          <div className={hub.mediaBreak} data-reveal>
-            <MediaPlaceholder
+        <ClipReveal mode="rise">
+          <div className={hub.mediaBreak}>
+            <MotionMedia
               aspect="film"
+              tone="warm"
               need="Process — team in a define / create moment"
-              brief="Documentary still of the method in use."
+              image={plates.create}
+              fill={false}
+              sizes="100vw"
             />
           </div>
+        </ClipReveal>
 
-          <div className={hub.ctaRow} data-reveal>
-            <Link href="/connect/start-a-project" className={hub.ctaPrimary}>
-              Start a Project
-              <span aria-hidden="true"> →</span>
-            </Link>
-            <Link href="/our-story" className={hub.ctaSecondary}>
-              Our Story
-            </Link>
-          </div>
-        </PageReveal>
+        <div className={hub.ctaRow}>
+          <Link href="/connect/start-a-project" className={hub.ctaPrimary}>
+            Start a Project
+            <span aria-hidden="true"> →</span>
+          </Link>
+          <Link href="/our-story" className={hub.ctaSecondary}>
+            Our Story
+          </Link>
+        </div>
       </Container>
     </>
   );

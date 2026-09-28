@@ -1,0 +1,302 @@
+/* ExplorePortals — 4 Luxury Practice Gateway Portals */
+
+.wrap {
+  position: relative;
+  background: #040404;
+  color: #f3f1ea;
+  padding: clamp(6rem, 13vh, 9.5rem) 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 16%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 16%, transparent);
+  overflow: hidden;
+}
+
+.ambientGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    70% 50% at 50% 50%,
+    color-mix(in srgb, var(--color-gold) 8%, transparent) 0%,
+    transparent 65%
+  );
+}
+
+.inner {
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(1.5rem, 5vw, 4.5rem);
+  position: relative;
+  z-index: 1;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: clamp(3rem, 6vh, 4.5rem);
+}
+
+.kickerRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.kickerNum {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--color-gold);
+}
+
+.kickerLine {
+  display: inline-block;
+  width: 3rem;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-gold) 40%, transparent);
+}
+
+.kicker {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-gold) 85%, transparent);
+}
+
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.35rem, 4.8vw, 3.85rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: #f3f1ea;
+}
+
+.goldText {
+  color: var(--color-gold);
+  font-style: italic;
+}
+
+.lead {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: clamp(0.95rem, 1.25vw, 1.15rem);
+  line-height: 1.6;
+  color: rgba(243, 241, 234, 0.65);
+  max-width: 42ch;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1rem, 1.75vw, 1.75rem);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: clamp(26rem, 50vh, 32rem);
+  background: #090909;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 20%, transparent);
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover,
+.cardActive {
+  border-color: color-mix(in srgb, var(--color-gold) 75%, transparent);
+  transform: translateY(-4px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 20px rgba(232, 197, 106, 0.12);
+}
+
+.mediaWrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.mediaImg {
+  object-fit: cover;
+  transform: scale(1.04);
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), filter 0.65s ease;
+  filter: saturate(0.85) brightness(0.65);
+}
+
+.card:hover .mediaImg {
+  transform: scale(1.12);
+  filter: saturate(1.1) brightness(0.85);
+}
+
+.mediaVeil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(4, 4, 4, 0.45) 0%,
+    rgba(4, 4, 4, 0.6) 40%,
+    rgba(4, 4, 4, 0.95) 100%
+  );
+  transition: opacity 0.4s ease;
+}
+
+.card:hover .mediaVeil {
+  opacity: 0.85;
+}
+
+.glowCorner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(
+    circle at 100% 0%,
+    rgba(232, 197, 106, 0.25) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+
+.card:hover .glowCorner {
+  opacity: 1;
+}
+
+.cardContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: clamp(1.35rem, 2.2vw, 1.85rem);
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.portalNum {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--color-gold);
+}
+
+.portalKicker {
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.55);
+}
+
+.cardMid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-block: auto 1.5rem;
+}
+
+.portalTitle {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 2.5vw, 2.4rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: #f3f1ea;
+  transition: color 0.3s ease;
+}
+
+.card:hover .portalTitle {
+  color: var(--color-gold);
+}
+
+.arrow {
+  font-family: var(--font-ui);
+  font-size: 1.25rem;
+  color: var(--color-gold);
+  transform: translate(-3px, 3px);
+  transition: transform 0.35s ease;
+}
+
+.card:hover .arrow {
+  transform: translate(0, 0);
+}
+
+.portalDesc {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: rgba(243, 241, 234, 0.65);
+}
+
+.cardBottom {
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 15%, transparent);
+}
+
+.tagsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.tagChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(232, 197, 106, 0.08);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 20%, transparent);
+  font-family: var(--font-ui);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(243, 241, 234, 0.85);
+  white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    min-height: 22rem;
+  }
+}

@@ -6,65 +6,64 @@ import gsap from "gsap";
 import styles from "@/styles/motion/PageTransition.module.css";
 
 /**
- * Animmaster-class page transition — gold-edge curtain wipe on route change.
+ * Page change — clip-path block + gold edge (Transitions 003 / 012 DNA).
+ * Soft on purpose: no heavy multi-panel curtain.
  */
 export function PageTransition() {
   const pathname = usePathname();
-  const curtainRef = useRef<HTMLDivElement | null>(null);
+  const rootRef = useRef<HTMLDivElement | null>(null);
   const first = useRef(true);
 
   useEffect(() => {
-    const el = curtainRef.current;
+    const el = rootRef.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    const veil = el.querySelector<HTMLElement>("[data-veil]");
+    const block = el.querySelector<HTMLElement>("[data-block]");
+    const edge = el.querySelector<HTMLElement>("[data-edge]");
+    if (!veil || !block || !edge) return;
+
     if (first.current) {
       first.current = false;
-      gsap.set(el, { yPercent: -101 });
+      gsap.set(el, { autoAlpha: 0 });
+      gsap.set([veil, block], { opacity: 0 });
+      gsap.set(block, { clipPath: "inset(50% 0 50% 0)" });
+      gsap.set(edge, { scaleX: 0 });
       return;
     }
 
-    const panels = el.querySelectorAll("[data-panel]");
-    const mark = el.querySelector("[data-mark]");
+    const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
 
-    const tl = gsap.timeline({
-      defaults: { ease: "power4.inOut" },
-    });
-
-    tl.set(el, { autoAlpha: 1, yPercent: 0 })
+    tl.set(el, { autoAlpha: 1 })
+      .fromTo(veil, { opacity: 0 }, { opacity: 1, duration: 0.22 }, 0)
       .fromTo(
-        panels,
-        { yPercent: 101 },
-        { yPercent: 0, duration: 0.55, stagger: 0.05 },
-        0,
+        block,
+        { opacity: 1, clipPath: "inset(50% 0 50% 0)" },
+        { clipPath: "inset(0% 0 0% 0)", duration: 0.34 },
+        0.04,
       )
       .fromTo(
-        mark,
-        { opacity: 0, y: 12 },
-        { opacity: 1, y: 0, duration: 0.35 },
-        0.25,
+        edge,
+        { scaleX: 0, transformOrigin: "left center" },
+        { scaleX: 1, duration: 0.28 },
+        0.12,
       )
-      .to(mark, { opacity: 0, duration: 0.2 }, 0.55)
+      .to(edge, { scaleX: 0, transformOrigin: "right center", duration: 0.26 }, 0.4)
       .to(
-        panels,
-        { yPercent: -101, duration: 0.55, stagger: 0.04 },
-        0.5,
+        block,
+        { clipPath: "inset(0% 0 100% 0)", duration: 0.32 },
+        0.42,
       )
+      .to(veil, { opacity: 0, duration: 0.28 }, 0.5)
       .set(el, { autoAlpha: 0 });
   }, [pathname]);
 
   return (
-    <div
-      ref={curtainRef}
-      className={styles.curtain}
-      aria-hidden="true"
-    >
-      <div className={styles.panel} data-panel />
-      <div className={`${styles.panel} ${styles.panelGold}`} data-panel />
-      <div className={styles.panel} data-panel />
-      <p className={styles.mark} data-mark>
-        13 UTOPIA
-      </p>
+    <div ref={rootRef} className={styles.root} aria-hidden="true">
+      <div className={styles.veil} data-veil />
+      <div className={styles.block} data-block />
+      <div className={styles.edge} data-edge />
     </div>
   );
 }

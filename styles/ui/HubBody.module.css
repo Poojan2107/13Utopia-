@@ -310,6 +310,16 @@
   letter-spacing: -0.02em;
 }
 
+.detailRule {
+  margin: 0 0 var(--space-md);
+  max-width: 5rem;
+}
+
+.detailFlourish {
+  margin: 0 0 var(--space-lg);
+  max-width: 12rem;
+}
+
 .groups {
   list-style: none;
   margin: 0 0 var(--space-3xl);
@@ -585,7 +595,7 @@
   font-family: var(--font-ui);
   font-size: 0.6875rem;
   letter-spacing: 0.16em;
-  color: rgba(232, 197, 106, 0.75);
+  color: color-mix(in srgb, var(--color-gold) 75%, transparent);
   padding-top: 0.35rem;
 }
 
@@ -715,5 +725,119 @@
 
   .worldLink {
     grid-template-columns: 2.75rem 1fr;
+  }
+}
+
+/* =========================================================
+   Collective & Leadership Entries
+   ========================================================= */
+.entries {
+  list-style: none;
+  margin: 2.5rem 0 4.5rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  padding: clamp(1.75rem, 3.5vw, 2.5rem);
+  background: #111111;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.entry:hover {
+  border-color: rgba(232, 197, 106, 0.35);
+  transform: translateY(-2px);
+}
+
+.portraitFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #181818;
+  border: 1px solid rgba(243, 241, 234, 0.1);
+}
+
+.portraitImg {
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.5s ease;
+}
+
+.entry:hover .portraitImg {
+  transform: scale(1.03);
+}
+
+.entryContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.entryTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 400;
+  color: var(--color-warm-white);
+  line-height: 1.15;
+}
+
+.entryMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--color-gold);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.entryLocation {
+  color: var(--color-fg-muted);
+  font-size: 0.8rem;
+  text-transform: none;
+}
+
+.entryBody {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--color-fg-soft);
+  max-width: 52ch;
+}
+
+.expertiseList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.expertiseTag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  background: rgba(243, 241, 234, 0.05);
+  color: var(--color-fg-muted);
+  padding: 0.3rem 0.65rem;
+  border-radius: 4px;
+  border: 1px solid rgba(243, 241, 234, 0.08);
+}
+
+@media (max-width: 768px) {
+  .entry {
+    grid-template-columns: 1fr;
   }
 }

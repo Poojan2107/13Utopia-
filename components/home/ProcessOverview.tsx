@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { REVEAL } from "@/lib/motion/reveal";
 import styles from "@/styles/home/ProcessOverview.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,39 +13,35 @@ const STEPS = [
   {
     num: "01",
     title: "Question",
-    body: "Challenge the obvious. Find what is assumed — and what is broken.",
+    body: "Surface assumptions and find what is broken before anyone writes a brief.",
   },
   {
     num: "02",
     title: "Imagine",
-    body: "Explore possibility beyond the familiar brief.",
+    body: "Explore options beyond the familiar request — including ones the brief never named.",
   },
   {
     num: "03",
     title: "Define",
-    body: "Choose direction with conviction. Ambition without a decision is noise.",
+    body: "Lock direction with a decision. Ambition without a choice stays noise.",
   },
   {
     num: "04",
     title: "Create",
-    body: "Give the idea form — brand, experience, language people can feel.",
+    body: "Give the idea form — brand, experience, and language people can feel.",
   },
   {
     num: "05",
     title: "Build",
-    body: "Make the idea real. Systems, products, and technology that hold.",
+    body: "Ship systems and products that hold on day one, not decks that look finished.",
   },
   {
     num: "06",
     title: "Grow",
-    body: "Create momentum. Attention into demand into durable market.",
+    body: "Turn attention into demand, and demand into a market that lasts.",
   },
 ] as const;
 
-/**
- * 06 — Method
- * Vertical process rail — not a sticky scrub (Worlds owns that pattern).
- */
 export function ProcessOverview() {
   const wrapRef = useRef<HTMLElement | null>(null);
 
@@ -54,40 +51,19 @@ export function ProcessOverview() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const ctx = gsap.context(() => {
-      const spine = wrap.querySelector(`.${styles.spineFill}`);
-      const steps = wrap.querySelectorAll("[data-step]");
-
-      gsap.set(steps, { opacity: 0, x: -18 });
-
-      gsap.to(steps, {
-        opacity: 1,
-        x: 0,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: "power3.out",
+      gsap.from(wrap.querySelectorAll("[data-step]"), {
+        opacity: 0,
+        y: REVEAL.y,
+        duration: REVEAL.duration,
+        stagger: REVEAL.stagger,
+        ease: REVEAL.ease,
+        clearProps: "all",
         scrollTrigger: {
-          trigger: wrap.querySelector(`.${styles.rail}`),
-          start: "top 70%",
+          trigger: wrap.querySelector(`.${styles.steps}`),
+          start: REVEAL.start,
           once: true,
         },
       });
-
-      if (spine) {
-        gsap.fromTo(
-          spine,
-          { scaleY: 0 },
-          {
-            scaleY: 1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: wrap.querySelector(`.${styles.rail}`),
-              start: "top 65%",
-              end: "bottom 35%",
-              scrub: true,
-            },
-          },
-        );
-      }
     }, wrap);
 
     return () => ctx.revert();
@@ -101,24 +77,21 @@ export function ProcessOverview() {
       aria-labelledby="process-title"
     >
       <div className={styles.inner}>
-        <header className={styles.head}>
-          <div className={styles.marker}>
-            <span className={styles.markerIndex}>06</span>
-            <span className={styles.markerRule} aria-hidden="true" />
-            <span className={styles.markerLabel}>Method</span>
-          </div>
-          <h2 id="process-title" className={styles.heading}>
-            How we think.
-          </h2>
-          <p className={styles.lede}>
-            A sequence, not a slide deck — six moves from challenge to momentum.
-          </p>
-        </header>
-
-        <div className={styles.rail}>
-          <div className={styles.spine} aria-hidden="true">
-            <span className={styles.spineFill} />
-          </div>
+        <div className={styles.layout}>
+          <header className={styles.head}>
+            <p className={styles.kicker}>Method</p>
+            <h2 id="process-title" className={styles.heading}>
+              How we move from challenge to momentum.
+            </h2>
+            <p className={styles.lede}>
+              Six decisions in order — question, imagine, define, create, build,
+              grow.
+            </p>
+            <Link href="/our-story/process" className={styles.link}>
+              See the full process
+              <span aria-hidden="true"> →</span>
+            </Link>
+          </header>
 
           <ol className={styles.steps}>
             {STEPS.map((s) => (
@@ -132,11 +105,6 @@ export function ProcessOverview() {
             ))}
           </ol>
         </div>
-
-        <Link href="/our-story/process" className={styles.link}>
-          Full process
-          <span aria-hidden="true"> →</span>
-        </Link>
       </div>
     </section>
   );

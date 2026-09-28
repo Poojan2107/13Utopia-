@@ -21,7 +21,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(232, 197, 106, 0.75);
+  color: color-mix(in srgb, var(--color-gold) 75%, transparent);
 }
 
 .nav {
@@ -44,7 +44,7 @@
 .navBtn:hover,
 .navBtn:focus-visible {
   border-color: var(--color-gold);
-  background: rgba(232, 197, 106, 0.08);
+  background: color-mix(in srgb, var(--color-gold) 8%, transparent);
   outline: none;
 }
 

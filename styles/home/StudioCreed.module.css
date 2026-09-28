@@ -1,0 +1,244 @@
+/* Studio Creed — Awwwards Scroll/015, tuned for readable Didone */
+
+.root {
+  position: relative;
+  width: 100%;
+  background: #050505;
+  color: #f3f1ea;
+  isolation: isolate;
+  border-block: 1px solid color-mix(in srgb, var(--color-gold) 16%, transparent);
+  overflow: clip;
+}
+
+/* —— Atmosphere (simple depth, not clutter) —— */
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bloom {
+  position: absolute;
+  inset: 12% 6% 16%;
+  background: radial-gradient(
+    ellipse 58% 52% at 50% 50%,
+    color-mix(in srgb, var(--color-gold) 28%, transparent) 0%,
+    color-mix(in srgb, var(--color-gold) 12%, transparent) 36%,
+    transparent 70%
+  );
+  filter: blur(4px);
+}
+
+.bloomSecondary {
+  position: absolute;
+  width: min(70vw, 920px);
+  height: min(70vw, 920px);
+  left: 50%;
+  top: 52%;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-gold) 10%, transparent) 0%,
+    transparent 68%
+  );
+  opacity: 0.7;
+}
+
+.filament {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: auto;
+  bottom: 18%;
+  height: 1px;
+  translate: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--color-gold) 22%, transparent) 22%,
+    color-mix(in srgb, var(--color-gold) 48%, transparent) 50%,
+    color-mix(in srgb, var(--color-gold) 22%, transparent) 78%,
+    transparent 100%
+  );
+  opacity: 0.4;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5, 5, 5, 0.72) 0%,
+      transparent 22%,
+      transparent 78%,
+      rgba(5, 5, 5, 0.78) 100%
+    ),
+    radial-gradient(
+      ellipse 90% 70% at 50% 50%,
+      transparent 40%,
+      rgba(5, 5, 5, 0.55) 100%
+    );
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.055;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+.kicker {
+  position: absolute;
+  top: clamp(1.35rem, 3.2vh, 2.25rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-gold) 90%, #f3f1ea);
+  pointer-events: none;
+}
+
+/* Pack: .Horizontal */
+.horizontal {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  height: 100svh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* Pack: .Horizontal__text — optical Didone, air for hairlines */
+.horizontalText {
+  margin: 0;
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  align-items: baseline;
+  gap: 0.02em;
+  padding-left: 100vw;
+  padding-right: 18vw;
+  font-family: var(--font-display);
+  font-size: clamp(2.85rem, 8.8vw, 8.75rem);
+  font-weight: 400;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 72;
+  line-height: 1;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+  color: #faf7f0;
+  will-change: transform;
+  /* Reinforce Didone hairlines so they don't vanish on black */
+  -webkit-text-stroke: 0.6px color-mix(in srgb, #faf7f0 55%, transparent);
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 1.5px rgba(250, 247, 240, 0.65),
+    0 0 28px color-mix(in srgb, var(--color-gold) 22%, transparent),
+    0 2px 24px rgba(0, 0, 0, 0.45);
+  -webkit-font-smoothing: antialiased;
+}
+
+.char {
+  display: inline-block;
+  will-change: transform, opacity;
+  transform-origin: 50% 70%;
+  /* Prevent mid-scrub collisions looking like broken glyphs */
+  padding-inline: 0.01em;
+}
+
+.dot {
+  color: var(--color-gold);
+  padding-inline: 0.28em;
+  text-shadow:
+    0 0 18px color-mix(in srgb, var(--color-gold) 55%, transparent),
+    0 0 2px color-mix(in srgb, var(--color-gold) 80%, transparent);
+  font-weight: 400;
+}
+
+.space {
+  display: inline-block;
+  width: 0.42em;
+}
+
+.progress {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: clamp(1.75rem, 4.5vh, 3rem);
+  z-index: 3;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-gold) 14%, transparent);
+  pointer-events: none;
+}
+
+.progressFill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  transform: scaleX(0);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-gold) 40%, transparent),
+    var(--color-gold)
+  );
+  will-change: transform;
+}
+
+@media (max-width: 900px) {
+  .horizontalText {
+    font-size: clamp(2.5rem, 13vw, 5rem);
+    letter-spacing: 0.015em;
+    font-variation-settings: "opsz" 72;
+  }
+
+  .filament {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .horizontal {
+    height: auto;
+    min-height: 55svh;
+    padding-block: 5rem 4rem;
+  }
+
+  .horizontalText {
+    padding-left: clamp(1.25rem, 5vw, 3rem);
+    padding-right: clamp(1.25rem, 5vw, 3rem);
+    white-space: normal;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    font-size: clamp(2.25rem, 9vw, 3.75rem);
+    row-gap: 0.15em;
+  }
+
+  .char {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .progressFill {
+    transform: scaleX(1);
+  }
+}

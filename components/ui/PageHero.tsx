@@ -4,7 +4,10 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Container } from "@/components/ui/Container";
 import { ArrowLink } from "@/components/ui/TextLink";
+import { SvgDraw } from "@/components/motion/SvgDraw";
+import { PhysicsFloat } from "@/components/motion/PhysicsFloat";
 import { cn } from "@/lib/utils/cn";
+import { REVEAL } from "@/lib/motion/reveal";
 import styles from "@/styles/ui/PageHero.module.css";
 
 type Props = {
@@ -17,6 +20,10 @@ type Props = {
   className?: string;
 };
 
+/**
+ * Inner-page hero — Animmaster hero + SVG + physics DNA.
+ * @see https://animmasterlib.dev/ (Hero / SVG / Physics)
+ */
 export function PageHero({
   eyebrow,
   title,
@@ -35,23 +42,59 @@ export function PageHero({
 
     const lines = el.querySelectorAll("[data-hero-line]");
     const fades = el.querySelectorAll("[data-hero-reveal]");
+    const plate = el.querySelector<HTMLElement>("[data-hero-media]");
 
-    gsap.set(lines, { yPercent: 110 });
-    gsap.set(fades, { opacity: 0, y: 18 });
+    const tl = gsap.timeline({ defaults: { ease: REVEAL.ease } });
 
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.to(lines, { yPercent: 0, duration: 1, stagger: 0.08 }, 0.05).to(
+    tl.fromTo(
+      lines,
+      { opacity: 0, y: REVEAL.y },
+      {
+        opacity: 1,
+        y: 0,
+        duration: REVEAL.duration,
+        stagger: REVEAL.stagger,
+        clearProps: "transform",
+      },
+      0.04,
+    ).fromTo(
       fades,
-      { opacity: 1, y: 0, duration: 0.75, stagger: 0.08 },
-      0.28,
+      { opacity: 0, y: REVEAL.y },
+      {
+        opacity: 1,
+        y: 0,
+        duration: REVEAL.duration,
+        stagger: REVEAL.stagger,
+        clearProps: "all",
+      },
+      0.12,
     );
+
+    if (plate) {
+      tl.fromTo(
+        plate,
+        { clipPath: "inset(10% 8% 10% 8%)", opacity: 0.4, scale: 1.04 },
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          opacity: 1,
+          scale: 1,
+          duration: 1.05,
+          ease: "power3.out",
+        },
+        0.18,
+      );
+    }
   }, []);
 
   const displayLines = splitTitle(title);
 
   return (
     <header ref={ref} className={cn(styles.hero, styles[layout], className)}>
-      <div className={styles.atmosphere} aria-hidden="true" />
+      <div className={styles.atmosphere} aria-hidden="true">
+        <PhysicsFloat amp={14} duration={6.5} className={styles.floatOrb}>
+          <span className={styles.orb} />
+        </PhysicsFloat>
+      </div>
       <Container className={styles.inner}>
         <div className={styles.copy}>
           {eyebrow ? (
@@ -59,9 +102,10 @@ export function PageHero({
               {eyebrow}
             </p>
           ) : null}
+          <SvgDraw variant="rule" className={styles.rule} />
           <h1 className={styles.title}>
             {displayLines.map((line) => (
-              <span key={line} className={styles.titleMask}>
+              <span key={line} className={styles.titleLine}>
                 <span data-hero-line>{line}</span>
               </span>
             ))}
@@ -78,7 +122,7 @@ export function PageHero({
           ) : null}
         </div>
         {media ? (
-          <div className={styles.media} data-hero-reveal>
+          <div className={styles.media} data-hero-reveal data-hero-media>
             {media}
           </div>
         ) : null}
@@ -89,20 +133,16 @@ export function PageHero({
 
 function splitTitle(title: string): string[] {
   if (title.includes("\n")) return title.split("\n").filter(Boolean);
-  // Prefer natural phrase breaks over raw word-count midpoints
-  const breaks = [" — ", " – ", " - ", ": ", "? ", " × ", " · "];
+  const breaks = [" — ", " – ", ": ", "? ", " × ", " · "];
   for (const b of breaks) {
-    if (title.includes(b)) {
-      const i = title.indexOf(b);
-      const left = title.slice(0, i + (b.trim() === "?" ? 1 : 0)).trim();
-      const right = title.slice(i + b.length).trim();
-      if (left && right) return [left + (b.trim() === "?" ? "?" : ""), right];
-    }
+    if (!title.includes(b)) continue;
+    const i = title.indexOf(b);
+    const keepMark = b.trim() === "?";
+    const left = title.slice(0, i + (keepMark ? 1 : 0)).trim();
+    const right = title.slice(i + b.length).trim();
+    if (left && right) return [keepMark ? `${left}?` : left, right];
   }
-  const words = title.split(" ");
-  if (words.length <= 5) return [title];
-  const mid = Math.ceil(words.length / 2);
-  return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")];
+  return [title];
 }
 
 type RelatedProps = {

@@ -117,7 +117,7 @@ export function BrandWorldview() {
 
           <div className={styles.bridge}>
             <p className={styles.bridgeNote}>So we work in three connected worlds.</p>
-            <Link href="#worlds" className={styles.bridgeLink}>
+            <Link href="#capabilities" className={styles.bridgeLink}>
               Enter the practice
               <span aria-hidden="true"> →</span>
             </Link>

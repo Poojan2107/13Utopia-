@@ -1,0 +1,306 @@
+/* MethodStage — High luxury methodology theater */
+
+.section {
+  position: relative;
+  background: #030303;
+  color: #f3f1ea;
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 18%, transparent);
+  overflow: hidden;
+}
+
+.ambientGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    65% 45% at 20% 30%,
+    color-mix(in srgb, var(--color-gold) 10%, transparent) 0%,
+    transparent 60%
+  );
+}
+
+.wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.15fr);
+  gap: clamp(2.5rem, 5vw, 5rem);
+  align-items: start;
+  padding: clamp(5.5rem, 12vh, 8.5rem) clamp(1.5rem, 5vw, 4.5rem);
+  max-width: 1440px;
+  margin-inline: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.visual {
+  position: sticky;
+  top: clamp(5rem, 10vh, 7rem);
+}
+
+.plate {
+  position: relative;
+  aspect-ratio: 4 / 4.8;
+  overflow: hidden;
+  background: #0a0a0a;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 35%, transparent);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(232, 197, 106, 0.15);
+}
+
+.plateImg {
+  object-fit: cover;
+  transform: scale(1.03);
+  transition: transform 0.6s ease;
+}
+
+.plate:hover .plateImg {
+  transform: scale(1.06);
+}
+
+.plateVeil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(3, 3, 3, 0.25) 0%,
+    rgba(3, 3, 3, 0.45) 45%,
+    rgba(3, 3, 3, 0.94) 100%
+  );
+}
+
+.plateCopy {
+  position: absolute;
+  left: clamp(1.5rem, 3vw, 2.25rem);
+  right: clamp(1.5rem, 3vw, 2.25rem);
+  bottom: clamp(1.5rem, 3vw, 2.25rem);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.plateKicker {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.plateLead {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 2.8vw, 2.65rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  text-transform: uppercase;
+  color: #f3f1ea;
+}
+
+.plateActiveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(232, 197, 106, 0.12);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 40%, transparent);
+  width: fit-content;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--color-gold);
+}
+
+.pulseDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  box-shadow: 0 0 10px var(--color-gold);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.6;
+  }
+}
+
+.rail {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.stepList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.stepCard {
+  position: relative;
+  padding: clamp(1.5rem, 2.5vw, 2.25rem);
+  background: rgba(14, 14, 14, 0.6);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 15%, transparent);
+  border-radius: 0;
+  transition: all 0.35s ease;
+}
+
+.stepCard:hover {
+  background: rgba(20, 20, 20, 0.9);
+  border-color: color-mix(in srgb, var(--color-gold) 40%, transparent);
+  transform: translateX(4px);
+}
+
+.stepActive {
+  background: rgba(24, 22, 18, 0.9);
+  border-color: color-mix(in srgb, var(--color-gold) 65%, transparent);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), inset 0 0 0 1px color-mix(in srgb, var(--color-gold) 25%, transparent);
+}
+
+.stepHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 12%, transparent);
+  padding-bottom: 0.75rem;
+}
+
+.stepIndex {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.indexNum {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--color-gold);
+}
+
+.indexMeta {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.45);
+}
+
+.stepTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.2vw, 2.1rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #f3f1ea;
+}
+
+.stepActive .stepTitle {
+  color: var(--color-gold);
+}
+
+.stepBody {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(243, 241, 234, 0.7);
+  max-width: 48ch;
+}
+
+.stepOutputs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.65rem;
+}
+
+.outputLabel {
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-gold) 75%, transparent);
+}
+
+.outputPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.outputPill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(232, 197, 106, 0.07);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 20%, transparent);
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #f3f1ea;
+  white-space: nowrap;
+}
+
+.railFooter {
+  padding-top: 1rem;
+}
+
+.methodCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.65rem;
+  border-radius: 999px;
+  background: var(--color-gold);
+  color: #050505;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.methodCta:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(232, 197, 106, 0.35);
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    grid-template-columns: 1fr;
+    padding-block: clamp(4rem, 10vh, 6rem);
+    gap: 3rem;
+  }
+
+  .visual {
+    position: static;
+  }
+
+  .plate {
+    aspect-ratio: 16 / 10;
+  }
+}

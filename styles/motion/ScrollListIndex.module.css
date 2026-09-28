@@ -16,7 +16,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(232, 197, 106, 0.75);
+  color: color-mix(in srgb, var(--color-gold) 75%, transparent);
 }
 
 .stage {
@@ -60,7 +60,7 @@
 }
 
 .link:focus-visible {
-  outline: 1px solid rgba(232, 197, 106, 0.55);
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
   outline-offset: 6px;
 }
 
@@ -69,7 +69,7 @@
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.16em;
-  color: rgba(232, 197, 106, 0.7);
+  color: color-mix(in srgb, var(--color-gold) 70%, transparent);
   padding-top: 1rem;
 }
 
@@ -122,7 +122,7 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-fg-muted);
-  border-bottom: 1px solid rgba(232, 197, 106, 0.35);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 35%, transparent);
   padding-bottom: 0.15rem;
   transition:
     color 0.25s ease,

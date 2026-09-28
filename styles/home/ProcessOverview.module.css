@@ -1,16 +1,16 @@
-/* 06 — Method: vertical process rail (distinct from Worlds sticky scrub) */
+/* Method — intro + steps side by side on desktop */
 
 .wrap {
   --ink: #f3f1ea;
   --ink-dim: var(--color-fg-muted);
   --gold: var(--color-gold);
-  --gold-line: rgba(232, 197, 106, 0.5);
-  --gold-soft: rgba(232, 197, 106, 0.75);
+  --gold-line: var(--color-gold-line);
+  --gold-soft: var(--color-gold-muted);
 
   position: relative;
   background: #000;
   color: var(--ink);
-  padding: clamp(5rem, 12vh, 8rem) 0;
+  padding: clamp(4.5rem, 10vh, 7rem) 0;
   border-top: 1px solid rgba(243, 241, 234, 0.06);
 }
 
@@ -20,37 +20,24 @@
   padding-inline: clamp(1.5rem, 5vw, 4.5rem);
 }
 
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(2.5rem, 5vw, 4rem);
+  align-items: start;
+}
+
 .head {
-  margin-bottom: clamp(3rem, 7vh, 4.5rem);
-  max-width: 28rem;
+  position: sticky;
+  top: 6rem;
 }
 
-.marker {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  margin-bottom: 1.75rem;
-}
-
-.markerIndex {
+.kicker {
+  margin: 0 0 1rem;
   font-family: var(--font-ui);
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--gold-soft);
-}
-
-.markerRule {
-  width: 1.75rem;
-  height: 1px;
-  background: var(--gold-line);
-}
-
-.markerLabel {
-  font-family: var(--font-ui);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-fg-muted);
 }
@@ -58,49 +45,19 @@
 .heading {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 3.75rem);
+  font-size: clamp(2.1rem, 3.8vw, 3rem);
   font-weight: 400;
   letter-spacing: -0.03em;
-  line-height: 1.05;
+  line-height: 1.08;
+  text-wrap: balance;
 }
 
 .lede {
   margin: 1rem 0 0;
   font-family: var(--font-ui);
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1.65;
   color: var(--ink-dim);
-}
-
-.rail {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1.25rem minmax(0, 1fr);
-  gap: clamp(1.25rem, 3vw, 2.5rem);
-  max-width: 42rem;
-}
-
-.spine {
-  position: relative;
-  width: 1px;
-  margin-inline: auto;
-  background: rgba(243, 241, 234, 0.1);
-  align-self: stretch;
-  overflow: hidden;
-}
-
-.spineFill {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    180deg,
-    var(--gold-line) 0%,
-    var(--gold) 50%,
-    var(--gold-line) 100%
-  );
-  transform-origin: top center;
-  transform: scaleY(0);
 }
 
 .steps {
@@ -109,110 +66,74 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 1.5rem;
+  border-top: 1px solid rgba(243, 241, 234, 0.1);
 }
 
 .step {
   display: grid;
-  grid-template-columns: 3rem minmax(0, 1fr);
-  gap: 1rem 1.25rem;
-  padding: 1.35rem 0;
-  border-bottom: 1px solid rgba(243, 241, 234, 0.08);
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(243, 241, 234, 0.08);
 }
 
 .step:first-child {
-  padding-top: 0;
-}
-
-.step:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+  border-top: none;
 }
 
 .stepNum {
   font-family: var(--font-ui);
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.08em;
   color: var(--gold-soft);
-  padding-top: 0.55rem;
-}
-
-.stepCopy {
-  min-width: 0;
+  padding-top: 0.35rem;
 }
 
 .stepTitle {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.65rem, 2.8vw, 2.25rem);
+  font-size: 1.35rem;
   font-weight: 400;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
 }
 
 .stepBody {
-  margin: 0.55rem 0 0;
-  max-width: 28rem;
+  margin: 0.4rem 0 0;
   font-family: var(--font-ui);
-  font-size: 0.95rem;
+  font-size: 0.975rem;
   line-height: 1.65;
   color: var(--ink-dim);
 }
 
 .link {
-  display: inline-block;
-  margin-top: clamp(2.5rem, 5vh, 3.5rem);
+  display: inline-flex;
+  margin-top: 1.75rem;
   font-family: var(--font-ui);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
   text-decoration: none;
-  color: var(--color-fg-muted);
-  border-bottom: 1px solid rgba(232, 197, 106, 0.4);
-  padding-bottom: 0.25rem;
+  color: var(--ink);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 40%, transparent);
+  padding-bottom: 0.2rem;
 }
 
 .link:hover,
 .link:focus-visible {
   color: var(--gold);
   border-bottom-color: var(--gold);
-  outline: none;
+  outline: 2px solid var(--color-gold);
+  outline-offset: 4px;
 }
 
-@media (min-width: 900px) {
-  .inner {
-    display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    grid-template-areas:
-      "head rail"
-      "link rail";
-    column-gap: clamp(3rem, 6vw, 5rem);
-    align-items: start;
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
   }
 
   .head {
-    grid-area: head;
-    margin-bottom: 0;
-    position: sticky;
-    top: 6rem;
-  }
-
-  .rail {
-    grid-area: rail;
-    max-width: none;
-  }
-
-  .link {
-    grid-area: link;
-    margin-top: 2rem;
-    align-self: end;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .spineFill {
-    transform: scaleY(1);
+    position: static;
   }
 }

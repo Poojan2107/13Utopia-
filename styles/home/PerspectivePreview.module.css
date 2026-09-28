@@ -4,8 +4,8 @@
   --ink: #f3f1ea;
   --ink-dim: var(--color-fg-muted);
   --gold: var(--color-gold);
-  --gold-line: rgba(232, 197, 106, 0.5);
-  --gold-soft: rgba(232, 197, 106, 0.75);
+  --gold-line: var(--color-gold-line);
+  --gold-soft: var(--color-gold-muted);
 
   position: relative;
   background: #000;
@@ -25,32 +25,12 @@
   max-width: 36rem;
 }
 
-.marker {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  margin-bottom: 1.75rem;
-}
-
-.markerIndex {
+.kicker {
+  margin: 0 0 1rem;
   font-family: var(--font-ui);
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--gold-soft);
-}
-
-.markerRule {
-  width: 1.75rem;
-  height: 1px;
-  background: var(--gold-line);
-}
-
-.markerLabel {
-  font-family: var(--font-ui);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-fg-muted);
 }
@@ -58,10 +38,11 @@
 .heading {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
   font-weight: 400;
   letter-spacing: -0.03em;
-  line-height: 1.05;
+  line-height: 1.08;
+  text-wrap: balance;
 }
 
 .lede {
@@ -98,7 +79,7 @@
 }
 
 .link:focus-visible {
-  outline: 1px solid rgba(232, 197, 106, 0.55);
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
   outline-offset: 4px;
 }
 
@@ -143,7 +124,7 @@
   text-transform: uppercase;
   text-decoration: none;
   color: var(--color-fg-muted);
-  border-bottom: 1px solid rgba(232, 197, 106, 0.4);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 40%, transparent);
   padding-bottom: 0.25rem;
   transition:
     color 0.25s ease,

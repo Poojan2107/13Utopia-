@@ -6,7 +6,7 @@
   justify-content: flex-end;
   padding-block: clamp(6rem, 14vh, 9rem) clamp(3.5rem, 8vh, 5.5rem);
   border-bottom: 1px solid var(--color-border);
-  overflow: hidden;
+  overflow: visible;
   isolation: isolate;
 }
 
@@ -18,7 +18,7 @@
   background:
     radial-gradient(
       ellipse 70% 55% at 78% 8%,
-      rgba(232, 197, 106, 0.2) 0%,
+      color-mix(in srgb, var(--color-gold) 20%, transparent) 0%,
       transparent 52%
     ),
     radial-gradient(
@@ -33,10 +33,35 @@
     ),
     linear-gradient(
       180deg,
-      rgba(10, 10, 10, 0.15) 0%,
-      rgba(0, 0, 0, 0.55) 55%,
-      rgba(0, 0, 0, 0.92) 100%
+      rgba(10, 10, 10, 0.2) 0%,
+      rgba(0, 0, 0, 0.68) 55%,
+      rgba(0, 0, 0, 0.94) 100%
     );
+}
+
+.floatOrb {
+  position: absolute;
+  right: 8%;
+  top: 12%;
+}
+
+.orb {
+  display: block;
+  width: clamp(8rem, 18vw, 14rem);
+  height: clamp(8rem, 18vw, 14rem);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-gold) 32%, transparent) 0%,
+    transparent 70%
+  );
+  filter: blur(4px);
+  opacity: 0.55;
+}
+
+.rule {
+  margin: 0 0 var(--space-md);
+  max-width: 6rem;
 }
 
 .atmosphere::after {
@@ -75,22 +100,19 @@
 .title {
   margin: 0 0 var(--space-lg);
   font-family: var(--font-display);
-  font-size: clamp(3rem, 7.5vw, 5.75rem);
+  font-size: clamp(2.75rem, 6.5vw, 5.25rem);
   font-weight: 400;
   letter-spacing: -0.04em;
-  line-height: 0.98;
-  max-width: 12ch;
+  line-height: 1.05;
+  max-width: 14ch;
   color: var(--color-warm-white);
+  text-wrap: balance;
+  overflow: visible;
 }
 
-.titleMask {
+.titleLine {
   display: block;
-  overflow: hidden;
-  padding-bottom: 0.05em;
-}
-
-.titleMask > span {
-  display: block;
+  padding-block: 0.04em;
 }
 
 .description {
