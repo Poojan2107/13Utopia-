@@ -5,6 +5,7 @@ _recovered_hero
 .next
 node_modules
 design-audit.png
-*.mp4
+# Keep public/metal-human/*.mp4 (hero bust). Ignore stray root videos only.
+/public/20260924-*.mp4
 .env*
 .vercel
