@@ -10,7 +10,7 @@ import {
 import { CreateBuildGrowKinetic, ProofArchive } from "@/components/motion";
 import { plates } from "@/content/plates";
 import { testimonials } from "@/content/people";
-import { getFeaturedCaseStudies } from "@/lib/content";
+import { getCaseStudies } from "@/lib/content";
 
 const CASE_UI_PLATES = [
   plates.eliteSports,
@@ -53,10 +53,10 @@ const METHOD_STEPS = [
 
 /**
  * Locked: Hero → Belief (068).
- * After: Capabilities (061) → Creed (SplitText) → Explore → Proof → Method → Voice → CTA.
+ * After: Caps (061) → Creed (image-backed 1:3) → Proof (071 sticky) → Method (pin theater) → Explore → Voice → CTA.
  */
 export default function HomePage() {
-  const cases = getFeaturedCaseStudies();
+  const cases = getCaseStudies();
   const voice = testimonials[0];
 
   return (
@@ -73,13 +73,11 @@ export default function HomePage() {
 
         <CreateBuildGrowKinetic />
 
-        <StudioCreed />
-
-        <ExplorePortals />
+        <StudioCreed image={plates.create} />
 
         <ProofArchive
           eyebrow="Proof"
-          lead="Scroll the records."
+          lead="One record. Three echoes."
           cases={cases.map((c, i) => ({
             href: `/work/${c.slug}`,
             title: c.title,
@@ -91,7 +89,12 @@ export default function HomePage() {
           }))}
         />
 
-        <MethodStage items={[...METHOD_STEPS]} />
+        <MethodStage
+          items={[...METHOD_STEPS]}
+          lead="One practice. Three echoes forward."
+        />
+
+        <ExplorePortals />
 
         <VoiceLine
           quote={voice.quote}

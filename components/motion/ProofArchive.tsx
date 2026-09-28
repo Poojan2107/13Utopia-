@@ -6,6 +6,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { MotionImage } from "@/components/motion/MotionMedia";
+import { UtopianBreak } from "@/components/ui/UtopianBreak";
 import { cn } from "@/lib/utils/cn";
 import styles from "@/styles/motion/ProofArchive.module.css";
 
@@ -166,7 +167,10 @@ export function ProofArchive({
       <div className={styles.glow} aria-hidden="true" />
       <div className={styles.stage}>
         <aside className={styles.copy}>
-          <p className={styles.eyebrow}>{eyebrow}</p>
+          <div className={styles.copyTop}>
+            <UtopianBreak size="sm" className={styles.break} />
+            <p className={styles.eyebrow}>{eyebrow}</p>
+          </div>
           {lead ? <p className={styles.lead}>{lead}</p> : null}
           <div
             ref={metaRef}

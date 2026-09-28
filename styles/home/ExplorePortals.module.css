@@ -2,11 +2,11 @@
 
 .wrap {
   position: relative;
-  background: #040404;
+  background: #000;
   color: #f3f1ea;
-  padding: clamp(6rem, 13vh, 9.5rem) 0;
-  border-top: 1px solid color-mix(in srgb, var(--color-gold) 16%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 16%, transparent);
+  padding: clamp(5.5rem, 12vh, 9rem) 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 12%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 12%, transparent);
   overflow: hidden;
 }
 
@@ -15,9 +15,9 @@
   inset: 0;
   pointer-events: none;
   background: radial-gradient(
-    70% 50% at 50% 50%,
-    color-mix(in srgb, var(--color-gold) 8%, transparent) 0%,
-    transparent 65%
+    70% 50% at 50% 40%,
+    color-mix(in srgb, var(--color-gold) 11%, transparent) 0%,
+    transparent 62%
   );
 }
 
@@ -78,9 +78,9 @@
 .heading {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.35rem, 4.8vw, 3.85rem);
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
   font-weight: 400;
-  line-height: 1.05;
+  line-height: 0.95;
   letter-spacing: -0.035em;
   color: #f3f1ea;
 }
@@ -109,7 +109,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: clamp(26rem, 50vh, 32rem);
+  min-height: clamp(30rem, 58vh, 38rem);
   background: #090909;
   border: 1px solid color-mix(in srgb, var(--color-gold) 20%, transparent);
   text-decoration: none;

@@ -37,3 +37,5 @@ export { TextRepetitionScroll } from "./TextRepetitionScroll";
 export { ThreeCardFlipStage } from "./ThreeCardFlipStage";
 export { CreateBuildGrowKinetic } from "./CreateBuildGrowKinetic";
 export { CreateBuildGrowSvgScroll } from "./CreateBuildGrowSvgScroll";
+export { ProofShowcase } from "./ProofShowcase";
+export type { ProofShowcaseItem } from "./ProofShowcase";

@@ -90,7 +90,10 @@ export function HoverImageMenu({
       const rules = root.querySelectorAll<HTMLElement>(`.${styles.rule}`);
 
       if (!reduce) {
-        const revealIfPast = (el: Element | null, tween: gsap.core.Tween) => {
+        const revealIfPast = (
+          el: Element | null,
+          tween: gsap.core.Tween | gsap.core.Timeline,
+        ) => {
           if (!el) return;
           const top = el.getBoundingClientRect().top;
           if (top < window.innerHeight * 0.92) tween.progress(1);

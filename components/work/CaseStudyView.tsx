@@ -1,220 +1,710 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { CaseStudy } from "@/lib/content/types";
-import { Breadcrumbs } from "@/components/ui";
-import { PageReveal } from "@/components/motion/PageReveal";
+import { UtopianBreak } from "@/components/ui/UtopianBreak";
 import styles from "@/styles/work/CaseStudyView.module.css";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type Props = {
   item: CaseStudy;
   nextItem?: CaseStudy;
 };
 
+type Act = {
+  tag: string;
+  title: string;
+  body: string[];
+};
+
+/**
+ * Case study cinema — continuous Belief-density theaters.
+ * Pinned hero → pinned acts → pinned impact → pinned shipped → voice → next.
+ */
 export function CaseStudyView({ item, nextItem }: Props) {
+  const acts: Act[] = [
+    {
+      tag: "01 — Friction",
+      title: "The Challenge",
+      body: [item.challenge],
+    },
+    {
+      tag: "02 — Move",
+      title: "The Insight",
+      body: [item.insight, item.move],
+    },
+    {
+      tag: "03 — Systems",
+      title: "What We Built",
+      body: [item.build, item.result],
+    },
+  ];
+
   return (
-    <div className={styles.wrap}>
-      {/* Breadcrumbs */}
-      <Breadcrumbs
-        items={[
-          { name: "Work", path: "/work" },
-          { name: item.client, path: `/work/${item.slug}` },
-        ]}
-      />
+    <article className={styles.root}>
+      <CaseHero item={item} />
+      <CaseActs acts={acts} image={item.image} client={item.client} />
+      {item.stats && item.stats.length > 0 ? (
+        <CaseImpact stats={item.stats} image={item.image} />
+      ) : null}
+      {item.deliverables && item.deliverables.length > 0 ? (
+        <CaseShipped items={item.deliverables} image={item.image} />
+      ) : null}
+      {item.testimonial ? (
+        <CaseVoice
+          quote={item.testimonial.quote}
+          author={item.testimonial.author}
+          role={item.testimonial.role}
+          image={item.image}
+          lesson={item.lesson}
+          stack={item.stack}
+        />
+      ) : null}
+      {nextItem ? <CaseNext item={nextItem} /> : null}
+    </article>
+  );
+}
 
-      {/* Meta Bar */}
-      <div className={styles.metaBar}>
-        <div className={styles.metaItem}>
-          <span className={styles.metaLabel}>Client</span>
-          <span className={styles.metaValue}>{item.client}</span>
-        </div>
-        <div className={styles.metaItem}>
-          <span className={styles.metaLabel}>Industry</span>
-          <span className={styles.metaValue}>{item.industry}</span>
-        </div>
-        {item.year ? (
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Timeline</span>
-            <span className={styles.metaValue}>{item.year}</span>
-          </div>
-        ) : null}
-        {item.liveUrl ? (
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Platform URL</span>
-            <a
-              href={item.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.metaLink}
-            >
-              {item.liveUrl.replace("https://", "")} ↗
-            </a>
-          </div>
-        ) : null}
-      </div>
+function CaseHero({ item }: { item: CaseStudy }) {
+  const rootRef = useRef<HTMLElement | null>(null);
 
-      {/* Browser Showcase Frame */}
-      {item.image ? (
-        <PageReveal>
-          <div className={styles.browserWrapper} data-reveal>
-            <div className={styles.browserFrame}>
-              <div className={styles.browserTop}>
-                <div className={styles.browserDots} aria-hidden="true">
-                  <span className={styles.browserDot} />
-                  <span className={styles.browserDot} />
-                  <span className={styles.browserDot} />
-                </div>
-                <div className={styles.browserUrl}>
-                  <svg
-                    className={styles.browserUrlLock}
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
-                  </svg>
-                  <span>{item.liveUrl || `https://${item.slug}.13utopia.com`}</span>
-                </div>
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const stage = root.querySelector<HTMLElement>("[data-case-stage]");
+    const plate = root.querySelector<HTMLElement>("[data-case-plate]");
+    const mask = root.querySelector<HTMLElement>("[data-case-mask]");
+    const lines = root.querySelectorAll("[data-case-line]");
+
+    if (!stage) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+
+    const ctx = gsap.context(() => {
+      if (plate) gsap.set(plate, { scale: 1.18 });
+      if (mask) gsap.set(mask, { clipPath: "inset(14% 12% 14% 12%)" });
+      gsap.set(lines, { autoAlpha: 0, y: 40 });
+
+      // Enter: copy visible immediately — pin only deepens the plate
+      gsap
+        .timeline({ defaults: { ease: "power3.out" } })
+        .to(
+          mask,
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: 1.2,
+            ease: "power3.inOut",
+          },
+          0,
+        )
+        .to(
+          lines,
+          { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.08 },
+          0.25,
+        );
+
+      ScrollTrigger.create({
+        trigger: stage,
+        start: "top top",
+        end: () => `+=${Math.round(window.innerHeight * 2.2)}`,
+        pin: true,
+        pinSpacing: true,
+        scrub: 0.7,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          if (plate) {
+            gsap.set(plate, {
+              scale: gsap.utils.interpolate(1.18, 1, self.progress),
+            });
+          }
+        },
+      });
+    }, root);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <header ref={rootRef} className={styles.hero}>
+      <div className={styles.heroStage} data-case-stage>
+        <div className={styles.heroMask} data-case-mask>
+          {item.image ? (
+            <div className={styles.heroPlate} data-case-plate>
+              <Image
+                src={item.image}
+                alt={`${item.client} — ${item.title}`}
+                fill
+                priority
+                sizes="100vw"
+                className={styles.heroImg}
+              />
+            </div>
+          ) : (
+            <div className={styles.heroFallback} />
+          )}
+          <div className={styles.heroVeil} aria-hidden="true" />
+        </div>
+
+        <div className={styles.heroInner}>
+          <div className={styles.heroTop} data-case-line>
+            <UtopianBreak size="sm" className={styles.break} />
+            <nav className={styles.crumbs} aria-label="Breadcrumb">
+              <Link href="/work">Work</Link>
+              <span aria-hidden="true">/</span>
+              <span>{item.client}</span>
+            </nav>
+          </div>
+
+          <p className={styles.heroClient} data-case-line>
+            {item.client}
+          </p>
+          <h1 className={styles.heroTitle} data-case-line>
+            {item.title}
+          </h1>
+          <p className={styles.heroSummary} data-case-line>
+            {item.summary}
+          </p>
+
+          <dl className={styles.credits} data-case-line>
+            <div>
+              <dt>Industry</dt>
+              <dd>{item.industry}</dd>
+            </div>
+            {item.year ? (
+              <div>
+                <dt>Year</dt>
+                <dd>{item.year}</dd>
               </div>
-              <div className={styles.browserImageWrap}>
+            ) : null}
+            {item.liveUrl ? (
+              <div>
+                <dt>Live</dt>
+                <dd>
+                  <a
+                    href={item.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item.liveUrl.replace(/^https?:\/\//, "")} ↗
+                  </a>
+                </dd>
+              </div>
+            ) : null}
+          </dl>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function CaseActs({
+  acts,
+  image,
+  client,
+}: {
+  acts: Act[];
+  image?: string;
+  client: string;
+}) {
+  const rootRef = useRef<HTMLElement | null>(null);
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || acts.length === 0) return;
+
+    const stage = root.querySelector<HTMLElement>("[data-acts-stage]");
+    const panels = gsap.utils.toArray<HTMLElement>(
+      root.querySelectorAll("[data-act-panel]"),
+    );
+    const plate = root.querySelector<HTMLElement>("[data-acts-plate]");
+    const reveal = root.querySelector<HTMLElement>("[data-acts-reveal]");
+
+    if (!stage || panels.length === 0) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      gsap.set(panels, { autoAlpha: 0 });
+      gsap.set(panels[0], { autoAlpha: 1 });
+      return;
+    }
+
+    const ctx = gsap.context(() => {
+      gsap.set(panels, { autoAlpha: 0, y: 28 });
+      gsap.set(panels[0], { autoAlpha: 1, y: 0 });
+      if (plate) gsap.set(plate, { scale: 1.14 });
+      if (reveal) gsap.set(reveal, { clipPath: "inset(0% 100% 0% 0%)" });
+
+      const seg = 1 / acts.length;
+      let last = -1;
+
+      ScrollTrigger.create({
+        trigger: stage,
+        start: "top top",
+        end: () =>
+          `+=${Math.round(window.innerHeight * Math.max(4.2, acts.length * 1.45))}`,
+        pin: true,
+        pinSpacing: true,
+        scrub: 0.65,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const idx = Math.min(
+            acts.length - 1,
+            Math.floor(self.progress / seg + 0.001),
+          );
+          const local = (self.progress - idx * seg) / seg;
+
+          if (idx !== last) {
+            last = idx;
+            setActive(idx);
+            panels.forEach((p, i) => {
+              gsap.to(p, {
+                autoAlpha: i === idx ? 1 : 0,
+                y: i === idx ? 0 : 20,
+                duration: 0.35,
+                overwrite: true,
+              });
+            });
+          }
+
+          if (plate) {
+            gsap.set(plate, {
+              scale: gsap.utils.interpolate(1.14, 1, self.progress),
+            });
+          }
+          if (reveal) {
+            const wipe = gsap.utils.clamp(0, 1, local * 1.15);
+            const open = Math.round((1 - wipe) * 100);
+            gsap.set(reveal, {
+              clipPath: `inset(0% ${open}% 0% 0%)`,
+            });
+          }
+        },
+      });
+    }, root);
+
+    return () => ctx.revert();
+  }, [acts.length]);
+
+  return (
+    <section ref={rootRef} className={styles.acts} aria-label="Case narrative">
+      <div className={styles.actsStage} data-acts-stage>
+        <div className={styles.actsMedia} aria-hidden="true">
+          {image ? (
+            <div className={styles.actsPlate} data-acts-plate>
+              <div data-acts-reveal className={styles.actsReveal}>
                 <Image
-                  src={item.image}
-                  alt={`${item.client} — ${item.title}`}
+                  src={image}
+                  alt=""
                   fill
-                  priority
-                  sizes="(max-width: 1280px) 100vw, 1200px"
-                  className={styles.browserImage}
+                  sizes="100vw"
+                  className={styles.actsImg}
                 />
               </div>
             </div>
-          </div>
-        </PageReveal>
-      ) : null}
-
-      {/* Verified Performance & Impact Metrics */}
-      {item.stats && item.stats.length > 0 ? (
-        <section className={styles.statsSection}>
-          <div className={styles.statsHeader}>
-            <p className={styles.statsKicker}>Commercial Impact</p>
-            <h2 className={styles.statsHeading}>Measurable Outcomes</h2>
-          </div>
-          <div className={styles.statsGrid}>
-            {item.stats.map((stat) => (
-              <div key={stat.label} className={styles.statCard}>
-                <p className={styles.statValue}>{stat.value}</p>
-                <h3 className={styles.statLabel}>{stat.label}</h3>
-                {stat.detail ? (
-                  <p className={styles.statDetail}>{stat.detail}</p>
-                ) : null}
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      {/* Deep Strategic Narrative */}
-      <section className={styles.narrativeSection}>
-        <div className={styles.narrativeGrid}>
-          <div className={styles.narrativeBlock}>
-            <span className={styles.narrativeTag}>The Friction</span>
-            <h3 className={styles.narrativeTitle}>The Challenge</h3>
-            <p className={styles.narrativeBody}>{item.challenge}</p>
-          </div>
-
-          <div className={styles.narrativeBlock}>
-            <span className={styles.narrativeTag}>The Strategy</span>
-            <h3 className={styles.narrativeTitle}>The Insight & Move</h3>
-            <p className={styles.narrativeBody}>{item.insight}</p>
-            <p className={styles.narrativeBody}>{item.move}</p>
-          </div>
-
-          <div className={styles.narrativeBlock}>
-            <span className={styles.narrativeTag}>The Architecture</span>
-            <h3 className={styles.narrativeTitle}>The Systems Built</h3>
-            <p className={styles.narrativeBody}>{item.build}</p>
-            <p className={styles.narrativeBody}>{item.result}</p>
-          </div>
+          ) : null}
+          <div className={styles.actsVeil} />
         </div>
-      </section>
 
-      {/* Core Deliverables Grid */}
-      {item.deliverables && item.deliverables.length > 0 ? (
-        <section className={styles.deliverablesSection}>
-          <p className={styles.statsKicker}>Deliverables</p>
-          <h2 className={styles.statsHeading}>What Was Shipped</h2>
-          <div className={styles.deliverablesGrid}>
-            {item.deliverables.map((deliv, i) => (
-              <div key={deliv.title} className={styles.deliverableCard}>
-                <p className={styles.deliverableNum}>
-                  DELIVERABLE {String(i + 1).padStart(2, "0")}
+        <div className={styles.actsHead}>
+          <div className={styles.actsHeadTop}>
+            <UtopianBreak size="sm" className={styles.break} />
+            <p className={styles.actsEyebrow}>Narrative · {client}</p>
+          </div>
+          <p className={styles.actsCounter} aria-live="polite">
+            {String(active + 1).padStart(2, "0")}
+            <span>/</span>
+            {String(acts.length).padStart(2, "0")}
+          </p>
+        </div>
+
+        <div className={styles.actsPanels}>
+          {acts.map((act) => (
+            <div key={act.tag} className={styles.actsPanel} data-act-panel>
+              <p className={styles.actTag}>{act.tag}</p>
+              <h2 className={styles.actTitle}>{act.title}</h2>
+              {act.body.map((para) => (
+                <p key={para.slice(0, 48)} className={styles.actBody}>
+                  {para}
                 </p>
-                <h3 className={styles.deliverableTitle}>{deliv.title}</h3>
-                <p className={styles.deliverableDesc}>{deliv.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : null}
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
-      {/* Verified Client Testimonial */}
-      {item.testimonial ? (
-        <section className={styles.testimonialCard}>
-          <div className={styles.testimonialQuoteGlyph} aria-hidden="true">
-            “
+function CaseImpact({
+  stats,
+  image,
+}: {
+  stats: NonNullable<CaseStudy["stats"]>;
+  image?: string;
+}) {
+  const rootRef = useRef<HTMLElement | null>(null);
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || stats.length === 0) return;
+
+    const stage = root.querySelector<HTMLElement>("[data-impact-stage]");
+    const panels = gsap.utils.toArray<HTMLElement>(
+      root.querySelectorAll("[data-impact-panel]"),
+    );
+    const plate = root.querySelector<HTMLElement>("[data-impact-plate]");
+
+    if (!stage || panels.length === 0) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      gsap.set(panels, { autoAlpha: 0 });
+      gsap.set(panels[0], { autoAlpha: 1 });
+      return;
+    }
+
+    const ctx = gsap.context(() => {
+      gsap.set(panels, { autoAlpha: 0, y: 40, scale: 0.96 });
+      gsap.set(panels[0], { autoAlpha: 1, y: 0, scale: 1 });
+      if (plate) gsap.set(plate, { scale: 1.12 });
+
+      const seg = 1 / stats.length;
+      let last = -1;
+
+      ScrollTrigger.create({
+        trigger: stage,
+        start: "top top",
+        end: () =>
+          `+=${Math.round(window.innerHeight * Math.max(3.6, stats.length * 1.1))}`,
+        pin: true,
+        pinSpacing: true,
+        scrub: 0.7,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          const idx = Math.min(
+            stats.length - 1,
+            Math.floor(self.progress / seg + 0.001),
+          );
+          if (idx !== last) {
+            last = idx;
+            setActive(idx);
+            panels.forEach((p, i) => {
+              gsap.to(p, {
+                autoAlpha: i === idx ? 1 : 0,
+                y: i === idx ? 0 : 28,
+                scale: i === idx ? 1 : 0.96,
+                duration: 0.4,
+                overwrite: true,
+              });
+            });
+          }
+          if (plate) {
+            gsap.set(plate, {
+              scale: gsap.utils.interpolate(1.12, 1, self.progress),
+            });
+          }
+        },
+      });
+    }, root);
+
+    return () => ctx.revert();
+  }, [stats.length]);
+
+  return (
+    <section ref={rootRef} className={styles.impact} aria-label="Impact">
+      <div className={styles.impactStage} data-impact-stage>
+        {image ? (
+          <div className={styles.impactMedia} aria-hidden="true">
+            <div className={styles.impactPlate} data-impact-plate>
+              <Image
+                src={image}
+                alt=""
+                fill
+                sizes="100vw"
+                className={styles.impactImg}
+              />
+            </div>
+            <div className={styles.impactVeil} />
           </div>
-          <blockquote className={styles.testimonialText}>
-            {item.testimonial.quote}
+        ) : null}
+
+        <div className={styles.impactHead}>
+          <UtopianBreak size="sm" className={styles.break} />
+          <p className={styles.sectionEyebrow}>Impact</p>
+          <p className={styles.impactCounter} aria-live="polite">
+            {String(active + 1).padStart(2, "0")}
+            <span>/</span>
+            {String(stats.length).padStart(2, "0")}
+          </p>
+        </div>
+
+        <div className={styles.impactPanels}>
+          {stats.map((stat) => (
+            <div key={stat.label} className={styles.impactPanel} data-impact-panel>
+              <p className={styles.statValue}>{stat.value}</p>
+              <h2 className={styles.statLabel}>{stat.label}</h2>
+              {stat.detail ? (
+                <p className={styles.statDetail}>{stat.detail}</p>
+              ) : null}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CaseShipped({
+  items,
+  image,
+}: {
+  items: NonNullable<CaseStudy["deliverables"]>;
+  image?: string;
+}) {
+  const rootRef = useRef<HTMLElement | null>(null);
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || items.length === 0) return;
+
+    const stage = root.querySelector<HTMLElement>("[data-ship-stage]");
+    const panels = gsap.utils.toArray<HTMLElement>(
+      root.querySelectorAll("[data-ship-panel]"),
+    );
+    const plate = root.querySelector<HTMLElement>("[data-ship-plate]");
+
+    if (!stage || panels.length === 0) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      gsap.set(panels, { autoAlpha: 0 });
+      gsap.set(panels[0], { autoAlpha: 1 });
+      return;
+    }
+
+    const ctx = gsap.context(() => {
+      gsap.set(panels, { autoAlpha: 0, y: 32 });
+      gsap.set(panels[0], { autoAlpha: 1, y: 0 });
+      if (plate) gsap.set(plate, { scale: 1.1 });
+
+      const seg = 1 / items.length;
+      let last = -1;
+
+      ScrollTrigger.create({
+        trigger: stage,
+        start: "top top",
+        end: () =>
+          `+=${Math.round(window.innerHeight * Math.max(3.2, items.length * 0.95))}`,
+        pin: true,
+        pinSpacing: true,
+        scrub: 0.65,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          const idx = Math.min(
+            items.length - 1,
+            Math.floor(self.progress / seg + 0.001),
+          );
+          if (idx !== last) {
+            last = idx;
+            setActive(idx);
+            panels.forEach((p, i) => {
+              gsap.to(p, {
+                autoAlpha: i === idx ? 1 : 0,
+                y: i === idx ? 0 : 24,
+                duration: 0.35,
+                overwrite: true,
+              });
+            });
+          }
+          if (plate) {
+            gsap.set(plate, {
+              scale: gsap.utils.interpolate(1.1, 1, self.progress),
+            });
+          }
+        },
+      });
+    }, root);
+
+    return () => ctx.revert();
+  }, [items.length]);
+
+  return (
+    <section ref={rootRef} className={styles.shipped} aria-label="Deliverables">
+      <div className={styles.shipStage} data-ship-stage>
+        {image ? (
+          <div className={styles.shipMedia} aria-hidden="true">
+            <div className={styles.shipPlate} data-ship-plate>
+              <Image
+                src={image}
+                alt=""
+                fill
+                sizes="100vw"
+                className={styles.shipImg}
+              />
+            </div>
+            <div className={styles.shipVeil} />
+          </div>
+        ) : null}
+
+        <div className={styles.shipHead}>
+          <div className={styles.shipHeadTop}>
+            <UtopianBreak size="sm" className={styles.break} />
+            <p className={styles.sectionEyebrow}>Shipped</p>
+          </div>
+          <p className={styles.shipCounter} aria-live="polite">
+            {String(active + 1).padStart(2, "0")}
+            <span>/</span>
+            {String(items.length).padStart(2, "0")}
+          </p>
+        </div>
+
+        <div className={styles.shipPanels}>
+          {items.map((item, i) => (
+            <div key={item.title} className={styles.shipPanel} data-ship-panel>
+              <p className={styles.shippedNum}>
+                DELIVERABLE {String(i + 1).padStart(2, "0")}
+              </p>
+              <h2 className={styles.shippedTitle}>{item.title}</h2>
+              <p className={styles.shippedDesc}>{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CaseVoice({
+  quote,
+  author,
+  role,
+  image,
+  lesson,
+  stack,
+}: {
+  quote: string;
+  author: string;
+  role: string;
+  image?: string;
+  lesson?: string;
+  stack?: string[];
+}) {
+  const rootRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const stage = root.querySelector<HTMLElement>("[data-voice-stage]");
+    const plate = root.querySelector<HTMLElement>("[data-voice-plate]");
+    const lines = root.querySelectorAll("[data-voice-line]");
+    if (!stage) return;
+
+    const ctx = gsap.context(() => {
+      if (plate) gsap.set(plate, { scale: 1.12 });
+      gsap.set(lines, { autoAlpha: 0, y: 28 });
+
+      ScrollTrigger.create({
+        trigger: stage,
+        start: "top top",
+        end: () => `+=${Math.round(window.innerHeight * 1.8)}`,
+        pin: true,
+        pinSpacing: true,
+        scrub: 0.65,
+        onUpdate: (self) => {
+          if (plate) {
+            gsap.set(plate, {
+              scale: gsap.utils.interpolate(1.12, 1, self.progress),
+            });
+          }
+          const reveal = gsap.utils.clamp(0, 1, (self.progress - 0.1) / 0.4);
+          lines.forEach((el, i) => {
+            const local = gsap.utils.clamp(0, 1, (reveal - i * 0.08) / 0.35);
+            gsap.set(el, {
+              autoAlpha: local,
+              y: gsap.utils.interpolate(28, 0, local),
+            });
+          });
+        },
+      });
+    }, root);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={rootRef} className={styles.voice} aria-label="Client voice">
+      <div className={styles.voiceStage} data-voice-stage>
+        {image ? (
+          <div className={styles.voicePlate} data-voice-plate aria-hidden="true">
+            <Image src={image} alt="" fill sizes="100vw" className={styles.voiceImg} />
+            <div className={styles.voiceVeil} />
+          </div>
+        ) : null}
+        <div className={styles.voiceInner}>
+          <div data-voice-line>
+            <UtopianBreak size="sm" className={styles.break} />
+          </div>
+          <blockquote className={styles.voiceQuote} data-voice-line>
+            {quote}
           </blockquote>
-          <footer className={styles.testimonialFooter}>
-            <div className={styles.testimonialAuthor}>
-              <span className={styles.testimonialName}>
-                {item.testimonial.author}
-              </span>
-              <span className={styles.testimonialRole}>
-                {item.testimonial.role}
-              </span>
-            </div>
-            <span className={styles.verifiedBadge}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-              </svg>
-              Verified Client Review
-            </span>
+          <footer className={styles.voiceFooter} data-voice-line>
+            <cite className={styles.voiceAuthor}>{author}</cite>
+            <span className={styles.voiceRole}>{role}</span>
           </footer>
-        </section>
-      ) : null}
+          {lesson ? (
+            <p className={styles.lesson} data-voice-line>
+              {lesson}
+            </p>
+          ) : null}
+          {stack && stack.length > 0 ? (
+            <ul className={styles.stackList} data-voice-line>
+              {stack.map((tech) => (
+                <li key={tech}>{tech}</li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      </div>
+    </section>
+  );
+}
 
-      {/* Tech Stack Architecture */}
-      {item.stack && item.stack.length > 0 ? (
-        <section className={styles.stackSection}>
-          <p className={styles.statsKicker}>Architecture</p>
-          <h2 className={styles.statsHeading}>Technologies Used</h2>
-          <div className={styles.stackPills}>
-            {item.stack.map((tech) => (
-              <span key={tech} className={styles.stackPill}>
-                {tech}
-              </span>
-            ))}
-          </div>
-        </section>
+function CaseNext({ item }: { item: CaseStudy }) {
+  return (
+    <Link href={`/work/${item.slug}`} className={styles.next}>
+      {item.image ? (
+        <div className={styles.nextPlate} aria-hidden="true">
+          <Image
+            src={item.image}
+            alt=""
+            fill
+            sizes="100vw"
+            className={styles.nextImg}
+          />
+          <div className={styles.nextVeil} />
+        </div>
       ) : null}
-
-      {/* Next Case Study Exploration Card */}
-      {nextItem ? (
-        <section className={styles.nextCaseSection}>
-          <Link href={`/work/${nextItem.slug}`} className={styles.nextCaseCard}>
-            <div>
-              <p className={styles.nextCaseLabel}>Next Case Story</p>
-              <h3 className={styles.nextCaseTitle}>
-                {nextItem.client} — {nextItem.title}
-              </h3>
-            </div>
-            <span className={styles.nextCaseArrow} aria-hidden="true">
-              →
-            </span>
-          </Link>
-        </section>
-      ) : null}
-    </div>
+      <div className={styles.nextInner}>
+        <p className={styles.nextLabel}>Next case</p>
+        <p className={styles.nextClient}>{item.client}</p>
+        <h2 className={styles.nextTitle}>{item.title}</h2>
+        <span className={styles.nextCta}>
+          Continue <span aria-hidden="true">→</span>
+        </span>
+      </div>
+    </Link>
   );
 }

@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>13 UTOPIA — Content & Visual Feedback</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #050505;
+      --bg2: #0c0c0c;
+      --bg3: #141414;
+      --line: rgba(243, 241, 234, 0.1);
+      --gold: #e8c56a;
+      --gold-dim: color-mix(in srgb, #e8c56a 55%, transparent);
+      --fg: #f3f1ea;
+      --muted: rgba(243, 241, 234, 0.55);
+      --soft: rgba(243, 241, 234, 0.72);
+      --danger: #ff6b6b;
+      --ok: #6bcf8e;
+      --warn: #e8c56a;
+      --radius: 12px;
+      --safe-b: env(safe-area-inset-bottom, 0px);
+      --font: "DM Sans", system-ui, sans-serif;
+      --display: "Bodoni Moda", Georgia, serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); font-family: var(--font); }
+    body { min-height: 100dvh; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    a { color: var(--gold); }
+
+    .app { max-width: 920px; margin: 0 auto; padding: 0 1rem 7rem; }
+
+    .top {
+      position: sticky; top: 0; z-index: 40;
+      backdrop-filter: blur(16px);
+      background: rgba(5,5,5,0.88);
+      border-bottom: 1px solid var(--line);
+      padding: 0.85rem 0 0.65rem;
+    }
+    .top-inner { max-width: 920px; margin: 0 auto; padding: 0 1rem; }
+    .brand-row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+    .brand {
+      font-family: var(--display); font-size: 1.15rem; letter-spacing: -0.02em;
+      background: #f3f1ea; color: #0a0a0a; padding: 0.35rem 0.55rem; line-height: 1;
+    }
+    .brand span { font-family: var(--font); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; margin-left: 0.25rem; }
+    .save-pill {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.4rem 0.65rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted);
+      white-space: nowrap;
+    }
+    .save-pill.ok { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 40%, transparent); }
+    .save-pill.err { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 40%, transparent); }
+    .save-pill.busy { color: var(--gold); }
+
+    .hero {
+      padding: 1.5rem 0 1rem;
+    }
+    .eyebrow {
+      margin: 0 0 0.5rem; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold);
+    }
+    .hero h1 {
+      margin: 0 0 0.65rem; font-family: var(--display); font-weight: 400;
+      font-size: clamp(1.85rem, 7vw, 2.75rem); letter-spacing: -0.03em; line-height: 1;
+      text-transform: uppercase;
+    }
+    .hero p { margin: 0; color: var(--soft); font-size: 0.95rem; line-height: 1.5; max-width: 40ch; }
+    .meta-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-top: 1.1rem;
+    }
+    @media (max-width: 560px) { .meta-grid { grid-template-columns: 1fr; } }
+    .meta-card {
+      background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius); padding: 0.85rem 1rem;
+    }
+    .meta-card b { display: block; font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem; }
+    .meta-card span { font-size: 0.9rem; color: var(--soft); }
+
+    .user-bar {
+      display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center;
+      margin: 1rem 0 0.5rem; padding: 0.85rem; background: var(--bg2);
+      border: 1px solid var(--line); border-radius: var(--radius);
+    }
+    .user-bar label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); width: 100%; }
+    .user-bar input[type="text"] {
+      flex: 1; min-width: 160px; background: var(--bg3); border: 1px solid var(--line);
+      border-radius: 8px; padding: 0.7rem 0.85rem;
+    }
+    .user-bar input:focus, .field-input:focus, .field-area:focus, .field-select:focus, #suggestText:focus {
+      outline: none; border-color: var(--gold-dim);
+    }
+
+    .stats {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin: 1rem 0;
+    }
+    @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+    .stat {
+      background: var(--bg2); border: 1px solid var(--line); border-radius: 10px; padding: 0.75rem;
+      text-align: center;
+    }
+    .stat strong { display: block; font-family: var(--display); font-size: 1.45rem; color: var(--gold); line-height: 1; }
+    .stat em { font-style: normal; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+    .tabs {
+      display: flex; gap: 0.4rem; overflow-x: auto; padding: 0.35rem 0 0.85rem;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+      position: sticky; top: 56px; z-index: 30; background: linear-gradient(#050505 70%, transparent);
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      flex: 0 0 auto; border: 1px solid var(--line); background: var(--bg2); color: var(--muted);
+      border-radius: 999px; padding: 0.55rem 0.9rem; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.04em; cursor: pointer;
+    }
+    .tab.active { color: #0a0a0a; background: var(--gold); border-color: var(--gold); }
+
+    .section-title {
+      margin: 1.5rem 0 0.75rem; font-family: var(--display); font-size: 1.35rem;
+      letter-spacing: -0.02em; text-transform: uppercase;
+    }
+
+    .card {
+      background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 1rem; margin-bottom: 0.75rem;
+    }
+    .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.55rem; }
+    .card-id { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.14em; color: var(--gold-dim); }
+    .card-label { margin: 0.15rem 0 0; font-size: 0.98rem; font-weight: 600; line-height: 1.3; }
+    .help { margin: 0 0 0.65rem; font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
+
+    .badge {
+      flex-shrink: 0; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 0.28rem 0.5rem; border-radius: 6px; border: 1px solid;
+    }
+    .badge.NEED { color: #ffb4b4; border-color: rgba(255,107,107,0.35); background: rgba(255,107,107,0.08); }
+    .badge.CONFIRM { color: var(--gold); border-color: var(--gold-dim); background: rgba(232,197,106,0.08); }
+    .badge.RISK { color: #ffcc80; border-color: rgba(255,180,80,0.4); background: rgba(255,160,40,0.1); }
+    .badge.APPROVED { color: var(--ok); border-color: rgba(107,207,142,0.4); background: rgba(107,207,142,0.1); }
+    .badge.CUT { color: var(--muted); border-color: var(--line); background: transparent; }
+    .badge.DRAFT { color: #9ec5ff; border-color: rgba(120,170,255,0.35); background: rgba(80,130,255,0.08); }
+
+    .field-input, .field-area, .field-select, #suggestText {
+      width: 100%; background: var(--bg3); border: 1px solid var(--line); border-radius: 8px;
+      padding: 0.75rem 0.85rem;
+    }
+    .field-area { min-height: 96px; resize: vertical; line-height: 1.45; }
+    .row-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.65rem; align-items: center; }
+    .status-select {
+      background: var(--bg3); border: 1px solid var(--line); border-radius: 8px; padding: 0.45rem 0.55rem;
+      font-size: 0.78rem;
+    }
+    .ghost {
+      background: transparent; border: 1px solid var(--line); border-radius: 8px;
+      padding: 0.45rem 0.7rem; font-size: 0.75rem; font-weight: 600; color: var(--soft); cursor: pointer;
+    }
+    .ghost:hover { border-color: var(--gold-dim); color: var(--gold); }
+    .primary {
+      background: var(--gold); color: #0a0a0a; border: none; border-radius: 8px;
+      padding: 0.7rem 1rem; font-weight: 700; font-size: 0.82rem; letter-spacing: 0.04em;
+      text-transform: uppercase; cursor: pointer;
+    }
+    .primary:disabled { opacity: 0.45; cursor: not-allowed; }
+    .meta-line { font-size: 0.72rem; color: var(--muted); margin-top: 0.5rem; }
+
+    .dock {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+      padding: 0.65rem 1rem calc(0.65rem + var(--safe-b));
+      background: rgba(5,5,5,0.94); border-top: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+    .dock-inner {
+      max-width: 920px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;
+    }
+    .dock .primary, .dock .ghost { width: 100%; text-align: center; padding: 0.85rem 0.5rem; }
+    @media (max-width: 480px) {
+      .dock-inner { grid-template-columns: 1fr 1fr; }
+      .dock .span2 { grid-column: 1 / -1; }
+    }
+
+    .panel {
+      background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 1rem; margin: 1rem 0;
+    }
+    .suggest-item {
+      border-top: 1px solid var(--line); padding: 0.85rem 0;
+    }
+    .suggest-item:first-child { border-top: none; padding-top: 0; }
+    .suggest-meta { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.35rem; }
+    .empty { color: var(--muted); font-size: 0.9rem; padding: 1rem 0; }
+
+    .locked-note {
+      border: 1px solid var(--gold-dim); background: rgba(232,197,106,0.07);
+      border-radius: var(--radius); padding: 0.9rem 1rem; margin: 0.75rem 0 1rem;
+      font-size: 0.88rem; line-height: 1.45; color: var(--soft);
+    }
+
+    .filter-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0 1rem; }
+    .chip {
+      border: 1px solid var(--line); background: transparent; color: var(--muted);
+      border-radius: 999px; padding: 0.4rem 0.7rem; font-size: 0.72rem; font-weight: 600; cursor: pointer;
+    }
+    .chip.on { color: var(--gold); border-color: var(--gold-dim); }
+
+    .hidden { display: none !important; }
+    .toast {
+      position: fixed; left: 50%; bottom: calc(5.5rem + var(--safe-b)); transform: translateX(-50%);
+      background: #1a1a1a; border: 1px solid var(--gold-dim); color: var(--fg);
+      padding: 0.7rem 1rem; border-radius: 999px; font-size: 0.8rem; z-index: 60;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+      max-width: 90vw; text-align: center;
+    }
+    .toast.show { opacity: 1; }
+    .locked-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; margin-top: 0.85rem;
+    }
+    @media (max-width: 560px) { .locked-grid { grid-template-columns: 1fr; } }
+    .locked-item {
+      background: rgba(232,197,106,0.05); border: 1px solid var(--line);
+      border-radius: 8px; padding: 0.65rem 0.75rem;
+    }
+    .locked-item b {
+      display: block; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gold-dim); margin-bottom: 0.2rem; font-weight: 600;
+    }
+    .locked-item span { font-size: 0.84rem; color: var(--soft); line-height: 1.35; }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand-row">
+        <div class="brand">13<span>UTOPIA</span></div>
+        <div id="savePill" class="save-pill">Loading…</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app">
+    <section class="hero">
+      <p class="eyebrow">Team feedback · language + imagery</p>
+      <h1>Content & visuals</h1>
+      <p id="introText">We only need your eye on language and imagery — what feels right, what feels off, and what real assets we should use.</p>
+      <div class="meta-grid">
+        <div class="meta-card"><b>Go live</b><span>4 October 2026</span></div>
+        <div class="meta-card"><b>Focus</b><span>Voice + image language</span></div>
+      </div>
+    </section>
+
+    <div class="user-bar">
+      <label for="userName">Your name (required to edit / suggest)</label>
+      <input id="userName" type="text" placeholder="e.g. Creative / Account / Leadership" autocomplete="name" />
+      <button class="ghost" type="button" id="btnReload">Reload shared</button>
+      <button class="ghost" type="button" id="btnExport">Export JSON</button>
+      <button class="ghost" type="button" id="btnImport">Import JSON</button>
+      <input id="importFile" type="file" accept="application/json,.json" class="hidden" />
+    </div>
+
+    <div class="stats" id="stats"></div>
+
+    <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+
+    <div class="filter-row" id="filters">
+      <button type="button" class="chip on" data-filter="ALL">All</button>
+      <button type="button" class="chip" data-filter="NEED">Open</button>
+      <button type="button" class="chip" data-filter="CONFIRM">Confirm lines</button>
+      <button type="button" class="chip" data-filter="RISK">Risk only</button>
+    </div>
+
+    <div id="fields"></div>
+
+    <h2 class="section-title">Free suggestions</h2>
+    <div class="panel">
+      <p class="help" style="margin-top:0">Anything about tone, words, plates, references — post it here. Optional field ID if it’s about a specific question above.</p>
+      <input id="suggestField" class="field-input" style="margin-bottom:0.5rem" placeholder="Field ID (optional) e.g. VIS_WORLD" />
+      <textarea id="suggestText" placeholder="Suggestion, rewrite, or visual reference…"></textarea>
+      <div class="row-actions">
+        <button type="button" class="primary" id="btnSuggest">Post suggestion</button>
+      </div>
+      <div id="suggestList" style="margin-top:1rem"></div>
+    </div>
+
+    <h2 class="section-title">Recent activity</h2>
+    <div class="panel" id="activity"></div>
+  </main>
+
+  <div class="dock">
+    <div class="dock-inner">
+      <button type="button" class="ghost" id="btnSave">Save now</button>
+      <button type="button" class="ghost" id="btnSuggestJump">Suggestions</button>
+      <button type="button" class="primary span2" id="btnDone">Mark my edits done</button>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const API = "/api/intake";
+    const LS_KEY = "utopia_intake_v2";
+    const LS_NAME = "utopia_intake_name";
+
+    let store = null;
+    let activeSection = "ALL";
+    let statusFilter = "ALL";
+    let saveTimer = null;
+    let dirty = false;
+
+    const $ = (id) => document.getElementById(id);
+    const toast = (msg) => {
+      const el = $("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      setTimeout(() => el.classList.remove("show"), 2200);
+    };
+    const setPill = (text, cls) => {
+      const el = $("savePill");
+      el.textContent = text;
+      el.className = "save-pill" + (cls ? " " + cls : "");
+    };
+
+    function requireName() {
+      const name = ($("userName").value || "").trim();
+      if (!name) {
+        toast("Enter your name first");
+        $("userName").focus();
+        return null;
+      }
+      localStorage.setItem(LS_NAME, name);
+      return name;
+    }
+
+    function sections() {
+      const set = new Set(store.fields.map((f) => f.section));
+      return ["ALL", ...set];
+    }
+
+    function counts() {
+      const c = { NEED: 0, CONFIRM: 0, RISK: 0, APPROVED: 0, CUT: 0, DRAFT: 0, total: store.fields.length };
+      store.fields.forEach((f) => { c[f.status] = (c[f.status] || 0) + 1; });
+      return c;
+    }
+
+    function renderStats() {
+      const c = counts();
+      $("stats").innerHTML = `
+        <div class="stat"><strong>${c.NEED || 0}</strong><em>Need team</em></div>
+        <div class="stat"><strong>${c.RISK || 0}</strong><em>Risk</em></div>
+        <div class="stat"><strong>${c.CONFIRM || 0}</strong><em>Confirm</em></div>
+        <div class="stat"><strong>${c.APPROVED || 0}</strong><em>Approved</em></div>
+      `;
+    }
+
+    function renderTabs() {
+      $("tabs").innerHTML = sections().map((s) => {
+        const label = s === "ALL" ? "All sections" : s.replace(/^[A-J]\.\s*/, "");
+        const short = label.length > 22 ? label.slice(0, 20) + "…" : label;
+        return `<button type="button" class="tab${activeSection === s ? " active" : ""}" data-section="${encodeURIComponent(s)}">${short}</button>`;
+      }).join("");
+    }
+
+    function fieldHTML(f) {
+      let control = "";
+      if (f.type === "select") {
+        const opts = (f.options || []).map((o) =>
+          `<option value="${escapeAttr(o)}"${f.value === o ? " selected" : ""}>${escapeHtml(o)}</option>`
+        ).join("");
+        control = `<select class="field-select" data-id="${f.id}">
+          <option value="">— select —</option>${opts}
+        </select>`;
+      } else if (f.type === "textarea") {
+        control = `<textarea class="field-area" data-id="${f.id}" rows="4">${escapeHtml(f.value || "")}</textarea>`;
+      } else {
+        control = `<input class="field-input" data-id="${f.id}" type="text" value="${escapeAttr(f.value || "")}" />`;
+      }
+
+      const statuses = ["NEED", "CONFIRM", "RISK", "DRAFT", "APPROVED", "CUT"];
+      const statusOpts = statuses.map((s) =>
+        `<option value="${s}"${f.status === s ? " selected" : ""}>${s}</option>`
+      ).join("");
+
+      return `<article class="card" data-field="${f.id}" data-section="${escapeAttr(f.section)}" data-status="${f.status}">
+        <div class="card-head">
+          <div>
+            <div class="card-id">${escapeHtml(f.id)}</div>
+            <h3 class="card-label">${escapeHtml(f.label)}${f.required ? " *" : ""}</h3>
+          </div>
+          <span class="badge ${f.status}">${f.status}</span>
+        </div>
+        ${f.help ? `<p class="help">${escapeHtml(f.help)}</p>` : ""}
+        ${control}
+        <div class="row-actions">
+          <select class="status-select" data-status-for="${f.id}">${statusOpts}</select>
+          <button type="button" class="ghost" data-suggest-for="${f.id}">Suggest on this</button>
+        </div>
+        ${f.updatedBy ? `<div class="meta-line">Last edit: ${escapeHtml(f.updatedBy)} · ${escapeHtml(f.updatedAt || "")}</div>` : ""}
+      </article>`;
+    }
+
+    function renderFields() {
+      const list = store.fields.filter((f) => {
+        if (activeSection !== "ALL" && f.section !== activeSection) return false;
+        if (statusFilter !== "ALL" && f.status !== statusFilter) return false;
+        return true;
+      });
+
+      if (!list.length) {
+        $("fields").innerHTML = `<p class="empty">No fields in this filter.</p>`;
+        return;
+      }
+
+      let html = "";
+      let lastSec = "";
+      list.forEach((f) => {
+        if (f.section !== lastSec) {
+          lastSec = f.section;
+          html += `<h2 class="section-title">${escapeHtml(f.section)}</h2>`;
+        }
+        html += fieldHTML(f);
+      });
+      $("fields").innerHTML = html;
+    }
+
+    function renderSuggestions() {
+      const items = store.suggestions || [];
+      if (!items.length) {
+        $("suggestList").innerHTML = `<p class="empty">No suggestions yet — be the first.</p>`;
+        return;
+      }
+      $("suggestList").innerHTML = items.map((s) => `
+        <div class="suggest-item">
+          <div class="suggest-meta">${escapeHtml(s.author)} · ${formatTime(s.createdAt)}${s.fieldId ? " · #" + escapeHtml(s.fieldId) : ""}</div>
+          <div>${escapeHtml(s.text)}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderActivity() {
+      const items = store.activity || [];
+      if (!items.length) {
+        $("activity").innerHTML = `<p class="empty">Edits will show up here.</p>`;
+        return;
+      }
+      $("activity").innerHTML = items.slice(0, 30).map((a) => `
+        <div class="suggest-item">
+          <div class="suggest-meta">${escapeHtml(a.by || "?")} · ${formatTime(a.at)} · ${escapeHtml(a.action || "")}</div>
+          <div style="color:var(--soft);font-size:0.88rem">${escapeHtml(a.detail || "")}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderAll() {
+      if (store.intro) $("introText").textContent = store.intro;
+      if (store.title) document.title = store.title;
+      renderStats();
+      renderTabs();
+      renderFields();
+      renderSuggestions();
+      renderActivity();
+    }
+
+    function findField(id) {
+      return store.fields.find((f) => f.id === id);
+    }
+
+    function markDirty(fieldId, patch) {
+      const name = requireName();
+      if (!name) return;
+      const f = findField(fieldId);
+      if (!f) return;
+      Object.assign(f, patch, {
+        updatedBy: name,
+        updatedAt: new Date().toISOString(),
+      });
+      store.updatedBy = name;
+      dirty = true;
+      setPill("Unsaved…", "busy");
+      scheduleSave();
+      const badge = document.querySelector(`[data-field="${fieldId}"] .badge`);
+      if (badge && patch.status) {
+        badge.className = "badge " + patch.status;
+        badge.textContent = patch.status;
+      }
+    }
+
+    function scheduleSave() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => save(false), 700);
+    }
+
+    async function save(manual) {
+      if (!store) return;
+      const name = ($("userName").value || "").trim() || store.updatedBy || "Anonymous";
+      store.updatedBy = name;
+      store.updatedAt = new Date().toISOString();
+
+      localStorage.setItem(LS_KEY, JSON.stringify(store));
+
+      setPill("Saving…", "busy");
+      try {
+        const res = await fetch(API, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(store),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json.error || "Save failed");
+        dirty = false;
+        setPill("Saved · " + formatTime(store.updatedAt), "ok");
+        if (manual) toast("Saved for everyone on this server");
+        pushActivity(name, "save", manual ? "Manual save" : "Autosave");
+        renderActivity();
+      } catch (err) {
+        setPill("Device only · export to share", "err");
+        if (manual) toast("Server save failed — kept on this device. Use Export JSON.");
+        console.warn(err);
+      }
+    }
+
+    function pushActivity(by, action, detail) {
+      store.activity = [
+        { at: new Date().toISOString(), by, action, detail },
+        ...(store.activity || []),
+      ].slice(0, 100);
+    }
+
+    async function load() {
+      setPill("Loading…", "busy");
+      try {
+        const res = await fetch(API, { cache: "no-store" });
+        if (!res.ok) throw new Error("API error");
+        store = await res.json();
+        // Force refresh if server still has old mega-form
+        if (!store.version || store.version < 2 || !store.locked) {
+          const seedRes = await fetch("/intake/seed.json", { cache: "no-store" });
+          store = await seedRes.json();
+          await fetch(API, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(store),
+          });
+        }
+        localStorage.setItem(LS_KEY, JSON.stringify(store));
+        setPill("Live shared store", "ok");
+      } catch (err) {
+        const seedRes = await fetch("/intake/seed.json").catch(() => null);
+        if (seedRes && seedRes.ok) {
+          store = await seedRes.json();
+          localStorage.setItem(LS_KEY, JSON.stringify(store));
+          setPill("Seed · device save", "err");
+        } else {
+          const local = localStorage.getItem(LS_KEY);
+          if (local) {
+            store = JSON.parse(local);
+            setPill("Device backup", "err");
+          } else {
+            throw err;
+          }
+        }
+      }
+      renderAll();
+    }
+
+    async function postSuggestion() {
+      const name = requireName();
+      if (!name) return;
+      const text = ($("suggestText").value || "").trim();
+      const fieldId = ($("suggestField").value || "").trim() || null;
+      if (!text) { toast("Write a suggestion first"); return; }
+
+      try {
+        const res = await fetch(API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ type: "suggestion", author: name, text, fieldId }),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || "Failed");
+        store.suggestions = [json.suggestion, ...(store.suggestions || [])];
+        $("suggestText").value = "";
+        localStorage.setItem(LS_KEY, JSON.stringify(store));
+        renderSuggestions();
+        toast("Suggestion posted");
+        setPill("Saved", "ok");
+      } catch (err) {
+        const suggestion = {
+          id: "local_" + Date.now(),
+          author: name,
+          fieldId,
+          text,
+          createdAt: new Date().toISOString(),
+          status: "open",
+        };
+        store.suggestions = [suggestion, ...(store.suggestions || [])];
+        localStorage.setItem(LS_KEY, JSON.stringify(store));
+        renderSuggestions();
+        toast("Saved on this device (server unreachable)");
+      }
+    }
+
+    function escapeHtml(s) {
+      return String(s ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+    function escapeAttr(s) { return escapeHtml(s).replace(/'/g, "&#39;"); }
+    function formatTime(iso) {
+      if (!iso) return "";
+      try {
+        const d = new Date(iso);
+        return d.toLocaleString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+      } catch { return iso; }
+    }
+
+    // Events
+    $("userName").value = localStorage.getItem(LS_NAME) || "";
+    $("userName").addEventListener("change", () => {
+      const n = ($("userName").value || "").trim();
+      if (n) localStorage.setItem(LS_NAME, n);
+    });
+
+    $("tabs").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-section]");
+      if (!btn) return;
+      activeSection = decodeURIComponent(btn.dataset.section);
+      renderTabs();
+      renderFields();
+    });
+
+    $("filters").addEventListener("click", (e) => {
+      const chip = e.target.closest("[data-filter]");
+      if (!chip) return;
+      statusFilter = chip.dataset.filter;
+      [...$("filters").children].forEach((c) => c.classList.toggle("on", c === chip));
+      renderFields();
+    });
+
+    $("fields").addEventListener("input", (e) => {
+      const el = e.target;
+      if (el.matches("[data-id]")) {
+        markDirty(el.dataset.id, { value: el.value });
+      }
+    });
+    $("fields").addEventListener("change", (e) => {
+      const el = e.target;
+      if (el.matches("[data-id]")) {
+        markDirty(el.dataset.id, { value: el.value });
+      }
+      if (el.matches("[data-status-for]")) {
+        markDirty(el.dataset.statusFor, { status: el.value });
+        renderStats();
+      }
+    });
+    $("fields").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-suggest-for]");
+      if (!btn) return;
+      $("suggestField").value = btn.dataset.suggestFor;
+      $("suggestText").focus();
+      $("suggestText").scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    $("btnSave").addEventListener("click", () => save(true));
+    $("btnReload").addEventListener("click", () => load());
+    $("btnSuggest").addEventListener("click", () => postSuggestion());
+    $("btnSuggestJump").addEventListener("click", () => {
+      $("suggestText").scrollIntoView({ behavior: "smooth", block: "center" });
+      $("suggestText").focus();
+    });
+    $("btnDone").addEventListener("click", async () => {
+      const name = requireName();
+      if (!name) return;
+      pushActivity(name, "done", "Marked section review done");
+      await save(true);
+      toast("Thanks — your edits are on the shared store");
+    });
+
+    $("btnExport").addEventListener("click", () => {
+      if (!store) return;
+      const blob = new Blob([JSON.stringify(store, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `13utopia-intake-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast("JSON downloaded");
+    });
+    $("btnImport").addEventListener("click", () => $("importFile").click());
+    $("importFile").addEventListener("change", async (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const data = JSON.parse(text);
+        if (!Array.isArray(data.fields)) throw new Error("Invalid file");
+        store = data;
+        dirty = true;
+        renderAll();
+        await save(true);
+        toast("Imported");
+      } catch {
+        toast("Import failed — invalid JSON");
+      }
+      e.target.value = "";
+    });
+
+    window.addEventListener("beforeunload", (e) => {
+      if (dirty) { e.preventDefault(); e.returnValue = ""; }
+    });
+
+    // Also copy seed into public for offline fallback
+    load();
+  </script>
+</body>
+</html>

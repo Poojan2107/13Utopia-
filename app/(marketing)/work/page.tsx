@@ -1,19 +1,11 @@
 import type { Metadata } from "next";
-import {
-  ClipReveal,
-  MotionMedia,
-  ProofArchive,
-} from "@/components/motion";
-import {
-  Container,
-  HubBridge,
-  HubCloser,
-  PageHero,
-} from "@/components/ui";
+import { ExpandGallery, ProofArchive } from "@/components/motion";
+import { WorkFinale } from "@/components/work/WorkFinale";
+import { WorkHero } from "@/components/work/WorkHero";
+import { WorkManifest } from "@/components/work/WorkManifest";
 import { plates } from "@/content/plates";
 import { getCaseStudies } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
-import hub from "@/styles/ui/HubBody.module.css";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
@@ -31,11 +23,11 @@ const CASE_UI_PLATES = [
   plates.trendyFashion,
 ] as const;
 
-/** Hub craft: Hero → archive → bridge → close */
+/** Work hub — continuous Belief-density cinema */
 export default function WorkHubPage() {
   const cases = getCaseStudies();
 
-  const items = cases.map((item, i) => ({
+  const archive = cases.map((item, i) => ({
     href: `/work/${item.slug}`,
     title: item.title,
     body: item.summary,
@@ -43,53 +35,45 @@ export default function WorkHubPage() {
     tone: TONE[i % TONE.length],
     need: `${item.client} — ${item.title}`,
     image: CASE_UI_PLATES[i % CASE_UI_PLATES.length],
+    stat: item.stats?.[0]?.value,
+    statLabel: item.stats?.[0]?.label,
+  }));
+
+  const gallery = cases.map((item, i) => ({
+    href: `/work/${item.slug}`,
+    title: item.client,
+    code: String(i + 1).padStart(2, "0"),
+    need: `Gallery — ${item.client}`,
+    tone: TONE[i % TONE.length],
+    image: CASE_UI_PLATES[i % CASE_UI_PLATES.length],
   }));
 
   return (
     <>
-      <PageHero
-        eyebrow="Work"
-        title="Case stories"
-        description="Curated proof. Metrics only when verified."
-        layout="full"
-        media={
-          <MotionMedia
-            aspect="hero"
-            tone="warm"
-            need="Work hero"
-            image={plates.work}
-            fill={false}
-            sizes="100vw"
-            priority
-          />
-        }
+      <WorkHero
+        images={[
+          plates.work,
+          plates.eliteSports,
+          plates.kumarCotton,
+          plates.trendyFashion,
+        ]}
       />
+
+      <WorkManifest image={plates.create} />
 
       <ProofArchive
         eyebrow="Archive"
         lead="Shipped work. Scroll the records."
-        cases={items}
+        cases={archive}
       />
 
-      <Container className={hub.bodyTight}>
-        <ClipReveal>
-          <HubBridge
-            eyebrow="Proof"
-            statement="Ambition becomes evidence when Create, Build, and Grow move together."
-            support="Stories from published client feedback. No invented metrics."
-            need="Work bridge"
-            tone="warm"
-            image={plates.work}
-          />
-        </ClipReveal>
+      <ExpandGallery
+        eyebrow="Index"
+        lead="Three records. One practice."
+        items={gallery}
+      />
 
-        <HubCloser
-          title="Have a story to write?"
-          lead="Bring the challenge. We’ll find the move."
-          secondaryHref="/capabilities"
-          secondaryLabel="Capabilities"
-        />
-      </Container>
+      <WorkFinale image={plates.grow} />
     </>
   );
 }

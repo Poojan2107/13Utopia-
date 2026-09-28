@@ -1,0 +1,10 @@
+# Do not upload local packs / caches to Vercel
+Awwwards_Master_Pack
+animmaster
+_recovered_hero
+.next
+node_modules
+design-audit.png
+*.mp4
+.env*
+.vercel

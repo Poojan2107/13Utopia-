@@ -27,14 +27,19 @@
   --color-border: color-mix(in srgb, var(--color-warm-white) 12%, transparent);
   --color-surface: var(--color-neutral-900);
 
-  /* Display = Didone (Bodoni Moda). UI/Body = grotesk. */
+  /* Display = Didone (Bodoni Moda). Brand = logo-soft rounded (mark moments). UI = grotesk. */
   --font-didone-stack: var(--font-didone), "Didot", "Bodoni MT", Georgia, serif;
+  --font-brand-stack: var(--font-brand-face), "Nunito", system-ui, sans-serif;
+  --font-brand: var(--font-brand-stack);
   --font-display: var(--font-didone-stack);
   --font-serif: var(--font-display);
   --font-editorial: var(--font-display);
   --font-cormorant: var(--font-display);
   --font-type-c: var(--font-didone);
   --font-display-face: var(--font-didone);
+  --font-body: var(--font-sans), system-ui, sans-serif;
+  --font-ui: var(--font-sans), system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, monospace;
   --font-body: var(--font-sans), system-ui, sans-serif;
   --font-ui: var(--font-sans), system-ui, sans-serif;
   --font-mono: var(--font-mono-face), ui-monospace, monospace;

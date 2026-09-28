@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import {
+  Bodoni_Moda,
+  IBM_Plex_Mono,
+  IBM_Plex_Sans,
+  M_PLUS_Rounded_1c,
+} from "next/font/google";
 import { buildMetadata, defaultHomeSeo } from "@/lib/seo";
 import { jsonLdScript, organizationSchema, websiteSchema } from "@/lib/schema";
 import "./globals.css";
 
 /**
  * Type system:
- * Display — Bodoni Moda (Didone / PURITY-of-NOISE territory)
- * UI/Body — IBM Plex Sans (readable grotesk)
+ * Display — Bodoni Moda (Didone / editorial voice)
+ * Brand   — M PLUS Rounded 1c (logo-adjacent soft black for mark moments)
+ * UI/Body — IBM Plex Sans
  * Mono    — rare technical only
  */
 const didone = Bodoni_Moda({
@@ -16,6 +22,13 @@ const didone = Bodoni_Moda({
   display: "swap",
   axes: ["opsz"],
   style: ["normal", "italic"],
+});
+
+const brand = M_PLUS_Rounded_1c({
+  subsets: ["latin"],
+  variable: "--font-brand-face",
+  display: "swap",
+  weight: ["800", "900"],
 });
 
 const sans = IBM_Plex_Sans({
@@ -45,7 +58,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${didone.variable} ${sans.variable} ${mono.variable}`}
+      className={`${didone.variable} ${brand.variable} ${sans.variable} ${mono.variable}`}
     >
       <body>
         <script

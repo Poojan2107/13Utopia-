@@ -43,6 +43,9 @@ next-env.d.ts
 # local recovery / scratch
 /_recovered_hero/
 
+# live team intake edits (seed stays in repo)
+/data/launch-intake.json
+
 # Animmaster pack binaries + extracted labs (keep CATALOG.md)
 /animmaster/Awwwards Pack-*/
 /animmaster/_lab/
