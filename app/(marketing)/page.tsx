@@ -1,17 +1,14 @@
 import {
   CascadeReveal,
+  CapabilitiesChapter,
+  ExploreChapter,
   FinalCTA,
   HomeHero,
-  HoverImageMenu,
-  ProcessTheater,
+  MethodChapter,
   StudioCreed,
   VoiceLine,
 } from "@/components/home";
-import {
-  CreateBuildGrowKinetic,
-  ProofArchive,
-  TextRepetitionScroll,
-} from "@/components/motion";
+import { ProofArchive, TextRepetitionScroll } from "@/components/motion";
 import { plates } from "@/content/plates";
 import { testimonials } from "@/content/people";
 import { getCaseStudies } from "@/lib/content";
@@ -55,40 +52,9 @@ const METHOD_STEPS = [
   },
 ] as const;
 
-const EXPLORE_ITEMS = [
-  {
-    href: "/work",
-    title: "Work",
-    sub: "Evidence of ambition realized — platforms, commerce, brand transformations.",
-    image: plates.work,
-    tags: ["Proof", "Case Studies", "CGI"],
-  },
-  {
-    href: "/solutions",
-    title: "Solutions",
-    sub: "Modular engagements to launch, scale, and modernize.",
-    image: plates.build,
-    tags: ["Launch", "Scale", "AI"],
-  },
-  {
-    href: "/collective",
-    title: "Collective",
-    sub: "Designers, engineers, and strategists across India and the world.",
-    image: plates.collective,
-    tags: ["People", "Craft", "Culture"],
-  },
-  {
-    href: "/perspective",
-    title: "Perspective",
-    sub: "Essays and signal on design, software, and brand velocity.",
-    image: plates.grow,
-    tags: ["Thinking", "Notes", "POV"],
-  },
-] as const;
-
 /**
- * Locked: Hero → Belief (068).
- * After: Caps (061/011) → Creed (029) → Proof (071) → Method (070) → Explore (011) → Voice → 023 → CTA.
+ * Locked: Hero → Belief.
+ * After: Caps / Creed / Proof / Method / Explore — creed design language.
  */
 export default function HomePage() {
   const cases = getCaseStudies();
@@ -106,7 +72,7 @@ export default function HomePage() {
           images={[plates.work, plates.create, plates.build, plates.grow]}
         />
 
-        <CreateBuildGrowKinetic />
+        <CapabilitiesChapter />
 
         <StudioCreed />
 
@@ -124,20 +90,9 @@ export default function HomePage() {
           }))}
         />
 
-        <ProcessTheater
-          items={[...METHOD_STEPS]}
-          eyebrow="Method"
-          lead="Six moves. One practice."
-          image={plates.heroSculpture}
-        />
+        <MethodChapter items={[...METHOD_STEPS]} />
 
-        <HoverImageMenu
-          id="explore"
-          eyebrow="Explore"
-          lead="Where the practice opens."
-          items={[...EXPLORE_ITEMS]}
-          footHref={null}
-        />
+        <ExploreChapter />
 
         <VoiceLine
           quote={voice.quote}

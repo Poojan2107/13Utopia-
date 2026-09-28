@@ -1,0 +1,197 @@
+/* Capabilities — creed design language */
+
+.root {
+  position: relative;
+  width: 100%;
+  background: #000;
+  color: #f3f1ea;
+  padding: clamp(5.5rem, 14vh, 9rem) clamp(1.25rem, 4vw, 2.5rem);
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 12%, transparent);
+  overflow: hidden;
+}
+
+.inner {
+  width: min(100%, 52rem);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.mark {
+  color: var(--color-gold);
+  margin-bottom: 0.85rem;
+}
+
+.meta {
+  margin: 0 0 clamp(1.5rem, 3vh, 2.25rem);
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-gold) 88%, transparent);
+}
+
+.lead {
+  position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 18ch;
+}
+
+.leadLine {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 9vw, 6.25rem);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: #f7f4ec;
+}
+
+.hair {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 48%;
+  height: 1px;
+  background: color-mix(in srgb, #f7f4ec 50%, transparent);
+  pointer-events: none;
+}
+
+.support {
+  margin: clamp(1.25rem, 3vh, 1.75rem) 0 clamp(2.75rem, 6vh, 4rem);
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  font-style: italic;
+  line-height: 1.4;
+  color: color-mix(in srgb, #f3f1ea 72%, transparent);
+}
+
+.list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid color-mix(in srgb, #f3f1ea 14%, transparent);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 1rem;
+  row-gap: 0.35rem;
+  align-items: baseline;
+  padding: clamp(1.35rem, 3vh, 1.85rem) 0.15rem;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid color-mix(in srgb, #f3f1ea 14%, transparent);
+  text-align: left;
+  transition: color 0.25s ease;
+}
+
+.row:hover,
+.row:focus-visible {
+  color: var(--color-gold);
+  outline: none;
+}
+
+.num {
+  grid-row: 1 / 3;
+  align-self: center;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: color-mix(in srgb, var(--color-gold) 75%, transparent);
+}
+
+.word {
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 4.5vw, 3rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.sub {
+  grid-column: 2;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #f3f1ea 55%, transparent);
+}
+
+.row:hover .sub,
+.row:focus-visible .sub {
+  color: color-mix(in srgb, var(--color-gold) 70%, transparent);
+}
+
+.arrow {
+  grid-column: 2;
+  justify-self: end;
+  grid-row: 1;
+  font-size: 1.1rem;
+  color: color-mix(in srgb, var(--color-gold) 70%, transparent);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.row:hover .arrow,
+.row:focus-visible .arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.foot {
+  margin-top: clamp(2rem, 4vh, 2.75rem);
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  color: #f3f1ea;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 45%, transparent);
+  padding-bottom: 0.2rem;
+}
+
+.foot:hover,
+.foot:focus-visible {
+  color: var(--color-gold);
+  border-bottom-color: var(--color-gold);
+  outline: none;
+}
+
+@media (min-width: 800px) {
+  .row {
+    grid-template-columns: 3rem minmax(0, 0.9fr) minmax(0, 1.4fr) 1.5rem;
+    grid-template-rows: auto;
+    align-items: center;
+  }
+
+  .num {
+    grid-row: auto;
+  }
+
+  .sub {
+    grid-column: auto;
+    justify-self: end;
+    text-align: right;
+  }
+
+  .arrow {
+    grid-column: auto;
+    grid-row: auto;
+    justify-self: end;
+  }
+}

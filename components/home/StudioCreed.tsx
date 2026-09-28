@@ -1,154 +1,85 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { plates } from "@/content/plates";
-import type { MotionImage } from "@/components/motion/MotionMedia";
 import { UtopianBreak } from "@/components/ui/UtopianBreak";
 import { cn } from "@/lib/utils/cn";
 import styles from "@/styles/home/StudioCreed.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type CreedBeat = {
-  title: string;
-  body: string;
-  image: MotionImage;
-};
-
 type Props = {
   className?: string;
-  beats?: CreedBeat[];
 };
 
-const DEFAULT_BEATS: CreedBeat[] = [
-  {
-    title: "BE UNREAL.",
-    body: "Refuse the familiar brief. Ambition starts where the obvious ends.",
-    image: plates.create,
-  },
-  {
-    title: "BE.",
-    body: "Hold the center. Conviction without performance — presence as craft.",
-    image: plates.build,
-  },
-  {
-    title: "BE UNREASONABLE.",
-    body: "Push past consensus. Build what the market has not yet asked for.",
-    image: plates.grow,
-  },
-];
-
 /**
- * Studio Creed — Scroll / 029 DNA: pinned image mask reveal.
- * Left: creed panels. Right: stacked plates wipe via clip-path.
- * @see Awwwards_Master_Pack/01 - Scroll Animation/029 - Gsap Pinned Image Mask Reveal On Scroll
+ * Studio Creed — brand design language (1:3 Word System).
+ * Utopian Break · gold meta · monumental Didone · hairline.
  */
-export function StudioCreed({ className, beats = DEFAULT_BEATS }: Props) {
+export function StudioCreed({ className }: Props) {
   const rootRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const root = rootRef.current;
-    if (!root || beats.length < 2) return;
+    if (!root) return;
 
-    const arch = root.querySelector<HTMLElement>("[data-creed-arch]");
-    const pinTarget = root.querySelector<HTMLElement>("[data-creed-pin]");
-    const imgs = gsap.utils.toArray<HTMLElement>(
-      root.querySelectorAll("[data-creed-img]"),
+    const stage = root.querySelector<HTMLElement>("[data-creed-stage]");
+    const breakEl = root.querySelector<HTMLElement>("[data-creed-break]");
+    const meta = root.querySelector<HTMLElement>("[data-creed-meta]");
+    const lines = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-creed-line]"),
     );
-    const wrappers = gsap.utils.toArray<HTMLElement>(
-      root.querySelectorAll("[data-creed-wrap]"),
-    );
+    const hair = root.querySelector<HTMLElement>("[data-creed-hair]");
 
-    if (!arch || !pinTarget || imgs.length === 0) return;
-
-    wrappers.forEach((el) => {
-      const order = el.getAttribute("data-index");
-      if (order !== null) el.style.zIndex = order;
-    });
+    if (!stage || lines.length === 0) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
     if (reduce) {
-      gsap.set(imgs, { clearProps: "clipPath,objectPosition" });
+      gsap.set([breakEl, meta, hair, ...lines].filter(Boolean), {
+        autoAlpha: 1,
+        clearProps: "y,scaleX",
+      });
       return;
     }
 
     const ctx = gsap.context(() => {
-      if (isMobile) {
-        gsap.set(imgs, { objectPosition: "50% 60%" });
-        imgs.forEach((image) => {
-          gsap.to(image, {
-            objectPosition: "50% 30%",
-            ease: "none",
-            scrollTrigger: {
-              trigger: image,
-              start: "top 80%",
-              end: "bottom 20%",
-              scrub: true,
-            },
-          });
-        });
-        return;
-      }
+      if (breakEl) gsap.set(breakEl, { autoAlpha: 0, y: -12 });
+      if (meta) gsap.set(meta, { autoAlpha: 0, y: 10 });
+      gsap.set(lines, { autoAlpha: 0, y: 36 });
+      if (hair) gsap.set(hair, { scaleX: 0, autoAlpha: 0.9 });
 
-      gsap.set(imgs, {
-        clipPath: "inset(0)",
-        objectPosition: "50% 0%",
-      });
-
-      const mainTimeline = gsap.timeline({
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
         scrollTrigger: {
-          trigger: arch,
+          trigger: stage,
           start: "top top",
-          end: "bottom bottom",
-          pin: pinTarget,
-          scrub: true,
+          end: () => `+=${Math.round(window.innerHeight * 2.4)}`,
+          pin: true,
+          pinSpacing: true,
+          scrub: 0.65,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
 
-      imgs.forEach((currentImage, index) => {
-        const nextImage = imgs[index + 1];
-        if (!nextImage) return;
-
-        const sectionTimeline = gsap.timeline();
-        sectionTimeline
-          .to(
-            currentImage,
-            {
-              clipPath: "inset(0px 0px 100%)",
-              objectPosition: "50% 60%",
-              duration: 1.5,
-              ease: "none",
-            },
-            0,
-          )
-          .to(
-            nextImage,
-            {
-              objectPosition: "50% 40%",
-              duration: 1.5,
-              ease: "none",
-            },
-            0,
-          );
-        mainTimeline.add(sectionTimeline);
+      if (breakEl) tl.to(breakEl, { autoAlpha: 1, y: 0, duration: 0.4 }, 0);
+      if (meta) tl.to(meta, { autoAlpha: 1, y: 0, duration: 0.45 }, 0.15);
+      lines.forEach((el, i) => {
+        tl.to(el, { autoAlpha: 1, y: 0, duration: 0.7 }, 0.35 + i * 0.18);
       });
+      if (hair) tl.to(hair, { scaleX: 1, autoAlpha: 1, duration: 0.8 }, 0.55);
+      tl.to({}, { duration: 0.7 });
     }, root);
 
     requestAnimationFrame(() => ScrollTrigger.refresh());
-    const t = window.setTimeout(() => ScrollTrigger.refresh(), 200);
+    const t = window.setTimeout(() => ScrollTrigger.refresh(), 180);
 
     return () => {
       window.clearTimeout(t);
       ctx.revert();
     };
-  }, [beats]);
+  }, []);
 
   return (
     <section
@@ -156,50 +87,24 @@ export function StudioCreed({ className, beats = DEFAULT_BEATS }: Props) {
       className={cn(styles.root, className)}
       aria-label="Studio Creed"
     >
-      <div className={styles.intro}>
-        <UtopianBreak size="sm" className={styles.break} />
-        <p className={styles.eyebrow}>01 · Creed</p>
-        <h2 className={styles.introLead}>
-          Be unreal. Be. Be unreasonable.
+      <div className={styles.stage} data-creed-stage>
+        <div className={styles.breakWrap} data-creed-break>
+          <UtopianBreak size="lg" className={styles.breakMark} />
+        </div>
+
+        <p className={styles.meta} data-creed-meta>
+          01 · Creed
+        </p>
+
+        <h2 className={styles.lockup}>
+          <span className={styles.line} data-creed-line>
+            Be unreal. Be. Be
+          </span>
+          <span className={styles.line} data-creed-line>
+            unreasonable.
+          </span>
+          <span className={styles.hair} data-creed-hair aria-hidden="true" />
         </h2>
-      </div>
-
-      <div className={styles.arch} data-creed-arch>
-        <div className={styles.left} data-creed-left>
-          {beats.map((beat) => (
-            <article key={beat.title} className={styles.info} data-creed-info>
-              <div className={styles.infoInner}>
-                <p className={styles.header}>
-                  {beat.title.replace(/\.$/, "")}
-                  <span className={styles.period}>.</span>
-                </p>
-                <p className={styles.desc}>{beat.body}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <div className={styles.right} data-creed-pin>
-          {beats.map((beat, i) => (
-            <div
-              key={beat.title}
-              className={styles.imgWrapper}
-              data-creed-wrap
-              data-index={String(beats.length - i)}
-            >
-              <Image
-                src={beat.image.src}
-                alt=""
-                fill
-                sizes="(max-width: 768px) 100vw, 540px"
-                className={styles.img}
-                data-creed-img
-                style={{ objectPosition: beat.image.objectPosition ?? "50% 40%" }}
-                priority={i === 0}
-              />
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );
