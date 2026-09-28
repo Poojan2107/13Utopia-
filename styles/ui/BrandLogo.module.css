@@ -14,7 +14,7 @@
   display: block;
 }
 
-/* Official PNG ships on black — screen blend kills the plate on dark chrome */
+/* Official live PNG is white on black — screen blend drops the black plate */
 .official {
   display: inline-flex;
   align-items: center;
@@ -23,35 +23,8 @@
 
 .officialImg {
   display: block;
-  height: 1.55rem;
-  width: auto;
-  mix-blend-mode: screen;
-}
-
-.svg {
-  display: block;
-  width: auto;
   height: 1.65rem;
-}
-
-.wordmark {
-  background: transparent;
-  padding: 0;
-}
-
-.horizontal {
-  display: inline-flex;
-  align-items: center;
-  padding: 0;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-}
-
-.horizontal .image {
-  height: 1.35rem;
   width: auto;
-  object-fit: contain;
   mix-blend-mode: screen;
 }
 
@@ -74,14 +47,6 @@
 
 @media (min-width: 1024px) {
   .officialImg {
-    height: 1.75rem;
-  }
-
-  .svg {
-    height: 1.85rem;
-  }
-
-  .horizontal .image {
-    height: 1.5rem;
+    height: 1.9rem;
   }
 }

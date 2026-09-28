@@ -11,7 +11,7 @@ type Props = {
 };
 
 /**
- * Official brand mark — white 13 + gold UTOPIA on transparent field.
+ * Official brand mark — rounded white 13 UTOPIA wordmark.
  * Prefer `official` in chrome (header/footer).
  */
 export function BrandLogo({
@@ -19,31 +19,15 @@ export function BrandLogo({
   className,
   priority,
 }: Props) {
-  if (variant === "official" || variant === "wordmark") {
+  if (variant === "official" || variant === "wordmark" || variant === "horizontal") {
     return (
       <span className={cn(styles.wrap, styles.official, className)}>
-        <Image
-          src="/brand/13-utopia-logo-official.png"
-          alt="13 UTOPIA"
-          width={220}
-          height={48}
-          className={styles.officialImg}
-          priority={priority}
-          sizes="160px"
-        />
-      </span>
-    );
-  }
-
-  if (variant === "horizontal") {
-    return (
-      <span className={cn(styles.wrap, styles.horizontal, className)}>
         <Image
           src="/brand/13-utopia-logo-live.png"
           alt="13 UTOPIA"
           width={320}
           height={72}
-          className={styles.image}
+          className={styles.officialImg}
           priority={priority}
           sizes="180px"
         />
