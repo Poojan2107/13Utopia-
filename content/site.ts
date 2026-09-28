@@ -14,16 +14,15 @@ export const company = {
   aboutShort:
     "Creativity, strategy, and innovation — impactful campaigns that elevate brands in a competitive landscape.",
   email: "info@13utopia.com",
-  phone: "+1 437-603-9004",
-  phoneHref: "tel:+14376039004",
+  phone: "+91 9924131397",
+  phoneHref: "tel:+919924131397",
   addressLines: [
-    "1123, Iconic Shyamal",
-    "Shyamal Cross Roads, 132 Feet Ring Rd",
-    "Nehru Nagar, Shyamal",
-    "Ahmedabad, Gujarat 380015, India",
+    "1123, Iconic Shyamal, Shyamal Cross Roads",
+    "132 Feet Ring Rd, Ahmedabad",
+    "Gujarat 380015, India",
   ],
   addressOneLine:
-    "1123, Iconic Shyamal, Shyamal Cross Roads, 132 Feet Ring Rd, Nehru Nagar, Shyamal, Ahmedabad, Gujarat 380015, India",
+    "1123, Iconic Shyamal, Shyamal Cross Roads, 132 Feet Ring Rd, Ahmedabad, Gujarat 380015, India",
   canadaAddressLines: [
     "30 Kimbercroft Ct",
     "Markham Corners, Scarborough",
