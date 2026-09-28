@@ -152,7 +152,7 @@ export function SiteHeader() {
           onClick={() => setOpen(false)}
           aria-label="13 UTOPIA home"
         >
-          <BrandLogo variant="wordmark" priority />
+          <BrandLogo variant="official" priority />
         </Link>
 
         <nav ref={navRef} className={styles.desktopNav} aria-label="Primary">

@@ -2,7 +2,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
 import styles from "@/styles/ui/BrandLogo.module.css";
 
-type Variant = "horizontal" | "hero3d" | "mark" | "wordmark";
+type Variant = "official" | "horizontal" | "hero3d" | "mark" | "wordmark";
 
 type Props = {
   variant?: Variant;
@@ -11,25 +11,25 @@ type Props = {
 };
 
 /**
- * Official brand mark.
- * horizontal = JPEG wordmark (black + gold sparkle) — use on light plate in dark UI.
- * wordmark = path SVG fallback for mono contexts.
+ * Official brand mark — white 13 + gold UTOPIA on transparent field.
+ * Prefer `official` in chrome (header/footer).
  */
 export function BrandLogo({
-  variant = "horizontal",
+  variant = "official",
   className,
   priority,
 }: Props) {
-  if (variant === "wordmark") {
+  if (variant === "official" || variant === "wordmark") {
     return (
-      <span className={cn(styles.wrap, styles.wordmark, className)}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/brand/13-utopia-wordmark.svg"
+      <span className={cn(styles.wrap, styles.official, className)}>
+        <Image
+          src="/brand/13-utopia-logo-official.png"
           alt="13 UTOPIA"
-          className={styles.svg}
-          width={160}
-          height={28}
+          width={220}
+          height={48}
+          className={styles.officialImg}
+          priority={priority}
+          sizes="160px"
         />
       </span>
     );
@@ -39,7 +39,7 @@ export function BrandLogo({
     return (
       <span className={cn(styles.wrap, styles.horizontal, className)}>
         <Image
-          src="/brand/13-utopia-logo-horizontal.jpeg"
+          src="/brand/13-utopia-logo-live.png"
           alt="13 UTOPIA"
           width={320}
           height={72}

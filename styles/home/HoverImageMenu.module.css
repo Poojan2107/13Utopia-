@@ -224,9 +224,11 @@
   letter-spacing: -0.05em;
   line-height: 0.88;
   text-transform: uppercase;
-  white-space: nowrap;
+  white-space: normal;
   color: #f3f1ea;
   transition: color 0.35s ease;
+  overflow-wrap: anywhere;
+  max-width: 14ch;
 }
 
 .rule {
@@ -416,7 +418,8 @@
   }
 
   .textInner {
-    font-size: clamp(4.25rem, 8.5vw, 8.5rem);
+    font-size: clamp(3.5rem, 7.5vw, 7.25rem);
+    max-width: 16ch;
   }
 }
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { company } from "@/content/site";
 import {
   Container,
   DetailCloser,
@@ -10,14 +11,14 @@ import {
   ProseBlock,
 } from "@/components/ui";
 import { getOffice } from "@/lib/content";
-import { displayText } from "@/lib/content/display";
 import { buildMetadata } from "@/lib/seo";
 import hub from "@/styles/ui/HubBody.module.css";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
     title: "India | Connect | 13 UTOPIA",
-    description: "13 UTOPIA India presence.",
+    description:
+      "13 UTOPIA India — Iconic Shyamal, Ahmedabad, Gujarat. Brand, web, SEO, and growth.",
   },
   path: "/connect/india",
 });
@@ -31,24 +32,28 @@ export default function IndiaPage() {
       <PageHero
         eyebrow="Connect"
         title="India"
-        description="Design, engineering, and growth — India presence."
+        description="Ahmedabad — design, engineering, and growth."
         layout="full"
         media={
-          <MediaPlaceholder aspect="hero" tone="grow" need="India presence" />
+          <MediaPlaceholder aspect="hero" tone="grow" need="India presence" fill />
         }
       />
       <Container className={hub.body}>
         <ProseBlock
           paragraphs={[
-            displayText(office.address, "India presence across the practice."),
-            "Verified street address and phone publish when confirmed. Reach us through Start a Project or Discovery.",
+            office.address,
+            "Reach us by phone or email, or start a project online — we respond from the India desk.",
           ]}
         />
         <p className={hub.note}>
-          <span className={hub.noteEm}>Contact — </span>
-          {displayText(office.email, "Via Start a Project or Discovery")}
+          <span className={hub.noteEm}>Phone — </span>
+          <a href={company.phoneHref}>{office.phone}</a>
         </p>
-        <MediaBreak need="India — place" tone="grow" />
+        <p className={hub.note}>
+          <span className={hub.noteEm}>Email — </span>
+          <a href={`mailto:${office.email}`}>{office.email}</a>
+        </p>
+        <MediaBreak need="India — Ahmedabad" tone="grow" />
         <DetailCtaRow
           secondaryHref="/connect/canada"
           secondaryLabel="Canada"

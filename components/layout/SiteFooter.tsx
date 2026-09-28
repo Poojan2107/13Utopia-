@@ -19,7 +19,7 @@ export function SiteFooter() {
               <span className={styles.brandOrb} aria-hidden="true" />
             </PhysicsFloat>
             <Link href="/" className={styles.brand} aria-label="13 UTOPIA home">
-              <BrandLogo variant="wordmark" />
+              <BrandLogo variant="official" />
             </Link>
             <p className={styles.tagline}>{company.tagline}</p>
             <p className={styles.blurb}>{company.positioning}</p>

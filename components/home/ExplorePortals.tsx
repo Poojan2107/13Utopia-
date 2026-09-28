@@ -35,8 +35,8 @@ const PORTALS = [
     title: "Collective",
     href: "/collective",
     kicker: "Studio & Craft",
-    desc: "A multidisciplinary team of designers, engineers, and strategists crafting from Toronto for the global stage.",
-    tags: ["People", "Craft", "Toronto", "Culture"],
+    desc: "A multidisciplinary team of designers, engineers, and strategists crafting across India and the world.",
+    tags: ["People", "Craft", "India", "Culture"],
     image: plates.collective,
   },
   {

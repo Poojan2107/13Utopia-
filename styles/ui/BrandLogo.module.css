@@ -1,6 +1,10 @@
 .wrap {
   display: inline-flex;
   line-height: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
 }
 
 .image {
@@ -8,6 +12,20 @@
   height: auto;
   max-width: 100%;
   display: block;
+}
+
+/* Official PNG ships on black — screen blend kills the plate on dark chrome */
+.official {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+}
+
+.officialImg {
+  display: block;
+  height: 1.55rem;
+  width: auto;
+  mix-blend-mode: screen;
 }
 
 .svg {
@@ -21,7 +39,6 @@
   padding: 0;
 }
 
-/* Horizontal JPEG — no plate; prefer wordmark SVG on dark chrome */
 .horizontal {
   display: inline-flex;
   align-items: center;
@@ -35,6 +52,7 @@
   height: 1.35rem;
   width: auto;
   object-fit: contain;
+  mix-blend-mode: screen;
 }
 
 .mark .image {
@@ -55,6 +73,10 @@
 }
 
 @media (min-width: 1024px) {
+  .officialImg {
+    height: 1.75rem;
+  }
+
   .svg {
     height: 1.85rem;
   }

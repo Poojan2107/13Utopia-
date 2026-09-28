@@ -1,7 +1,6 @@
 /**
  * Live-site sourced company facts from https://13utopia.com/
- * Use for approval builds before the photography / verified-metrics pass.
- * Do not invent counters — live site zeros are ignored on purpose.
+ * Primary public contact for this build: India (Ahmedabad).
  */
 
 export const company = {
@@ -9,7 +8,7 @@ export const company = {
   legalName: "13UTOPiA",
   tagline: "BE UNREAL. BE UNREASONABLE.",
   positioning:
-    "A Toronto creative technology and growth company — brand, web, SEO, and digital marketing for ambitious businesses.",
+    "A creative technology and growth company — brand, web, SEO, and digital marketing for ambitious businesses.",
   about:
     "13 Utopia develops and executes campaigns from concept through launch. We combine strategy, storytelling, and craft across SEO, branding, web development, and digital marketing so brands leave a clear imprint in market.",
   aboutShort:
@@ -18,11 +17,19 @@ export const company = {
   phone: "+1 437-603-9004",
   phoneHref: "tel:+14376039004",
   addressLines: [
+    "1123, Iconic Shyamal",
+    "Shyamal Cross Roads, 132 Feet Ring Rd",
+    "Nehru Nagar, Shyamal",
+    "Ahmedabad, Gujarat 380015, India",
+  ],
+  addressOneLine:
+    "1123, Iconic Shyamal, Shyamal Cross Roads, 132 Feet Ring Rd, Nehru Nagar, Shyamal, Ahmedabad, Gujarat 380015, India",
+  canadaAddressLines: [
     "30 Kimbercroft Ct",
     "Markham Corners, Scarborough",
     "ON M1S 4K9, Canada",
   ],
-  addressOneLine:
+  canadaAddressOneLine:
     "30 Kimbercroft Ct, Scarborough, ON M1S 4K9, Canada (Markham Corners)",
   social: {
     behance: "https://www.behance.net/",

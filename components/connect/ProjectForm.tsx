@@ -200,7 +200,7 @@ export function ProjectForm() {
           </div>
 
           <p className={styles.directEmail}>
-            Need immediate executive advisory? Call our Toronto studio at{" "}
+            Need immediate executive advisory? Call us at{" "}
             <a href="tel:+14376039004">+1 (437) 603-9004</a>.
           </p>
         </div>

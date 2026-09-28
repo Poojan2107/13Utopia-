@@ -99,21 +99,22 @@ export const offices: Office[] = [
   {
     slug: "india",
     title: "India",
-    region: "India",
-    address: "Design, engineering, and growth floors — India presence",
+    region: "India — Ahmedabad",
+    address: company.addressOneLine,
     email: company.email,
-    phone: "",
+    phone: company.phone,
     seo: {
       title: "India | Connect | 13 UTOPIA",
-      description: "13 UTOPIA India presence.",
+      description:
+        "13 UTOPIA India — Iconic Shyamal, Ahmedabad, Gujarat.",
     },
-    status: "placeholder",
+    status: "published",
   },
   {
     slug: "canada",
     title: "Canada",
     region: "Canada — Greater Toronto",
-    address: company.addressOneLine,
+    address: company.canadaAddressOneLine,
     email: company.email,
     phone: company.phone,
     seo: {

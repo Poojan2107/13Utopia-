@@ -51,7 +51,7 @@ export function HomeHero() {
               <span className={styles.rule} aria-hidden="true" data-hero-rule />
 
               <p className={styles.descriptor}>
-                Toronto creative technology and growth —
+                Creative technology and growth —
                 <br />
                 brand, web, SEO, and digital marketing.
               </p>
