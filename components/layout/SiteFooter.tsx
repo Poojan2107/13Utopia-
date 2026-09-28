@@ -8,8 +8,6 @@ import { SvgDraw } from "@/components/motion/SvgDraw";
 import styles from "@/styles/layout/SiteFooter.module.css";
 
 export function SiteFooter() {
-  const year = new Date().getFullYear();
-
   return (
     <footer className={styles.footer}>
       <Container>
@@ -19,7 +17,7 @@ export function SiteFooter() {
               <span className={styles.brandOrb} aria-hidden="true" />
             </PhysicsFloat>
             <Link href="/" className={styles.brand} aria-label="13 UTOPIA home">
-              <BrandLogo variant="official" />
+              <BrandLogo variant="official" priority={false} />
             </Link>
             <p className={styles.tagline}>{company.tagline}</p>
             <p className={styles.blurb}>{company.positioning}</p>
@@ -75,7 +73,7 @@ export function SiteFooter() {
 
         <div className={styles.bottom}>
           <p className={styles.copy}>
-            © {year} {company.legalName}. All rights reserved.
+            © 2026 {company.legalName}. All rights reserved.
           </p>
           <ul className={styles.legal}>
             {footerNav.legal.map((item) => (

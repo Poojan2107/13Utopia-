@@ -69,6 +69,14 @@
   color: #f3f1ea;
 }
 
+.sub {
+  margin: 1.15rem 0 0;
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  line-height: 1.4;
+  color: color-mix(in srgb, #f3f1ea 68%, transparent);
+}
+
 .container {
   position: relative;
   z-index: 1;

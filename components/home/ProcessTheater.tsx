@@ -198,6 +198,9 @@ export function ProcessTheater({
       <header className={styles.head}>
         <p className={styles.eyebrow}>{eyebrow}</p>
         <h2 className={styles.lead}>{lead}</h2>
+        <p className={styles.sub}>
+          Scroll opens each move — question, then answer.
+        </p>
       </header>
 
       <div className={styles.container}>

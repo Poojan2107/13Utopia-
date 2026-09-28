@@ -8,7 +8,7 @@ import styles from "@/styles/motion/ScrambleText.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789····";
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ····";
 
 type Props = {
   children: string;

@@ -1,13 +1,17 @@
 import {
   CascadeReveal,
-  ExplorePortals,
   FinalCTA,
   HomeHero,
-  MethodStage,
+  HoverImageMenu,
+  ProcessTheater,
   StudioCreed,
   VoiceLine,
 } from "@/components/home";
-import { CreateBuildGrowKinetic, ProofArchive } from "@/components/motion";
+import {
+  CreateBuildGrowKinetic,
+  ProofArchive,
+  TextRepetitionScroll,
+} from "@/components/motion";
 import { plates } from "@/content/plates";
 import { testimonials } from "@/content/people";
 import { getCaseStudies } from "@/lib/content";
@@ -51,9 +55,40 @@ const METHOD_STEPS = [
   },
 ] as const;
 
+const EXPLORE_ITEMS = [
+  {
+    href: "/work",
+    title: "Work",
+    sub: "Evidence of ambition realized — platforms, commerce, brand transformations.",
+    image: plates.work,
+    tags: ["Proof", "Case Studies", "CGI"],
+  },
+  {
+    href: "/solutions",
+    title: "Solutions",
+    sub: "Modular engagements to launch, scale, and modernize.",
+    image: plates.build,
+    tags: ["Launch", "Scale", "AI"],
+  },
+  {
+    href: "/collective",
+    title: "Collective",
+    sub: "Designers, engineers, and strategists across India and the world.",
+    image: plates.collective,
+    tags: ["People", "Craft", "Culture"],
+  },
+  {
+    href: "/perspective",
+    title: "Perspective",
+    sub: "Essays and signal on design, software, and brand velocity.",
+    image: plates.grow,
+    tags: ["Thinking", "Notes", "POV"],
+  },
+] as const;
+
 /**
  * Locked: Hero → Belief (068).
- * After: Caps (061) → Creed (image-backed 1:3) → Proof (071 sticky) → Method (pin theater) → Explore → Voice → CTA.
+ * After: Caps (061/011) → Creed (029) → Proof (071) → Method (070) → Explore (011) → Voice → 023 → CTA.
  */
 export default function HomePage() {
   const cases = getCaseStudies();
@@ -73,7 +108,7 @@ export default function HomePage() {
 
         <CreateBuildGrowKinetic />
 
-        <StudioCreed image={plates.create} />
+        <StudioCreed />
 
         <ProofArchive
           eyebrow="Proof"
@@ -89,18 +124,32 @@ export default function HomePage() {
           }))}
         />
 
-        <MethodStage
+        <ProcessTheater
           items={[...METHOD_STEPS]}
-          lead="One practice. Three echoes forward."
+          eyebrow="Method"
+          lead="Six moves. One practice."
+          image={plates.heroSculpture}
         />
 
-        <ExplorePortals />
+        <HoverImageMenu
+          id="explore"
+          eyebrow="Explore"
+          lead="Where the practice opens."
+          items={[...EXPLORE_ITEMS]}
+          footHref={null}
+        />
 
         <VoiceLine
           quote={voice.quote}
           attribution={voice.attribution}
           role={voice.role}
           company={voice.company}
+        />
+
+        <TextRepetitionScroll
+          text="BE UNREASONABLE"
+          kicker="Close"
+          totalWords={7}
         />
 
         <FinalCTA />
