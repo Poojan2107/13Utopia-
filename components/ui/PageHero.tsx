@@ -51,7 +51,7 @@ export function PageHero({
         y: 0,
         duration: REVEAL.duration,
         stagger: REVEAL.stagger,
-        clearProps: "transform",
+        clearProps: "transform,opacity",
       },
       0.04,
     ).fromTo(
@@ -62,7 +62,7 @@ export function PageHero({
         y: 0,
         duration: REVEAL.duration,
         stagger: REVEAL.stagger,
-        clearProps: "all",
+        clearProps: "transform,opacity",
       },
       0.12,
     );
