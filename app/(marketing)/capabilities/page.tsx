@@ -68,11 +68,14 @@ export default function CapabilitiesHubPage() {
       <EdgeMarquee
         eyebrow="Worlds"
         lead="Three worlds. One practice."
+        footHref="/solutions"
+        footLabel="Browse solutions"
         items={categories.map((cat) => {
           const slug = cat.slug as keyof typeof plateByWorld;
           return {
             href: `/capabilities/${cat.slug}`,
             title: cat.title,
+            body: cat.description,
             tags: WORLD_TAGS[cat.slug] ?? [cat.title],
             image: plateByWorld[slug] ?? plates.work,
           };

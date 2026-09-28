@@ -204,17 +204,65 @@
 }
 
 @media (max-width: 900px) {
-  .title {
-    font-size: clamp(2.5rem, 14vw, 4rem);
+  .section[data-mode="stack"] .stage,
+  .stage {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    padding: clamp(3.5rem, 8vh, 5rem) clamp(1.25rem, 5vw, 2rem)
+      clamp(3rem, 7vh, 4.5rem);
+  }
+
+  .plates {
+    display: none;
+  }
+
+  .head {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    margin-bottom: 2rem;
+    max-width: none;
+    text-shadow: none;
+  }
+
+  .counter {
+    display: none;
   }
 
   .panels {
-    bottom: clamp(4.5rem, 10vh, 6rem);
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .panel {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    opacity: 1 !important;
+    transform: none !important;
+    padding: 1.35rem 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-gold) 18%, transparent);
+    text-shadow: none;
+  }
+
+  .title {
+    font-size: clamp(2.35rem, 12vw, 3.5rem);
   }
 
   .footer {
-    left: clamp(1.25rem, 4vw, 3.25rem);
+    position: relative;
     right: auto;
+    bottom: auto;
+    margin-top: 2.5rem;
   }
 }
 

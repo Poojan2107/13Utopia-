@@ -197,8 +197,17 @@
 }
 
 @media (max-width: 900px) {
+  .wrap {
+    min-height: auto;
+    padding: clamp(4.5rem, 10vh, 6.5rem) 0 clamp(4rem, 9vh, 5.5rem);
+  }
+
   .actions {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .title {
+    font-size: clamp(2.35rem, 11vw, 3.5rem);
   }
 }

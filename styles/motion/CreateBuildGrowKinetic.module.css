@@ -396,11 +396,18 @@
 }
 
 @media (max-width: 900px) {
+  .root[data-mode="stack"] .stage,
+  .root .stage {
+    min-height: 0;
+    height: auto;
+  }
+
   .trackHeader {
     grid-template-columns: auto 1fr;
     gap: 0.85rem 1.15rem;
     min-height: clamp(5rem, 14vh, 6.5rem);
     padding-block: 1rem;
+    transform: none !important;
   }
 
   .trackArrow {
@@ -414,6 +421,10 @@
   .trackSub {
     font-size: 0.65rem;
     letter-spacing: 0.1em;
+  }
+
+  .progress {
+    display: none;
   }
 }
 

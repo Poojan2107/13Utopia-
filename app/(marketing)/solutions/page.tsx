@@ -33,6 +33,15 @@ const IMAGES = [
   plates.grow,
 ] as const;
 
+const SOLUTION_TAGS: Record<string, string[]> = {
+  launch: ["Brand", "Product", "Demand"],
+  grow: ["Demand", "SEO", "Momentum"],
+  scale: ["Systems", "Volume", "Ambition"],
+  modernize: ["Legacy", "Platform", "Clarity"],
+  automate: ["AI", "Ops", "Velocity"],
+  transform: ["Strategy", "Culture", "Market"],
+};
+
 /** Hub craft: Hero → outcomes index → bridge → close */
 export default function SolutionsHubPage() {
   const solutions = getSolutions();
@@ -60,10 +69,13 @@ export default function SolutionsHubPage() {
       <EdgeMarquee
         eyebrow="Outcomes"
         lead="Name the destination."
+        footHref="/connect/start-a-project"
+        footLabel="Start a project"
         items={solutions.map((s, i) => ({
           href: `/solutions/${s.slug}`,
           title: s.title,
-          tags: [s.title, "Create", "Build", "Grow"],
+          body: s.description,
+          tags: SOLUTION_TAGS[s.slug] ?? [s.title],
           image: IMAGES[i % IMAGES.length],
         }))}
       />

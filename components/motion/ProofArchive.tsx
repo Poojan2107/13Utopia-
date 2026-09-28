@@ -50,6 +50,13 @@ export function ProofArchive({
     if (!root || cases.length === 0) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    // Mobile: stacked editorial list — pin theaters collapse readability
+    if (window.matchMedia("(max-width: 900px)").matches) {
+      root.dataset.mode = "stack";
+      return;
+    }
+    root.dataset.mode = "theater";
+
     const cards = gsap.utils.toArray<HTMLElement>(
       root.querySelectorAll("[data-card]"),
     );
@@ -63,9 +70,8 @@ export function ProofArchive({
     const cardScaleStep = 0.15;
     const cardExitRotation = 20;
     const cardExitZ = 350;
-    const isMobile = window.matchMedia("(max-width: 1000px)").matches;
-    const cardExitY = isMobile ? -420 : -200;
-    const cardParkedY = isMobile ? -480 : -250;
+    const cardExitY = -200;
+    const cardParkedY = -250;
 
     cards.forEach((card, i) => {
       gsap.set(card, {

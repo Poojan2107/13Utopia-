@@ -70,13 +70,16 @@ export function MethodStage({
     if (!stage || panels.length === 0) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      gsap.set(panels, { autoAlpha: 0 });
-      gsap.set(panels[0], { autoAlpha: 1 });
-      gsap.set(platesEls, { autoAlpha: 0 });
+    const isMobile = window.matchMedia("(max-width: 900px)").matches;
+
+    if (reduce || isMobile) {
+      root.dataset.mode = "stack";
+      gsap.set(panels, { clearProps: "all" });
+      gsap.set(platesEls, { clearProps: "all" });
       if (platesEls[0]) gsap.set(platesEls[0], { autoAlpha: 1 });
       return;
     }
+    root.dataset.mode = "theater";
 
     const ctx = gsap.context(() => {
       gsap.set(panels, { autoAlpha: 0, y: 36 });

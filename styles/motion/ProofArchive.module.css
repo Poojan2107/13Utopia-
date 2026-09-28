@@ -254,17 +254,25 @@
 }
 
 @media (max-width: 1000px) {
+  .root,
+  .root[data-mode="stack"] {
+    height: auto;
+    overflow: visible;
+    min-height: 0;
+  }
+
   .stage {
     flex-direction: column;
-    gap: 0.5rem;
-    padding-block: 1.25rem;
+    gap: 1.5rem;
+    padding-block: clamp(3.5rem, 8vh, 5rem);
+    height: auto;
   }
 
   .copy {
     max-width: none;
     flex: 0 0 auto;
     justify-content: flex-start;
-    padding-top: 0.5rem;
+    padding-top: 0;
   }
 
   .lead {
@@ -272,19 +280,28 @@
     font-size: clamp(1.65rem, 6vw, 2.35rem);
   }
 
-  .activeBody {
+  .activeMeta {
     display: none;
   }
 
   .cards {
-    flex: 1;
-    min-height: 55%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    flex: none;
+    min-height: 0;
+    perspective: none;
   }
 
   .card {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
     height: auto;
-    width: 78%;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 16 / 10;
+    transform: none !important;
   }
 }
 

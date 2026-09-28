@@ -177,6 +177,37 @@
   }
 }
 
+@media (max-width: 900px) {
+  .hero {
+    min-height: auto;
+    padding-block: clamp(5.5rem, 12vh, 7rem) clamp(2.5rem, 6vh, 3.5rem);
+  }
+
+  .full {
+    min-height: auto;
+  }
+
+  .full .media {
+    margin-inline: calc(-1 * clamp(1.25rem, 5vw, 2rem));
+    width: calc(100% + 2 * clamp(1.25rem, 5vw, 2rem));
+    margin-top: 1.75rem;
+  }
+
+  .title {
+    font-size: clamp(2.15rem, 9vw, 3.25rem);
+    line-height: 1.02;
+  }
+
+  .description {
+    font-size: 1rem;
+    max-width: 36ch;
+  }
+
+  .floatOrb {
+    display: none;
+  }
+}
+
 .related {
   margin-top: var(--space-3xl);
   padding-top: var(--space-xl);

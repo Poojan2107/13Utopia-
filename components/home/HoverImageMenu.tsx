@@ -24,6 +24,9 @@ type Props = {
   lead?: string;
   id?: string;
   className?: string;
+  /** null hides the footer link */
+  footHref?: string | null;
+  footLabel?: string;
 };
 
 type Point = { x: number; y: number };
@@ -51,6 +54,8 @@ export function HoverImageMenu({
   lead = "Three worlds. One practice.",
   id,
   className,
+  footHref = "/capabilities",
+  footLabel = "All capabilities",
 }: Props) {
   const rootRef = useRef<HTMLElement | null>(null);
   const mouse = useRef<Point>({ x: 0, y: 0 });
@@ -452,12 +457,14 @@ export function HoverImageMenu({
           ))}
         </nav>
 
-        <div className={styles.foot}>
-          <Link href="/capabilities" className={styles.footLink} data-magnetic>
-            All capabilities
-            <span aria-hidden="true"> →</span>
-          </Link>
-        </div>
+        {footHref ? (
+          <div className={styles.foot}>
+            <Link href={footHref} className={styles.footLink} data-magnetic>
+              {footLabel}
+              <span aria-hidden="true"> →</span>
+            </Link>
+          </div>
+        ) : null}
       </div>
     </section>
   );

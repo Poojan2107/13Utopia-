@@ -199,7 +199,7 @@
 
   .be {
     text-align: left;
-    font-size: clamp(5.5rem, 32vw, 9rem);
+    font-size: clamp(4rem, 22vw, 6.5rem);
   }
 
   .response {
@@ -210,17 +210,24 @@
   }
 
   .unit {
-    font-size: clamp(1.65rem, 9vw, 2.75rem);
+    font-size: clamp(1.5rem, 8vw, 2.35rem);
   }
 
   .unit:nth-child(2) {
-    font-size: clamp(1.25rem, 6.5vw, 1.85rem);
-    padding-left: clamp(1.5rem, 10vw, 3rem);
+    font-size: clamp(1.15rem, 5.5vw, 1.65rem);
+    padding-left: clamp(1.25rem, 8vw, 2.5rem);
   }
 
   .floor {
     left: 6%;
     right: 6%;
+  }
+
+  .stage {
+    height: auto;
+    min-height: 100svh;
+    min-height: 100dvh;
+    padding-block: clamp(5rem, 12vh, 7rem) clamp(3rem, 8vh, 4.5rem);
   }
 }
 

@@ -78,6 +78,15 @@ export function CreateBuildGrowKinetic() {
       return;
     }
 
+    // Mobile: static pillar list — kinetic pin is unreadable on small screens
+    if (window.matchMedia("(max-width: 900px)").matches) {
+      root.dataset.mode = "stack";
+      headers.forEach((h) => gsap.set(h, { clearProps: "transform" }));
+      gsap.set(plateEls[0], { opacity: 0.28 });
+      return;
+    }
+    root.dataset.mode = "theater";
+
     const fine = window.matchMedia("(pointer: fine)").matches;
     const cleanups: Array<() => void> = [];
 

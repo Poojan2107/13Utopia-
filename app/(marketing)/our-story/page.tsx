@@ -28,30 +28,35 @@ const CHAPTERS = [
     href: "/our-story/why-13-utopia",
     title: "Why 13 UTOPIA",
     tags: ["Origin", "Name", "Philosophy"],
+    body: "Why the name, why the refusal of default, why this practice exists.",
     image: plates.work,
   },
   {
     href: "/our-story/vision",
     title: "Vision",
     tags: ["Horizon", "Future", "Ambition"],
+    body: "Where the practice is pointed — and what it refuses to become.",
     image: plates.grow,
   },
   {
     href: "/our-story/mission",
     title: "Mission",
     tags: ["Practice", "Daily", "Work"],
+    body: "The daily work of questioning, forming, shipping, and compounding.",
     image: plates.create,
   },
   {
     href: "/our-story/process",
     title: "Process",
     tags: ["Question", "Create", "Build", "Grow"],
+    body: "Six moves that turn ambition into shipped evidence.",
     image: plates.build,
   },
   {
     href: "/our-story/global-presence",
     title: "Presence",
     tags: ["India", "Canada", "Collective"],
+    body: "One practice across India and Canada — not two offices.",
     image: plates.collective,
   },
 ];
@@ -80,6 +85,8 @@ export default function OurStoryPage() {
       <EdgeMarquee
         eyebrow="Chapters"
         lead="Enter the story."
+        footHref="/collective"
+        footLabel="Meet the collective"
         items={CHAPTERS}
       />
 

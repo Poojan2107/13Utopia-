@@ -27,36 +27,42 @@ const LINKS = [
     href: "/collective/leadership",
     title: "Leadership",
     tags: ["Direction", "Partners", "Standard"],
+    body: "Partners and leads who set the standard across India and Canada.",
     image: plates.collective,
   },
   {
     href: "/collective/creative",
     title: "Creative",
     tags: ["Brand", "Design", "Craft"],
+    body: "Brand, design, and CGI craft that makes ambition feel inevitable.",
     image: plates.create,
   },
   {
     href: "/collective/technology",
     title: "Technology",
     tags: ["Product", "Engineering", "AI"],
+    body: "Product, engineering, and systems that hold under real use.",
     image: plates.build,
   },
   {
     href: "/collective/growth",
     title: "Growth",
     tags: ["Demand", "SEO", "Campaigns"],
+    body: "Demand, SEO, and campaigns that compound market position.",
     image: plates.grow,
   },
   {
     href: "/collective/culture",
     title: "Culture",
     tags: ["Together", "Standard", "Floor"],
+    body: "How we work together — the floor no one drops below.",
     image: plates.work,
   },
   {
     href: "/careers",
     title: "Careers",
     tags: ["Join", "Open", "Ambitious"],
+    body: "Roles for people who refuse the obvious answer.",
     image: plates.collective,
   },
 ];
@@ -85,6 +91,8 @@ export default function CollectivePage() {
       <EdgeMarquee
         eyebrow="Disciplines"
         lead="Meet the practice."
+        footHref="/careers"
+        footLabel="Open roles"
         items={LINKS}
       />
 

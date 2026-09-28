@@ -433,16 +433,46 @@
   .lead {
     text-align: left;
     justify-self: start;
+    max-width: 14ch;
+    font-size: clamp(1.85rem, 9vw, 2.5rem);
   }
 
   .item {
-    padding-left: 3.5rem;
-    min-height: clamp(5.5rem, 15vh, 7rem);
+    padding-left: 3.25rem;
+    padding-right: 0.25rem;
+    min-height: auto;
+    gap: 0.75rem;
+  }
+
+  .textInner {
+    white-space: normal;
+    font-size: clamp(2.35rem, 11vw, 3.25rem);
+    line-height: 0.92;
   }
 
   .sub {
-    opacity: 0.7;
+    opacity: 0.75;
     transform: none;
+    max-width: 42ch;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    white-space: normal;
+    text-transform: none;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+
+  .tagList {
+    opacity: 0.85;
+    transform: none;
+  }
+
+  .arrow {
+    display: none;
+  }
+
+  .foot {
+    margin-top: 2rem;
   }
 }
 
