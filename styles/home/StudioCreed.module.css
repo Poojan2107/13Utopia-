@@ -211,6 +211,7 @@
 
   .unit {
     font-size: clamp(1.5rem, 8vw, 2.35rem);
+    white-space: normal;
   }
 
   .unit:nth-child(2) {

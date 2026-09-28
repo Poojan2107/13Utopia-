@@ -6,7 +6,8 @@
   justify-content: flex-end;
   padding-block: clamp(6rem, 14vh, 9rem) clamp(3.5rem, 8vh, 5.5rem);
   border-bottom: 1px solid var(--color-border);
-  overflow: visible;
+  overflow-x: clip;
+  overflow-y: visible;
   isolation: isolate;
 }
 
@@ -185,11 +186,13 @@
 
   .full {
     min-height: auto;
+    overflow-x: clip;
   }
 
   .full .media {
-    margin-inline: calc(-1 * clamp(1.25rem, 5vw, 2rem));
-    width: calc(100% + 2 * clamp(1.25rem, 5vw, 2rem));
+    margin-inline: 0;
+    width: 100%;
+    max-width: 100%;
     margin-top: 1.75rem;
   }
 

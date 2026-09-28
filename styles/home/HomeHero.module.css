@@ -515,8 +515,9 @@
   }
 
   .unreal {
-    font-size: clamp(2.6rem, 10vw, 3.8rem);
-    white-space: nowrap;
+    font-size: clamp(2.35rem, 9.5vw, 3.5rem);
+    white-space: normal;
+    max-width: 10ch;
   }
 
   .unreasonable {
