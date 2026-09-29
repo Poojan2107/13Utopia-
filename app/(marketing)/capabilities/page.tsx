@@ -3,6 +3,7 @@ import {
   ClipReveal,
   EdgeMarquee,
   MotionMedia,
+  ThirteenProtocolStage,
 } from "@/components/motion";
 import {
   Container,
@@ -81,6 +82,9 @@ export default function CapabilitiesHubPage() {
           };
         })}
       />
+
+      {/* 1 & 3 Architecture Theater (Awwwards 040 + 047 Protocol) */}
+      <ThirteenProtocolStage />
 
       <Container className={hub.bodyTight}>
         <ClipReveal>

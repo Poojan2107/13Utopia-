@@ -15,10 +15,12 @@ import {
   ProseBlock,
   RelatedLinks,
 } from "@/components/ui";
+import Image from "next/image";
 import {
   CAPABILITY_NARRATIVE,
   WORLD_NARRATIVE,
 } from "@/content/narratives";
+import { plateForTone, plates } from "@/content/plates";
 import {
   getCapability,
   getCapabilityCategory,
@@ -28,6 +30,7 @@ import {
   getPerspectiveArticle,
   getSolution,
 } from "@/lib/content";
+import { jsonLdScript, serviceSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 import hub from "@/styles/ui/HubBody.module.css";
 
@@ -69,23 +72,57 @@ export default async function CapabilitySlugPage({ params }: Props) {
     const caps = getCapabilitiesByWorld(category.slug);
     const media = WORLD_MEDIA[category.slug];
     const narrative = WORLD_NARRATIVE[category.slug];
+    const plateImg = plateForTone(media?.tone ?? "warm");
+
+    const categoryStats: Record<string, { val: string; label: string; desc: string }[]> = {
+      create: [
+        { val: "Top 1%", label: "Visual Caliber", desc: "Didone typography, 3D CGI, and sensory art direction." },
+        { val: "100%", label: "Custom Architecture", desc: "No pre-made templates or off-the-shelf theme restrictions." },
+        { val: "Awwwards", label: "Design Pedigree", desc: "Crafted to command immediate category leadership and prestige." },
+      ],
+      build: [
+        { val: "< 100ms", label: "Edge Response", desc: "Next.js App Router, edge rendering, and sub-second LCP." },
+        { val: "Custom AI", label: "Intelligence Pipelines", desc: "Automated agent workflows, vector search, and custom LLMs." },
+        { val: "99.99%", label: "Uptime & Scalability", desc: "Headless commerce and cloud architecture built to compound." },
+      ],
+      grow: [
+        { val: "+240%", label: "Conversion Lift", desc: "High-intent customer journeys and frictionless checkout funnels." },
+        { val: "Top 3", label: "Search Rankings", desc: "Technical SEO and programmatic search architecture dominance." },
+        { val: "4.8x", label: "Average ROI", desc: "Turning digital prestige into durable, compounding pipeline." },
+      ],
+    };
+
+    const stats = categoryStats[category.slug] || categoryStats.create;
 
     return (
       <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={jsonLdScript(
+            serviceSchema({
+              name: category.title,
+              description: category.description,
+              path: `/capabilities/${slug}`,
+              category: "Capability World",
+            }),
+          )}
+        />
         <PageHero
-          eyebrow="Capabilities"
+          eyebrow={`Capabilities · ${category.title.toUpperCase()}`}
           title={category.title}
           description={category.description}
           layout="full"
           media={
-            media ? (
-              <MediaPlaceholder
-                aspect="hero"
-                tone={media.tone}
-                need={media.need}
+            <div style={{ position: "absolute", inset: 0 }}>
+              <Image
+                src={plateImg.src}
+                alt={category.title}
                 fill
+                priority
+                sizes="100vw"
+                style={{ objectFit: "cover", objectPosition: plateImg.objectPosition ?? "50% 45%" }}
               />
-            ) : undefined
+            </div>
           }
         />
         <Container className={hub.body}>
@@ -98,42 +135,69 @@ export default async function CapabilitySlugPage({ params }: Props) {
                 ]}
               />
             </div>
-            <p className={hub.slugLead} data-reveal>
-              {narrative?.lead ?? category.description}
-            </p>
+
+            <div className={hub.editorialLeadBlock} data-reveal>
+              <div className={hub.editorialKicker}>
+                <span className={hub.editorialKickerDot} aria-hidden="true" />
+                <span>Discipline Matrix</span>
+              </div>
+              <h2 className={hub.editorialLeadTitle}>
+                {narrative?.lead ?? category.description}
+              </h2>
+            </div>
+          </PageReveal>
+
+          {/* Stat Metrics Grid */}
+          <PageReveal>
+            <div className={hub.statGrid} data-reveal>
+              {stats.map((s) => (
+                <div key={s.label} className={hub.statCard}>
+                  <span className={hub.statVal}>{s.val}</span>
+                  <span className={hub.statLabel}>{s.label}</span>
+                  <p className={hub.statDesc}>{s.desc}</p>
+                </div>
+              ))}
+            </div>
           </PageReveal>
 
           {narrative ? <ProseBlock paragraphs={narrative.body} /> : null}
 
-          <MediaBreak
-            need={`${category.title} world — atmosphere`}
-            tone={media?.tone ?? "warm"}
-            aspect="wide"
-          />
-
           {narrative ? (
-            <PracticeList title="In practice" items={narrative.practices} />
+            <PracticeList title="Discipline Deliverables" items={narrative.practices} />
           ) : null}
 
+          {/* Capability Sub-Groups Hub Cards */}
           <PageReveal>
-            <h2 className={hub.subhead} data-reveal>
-              Capability groups
-            </h2>
-            <ul className={hub.groupsDense}>
-              {caps.map((c, i) => (
-                <li key={c.slug} data-reveal>
-                  <Link href={`/capabilities/${c.slug}`} className={hub.groupDense}>
-                    <span className={hub.groupDenseNum}>
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span>
-                      <h3 className={hub.groupTitle}>{c.title}</h3>
-                      <p className={hub.groupBody}>{c.description}</p>
-                    </span>
+            <div className={hub.editorialSection} data-reveal>
+              <div className={hub.editorialKicker}>
+                <span className={hub.editorialKickerDot} aria-hidden="true" />
+                <span>Specialized Practices</span>
+              </div>
+              <h3 className={hub.subhead} style={{ fontSize: "clamp(2rem, 3.5vw, 2.75rem)" }}>
+                Core Capability Streams
+              </h3>
+
+              <div className={hub.hubCardGrid}>
+                {caps.map((c, i) => (
+                  <Link
+                    key={c.slug}
+                    href={`/capabilities/${c.slug}`}
+                    className={hub.hubCard}
+                    data-magnetic
+                  >
+                    <div className={hub.hubCardTop}>
+                      <span className={hub.hubCardNum}>{String(i + 1).padStart(2, "0")}</span>
+                      <h4 className={hub.hubCardTitle}>{c.title}</h4>
+                      <p className={hub.hubCardBody}>{c.description}</p>
+                    </div>
+                    <div className={hub.hubCardFoot}>
+                      <span>Explore Practice</span>
+                      <span aria-hidden="true">→</span>
+                    </div>
                   </Link>
-                </li>
-              ))}
-            </ul>
+                ))}
+              </div>
+            </div>
           </PageReveal>
 
           <DetailBridge
@@ -154,6 +218,8 @@ export default async function CapabilitySlugPage({ params }: Props) {
           />
 
           <DetailCtaRow
+            primaryHref="/connect/start-a-project"
+            primaryLabel="Start a Project"
             secondaryHref="/capabilities"
             secondaryLabel="All capabilities"
           />
@@ -174,6 +240,17 @@ export default async function CapabilitySlugPage({ params }: Props) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLdScript(
+          serviceSchema({
+            name: cap.title,
+            description: cap.description,
+            path: `/capabilities/${slug}`,
+            category: `Capability Practice (${cap.world})`,
+          }),
+        )}
+      />
       <PageHero
         eyebrow={cap.world.toUpperCase()}
         title={cap.title}

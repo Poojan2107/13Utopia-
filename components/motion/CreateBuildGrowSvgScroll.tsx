@@ -67,28 +67,9 @@ export function CreateBuildGrowSvgScroll() {
     const letterIPath = paths[2]; // Path 2 is the letter 'I' in 'BUILD'
     if (!letterIPath) return;
 
-    let letterIGroup: SVGGElement | null = null;
-    let labelElement: SVGTextElement | null = null;
-
-    try {
-      letterIGroup = document.createElementNS(SVG_NAMESPACE, "g");
-      letterIPath.parentNode?.insertBefore(letterIGroup, letterIPath);
-      letterIGroup.appendChild(letterIPath);
+    const letterIGroup = frontHeader.querySelector<SVGGElement>("[data-letter-i]");
+    if (letterIGroup) {
       gsap.set(letterIGroup, { transformOrigin: "center center" });
-
-      const letterIBounds = letterIPath.getBBox();
-      const letterICenterX = letterIBounds.x + letterIBounds.width / 2;
-      const letterICenterY = letterIBounds.y + letterIBounds.height / 2;
-
-      labelElement = document.createElementNS(SVG_NAMESPACE, "text");
-      labelElement.setAttribute("class", styles.iLinkText);
-      labelElement.setAttribute("x", String(letterICenterX));
-      labelElement.setAttribute("y", String(letterICenterY));
-      labelElement.setAttribute("transform", `rotate(-90 ${letterICenterX} ${letterICenterY})`);
-      labelElement.textContent = "CREATE · BUILD · GROW";
-      letterIGroup.appendChild(labelElement);
-    } catch {
-      // SVG BBox fallback for SSR/early renders
     }
 
     const ctx = gsap.context(() => {
@@ -141,7 +122,7 @@ export function CreateBuildGrowSvgScroll() {
   }, []);
 
   // 6 Layers of BUILD Vector Path
-  const buildSvgPath = (fillColor: string) => (
+  const buildSvgPath = (fillColor: string, isFront = false) => (
     <svg
       width="6661"
       height="1780"
@@ -158,7 +139,21 @@ export function CreateBuildGrowSvgScroll() {
         d="M2221.74 1780C2093.4 1780 1976.74 1754.17 1871.74 1702.5C1766.74 1650.83 1683.4 1573.33 1621.74 1470C1560.07 1366.67 1529.24 1235 1529.24 1075V0H1866.74V1077.5C1866.74 1164.17 1880.9 1237.5 1909.24 1297.5C1937.57 1355.83 1978.4 1399.17 2031.74 1427.5C2086.74 1455.83 2151.74 1470 2226.74 1470C2303.4 1470 2368.4 1455.83 2421.74 1427.5C2476.74 1399.17 2518.4 1355.83 2546.74 1297.5C2575.07 1237.5 2589.24 1164.17 2589.24 1077.5V0H2926.74V1075C2926.74 1235 2895.07 1366.67 2831.74 1470C2768.4 1573.33 2682.57 1650.83 2574.24 1702.5C2467.57 1754.17 2350.07 1780 2221.74 1780Z"
         fill={fillColor}
       />
-      <path d="M3205.66 1750V0H3543.16V1750H3205.66Z" fill={fillColor} />
+      {isFront ? (
+        <g data-letter-i>
+          <path d="M3205.66 1750V0H3543.16V1750H3205.66Z" fill={fillColor} />
+          <text
+            className={styles.iLinkText}
+            x="3374.41"
+            y="875"
+            transform="rotate(-90 3374.41 875)"
+          >
+            CREATE · BUILD · GROW
+          </text>
+        </g>
+      ) : (
+        <path d="M3205.66 1750V0H3543.16V1750H3205.66Z" fill={fillColor} />
+      )}
       <path
         d="M3836.82 1750V0H4174.32V1487.5H4941.82V1750H3836.82Z"
         fill={fillColor}
@@ -187,7 +182,7 @@ export function CreateBuildGrowSvgScroll() {
         <div className={styles.spotlightHeader}>{buildSvgPath("#292215")}</div>
         <div className={styles.spotlightHeader}>{buildSvgPath("#47381e")}</div>
         <div className={styles.spotlightHeader}>{buildSvgPath("#7a612e")}</div>
-        <div className={styles.spotlightHeader}>{buildSvgPath("#e8c56a")}</div>
+        <div className={styles.spotlightHeader}>{buildSvgPath("#e8c56a", true)}</div>
       </div>
 
       {/* 3-Pillar Interactive Practice Cards */}

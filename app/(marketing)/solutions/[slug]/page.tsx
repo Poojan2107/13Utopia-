@@ -21,6 +21,7 @@ import {
   getSolution,
   getSolutions,
 } from "@/lib/content";
+import { jsonLdScript, serviceSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 import hub from "@/styles/ui/HubBody.module.css";
 
@@ -46,6 +47,17 @@ export default async function SolutionPage({ params }: Props) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLdScript(
+          serviceSchema({
+            name: solution.title,
+            description: solution.description,
+            path: `/solutions/${slug}`,
+            category: "Client Outcome Solution",
+          }),
+        )}
+      />
       <PageHero
         eyebrow="Solutions"
         title={solution.title}
@@ -127,10 +139,10 @@ export default async function SolutionPage({ params }: Props) {
           secondaryLabel="All solutions"
         />
         <DetailCloser
-          title={`Make ${solution.title} happen`}
-          lead="Start with the destination. We’ll assemble the worlds that get you there."
+          title={`Ready to ${solution.title.toLowerCase()}?`}
+          lead="Tell us what you're building. We'll outline the roadmap, architecture, and team required."
           secondaryHref="/connect/discovery"
-          secondaryLabel="Or book discovery"
+          secondaryLabel="Book a discovery call"
         />
       </Container>
     </>

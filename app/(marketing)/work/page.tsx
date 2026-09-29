@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ExpandGallery, ProofArchive } from "@/components/motion";
+import { ExpandGallery, ProofArchive, ProofLayoutMorph } from "@/components/motion";
 import { WorkFinale } from "@/components/work/WorkFinale";
 import { WorkHero } from "@/components/work/WorkHero";
 import { WorkManifest } from "@/components/work/WorkManifest";
@@ -9,9 +9,9 @@ import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
-    title: "Work | 13 UTOPIA",
+    title: "Work & Evidence | 13 UTOPIA",
     description:
-      "Case stories — proof of how 13 UTOPIA thinks, builds, and creates value.",
+      "Case stories and interactive proof theatre — how 13 UTOPIA thinks, builds, and creates compounding market value.",
   },
   path: "/work",
 });
@@ -58,6 +58,9 @@ export default function WorkHubPage() {
           plates.trendyFashion,
         ]}
       />
+
+      {/* Awwwards 021 Multi-Stage Morphing Proof Theater */}
+      <ProofLayoutMorph />
 
       <WorkManifest image={plates.create} />
 

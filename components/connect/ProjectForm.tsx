@@ -7,27 +7,32 @@ const OUTCOMES = [
   {
     id: "launch",
     title: "Launch",
-    desc: "Bring something completely new into the world — brand, product, and launch campaign.",
+    desc: "Bring something new into the world — brand, product, and launch campaign.",
   },
   {
     id: "grow",
-    title: "Grow & Scale",
-    desc: "Accelerate revenue and traffic with high-converting web experiences and technical SEO.",
+    title: "Grow",
+    desc: "Increase attention and qualified demand with high-converting web experiences and technical SEO.",
+  },
+  {
+    id: "scale",
+    title: "Scale",
+    desc: "Prepare digital architecture, software, and systems for 10× volume and complexity.",
   },
   {
     id: "modernize",
     title: "Modernize",
-    desc: "Replace an outdated web platform with cutting-edge Next.js, motion craft, and modern systems.",
+    desc: "Replace fragile legacy systems and outdated web platforms safely.",
   },
   {
     id: "automate",
-    title: "Automate & AI",
-    desc: "Integrate custom AI workflows, headless APIs, and intelligent data systems.",
+    title: "Automate",
+    desc: "Eliminate repetitive manual work with practical AI agents and automated workflows.",
   },
   {
     id: "transform",
-    title: "Full Transformation",
-    desc: "Complete overhaul across Brand, Technology, Strategy, and Go-to-Market.",
+    title: "Transform",
+    desc: "Complete alignment across brand, technology, and market momentum.",
   },
 ] as const;
 

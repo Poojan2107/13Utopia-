@@ -64,10 +64,8 @@ export function VoiceLine({
     <section ref={rootRef} className={styles.root} aria-label="Client review">
       <div className={styles.ambientGlow} aria-hidden="true" />
 
-      <div className={styles.card} data-voice-fade>
-        <div className={styles.cardGlow} aria-hidden="true" />
-        
-        <header className={styles.cardHeader}>
+      <div className={styles.inner} data-voice-fade>
+        <header className={styles.header}>
           <div className={styles.eyebrowRow}>
             <UtopianBreak size="sm" className={styles.break} />
             <p className={styles.eyebrow}>{eyebrow}</p>
@@ -86,7 +84,7 @@ export function VoiceLine({
           </blockquote>
         </div>
 
-        <footer className={styles.cardFooter}>
+        <footer className={styles.footer}>
           <div className={styles.authorGroup}>
             <div className={styles.avatarRing}>
               <span className={styles.avatarInitials}>

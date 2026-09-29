@@ -240,7 +240,12 @@ export function MagneticCursor() {
     <>
       <div ref={ringRef} className={styles.ring} aria-hidden="true" />
       <div ref={dotRef} className={styles.dot} aria-hidden="true" />
-      <span ref={labelRef} className={styles.label} aria-hidden="true" />
+      <span
+        ref={labelRef}
+        className={styles.label}
+        aria-hidden="true"
+        suppressHydrationWarning
+      />
     </>
   );
 }

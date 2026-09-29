@@ -92,8 +92,8 @@ export default function SolutionsHubPage() {
         </ClipReveal>
 
         <HubCloser
-          title="Which outcome is yours?"
-          lead="Start with the destination. We’ll assemble the worlds."
+          title="What do you need to make happen?"
+          lead="Start with your business goal. We’ll design and engineer the path to get there."
           secondaryHref="/capabilities"
           secondaryLabel="Explore capabilities"
         />

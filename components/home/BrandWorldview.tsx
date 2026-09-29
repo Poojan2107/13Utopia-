@@ -106,11 +106,10 @@ export function BrandWorldview() {
             <div className={styles.right}>
               <span className={styles.responseRule} aria-hidden="true" />
               <p className={styles.lead}>
-                Most businesses don&rsquo;t need another obvious answer.
+                Every business inherits assumptions — about its brand, its technology, its customers, and how growth is supposed to work.
               </p>
               <p className={styles.body}>
-                We question what already works, find what doesn&rsquo;t, and build
-                what comes next.
+                We question those assumptions first. Then we decide what is worth keeping, what needs to change, and what could exist instead.
               </p>
             </div>
           </div>

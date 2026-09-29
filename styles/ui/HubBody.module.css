@@ -799,6 +799,263 @@
   border: 1px solid rgba(243, 241, 234, 0.1);
 }
 
+/* =========================================================
+   Haute Editorial Grid & Stat Callouts for Inner Pages
+   ========================================================= */
+
+.editorialSection {
+  margin-block: clamp(3rem, 7vh, 5.5rem);
+}
+
+.editorialLeadBlock {
+  max-width: 52rem;
+  margin-bottom: clamp(2.5rem, 6vh, 4.5rem);
+}
+
+.editorialKicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 1.25rem;
+}
+
+.editorialKickerDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  box-shadow: 0 0 10px var(--color-gold);
+}
+
+.editorialLeadTitle {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5.5vw, 4.75rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: #f7f4ec;
+  text-wrap: balance;
+}
+
+.editorialLeadLead {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.45;
+  color: color-mix(in srgb, #f7f4ec 85%, var(--color-gold));
+  max-width: 44ch;
+}
+
+/* 2-Column Asymmetric Editorial Split */
+.editorialSplit {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 4vw, 4.5rem);
+  margin-block: clamp(3rem, 6vh, 5rem);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .editorialSplit {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  }
+}
+
+.editorialSplitSticky {
+  position: sticky;
+  top: 6rem;
+}
+
+/* Stat & Metrics High-Impact Showcase */
+.statGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-block: clamp(2.5rem, 5vh, 4rem);
+}
+
+@media (min-width: 640px) {
+  .statGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.statCard {
+  background: radial-gradient(
+    ellipse 90% 70% at 50% 0%,
+    rgba(35, 26, 12, 0.3) 0%,
+    rgba(12, 11, 9, 0.75) 70%
+  );
+  border: 1px solid color-mix(in srgb, var(--color-gold) 25%, transparent);
+  border-radius: 1.25rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.statCard:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(232, 197, 106, 0.15);
+}
+
+.statVal {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  font-weight: 400;
+  color: var(--color-gold);
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f7f4ec;
+}
+
+.statDesc {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgba(243, 241, 234, 0.65);
+}
+
+/* Haute Editorial Pull Quote */
+.quotePullout {
+  position: relative;
+  margin-block: clamp(3rem, 7vh, 5.5rem);
+  padding: clamp(2rem, 4vw, 3.5rem) 0;
+  border-block: 1px solid color-mix(in srgb, var(--color-gold) 20%, transparent);
+}
+
+.quotePulloutText {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 3.8vw, 3.25rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  color: #f7f4ec;
+  text-wrap: balance;
+}
+
+.quotePulloutCite {
+  display: block;
+  margin-top: 1.25rem;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+/* Hub Feature Card Grid (Dark Obsidian + Gold Rims) */
+.hubCardGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-block: clamp(2.5rem, 5vh, 4rem);
+}
+
+@media (min-width: 768px) {
+  .hubCardGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .hubCardGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.hubCard {
+  position: relative;
+  background: rgba(14, 13, 10, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 22%, transparent);
+  border-radius: 1.25rem;
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hubCard:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(232, 197, 106, 0.12);
+}
+
+.hubCardTop {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hubCardNum {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--color-gold);
+}
+
+.hubCardTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: #f7f4ec;
+}
+
+.hubCardBody {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: rgba(243, 241, 234, 0.65);
+}
+
+.hubCardFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid color-mix(in srgb, #f3f1ea 10%, transparent);
+  padding-top: 1rem;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
 .portraitImg {
   object-fit: cover;
   object-position: top center;

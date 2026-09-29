@@ -70,16 +70,32 @@
 .item {
   display: inline-flex;
   align-items: center;
-  gap: 1.25rem;
-  padding-right: 1.25rem;
+  gap: 0.5rem;
+  padding-right: 1.5rem;
   font-family: var(--font-ui);
   font-size: clamp(0.8rem, 1.1vw, 0.95rem);
   font-weight: 500;
   letter-spacing: 0.04em;
-  color: rgba(243, 241, 234, 0.62);
+  color: rgba(243, 241, 234, 0.65);
   white-space: nowrap;
   transition: color 0.3s ease, transform 0.3s ease;
   cursor: default;
+}
+
+.itemIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--color-gold, #e8c56a);
+  opacity: 0.85;
+}
+
+.itemName {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .item:hover {
@@ -88,8 +104,9 @@
 }
 
 .sep {
-  color: color-mix(in srgb, var(--color-gold) 60%, transparent);
-  font-size: 0.6rem;
+  color: color-mix(in srgb, var(--color-gold) 40%, transparent);
+  font-size: 0.9rem;
+  margin-left: 0.75rem;
 }
 
 .link {

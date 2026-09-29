@@ -13,6 +13,7 @@ import {
   getPerspectiveArticle,
   getSolution,
 } from "@/lib/content";
+import { caseStudySchema, jsonLdScript } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 import styles from "@/styles/work/CaseDetail.module.css";
 
@@ -56,6 +57,19 @@ export default async function CaseStudyPage({ params }: Props) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLdScript(
+          caseStudySchema({
+            title: item.title,
+            summary: item.summary,
+            path: `/work/${slug}`,
+            client: item.client,
+            year: item.year,
+            stack: item.stack,
+          }),
+        )}
+      />
       <CaseStudyView item={item} nextItem={nextItem} />
 
       {hasRelated ? (

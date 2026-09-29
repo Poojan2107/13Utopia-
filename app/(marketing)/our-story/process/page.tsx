@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import {
   AccordionRail,
   ClipReveal,
-  MotionMedia,
   PageReveal,
 } from "@/components/motion";
 import {
   Breadcrumbs,
   Container,
+  DetailCloser,
+  DetailCtaRow,
   PageHero,
 } from "@/components/ui";
 import { plates } from "@/content/plates";
@@ -19,7 +21,7 @@ export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Process | Our Story | 13 UTOPIA",
     description:
-      "Question, Imagine, Define, Create, Build, Grow — how 13 UTOPIA thinks and works.",
+      "Question, Imagine, Define, Create, Build, Grow — the six-step compounding methodology of 13 UTOPIA.",
   },
   path: "/our-story/process",
 });
@@ -27,33 +29,33 @@ export const metadata: Metadata = buildMetadata({
 const STEPS = [
   {
     title: "Question",
-    meta: "Discover",
-    body: "Challenge the obvious. Find what is assumed — and what is broken.",
+    meta: "Step 01 · Audit",
+    body: "Challenge the obvious. Find what is assumed, what is obsolete, and where the unseen leverage exists.",
   },
   {
     title: "Imagine",
-    meta: "Explore",
-    body: "Explore possibility beyond the familiar brief.",
+    meta: "Step 02 · Explore",
+    body: "Explore possibility beyond the familiar category brief. Prototype multiple aesthetic and technological horizons.",
   },
   {
     title: "Define",
-    meta: "Decide",
-    body: "Choose direction with conviction. Ambition without a decision is noise.",
+    meta: "Step 03 · Strategy",
+    body: "Choose direction with conviction. Turn exploratory concepts into an immutable strategy, architecture, and scope.",
   },
   {
     title: "Create",
-    meta: "Form",
-    body: "Give the idea form — brand, experience, language people can feel.",
+    meta: "Step 04 · Form",
+    body: "Give the idea form. Sensory brand systems, Didone typography, 3D CGI assets, and high-fidelity UI design.",
   },
   {
     title: "Build",
-    meta: "Ship",
-    body: "Make the idea real. Systems, products, and technology that hold.",
+    meta: "Step 05 · Engineer",
+    body: "Make the idea real. Sub-100ms Next.js platforms, WebGL shaders, and automated AI pipelines engineered to hold.",
   },
   {
     title: "Grow",
-    meta: "Compound",
-    body: "Create momentum. Attention into demand into durable market.",
+    meta: "Step 06 · Compound",
+    body: "Create compounding market gravity. Technical SEO, performance funnels, and continuous conversion optimization.",
   },
 ] as const;
 
@@ -61,22 +63,24 @@ export default function ProcessPage() {
   return (
     <>
       <PageHero
-        eyebrow="Process"
-        title="How we work"
-        description="A clear method that connects thinking to execution."
+        eyebrow="Our Story · Chapter 04"
+        title="The Process"
+        description="Six disciplined moves that connect raw ambition to shipped, compounding digital reality."
         layout="split"
         media={
-          <MotionMedia
-            aspect="portrait"
-            tone="build"
-            need="Process — six-step method environment"
-            image={plates.build}
-            fill={false}
-            sizes="(max-width: 900px) 100vw, 45vw"
-            priority
-          />
+          <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "420px", borderRadius: "1.25rem", overflow: "hidden", border: "1px solid rgba(232, 197, 106, 0.25)" }}>
+            <Image
+              src={plates.build.src}
+              alt="13 Utopia Process"
+              fill
+              priority
+              sizes="(max-width: 900px) 100vw, 45vw"
+              style={{ objectFit: "cover", objectPosition: "50% 45%" }}
+            />
+          </div>
         }
       />
+
       <Container className={hub.body}>
         <PageReveal>
           <div data-reveal>
@@ -87,36 +91,79 @@ export default function ProcessPage() {
               ]}
             />
           </div>
+
+          <div className={hub.editorialLeadBlock} data-reveal>
+            <div className={hub.editorialKicker}>
+              <span className={hub.editorialKickerDot} aria-hidden="true" />
+              <span>Rigorous Execution</span>
+            </div>
+            <h2 className={hub.editorialLeadTitle}>
+              Six moves. Zero guesswork.
+            </h2>
+            <p className={hub.editorialLeadLead}>
+              We do not treat strategy, design, and engineering as sequential handoffs. They operate as one continuous feedback loop from the first question to the millionth user.
+            </p>
+          </div>
+        </PageReveal>
+
+        {/* Process Stat Matrix */}
+        <PageReveal>
+          <div className={hub.statGrid} data-reveal>
+            <div className={hub.statCard}>
+              <span className={hub.statVal}>06</span>
+              <span className={hub.statLabel}>Phased Moves</span>
+              <p className={hub.statDesc}>
+                Structured progression from fundamental audit to automated compounding market growth.
+              </p>
+            </div>
+            <div className={hub.statCard}>
+              <span className={hub.statVal}>01</span>
+              <span className={hub.statLabel}>Integrated Practice</span>
+              <p className={hub.statDesc}>
+                Strategy, brand design, full-stack engineering, and SEO working as one synchronized unit.
+              </p>
+            </div>
+            <div className={hub.statCard}>
+              <span className={hub.statVal}>00</span>
+              <span className={hub.statLabel}>Idle Latency</span>
+              <p className={hub.statDesc}>
+                Every step produces concrete, reviewable software artifacts and production assets.
+              </p>
+            </div>
+          </div>
         </PageReveal>
 
         <AccordionRail
-          eyebrow="Method"
+          eyebrow="Methodology"
           lead="Question → Imagine → Define → Create → Build → Grow."
           items={[...STEPS]}
         />
 
-        <ClipReveal mode="rise">
-          <div className={hub.mediaBreak}>
-            <MotionMedia
-              aspect="film"
-              tone="warm"
-              need="Process — team in a define / create moment"
-              image={plates.create}
-              fill={false}
-              sizes="100vw"
-            />
+        {/* Haute Editorial Pull Quote */}
+        <PageReveal>
+          <div className={hub.quotePullout} data-reveal>
+            <blockquote className={hub.quotePulloutText}>
+              “Process is not bureaucracy. In our hands, process is the shortest distance between an audacious idea and market dominance.”
+            </blockquote>
+            <cite className={hub.quotePulloutCite}>
+              — 13 UTOPIA Delivery Standard
+            </cite>
           </div>
-        </ClipReveal>
+        </PageReveal>
 
-        <div className={hub.ctaRow}>
-          <Link href="/connect/start-a-project" className={hub.ctaPrimary}>
-            Start a Project
-            <span aria-hidden="true"> →</span>
-          </Link>
-          <Link href="/our-story" className={hub.ctaSecondary}>
-            Our Story
-          </Link>
-        </div>
+        <DetailCtaRow
+          primaryHref="/connect/start-a-project"
+          primaryLabel="Put the Method to Work"
+          secondaryHref="/our-story"
+          secondaryLabel="Our Story Overview"
+        />
+
+        <DetailCloser
+          title="Ready to begin Phase 01?"
+          lead="Initiate discovery to audit your brand, architecture, and market position."
+          secondaryHref="/connect/discovery"
+          secondaryLabel="Book Discovery"
+        />
       </Container>
     </>
   );

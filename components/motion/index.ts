@@ -39,3 +39,5 @@ export { CreateBuildGrowKinetic } from "./CreateBuildGrowKinetic";
 export { CreateBuildGrowSvgScroll } from "./CreateBuildGrowSvgScroll";
 export { ProofShowcase } from "./ProofShowcase";
 export type { ProofShowcaseItem } from "./ProofShowcase";
+export { ProofLayoutMorph } from "@/components/work/ProofLayoutMorph";
+export { ThirteenProtocolStage } from "./ThirteenProtocolStage";

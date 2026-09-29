@@ -52,8 +52,7 @@ export default function DiscoveryPage() {
         <PageReveal>
           <p className={hub.note} data-reveal>
             <span className={hub.noteEm}>Booking — </span>
-            Prefer a calendar link later. For now, start a project with “Discovery” in
-            the details, or use General contact — we’ll reply with times.
+            Discovery calls are 30 minutes with a senior partner. Submit an exploratory inquiry below, or email directly at <a href="mailto:discovery@13utopia.com" style={{ color: "var(--color-gold, #e8c56a)", textDecoration: "underline" }}>discovery@13utopia.com</a> to confirm a time.
           </p>
         </PageReveal>
 

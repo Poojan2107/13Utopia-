@@ -93,10 +93,10 @@ export function StudioCreed({ className, eyebrow = "04 · Creed" }: Props) {
 
         <h2 className={styles.lockup}>
           <span className={styles.line} data-creed-line>
-            BE UNREAL.
+            POSSIBILITY × AMBITION × EXECUTION
           </span>
-          <span className={styles.line} data-creed-line>
-            BE UNREASONABLE.
+          <span className={styles.line} data-creed-line style={{ color: "var(--color-gold, #e8c56a)" }}>
+            = IMPACT.
           </span>
         </h2>
       </div>

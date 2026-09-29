@@ -29,12 +29,13 @@ export function ScrambleText({
   once = true,
 }: Props) {
   const ref = useRef<HTMLElement | null>(null);
+  const textRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    const textEl = textRef.current;
+    if (!el || !textEl) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.textContent = children;
       return;
     }
 
@@ -62,10 +63,14 @@ export function ScrambleText({
               out += CHARS[(frame + i * 7) % CHARS.length];
             }
           }
-          el.textContent = out;
+          if (textRef.current) {
+            textRef.current.innerText = out;
+          }
         },
         onComplete: () => {
-          el.textContent = original;
+          if (textRef.current) {
+            textRef.current.innerText = original;
+          }
         },
       });
     };
@@ -87,7 +92,9 @@ export function ScrambleText({
 
   return (
     <Tag ref={ref as never} className={cn(styles.root, className)} aria-label={children}>
-      {children}
+      <span ref={textRef} suppressHydrationWarning>
+        {children}
+      </span>
     </Tag>
   );
 }

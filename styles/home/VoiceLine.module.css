@@ -1,13 +1,18 @@
-/* VoiceLine — Sleek Luxury Testimonial Card */
+/* VoiceLine — Haute Editorial Client Manifesto (Full-Bleed Stage) */
 
 .root {
   position: relative;
   isolation: isolate;
   width: 100%;
-  background: #030303;
+  background: radial-gradient(
+      ellipse 80% 50% at 50% 50%,
+      rgba(25, 20, 10, 0.45) 0%,
+      #020202 75%
+    ),
+    #020202;
   color: #f3f1ea;
-  padding: clamp(5.5rem, 12vh, 8.5rem) clamp(1.25rem, 4vw, 2.5rem);
-  border-top: 1px solid color-mix(in srgb, var(--color-gold) 14%, transparent);
+  padding: clamp(6rem, 14vh, 10rem) clamp(1.5rem, 5vw, 4.5rem);
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 16%, transparent);
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -19,51 +24,31 @@
   pointer-events: none;
   background:
     radial-gradient(
-      ellipse 65% 50% at 50% 50%,
+      ellipse 65% 50% at 50% 40%,
       color-mix(in srgb, var(--color-gold) 10%, transparent) 0%,
       transparent 65%
     );
 }
 
-.card {
+.inner {
   position: relative;
   z-index: 1;
-  max-width: 54rem;
+  max-width: 1380px;
   width: 100%;
-  background: rgba(14, 13, 10, 0.75);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid color-mix(in srgb, var(--color-gold) 28%, transparent);
-  border-radius: 1.5rem;
-  padding: clamp(2.5rem, 6vw, 4rem);
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
-  gap: clamp(2rem, 4vh, 2.75rem);
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.8),
-    0 0 50px rgba(232, 197, 106, 0.08);
+  gap: clamp(2.5rem, 5vh, 4rem);
 }
 
-.cardGlow {
-  position: absolute;
-  inset: 0;
-  border-radius: 1.5rem;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 80% 50% at 50% 0%,
-    color-mix(in srgb, var(--color-gold) 12%, transparent) 0%,
-    transparent 60%
-  );
-}
-
-.cardHeader {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
-  border-bottom: 1px solid color-mix(in srgb, #f3f1ea 10%, transparent);
-  padding-bottom: 1.25rem;
+  gap: 1.5rem;
+  border-bottom: 1px solid color-mix(in srgb, #f3f1ea 12%, transparent);
+  padding-bottom: 1.5rem;
 }
 
 .eyebrowRow {
@@ -89,16 +74,17 @@
 .metricPill {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.4rem 0.9rem;
+  gap: 0.75rem;
+  padding: 0.5rem 1.15rem;
   border-radius: 999px;
   background: rgba(232, 197, 106, 0.08);
-  border: 1px solid color-mix(in srgb, var(--color-gold) 40%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 45%, transparent);
+  box-shadow: 0 0 25px rgba(232, 197, 106, 0.12);
 }
 
 .metricVal {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1.35rem;
   font-weight: 400;
   color: var(--color-gold);
   line-height: 1;
@@ -107,25 +93,26 @@
 .metricDesc {
   font-family: var(--font-ui);
   font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #f3f1ea;
 }
 
 .quoteWrap {
   position: relative;
+  padding-left: clamp(0rem, 2vw, 1.5rem);
 }
 
 .quoteMark {
   position: absolute;
-  top: -1.25rem;
-  left: -0.5rem;
+  top: -2rem;
+  left: -1.5rem;
   font-family: var(--font-display);
-  font-size: 4.5rem;
+  font-size: clamp(5rem, 9vw, 9rem);
   line-height: 0.5;
   color: var(--color-gold);
-  opacity: 0.25;
+  opacity: 0.22;
   pointer-events: none;
 }
 
@@ -138,46 +125,47 @@
 .quoteText {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 2.7vw, 2.1rem);
+  font-size: clamp(2rem, 4.2vw, 4rem);
   font-style: italic;
   font-weight: 400;
-  line-height: 1.35;
-  letter-spacing: -0.025em;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
   color: #f7f4ec;
-  text-wrap: pretty;
+  text-wrap: balance;
+  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.9);
 }
 
-.cardFooter {
+.footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  border-top: 1px solid color-mix(in srgb, #f3f1ea 10%, transparent);
-  padding-top: 1.5rem;
+  gap: 1.75rem;
+  border-top: 1px solid color-mix(in srgb, #f3f1ea 12%, transparent);
+  padding-top: 2rem;
 }
 
 .authorGroup {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.15rem;
 }
 
 .avatarRing {
-  width: 44px;
-  height: 44px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(232, 197, 106, 0.3), rgba(0, 0, 0, 0.9));
+  background: linear-gradient(135deg, rgba(232, 197, 106, 0.35), rgba(0, 0, 0, 0.9));
   border: 1.5px solid var(--color-gold);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 15px rgba(232, 197, 106, 0.25);
+  box-shadow: 0 0 20px rgba(232, 197, 106, 0.3);
 }
 
 .avatarInitials {
   font-family: var(--font-ui);
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 800;
   color: var(--color-gold);
 }
@@ -185,18 +173,18 @@
 .authorDetails {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.25rem;
 }
 
 .nameRow {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.75rem;
 }
 
 .authorName {
   font-family: var(--font-ui);
-  font-size: 0.9375rem;
+  font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   font-style: normal;
@@ -207,18 +195,18 @@
   font-family: var(--font-ui);
   font-size: 0.5625rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #050505;
   background: var(--color-gold);
-  padding: 0.15rem 0.45rem;
+  padding: 0.18rem 0.55rem;
   border-radius: 4px;
 }
 
 .authorRole {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   color: rgba(243, 241, 234, 0.65);
 }
 
@@ -230,15 +218,16 @@
 .caseLink {
   display: inline-flex;
   align-items: center;
+  gap: 0.4rem;
   font-family: var(--font-ui);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--color-gold);
   border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 50%, transparent);
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.3rem;
   transition: all 0.25s ease;
 }
 
@@ -247,15 +236,11 @@
   color: #ffffff;
   border-bottom-color: #ffffff;
   outline: none;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
-@media (max-width: 700px) {
-  .card {
-    padding: 1.75rem;
-  }
-
-  .cardFooter {
+@media (max-width: 768px) {
+  .footer {
     flex-direction: column;
     align-items: flex-start;
   }

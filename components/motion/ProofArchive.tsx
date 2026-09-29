@@ -263,6 +263,26 @@ export function ProofArchive({
                     <div className={styles.cardFallback} />
                   )}
                   <span className={styles.cardVeil} aria-hidden="true" />
+
+                  {/* UI Telemetry Overlay */}
+                  {c.stat ? (
+                    <div className={styles.cardStatBadge}>
+                      <span className={styles.statBadgeVal}>{c.stat}</span>
+                      {c.statLabel ? (
+                        <span className={styles.statBadgeLabel}>{c.statLabel}</span>
+                      ) : null}
+                    </div>
+                  ) : null}
+
+                  {c.stack && c.stack.length > 0 ? (
+                    <div className={styles.cardStackPills}>
+                      {c.stack.slice(0, 3).map((tech) => (
+                        <span key={tech} className={styles.stackPill}>
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
 
                 <div className={styles.cardFoot}>

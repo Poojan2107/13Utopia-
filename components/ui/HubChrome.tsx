@@ -39,20 +39,26 @@ export function HubBridge({
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    const targets = el.querySelectorAll("[data-bridge]");
+    if (!targets.length) return;
+
     const ctx = gsap.context(() => {
-      gsap.from(el.querySelectorAll("[data-bridge]"), {
-        opacity: 0,
-        y: 20,
-        duration: 0.75,
-        stagger: 0.08,
-        ease: "power3.out",
-        clearProps: "all",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 80%",
-          once: true,
+      gsap.fromTo(
+        targets,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.08,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 80%",
+            once: true,
+          },
         },
-      });
+      );
     }, el);
     return () => ctx.revert();
   }, []);
@@ -106,17 +112,22 @@ export function HubFilmStrip({ plates }: StripProps) {
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    const cards = el.querySelectorAll("[data-strip]");
+    if (!cards.length) return;
+
     const ctx = gsap.context(() => {
-      const cards = el.querySelectorAll("[data-strip]");
-      gsap.from(cards, {
-        opacity: 0,
-        y: 20,
-        duration: 0.65,
-        stagger: 0.08,
-        ease: "power3.out",
-        clearProps: "all",
-        scrollTrigger: { trigger: el, start: "top 80%", once: true },
-      });
+      gsap.fromTo(
+        cards,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          stagger: 0.08,
+          ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 80%", once: true },
+        },
+      );
     }, el);
     return () => ctx.revert();
   }, []);
@@ -172,16 +183,22 @@ export function HubCloser({
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    const targets = el.querySelectorAll("[data-close]");
+    if (!targets.length) return;
+
     const ctx = gsap.context(() => {
-      gsap.from(el.querySelectorAll("[data-close]"), {
-        opacity: 0,
-        y: 24,
-        duration: 0.75,
-        stagger: 0.08,
-        ease: "power3.out",
-        clearProps: "all",
-        scrollTrigger: { trigger: el, start: "top 80%", once: true },
-      });
+      gsap.fromTo(
+        targets,
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.08,
+          ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 80%", once: true },
+        },
+      );
     }, el);
     return () => ctx.revert();
   }, []);

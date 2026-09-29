@@ -5,7 +5,7 @@ export const solutions: Solution[] = [
     slug: "launch",
     title: "Launch",
     description:
-      "Bring something new into the world — brand, product, platform, and demand assembled around one outcome.",
+      "Bring something new into the world — a new company, product, brand, platform, or market proposition assembled around one outcome.",
     relatedCapabilitySlugs: [
       "branding-creative",
       "digital-products",
@@ -15,14 +15,15 @@ export const solutions: Solution[] = [
     relatedPerspectiveSlugs: ["brand-x-technology"],
     seo: {
       title: "Launch | Solutions | 13 UTOPIA",
-      description: "Launch new brands, products, and experiences with Create, Build, and Grow.",
+      description: "Launch new brands, products, and digital experiences with Create, Build, and Grow.",
     },
     status: "published",
   },
   {
     slug: "grow",
     title: "Grow",
-    description: "Create more demand and momentum around the right proposition.",
+    description:
+      "Increase attention, qualified demand, customer conversion, and compound momentum around the right value proposition.",
     relatedCapabilitySlugs: ["growth-marketing", "branding-creative", "digital-products"],
     relatedCaseSlugs: ["elite-sports-gear"],
     relatedPerspectiveSlugs: ["product-x-growth"],
@@ -35,20 +36,22 @@ export const solutions: Solution[] = [
   {
     slug: "scale",
     title: "Scale",
-    description: "Prepare the business for greater complexity, volume, and ambition.",
+    description:
+      "Create resilient systems, architectures, and operations capable of handling 10x volume, complexity, and ambition.",
     relatedCapabilitySlugs: ["cloud-engineering", "digital-products", "growth-marketing"],
     relatedCaseSlugs: ["trendy-fashion-hub"],
     relatedPerspectiveSlugs: [],
     seo: {
       title: "Scale | Solutions | 13 UTOPIA",
-      description: "Scale systems, products, and growth infrastructure.",
+      description: "Scale systems, products, and growth infrastructure for 10x volume.",
     },
     status: "published",
   },
   {
     slug: "modernize",
     title: "Modernize",
-    description: "Replace outdated technology, processes, or experiences.",
+    description:
+      "Replace fragile legacy technology, outdated processes, and friction-filled digital experiences without business disruption.",
     relatedCapabilitySlugs: [
       "cloud-engineering",
       "digital-products",
@@ -59,14 +62,15 @@ export const solutions: Solution[] = [
     relatedPerspectiveSlugs: [],
     seo: {
       title: "Modernize | Solutions | 13 UTOPIA",
-      description: "Modernize legacy systems, experiences, and digital infrastructure.",
+      description: "Modernize legacy systems, experiences, and digital infrastructure safely.",
     },
     status: "published",
   },
   {
     slug: "automate",
     title: "Automate",
-    description: "Turn repetitive operations into intelligent, useful systems.",
+    description:
+      "Eliminate repetitive operational friction and turn complex workflows into intelligent, autonomous systems.",
     relatedCapabilitySlugs: ["ai-automation", "cloud-engineering", "strategy-consulting"],
     relatedCaseSlugs: ["trendy-fashion-hub"],
     relatedPerspectiveSlugs: ["product-x-growth"],
@@ -79,7 +83,8 @@ export const solutions: Solution[] = [
   {
     slug: "transform",
     title: "Transform",
-    description: "Rethink the business at a deeper level — strategy, systems, and momentum together.",
+    description:
+      "Fundamentally align brand, technology, and market momentum around a new operating reality.",
     relatedCapabilitySlugs: [
       "strategy-consulting",
       "branding-creative",

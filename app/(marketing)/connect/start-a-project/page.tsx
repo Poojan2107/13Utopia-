@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import Image from "next/image";
 import { PageReveal } from "@/components/motion";
-import { Container, MediaPlaceholder, PageHero } from "@/components/ui";
+import { Container, PageHero } from "@/components/ui";
 import { ProjectForm } from "@/components/connect/ProjectForm";
+import { plates } from "@/content/plates";
 import { buildMetadata } from "@/lib/seo";
 import hub from "@/styles/ui/HubBody.module.css";
 
@@ -17,16 +18,21 @@ export default function StartProjectPage() {
   return (
     <>
       <PageHero
-        eyebrow="Connect"
+        eyebrow="Connect · Project Intake"
         title="Start a Project"
-        description="What are you trying to make happen? Qualify the outcome, then tell us what you need."
+        description="Tell us what you are trying to make happen. We’ll assemble Create, Build, and Grow around the outcome."
         layout="split"
         media={
-          <MediaPlaceholder
-            aspect="portrait"
-            need="Start a Project — begin atmosphere"
-            brief="Invitation still: blank page, keyed object, or threshold into collaboration."
-          />
+          <div style={{ position: "relative", width: "100%", height: "100%", minHeight: "380px", borderRadius: "1.25rem", overflow: "hidden", border: "1px solid rgba(232, 197, 106, 0.25)" }}>
+            <Image
+              src={plates.work.src}
+              alt="13 Utopia Project Intake"
+              fill
+              priority
+              sizes="(max-width: 900px) 100vw, 45vw"
+              style={{ objectFit: "cover", objectPosition: "50% 50%" }}
+            />
+          </div>
         }
       />
       <Container className={hub.body}>
