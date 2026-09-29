@@ -1,0 +1,600 @@
+.playgroundRoot {
+  min-height: 100vh;
+  background: #050505;
+  color: #f3f1ea;
+  padding-bottom: 8rem;
+  position: relative;
+}
+
+/* ── Fixed Floating Control Deck ── */
+.controlDeck {
+  position: sticky;
+  top: 4.75rem;
+  z-index: 90;
+  background: rgba(10, 8, 6, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 35%, transparent);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.85);
+  transition: all 0.3s ease;
+}
+
+.deckInner {
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: 1.25rem clamp(1.5rem, 4vw, 4.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.deckHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.brandBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.goldDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  box-shadow: 0 0 10px var(--color-gold);
+}
+
+.deckTitle {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.activeFontInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.fontNameBadge {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--color-gold);
+  letter-spacing: -0.01em;
+}
+
+.fontCatBadge {
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(232, 197, 106, 0.12);
+  border: 1px solid rgba(232, 197, 106, 0.3);
+  padding: 0.2rem 0.55rem;
+  color: #f3f1ea;
+}
+
+.deckActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.uploadBtn,
+.copyBtn {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--color-gold);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.uploadBtn {
+  background: rgba(232, 197, 106, 0.1);
+  color: var(--color-gold);
+}
+
+.uploadBtn:hover {
+  background: rgba(232, 197, 106, 0.25);
+  color: #ffffff;
+}
+
+.copyBtn {
+  background: var(--color-gold);
+  color: #050505;
+}
+
+.copyBtn:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+/* Font Selector Bar */
+.fontSelectorBar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding-bottom: 0.4rem;
+  scrollbar-width: thin;
+}
+
+.fontBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.65rem 1.15rem;
+  background: rgba(20, 18, 14, 0.7);
+  border: 1px solid rgba(243, 241, 234, 0.12);
+  color: #f3f1ea;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.fontBtn:hover {
+  border-color: var(--color-gold);
+  background: rgba(30, 26, 18, 0.9);
+}
+
+.fontBtnActive {
+  border-color: var(--color-gold);
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(232, 197, 106, 0.25) 0%,
+      transparent 70%
+    ),
+    rgba(25, 20, 10, 0.95);
+  box-shadow: 0 0 20px rgba(232, 197, 106, 0.2);
+}
+
+.fontBtnName {
+  font-size: 1.15rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.fontBtnTag {
+  font-family: var(--font-ui);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(243, 241, 234, 0.45);
+}
+
+.fontBtnActive .fontBtnName {
+  color: var(--color-gold);
+}
+
+/* Micro Controls */
+.controlsRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid rgba(243, 241, 234, 0.08);
+}
+
+.controlGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.controlLabel {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-gold) 80%, transparent);
+}
+
+.pillGroup {
+  display: inline-flex;
+  border: 1px solid rgba(243, 241, 234, 0.15);
+}
+
+.pillBtn {
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  background: transparent;
+  border: none;
+  color: rgba(243, 241, 234, 0.6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pillBtnActive {
+  background: var(--color-gold);
+  color: #050505;
+}
+
+.rangeSlider {
+  accent-color: var(--color-gold);
+  width: 110px;
+  cursor: pointer;
+}
+
+.toggleBtn {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  background: rgba(243, 241, 234, 0.06);
+  border: 1px solid rgba(243, 241, 234, 0.15);
+  color: rgba(243, 241, 234, 0.75);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggleBtnActive {
+  border-color: var(--color-gold);
+  background: rgba(232, 197, 106, 0.15);
+  color: var(--color-gold);
+}
+
+/* ── ARENA CONTENT SUITE ── */
+.arenaContent {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 4rem clamp(1.5rem, 5vw, 4.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+
+.arenaSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 15%, transparent);
+}
+
+.sectionMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+/* Hero Proof Grid */
+.heroProofGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 6rem);
+  padding: 2.5rem clamp(1.5rem, 3vw, 3rem);
+  background: radial-gradient(circle at 50% 0%, rgba(20, 16, 10, 0.8) 0%, #060504 70%);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 25%, transparent);
+}
+
+.heroProofCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.kickerLabel {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-gold) 75%, transparent);
+  margin: 0;
+}
+
+.heroPrimaryTitle,
+.heroSecondaryTitle {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-style: var(--display-style);
+  font-size: calc(clamp(3rem, 6.5vw, 5.75rem) * (var(--display-scale) / 100));
+  line-height: 0.95;
+  color: #f3f1ea;
+  margin: 0;
+}
+
+.heroSecondaryTitle {
+  color: #ffffff;
+}
+
+.goldPeriod {
+  color: var(--color-gold);
+  font-style: italic;
+}
+
+.heroDescriptor {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: rgba(243, 241, 234, 0.75);
+  margin: 0;
+}
+
+/* Statement Box */
+.statementBox {
+  padding: 3rem clamp(1.5rem, 4vw, 3.5rem);
+  background: linear-gradient(135deg, rgba(16, 13, 8, 0.8) 0%, #060504 100%);
+  border-left: 2px solid var(--color-gold);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.monumentalStatement {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-style: var(--display-style);
+  font-size: calc(clamp(2.25rem, 4.2vw, 3.85rem) * (var(--display-scale) / 100));
+  line-height: 1.1;
+  color: #ffffff;
+  margin: 0;
+}
+
+.statementBody {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: rgba(243, 241, 234, 0.8);
+  max-width: 52rem;
+  margin: 0;
+}
+
+/* Practice Triad */
+.practiceTriad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.practiceCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 2.25rem;
+  background: #090805;
+  border: 1px solid rgba(232, 197, 106, 0.2);
+}
+
+.practiceNum {
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--color-gold);
+}
+
+.practiceTitle {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-style: var(--display-style);
+  font-size: calc(clamp(2rem, 3vw, 2.75rem) * (var(--display-scale) / 100));
+  line-height: 1;
+  color: #ffffff;
+  margin: 0;
+}
+
+.practiceSub {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-gold) 80%, transparent);
+  margin: 0;
+}
+
+.practiceBody {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: rgba(243, 241, 234, 0.65);
+  margin: 0;
+}
+
+/* Creed Stage */
+.creedStage {
+  padding: 3.5rem 2rem;
+  background: radial-gradient(circle at 50% 50%, rgba(25, 20, 10, 0.9) 0%, #030303 80%);
+  border: 1px solid rgba(232, 197, 106, 0.28);
+  text-align: center;
+}
+
+.creedEquation {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-style: var(--display-style);
+  font-size: calc(clamp(2rem, 4.2vw, 3.75rem) * (var(--display-scale) / 100));
+  line-height: 1.15;
+  color: #f3f1ea;
+  margin: 0;
+}
+
+.creedImpact {
+  color: var(--color-gold);
+  font-style: italic;
+}
+
+/* Method Grid */
+.methodGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+}
+
+.methodCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.5rem 1rem;
+  background: #080705;
+  border: 1px solid rgba(243, 241, 234, 0.08);
+}
+
+.methodNum {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-gold);
+}
+
+.methodStage {
+  font-family: var(--font-ui);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.45);
+}
+
+.methodName {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-style: var(--display-style);
+  font-size: calc(1.4rem * (var(--display-scale) / 100));
+  color: #ffffff;
+  margin: 0.2rem 0;
+}
+
+.methodSummary {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: rgba(243, 241, 234, 0.6);
+  margin: 0;
+}
+
+/* Menu Sample Grid */
+.menuSampleGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 3rem;
+  padding: 3rem;
+  background: #040404;
+  border: 1px solid rgba(232, 197, 106, 0.25);
+}
+
+.menuSampleCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.menuLinkList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.menuLinkRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(243, 241, 234, 0.08);
+  padding-bottom: 0.5rem;
+}
+
+.menuLinkTitle {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-style: var(--display-style);
+  font-size: calc(clamp(1.75rem, 2.8vw, 2.5rem) * (var(--display-scale) / 100));
+  color: #f3f1ea;
+}
+
+.menuLinkArrow {
+  font-family: var(--font-ui);
+  font-size: 1.25rem;
+  color: var(--color-gold);
+}
+
+.menuCreed {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-style: var(--display-style);
+  font-size: calc(1.5rem * (var(--display-scale) / 100));
+  color: #ffffff;
+  margin: 0;
+}
+
+.intakeCardSample {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.5rem;
+  background: rgba(232, 197, 106, 0.08);
+  border: 1px solid rgba(232, 197, 106, 0.35);
+}
+
+.intakeKicker {
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.intakeTitle {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-tracking);
+  font-style: var(--display-style);
+  font-size: calc(1.35rem * (var(--display-scale) / 100));
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .heroProofGrid,
+  .practiceTriad,
+  .menuSampleGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .methodGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .methodGrid {
+    grid-template-columns: 1fr;
+  }
+}

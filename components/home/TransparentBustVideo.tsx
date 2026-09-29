@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import styles from "@/styles/home/TransparentBustVideo.module.css";
 
 const VS = `
@@ -47,6 +48,7 @@ void main() {
 export function TransparentBustVideo() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -116,8 +118,8 @@ export function TransparentBustVideo() {
 
     const updateSize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      const w = Math.floor(canvas.clientWidth * dpr);
-      const h = Math.floor(canvas.clientHeight * dpr);
+      const w = Math.floor((canvas.clientWidth || window.innerWidth * 0.8) * dpr);
+      const h = Math.floor((canvas.clientHeight || window.innerHeight * 0.9) * dpr);
       if (w > 0 && h > 0 && (canvas.width !== w || canvas.height !== h)) {
         canvas.width = w;
         canvas.height = h;
@@ -127,10 +129,20 @@ export function TransparentBustVideo() {
     updateSize();
     window.addEventListener("resize", updateSize);
 
-    video.play().catch(() => {
+    const playVideo = () => {
       video.muted = true;
-      video.play();
-    });
+      video.play().then(() => {
+        setVideoPlaying(true);
+      }).catch(() => {
+        // Retry muted
+        video.muted = true;
+        video.play().catch(() => {});
+      });
+    };
+
+    video.addEventListener("canplay", playVideo);
+    video.addEventListener("playing", () => setVideoPlaying(true));
+    playVideo();
 
     let animId: number;
     let isRunning = true;
@@ -177,6 +189,7 @@ export function TransparentBustVideo() {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", updateSize);
       document.removeEventListener("visibilitychange", onVis);
+      video.removeEventListener("canplay", playVideo);
       gl.deleteTexture(texture);
       gl.deleteBuffer(buf);
       gl.deleteProgram(prog);
@@ -187,6 +200,13 @@ export function TransparentBustVideo() {
 
   return (
     <div className={styles.wrapper}>
+      {/* Instant fallback image so the gold bust is never blank on initial load */}
+      <img
+        src="/metal-human/metal-human.jpg"
+        alt=""
+        aria-hidden="true"
+        className={`${styles.fallbackImage} ${videoPlaying ? styles.fadeOut : ""}`}
+      />
       <video
         ref={videoRef}
         src="/metal-human/metal-human.mp4"
