@@ -5,17 +5,24 @@
 /* Google Fonts Haute Collection: Flared, Didone, Sculptural & Art-Nouveau */
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Italiana&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Prata&family=Syne:wght@400..800&family=Unna:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
-/* Local Molen Font Support */
+/* Local Molen & Molen Surplus Font Support */
 @font-face {
   font-family: 'Molen';
   src: url('/fonts/molen-surplus.otf') format('opentype'),
        url('/fonts/molen.woff2') format('woff2'),
        url('/fonts/molen.otf') format('opentype'),
-       url('/fonts/molen.ttf') format('truetype'),
-       /* Fallback high-contrast flared serif */
-       local('Molen'),
-       url('https://fonts.gstatic.com/s/fraunces/v32/6NUh8VyDuQWBdaLQ32q6bKqW_mF5.woff2') format('woff2');
-  font-weight: 400 900;
+       url('/fonts/molen.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Molen Surplus';
+  src: url('/fonts/molen-surplus.otf') format('opentype'),
+       url('/fonts/molen.woff2') format('woff2'),
+       url('/fonts/molen.otf') format('opentype');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
@@ -23,10 +30,8 @@
 @font-face {
   font-family: 'Molen-Italic';
   src: url('/fonts/molen-italic.woff2') format('woff2'),
-       url('/fonts/molen-italic.otf') format('opentype'),
-       local('Molen Italic'),
-       url('https://fonts.gstatic.com/s/fraunces/v32/6NU_8VyDuQWBdaLQ32q6bKqW_mF5_U4.woff2') format('woff2');
-  font-weight: 400 900;
+       url('/fonts/molen-italic.otf') format('opentype');
+  font-weight: 100 900;
   font-style: italic;
   font-display: swap;
 }
