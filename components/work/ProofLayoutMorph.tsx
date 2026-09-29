@@ -74,7 +74,8 @@ export function ProofLayoutMorph() {
         const caption = galleryRow.querySelector(`.${styles.caption}`);
 
         galleryRow.classList.add(styles.gallerySwitch);
-        const rowFlipState = Flip.getState([rowItems, caption], {
+        const rowTargets = [...Array.from(rowItems), caption].filter(Boolean) as Element[];
+        const rowFlipState = Flip.getState(rowTargets, {
           props: "opacity,filter,transform",
         });
         galleryRow.classList.remove(styles.gallerySwitch);
@@ -103,7 +104,8 @@ export function ProofLayoutMorph() {
         const caption = galleryMosaic.querySelector(`.${styles.caption}`);
 
         galleryMosaic.classList.add(styles.gallerySwitch);
-        const mosaicFlipState = Flip.getState([mosaicItems, caption], {
+        const mosaicTargets = [...Array.from(mosaicItems), caption].filter(Boolean) as Element[];
+        const mosaicFlipState = Flip.getState(mosaicTargets, {
           props: "opacity,filter",
         });
         galleryMosaic.classList.remove(styles.gallerySwitch);
@@ -148,7 +150,8 @@ export function ProofLayoutMorph() {
         const caption = galleryMatrix.querySelector(`.${styles.caption}`);
 
         galleryMatrix.classList.add(styles.gallerySwitch);
-        const matrixFlipState = Flip.getState([matrixItems, caption], {
+        const matrixTargets = [...Array.from(matrixItems), caption].filter(Boolean) as Element[];
+        const matrixFlipState = Flip.getState(matrixTargets, {
           props: "opacity,filter",
         });
         galleryMatrix.classList.remove(styles.gallerySwitch);

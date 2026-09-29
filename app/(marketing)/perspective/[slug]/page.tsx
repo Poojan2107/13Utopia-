@@ -68,10 +68,10 @@ export default async function PerspectiveArticlePage({ params }: Props) {
         dangerouslySetInnerHTML={jsonLdScript(
           articleSchema({
             title: article.title,
-            description: article.summary,
+            description: article.excerpt,
             path: `/perspective/${slug}`,
             datePublished: article.publishedAt,
-            author: article.author?.name || "13 UTOPIA Research",
+            author: article.author || "13 UTOPIA Research",
             wordCount: article.body.split(/\s+/).length,
           }),
         )}
