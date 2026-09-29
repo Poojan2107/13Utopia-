@@ -20,31 +20,13 @@ try {
   // fallback handled gracefully
 }
 
-const navMeta: Record<string, { desc: string; tags: string[] }> = {
-  "/capabilities": {
-    desc: "Three integrated practices across Brand, Systems & Growth.",
-    tags: ["Create", "Build", "Grow"],
-  },
-  "/solutions": {
-    desc: "Outcome-driven frameworks engineered for specific growth phases.",
-    tags: ["Launch", "Scale", "Automate"],
-  },
-  "/work": {
-    desc: "Selected case studies, engineering proof, and verified outcomes.",
-    tags: ["Commerce", "Platforms", "AI Engines"],
-  },
-  "/perspective": {
-    desc: "Essays, strategic notes, and worldview from our leadership.",
-    tags: ["Worldview", "Strategy", "Analysis"],
-  },
-  "/our-story": {
-    desc: "Why we exist, what we reject, and how we build beyond the default.",
-    tags: ["Belief", "Origins", "Standard"],
-  },
-  "/collective": {
-    desc: "Core leadership, specialized operators, and global advisory network.",
-    tags: ["Team", "Global Reach", "Advisors"],
-  },
+const navMeta: Record<string, string> = {
+  "/capabilities": "Brand · Systems · Growth",
+  "/solutions": "Launch · Scale · Automate",
+  "/work": "Selected Proof & Case Stories",
+  "/perspective": "Essays & Strategic Worldview",
+  "/our-story": "The Anti-Generic Studio DNA",
+  "/collective": "Leadership & Global Advisory",
 };
 
 /**
@@ -56,6 +38,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
@@ -116,7 +99,7 @@ export function SiteHeader() {
       gsap.set(rightBox, { rotate: -180, scale: 2 });
     }
     gsap.set(lines, { yPercent: 120, opacity: 0 });
-    gsap.set(secondaryItems, { yPercent: 40, opacity: 0 });
+    gsap.set(secondaryItems, { yPercent: 30, opacity: 0 });
 
     const easeFunc = CustomEase.get("jump") ? "jump" : "power4.inOut";
 
@@ -128,7 +111,7 @@ export function SiteHeader() {
         [leftBox, rightBox],
         {
           rotate: 0,
-          duration: 0.95,
+          duration: 0.9,
           ease: easeFunc,
         },
         0,
@@ -142,11 +125,11 @@ export function SiteHeader() {
         {
           yPercent: 0,
           opacity: 1,
-          duration: 0.7,
-          stagger: 0.04,
+          duration: 0.65,
+          stagger: 0.035,
           ease: "power3.out",
         },
-        0.42,
+        0.38,
       );
     }
 
@@ -157,11 +140,11 @@ export function SiteHeader() {
         {
           yPercent: 0,
           opacity: 1,
-          duration: 0.65,
-          stagger: 0.06,
+          duration: 0.6,
+          stagger: 0.05,
           ease: "power3.out",
         },
-        0.52,
+        0.48,
       );
     }
 
@@ -188,7 +171,7 @@ export function SiteHeader() {
       root.classList.add(styles.menuActive);
       tl.timeScale(1).play();
     } else {
-      tl.timeScale(1.35).reverse();
+      tl.timeScale(1.4).reverse();
       const onRev = () => {
         if (tl.progress() === 0) {
           root.classList.remove(styles.menuActive);
@@ -230,14 +213,16 @@ export function SiteHeader() {
           <BrandLogo variant="official" priority />
         </Link>
 
-        {/* Minimalist Top Control Hub: Direct CTA + Primary Menu Toggle */}
+        {/* Minimalist Top Control Hub */}
         <div className={styles.actions}>
-          <Link href={primaryCta.href} className={styles.cta} data-magnetic>
-            <span className={styles.ctaLabel}>{primaryCta.label}</span>
-            <span className={styles.ctaArrow} aria-hidden="true">
-              →
-            </span>
-          </Link>
+          {!open && (
+            <Link href={primaryCta.href} className={styles.cta} data-magnetic>
+              <span className={styles.ctaLabel}>{primaryCta.label}</span>
+              <span className={styles.ctaArrow} aria-hidden="true">
+                →
+              </span>
+            </Link>
+          )}
 
           {/* Luxury Primary Menu Trigger */}
           <button
@@ -284,11 +269,11 @@ export function SiteHeader() {
         {/* Symmetrical 2-Column Luxury Interface */}
         <div className={styles.menuContent}>
           <div className={styles.menuGrid}>
-            {/* Left Column: Primary Core Routes */}
+            {/* Left Column: Primary Navigation Index */}
             <div className={styles.menuColPrimary}>
               <div className={styles.colHeader} data-menu-line>
                 <UtopianBreak size="sm" className={styles.colBreak} />
-                <span>INDEX · 13 UTOPIA PRACTICE</span>
+                <span>INDEX · PRACTICE</span>
               </div>
 
               <nav aria-label="Primary navigation menu">
@@ -297,7 +282,7 @@ export function SiteHeader() {
                     const active =
                       pathname === item.href ||
                       (item.href !== "/" && pathname.startsWith(`${item.href}/`));
-                    const meta = navMeta[item.href];
+                    const isHovered = hoveredLink === item.href;
 
                     return (
                       <li key={item.href} className={styles.navItem}>
@@ -308,6 +293,8 @@ export function SiteHeader() {
                               active ? styles.navLinkBigActive : ""
                             }`}
                             onClick={closeMenu}
+                            onMouseEnter={() => setHoveredLink(item.href)}
+                            onMouseLeave={() => setHoveredLink(null)}
                             tabIndex={open ? 0 : -1}
                             data-menu-line
                           >
@@ -315,26 +302,14 @@ export function SiteHeader() {
                               {String(i + 1).padStart(2, "0")}
                             </span>
                             <span className={styles.navLabel}>{item.label}</span>
+                            <span className={styles.navMetaText}>
+                              {navMeta[item.href]}
+                            </span>
                             <span className={styles.navArrow} aria-hidden="true">
                               ↗
                             </span>
                           </Link>
                         </div>
-
-                        {meta && (
-                          <div className={styles.lineMask}>
-                            <div className={styles.metaRow} data-menu-line>
-                              <p className={styles.navDesc}>{meta.desc}</p>
-                              <div className={styles.navTags}>
-                                {meta.tags.map((tag) => (
-                                  <span key={tag} className={styles.navTag}>
-                                    {tag}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        )}
                       </li>
                     );
                   })}
@@ -342,26 +317,27 @@ export function SiteHeader() {
               </nav>
             </div>
 
-            {/* Right Column: Studio Worldview, Direct Brief & Global Coordinates */}
+            {/* Right Column: Worldview, Direct Intake & Coordinates */}
             <div className={styles.menuColSecondary}>
-              {/* Worldview Creed Card */}
+              {/* Worldview Creed */}
               <div className={styles.worldviewCard} data-menu-sec>
                 <div className={styles.cardHeader}>
                   <UtopianBreak size="sm" className={styles.colBreak} />
-                  <span>00 · CORE BELIEF</span>
+                  <span>00 · WORLDVIEW</span>
                 </div>
                 <h3 className={styles.creedEquation}>
-                  POSSIBILITY × AMBITION × EXECUTION
+                  POSSIBILITY × AMBITION
+                  <br />
+                  × EXECUTION
                   <span className={styles.goldHighlight}> = IMPACT.</span>
                 </h3>
                 <p className={styles.creedBody}>
                   The obvious answer is rarely the only answer. We question
-                  inherited assumptions, craft uncompromising brand worlds, and
-                  engineer scalable technology systems.
+                  inherited assumptions and build high-performance digital engines.
                 </p>
               </div>
 
-              {/* Direct Intake Brief Action */}
+              {/* Direct Project Brief Action */}
               <div className={styles.briefCard} data-menu-sec>
                 <Link
                   href={primaryCta.href}
@@ -371,33 +347,34 @@ export function SiteHeader() {
                   data-magnetic
                 >
                   <div className={styles.ctaCardHeader}>
-                    <span className={styles.ctaCardKicker}>Direct Intake</span>
+                    <span className={styles.ctaCardKicker}>Direct Intake Brief</span>
                     <span className={styles.ctaCardBadge}>Active Roster</span>
                   </div>
-                  <h4 className={styles.ctaCardTitle}>Start a Project</h4>
-                  <p className={styles.ctaCardDesc}>
-                    Bring your ambition or problem. We’ll build what comes next.
-                  </p>
-                  <span className={styles.ctaCardArrow} aria-hidden="true">
-                    →
-                  </span>
+                  <div className={styles.ctaCardRow}>
+                    <h4 className={styles.ctaCardTitle}>Start a Project</h4>
+                    <span className={styles.ctaCardArrow} aria-hidden="true">
+                      →
+                    </span>
+                  </div>
                 </Link>
               </div>
 
               {/* Global Studio Coordinates */}
               <div className={styles.coordinatesBlock} data-menu-sec>
                 <p className={styles.coordLabel}>Studio Coordinates</p>
-                <div className={styles.coordRow}>
-                  <span className={styles.coordDot} aria-hidden="true" />
-                  <p className={styles.coordText}>
-                    <strong>Toronto:</strong> Markham Corners, Scarborough
-                  </p>
-                </div>
-                <div className={styles.coordRow}>
-                  <span className={styles.coordDot} aria-hidden="true" />
-                  <p className={styles.coordText}>
-                    <strong>Ahmedabad:</strong> Iconic Shyamal, 132ft Ring Rd
-                  </p>
+                <div className={styles.coordGrid}>
+                  <div className={styles.coordItem}>
+                    <span className={styles.coordDot} aria-hidden="true" />
+                    <p className={styles.coordText}>
+                      <strong>Toronto:</strong> Markham Corners, Scarborough
+                    </p>
+                  </div>
+                  <div className={styles.coordItem}>
+                    <span className={styles.coordDot} aria-hidden="true" />
+                    <p className={styles.coordText}>
+                      <strong>Ahmedabad:</strong> Iconic Shyamal, 132ft Ring Rd
+                    </p>
+                  </div>
                 </div>
                 <div className={styles.coordDirect}>
                   <a
@@ -424,5 +401,6 @@ export function SiteHeader() {
     </header>
   );
 }
+
 
 
