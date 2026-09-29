@@ -4,8 +4,16 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { UtopianBreak } from "@/components/ui/UtopianBreak";
 import { cases } from "@/content/cases";
-import { METHOD_STEPS } from "@/content/site";
 import styles from "@/styles/home/FontPlayground.module.css";
+
+const PLAYGROUND_METHOD_STEPS = [
+  { number: "01", stage: "START", name: "Question", summary: "Start with the problem. What are we solving? What's assumed? What's getting in the way?" },
+  { number: "02", stage: "EXPLORE", name: "Imagine", summary: "Explore what could work — ideas, concepts, directions and possibilities." },
+  { number: "03", stage: "DECIDE", name: "Define", summary: "Choose a direction. Turn possibilities into a clear strategy and scope." },
+  { number: "04", stage: "FORM", name: "Create", summary: "Give it form — brand, design, experience and content." },
+  { number: "05", stage: "MAKE", name: "Build", summary: "Make it real — technology, products, systems and AI." },
+  { number: "06", stage: "WORK", name: "Grow", summary: "Put it to work — SEO, marketing, demand generation and continuous improvement." },
+];
 
 type FontOption = {
   id: string;
@@ -377,7 +385,7 @@ font-style: ${isItalic ? "italic" : "normal"};`;
           </div>
 
           <div className={styles.methodGrid}>
-            {METHOD_STEPS.map((step) => (
+            {PLAYGROUND_METHOD_STEPS.map((step) => (
               <div key={step.number} className={styles.methodCard}>
                 <span className={styles.methodNum}>{step.number}</span>
                 <span className={styles.methodStage}>{step.stage}</span>
