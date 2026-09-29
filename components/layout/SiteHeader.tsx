@@ -30,8 +30,10 @@ const navMeta: Record<string, string> = {
 };
 
 /**
- * SiteHeader — Primary Awwwards Dual-Shutter Unrolling Navigation Engine
- * Minimalist top luxury chrome + theatrical dual-rotating shutter reveal
+ * SiteHeader — 13 UTOPIA Signature "1 & 3" Kinetic Navigation Engine
+ * - Left: Single Solid Monolith ("1")
+ * - Right: 3-Tier Staggered Cascade Shutters ("3": Create · Build · Grow)
+ * - Converging Parallax Didone "1" + "3" Watermark Monogram
  */
 export function SiteHeader() {
   const pathname = usePathname();
@@ -74,30 +76,35 @@ export function SiteHeader() {
     };
   }, [open]);
 
-  // Build the master Elmanto dual-shutter unroll timeline
+  // Build the signature "1 and 3" master timeline
   useEffect(() => {
     const root = menuRef.current;
     if (!root) return;
 
-    const leftBox = root.querySelector<HTMLElement>("[data-menu-box-left]");
-    const rightBox = root.querySelector<HTMLElement>("[data-menu-box-right]");
+    const leftMonolith = root.querySelector<HTMLElement>("[data-menu-monolith-1]");
+    const rightBands = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-menu-band-3]"),
+    );
+    const markOne = root.querySelector<HTMLElement>("[data-watermark-1]");
+    const markThree = root.querySelector<HTMLElement>("[data-watermark-3]");
     const lines = Array.from(root.querySelectorAll<HTMLElement>("[data-menu-line]"));
     const secondaryItems = Array.from(
       root.querySelectorAll<HTMLElement>("[data-menu-sec]"),
     );
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      if (leftBox && rightBox) {
-        gsap.set([leftBox, rightBox], { rotate: 0, scale: 1 });
-      }
+      if (leftMonolith) gsap.set(leftMonolith, { rotate: 0, scale: 1 });
+      gsap.set(rightBands, { rotate: 0, scale: 1 });
+      if (markOne && markThree) gsap.set([markOne, markThree], { x: 0, opacity: 0.06 });
       gsap.set([...lines, ...secondaryItems], { yPercent: 0, opacity: 1 });
       return;
     }
 
-    if (leftBox && rightBox) {
-      gsap.set(leftBox, { rotate: 180, scale: 2 });
-      gsap.set(rightBox, { rotate: -180, scale: 2 });
-    }
+    // Initial kinetic states
+    if (leftMonolith) gsap.set(leftMonolith, { rotate: 180, scale: 2 });
+    gsap.set(rightBands, { rotate: -180, scale: 2 });
+    if (markOne) gsap.set(markOne, { x: -140, opacity: 0 });
+    if (markThree) gsap.set(markThree, { x: 140, opacity: 0 });
     gsap.set(lines, { yPercent: 120, opacity: 0 });
     gsap.set(secondaryItems, { yPercent: 30, opacity: 0 });
 
@@ -105,20 +112,57 @@ export function SiteHeader() {
 
     const tl = gsap.timeline({ paused: true });
 
-    // Step 1: Dual shutter unroll from opposite rotations
-    if (leftBox && rightBox) {
+    // Phase 1: The "1" Monolith Unrolls from Left (pivoted on inner seam)
+    if (leftMonolith) {
       tl.to(
-        [leftBox, rightBox],
+        leftMonolith,
         {
           rotate: 0,
-          duration: 0.9,
+          duration: 0.95,
           ease: easeFunc,
         },
         0,
       );
     }
 
-    // Step 2: Cascading primary navigation lines
+    // Phase 2: The "3" Cascading Bands Unroll from Right (staggered 0.05s)
+    if (rightBands.length > 0) {
+      tl.to(
+        rightBands,
+        {
+          rotate: 0,
+          duration: 0.92,
+          stagger: 0.05,
+          ease: easeFunc,
+        },
+        0.04,
+      );
+    }
+
+    // Phase 3: Converging "1" + "3" Didone Monogram Watermarks glide into center
+    if (markOne && markThree) {
+      tl.to(
+        markOne,
+        {
+          x: 0,
+          opacity: 0.06,
+          duration: 0.9,
+          ease: "power3.out",
+        },
+        0.1,
+      ).to(
+        markThree,
+        {
+          x: 0,
+          opacity: 0.06,
+          duration: 0.9,
+          ease: "power3.out",
+        },
+        0.14,
+      );
+    }
+
+    // Phase 4: Cascading primary navigation lines
     if (lines.length > 0) {
       tl.to(
         lines,
@@ -129,11 +173,11 @@ export function SiteHeader() {
           stagger: 0.035,
           ease: "power3.out",
         },
-        0.38,
+        0.4,
       );
     }
 
-    // Step 3: Secondary right-column blocks reveal
+    // Phase 5: Secondary right-column blocks reveal
     if (secondaryItems.length > 0) {
       tl.to(
         secondaryItems,
@@ -224,7 +268,7 @@ export function SiteHeader() {
             </Link>
           )}
 
-          {/* Luxury Primary Menu Trigger */}
+          {/* Luxury "13" Primary Menu Trigger */}
           <button
             type="button"
             className={`${styles.menuToggle} ${open ? styles.menuToggleActive : ""}`}
@@ -234,6 +278,7 @@ export function SiteHeader() {
             onClick={() => setOpen((v) => !v)}
             data-magnetic
           >
+            <span className={styles.menuBrandPrefix}>13 ·</span>
             <span className={styles.menuToggleLabel}>
               {open ? "CLOSE" : "MENU"}
             </span>
@@ -249,31 +294,58 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {/* Full-Screen Master Dual-Shutter Overlay */}
+      {/* Full-Screen Master "1 & 3" Dual-Shutter Overlay */}
       <div
         ref={menuRef}
         id="awwwards-primary-menu"
         className={styles.menu}
         aria-hidden={!open}
       >
-        {/* Dual Rotating Shutters Background */}
+        {/* Background "1" Monolith + "3" Cascade Shutters */}
         <div className={styles.menuBg} aria-hidden="true">
+          {/* Left: The "1" Monolith */}
           <div className={styles.menuSideLeft}>
-            <div className={styles.menuBoxLeft} data-menu-box-left />
+            <div className={styles.menuMonolithOne} data-menu-monolith-1>
+              <span className={styles.watermarkOne} data-watermark-1>
+                1
+              </span>
+            </div>
           </div>
+
+          {/* Right: The "3" Cascading Practice Bands */}
           <div className={styles.menuSideRight}>
-            <div className={styles.menuBoxRight} data-menu-box-right />
+            <div className={styles.menuBandsContainer}>
+              {/* Band 1: CREATE */}
+              <div
+                className={`${styles.menuBand} ${styles.menuBandCreate}`}
+                data-menu-band-3
+              />
+              {/* Band 2: BUILD */}
+              <div
+                className={`${styles.menuBand} ${styles.menuBandBuild}`}
+                data-menu-band-3
+              />
+              {/* Band 3: GROW */}
+              <div
+                className={`${styles.menuBand} ${styles.menuBandGrow}`}
+                data-menu-band-3
+              />
+              {/* Converging "3" Monogram */}
+              <span className={styles.watermarkThree} data-watermark-3>
+                3
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Symmetrical 2-Column Luxury Interface */}
         <div className={styles.menuContent}>
           <div className={styles.menuGrid}>
-            {/* Left Column: Primary Navigation Index */}
+            {/* Left Column: "01 · THE PRACTICE INDEX" */}
             <div className={styles.menuColPrimary}>
               <div className={styles.colHeader} data-menu-line>
                 <UtopianBreak size="sm" className={styles.colBreak} />
-                <span>INDEX · PRACTICE</span>
+                <span>01 · THE PRACTICE INDEX</span>
               </div>
 
               <nav aria-label="Primary navigation menu">
@@ -282,7 +354,6 @@ export function SiteHeader() {
                     const active =
                       pathname === item.href ||
                       (item.href !== "/" && pathname.startsWith(`${item.href}/`));
-                    const isHovered = hoveredLink === item.href;
 
                     return (
                       <li key={item.href} className={styles.navItem}>
@@ -317,13 +388,22 @@ export function SiteHeader() {
               </nav>
             </div>
 
-            {/* Right Column: Worldview, Direct Intake & Coordinates */}
+            {/* Right Column: "03 · WORLDS & DIRECT INTAKE" */}
             <div className={styles.menuColSecondary}>
+              {/* The 13 Brand Equation formula badge */}
+              <div className={styles.formulaBadge} data-menu-sec>
+                <span className={styles.formulaPart}>1 UNIFIED STUDIO</span>
+                <span className={styles.formulaCross}>×</span>
+                <span className={styles.formulaPart}>3 WORLDS (CREATE · BUILD · GROW)</span>
+                <span className={styles.formulaEquals}>=</span>
+                <span className={styles.formulaResult}>13 UTOPIA</span>
+              </div>
+
               {/* Worldview Creed */}
               <div className={styles.worldviewCard} data-menu-sec>
                 <div className={styles.cardHeader}>
                   <UtopianBreak size="sm" className={styles.colBreak} />
-                  <span>00 · WORLDVIEW</span>
+                  <span>03 · WORLDVIEW & IMPACT</span>
                 </div>
                 <h3 className={styles.creedEquation}>
                   POSSIBILITY × AMBITION
@@ -401,6 +481,7 @@ export function SiteHeader() {
     </header>
   );
 }
+
 
 
 
