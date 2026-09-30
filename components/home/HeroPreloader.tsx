@@ -17,10 +17,12 @@ if (typeof window !== "undefined") {
 
 /**
  * HeroPreloader — Direct architectural adaptation of Awwwards 010 (Component Demo)
- * Tailored specifically for 13 UTOPIA:
- * - 3 Floating editorial tags ("BE UNREAL", "BE UNREASONABLE", "13 UTOPIA // 2026")
- * - Monumental dual-title sequence: "13 UTOPIA" -> "13" -> Gold "UTOPIA" lockup
- * - Seamless 50/50 dual-overlay guillotine split parting into the 3D gold bust hero
+ * Bespoke 13 UTOPIA Sequence:
+ * 1. Initial title appears: "13UTOPIA"
+ * 2. "UTOPIA" drops away, and "1" & "3" separate across the screen (like N & 10 in the video)
+ * 3. Both "1" and "3" glide inward and come together to form "13"
+ * 4. The monumental "U" enters from below and scales into the frame (like how 10 scaled)
+ * 5. Horizontal split guillotine (top -50%, bottom +50%) reveals the 3D gold bust hero
  */
 export function HeroPreloader() {
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -45,63 +47,56 @@ export function HeroPreloader() {
     const isMobile = window.innerWidth <= 900;
 
     // Elements inside top preloader layer
-    const introFirstCharSpan = preloader.querySelector<HTMLElement>(
-      `.${styles.introTitle} .${styles.firstChar} span`,
+    const pNum1 = preloader.querySelector<HTMLElement>(`.${styles.num1}`);
+    const pNum1Span = preloader.querySelector<HTMLElement>(`.${styles.num1} span`);
+    const pNum3 = preloader.querySelector<HTMLElement>(`.${styles.num3}`);
+    const pNum3Span = preloader.querySelector<HTMLElement>(`.${styles.num3} span`);
+    const pUtopiaSpans = preloader.querySelectorAll<HTMLElement>(
+      `.${styles.utopiaChar} span`,
     );
-    const introFirstChar = preloader.querySelector<HTMLElement>(
-      `.${styles.introTitle} .${styles.firstChar}`,
+    const pMonumentalU = preloader.querySelector<HTMLElement>(
+      `.${styles.monumentalU}`,
     );
-    const introCharSpans = preloader.querySelectorAll<HTMLElement>(
-      `.${styles.introTitle} .${styles.char} span`,
-    );
-    const outroCharSpans = preloader.querySelectorAll<HTMLElement>(
-      `.${styles.outroTitle} .${styles.char} span, .${styles.outroTitle} .${styles.goldChar} span`,
-    );
-    const outroChars = preloader.querySelectorAll<HTMLElement>(
-      `.${styles.outroTitle} .${styles.char}, .${styles.outroTitle} .${styles.goldChar}`,
+    const pGoldUSpan = preloader.querySelector<HTMLElement>(
+      `.${styles.goldU} span`,
     );
 
     // Elements inside bottom split-overlay layer
-    const splitFirstCharSpan = splitOverlay.querySelector<HTMLElement>(
-      `.${styles.introTitle} .${styles.firstChar} span`,
+    const sNum1 = splitOverlay.querySelector<HTMLElement>(`.${styles.num1}`);
+    const sNum1Span = splitOverlay.querySelector<HTMLElement>(`.${styles.num1} span`);
+    const sNum3 = splitOverlay.querySelector<HTMLElement>(`.${styles.num3}`);
+    const sNum3Span = splitOverlay.querySelector<HTMLElement>(`.${styles.num3} span`);
+    const sUtopiaSpans = splitOverlay.querySelectorAll<HTMLElement>(
+      `.${styles.utopiaChar} span`,
     );
-    const splitFirstChar = splitOverlay.querySelector<HTMLElement>(
-      `.${styles.introTitle} .${styles.firstChar}`,
+    const sMonumentalU = splitOverlay.querySelector<HTMLElement>(
+      `.${styles.monumentalU}`,
     );
-    const splitOutroCharSpans = splitOverlay.querySelectorAll<HTMLElement>(
-      `.${styles.outroTitle} .${styles.char} span, .${styles.outroTitle} .${styles.goldChar} span`,
-    );
-    const splitOutroChars = splitOverlay.querySelectorAll<HTMLElement>(
-      `.${styles.outroTitle} .${styles.char}, .${styles.outroTitle} .${styles.goldChar}`,
+    const sGoldUSpan = splitOverlay.querySelector<HTMLElement>(
+      `.${styles.goldU} span`,
     );
 
     const ctx = gsap.context(() => {
-      // 1. Initial settled placement on split-overlay (so split halves match seamlessly)
-      gsap.set([splitFirstCharSpan, ...Array.from(splitOutroCharSpans)], {
-        y: "0%",
-      });
+      // Final lockup offsets for seamless 50/50 split matching
+      const finalNumX = isMobile ? "-1.8rem" : "-4.2rem";
+      const finalUX = isMobile ? "0.8rem" : "1.8rem";
+      const finalUScale = isMobile ? 1.1 : 1.25;
 
-      if (splitFirstChar) {
-        gsap.set(splitFirstChar, {
-          x: isMobile ? "3.2rem" : "7.5rem",
-          y: isMobile ? "-0.4rem" : "-1.2rem",
-          fontWeight: "900",
-          scale: 0.82,
-        });
+      // 1. Pre-set split-overlay to the final locked coordinates so halves match seamlessly
+      gsap.set([sNum1Span, sNum3Span, sGoldUSpan], { y: "0%" });
+      gsap.set(sUtopiaSpans, { y: "100%" });
+      if (sNum1) gsap.set(sNum1, { x: finalNumX });
+      if (sNum3) gsap.set(sNum3, { x: finalNumX });
+      if (sMonumentalU) {
+        gsap.set(sMonumentalU, { x: finalUX, scale: finalUScale });
       }
 
-      if (splitOutroChars.length) {
-        gsap.set(splitOutroChars, {
-          x: isMobile ? "-1.5rem" : "-3.5rem",
-        });
-      }
-
-      // 2. Choreographed Master Timeline
+      // 2. Master Chrono Timeline
       const tl = gsap.timeline({
         defaults: { ease: "hop" },
       });
 
-      // Tags slide in
+      // --- Beat 0: Editorial tags reveal ---
       if (tags.length) {
         tl.to(
           tags,
@@ -114,14 +109,15 @@ export function HeroPreloader() {
         );
       }
 
-      // Intro title ("13 UTOPIA") reveals character by character
-      const allIntroSpans = [
-        ...(introFirstCharSpan ? [introFirstCharSpan] : []),
-        ...Array.from(introCharSpans),
+      // --- Beat 1: Initial "13UTOPIA" title reveals character by character ---
+      const initialChars = [
+        ...(pNum1Span ? [pNum1Span] : []),
+        ...(pNum3Span ? [pNum3Span] : []),
+        ...Array.from(pUtopiaSpans),
       ];
 
       tl.to(
-        allIntroSpans,
+        initialChars,
         {
           y: "0%",
           duration: 0.75,
@@ -130,74 +126,93 @@ export function HeroPreloader() {
         0.35,
       );
 
-      // "UTOPIA" drops down through floor, isolating the monumental "13"
+      // --- Beat 2: "UTOPIA" drops away, "1" and "3" separate across the frame ---
       tl.to(
-        introCharSpans,
+        pUtopiaSpans,
         {
           y: "100%",
-          duration: 0.7,
+          duration: 0.65,
           stagger: 0.03,
         },
-        1.7,
+        1.75,
       );
 
-      // Radiant gold "UTOPIA" rises from below
-      tl.to(
-        outroCharSpans,
-        {
-          y: "0%",
-          duration: 0.75,
-          stagger: 0.04,
-        },
-        2.1,
-      );
+      // "1" shifts to the left, "3" shifts to the right (like N and 10 in the video)
+      const sepDistance = isMobile ? "3.5rem" : "8.5rem";
 
-      // "13" and gold "UTOPIA" glide horizontally into intermediate position
-      if (introFirstChar) {
+      if (pNum1) {
         tl.to(
-          introFirstChar,
+          pNum1,
           {
-            x: isMobile ? "4rem" : "9.5rem",
+            x: `-${sepDistance}`,
             duration: 0.8,
           },
-          2.8,
+          1.9,
         );
       }
 
-      if (outroChars.length) {
+      if (pNum3) {
         tl.to(
-          outroChars,
+          pNum3,
           {
-            x: isMobile ? "-1.5rem" : "-3.5rem",
+            x: sepDistance,
             duration: 0.8,
           },
-          2.8,
+          1.9,
         );
       }
 
-      // Lockup settles into definitive brand lockup & arms the 50/50 clip path
-      if (introFirstChar) {
+      // --- Beat 3: Both "1" and "3" glide inward and come together into "13" ---
+      if (pNum1) {
         tl.to(
-          introFirstChar,
+          pNum1,
           {
-            x: isMobile ? "3.2rem" : "7.5rem",
-            y: isMobile ? "-0.4rem" : "-1.2rem",
-            fontWeight: "900",
-            scale: 0.82,
-            duration: 0.65,
+            x: "0rem",
+            duration: 0.75,
           },
-          3.4,
+          2.75,
         );
       }
 
-      if (outroChars.length) {
+      if (pNum3) {
         tl.to(
-          outroChars,
+          pNum3,
           {
-            x: isMobile ? "-1.5rem" : "-3.5rem",
-            duration: 0.65,
+            x: "0rem",
+            duration: 0.75,
+          },
+          2.75,
+        );
+      }
+
+      // --- Beat 4: "13" shifts left, and monumental "U" enters & scales into the frame ---
+      // "13" shifts left to make room for U
+      const numPair = [pNum1, pNum3].filter(Boolean) as HTMLElement[];
+      if (numPair.length) {
+        tl.to(
+          numPair,
+          {
+            x: finalNumX,
+            duration: 0.7,
+          },
+          3.45,
+        );
+      }
+
+      // "U" comes into frame and scales like 10 in the video
+      if (pMonumentalU) {
+        tl.fromTo(
+          pMonumentalU,
+          {
+            x: finalUX,
+            scale: 0.5,
+          },
+          {
+            x: finalUX,
+            scale: finalUScale,
+            duration: 0.75,
             onComplete: () => {
-              // Arm the 50/50 horizontal split
+              // Arm the 50/50 horizontal guillotine split
               gsap.set(preloader, {
                 clipPath: "polygon(0 0, 100% 0, 100% 50%, 0 50%)",
               });
@@ -206,17 +221,29 @@ export function HeroPreloader() {
               });
             },
           },
-          3.4,
+          3.45,
         );
       }
 
-      // Subtle center laser horizon line flashes
+      if (pGoldUSpan) {
+        tl.fromTo(
+          pGoldUSpan,
+          { y: "100%" },
+          {
+            y: "0%",
+            duration: 0.75,
+          },
+          3.45,
+        );
+      }
+
+      // --- Beat 5: Horizon laser line flashes across the 50% split axis ---
       if (splitLine) {
         tl.fromTo(
           splitLine,
           { scaleX: 0, opacity: 0 },
           { scaleX: 1, opacity: 0.85, duration: 0.35, ease: "power2.out" },
-          3.7,
+          4.15,
         );
       }
 
@@ -229,29 +256,29 @@ export function HeroPreloader() {
             duration: 0.45,
             stagger: 0.05,
           },
-          3.9,
+          4.3,
         );
       }
 
-      // THE SPLIT: Top gate flies UP (-50%), Bottom gate flies DOWN (+50%)
+      // --- Beat 6: THE REVEAL — Dual Guillotine split parts into the hero ---
       tl.to(
         preloader,
         {
           y: "-50%",
-          duration: 1.05,
+          duration: 1.15,
           ease: "hop",
         },
-        4.1,
+        4.55,
       );
 
       tl.to(
         splitOverlay,
         {
           y: "50%",
-          duration: 1.05,
+          duration: 1.15,
           ease: "hop",
         },
-        4.1,
+        4.55,
       );
 
       if (splitLine) {
@@ -262,14 +289,14 @@ export function HeroPreloader() {
             duration: 0.4,
             ease: "power2.out",
           },
-          4.1,
+          4.55,
         );
       }
 
-      // Complete & clean up
+      // --- Beat 7: Complete and unmount preloader ---
       tl.call(() => {
         setComplete(true);
-      }, undefined, 5.2);
+      }, undefined, 5.8);
     }, root);
 
     return () => ctx.revert();
@@ -277,41 +304,43 @@ export function HeroPreloader() {
 
   if (complete) return null;
 
-  const utopiaLetters = "UTOPIA".split("");
+  const utopiaChars = "UTOPIA".split("");
 
   const TitleMarkup = () => (
-    <>
-      <div className={styles.introTitle}>
-        <h1 className={styles.titleText}>
-          <span className={styles.firstChar}>
-            <span>13</span>
+    <div className={styles.stage}>
+      <div className={styles.titleContainer}>
+        {/* 1 and 3 Number Pair */}
+        <div className={styles.numLockup}>
+          <span className={`${styles.char} ${styles.num1}`}>
+            <span>1</span>
           </span>
-          <span className={styles.space}>&nbsp;</span>
-          {utopiaLetters.map((char, index) => (
-            <span key={index} className={styles.char}>
+          <span className={`${styles.char} ${styles.num3}`}>
+            <span>3</span>
+          </span>
+        </div>
+
+        {/* UTOPIA Word (Drops out) */}
+        <div className={styles.utopiaWord}>
+          {utopiaChars.map((char, index) => (
+            <span key={index} className={`${styles.char} ${styles.utopiaChar}`}>
               <span>{char}</span>
             </span>
           ))}
-        </h1>
-      </div>
+        </div>
 
-      <div className={styles.outroTitle}>
-        <h1 className={styles.titleText}>
-          <span className={styles.goldWord}>
-            {utopiaLetters.map((char, index) => (
-              <span key={index} className={styles.goldChar}>
-                <span>{char}</span>
-              </span>
-            ))}
+        {/* Monumental Gold U (Enters & Scales like 10) */}
+        <div className={styles.monumentalU}>
+          <span className={`${styles.char} ${styles.goldU}`}>
+            <span>U</span>
           </span>
-        </h1>
+        </div>
       </div>
-    </>
+    </div>
   );
 
   return (
     <div ref={rootRef} className={styles.root} aria-hidden="true">
-      {/* Laser horizon splitting guide */}
+      {/* Center Dividing Laser Axis */}
       <div className={styles.splitLine} />
 
       {/* Top Guillotine Curtain (z-index 2) */}
@@ -324,7 +353,7 @@ export function HeroPreloader() {
         <TitleMarkup />
       </div>
 
-      {/* Floating 13 UTOPIA Creed Corner Tags */}
+      {/* Floating 13 UTOPIA Corner Tags */}
       <div className={styles.tagsOverlay}>
         <div className={`${styles.tag} ${styles.tag1}`}>
           <p className={styles.tagWord}>
