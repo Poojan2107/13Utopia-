@@ -1,119 +1,94 @@
 "use client";
 
-import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { GoldSilkCurtain } from "./GoldSilkCurtain";
 import { TransparentBustVideo } from "./TransparentBustVideo";
 import { HeroEnter } from "@/components/motion/HeroEnter";
 import styles from "@/styles/home/HomeHero.module.css";
 
 /**
- * HomeHero — dual-flank build + Animmaster hero entrance DNA.
- * Gold silk + metallic bust + couture type stacks + floor rail.
- * @see https://animmasterlib.dev/ (Hero Animations)
+ * HomeHero — Monumental 3D Spatial Typography with Metallic Chrome/Gold gradients,
+ * dynamic mouse parallax, and spatial depth behind the bust sculpture.
  */
 export function HomeHero() {
+  const typeRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = typeRef.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let rafId: number;
+
+    const onMouseMove = (e: MouseEvent) => {
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      targetX = (e.clientX - cx) / cx;
+      targetY = (e.clientY - cy) / cy;
+    };
+
+    const animate = () => {
+      currentX += (targetX - currentX) * 0.06;
+      currentY += (targetY - currentY) * 0.06;
+
+      if (el) {
+        el.style.setProperty("--mx", `${currentX * 18}px`);
+        el.style.setProperty("--my", `${currentY * 12}px`);
+        el.style.setProperty("--rx", `${currentY * -3.5}deg`);
+        el.style.setProperty("--ry", `${currentX * 5}deg`);
+      }
+      rafId = requestAnimationFrame(animate);
+    };
+
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    rafId = requestAnimationFrame(animate);
+
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
   return (
     <section className={styles.hero} aria-label="13 UTOPIA">
       <HeroEnter>
-        <div className={styles.media} aria-hidden="true" data-hero-media>
+        {/* Layer 0: Atmospheric Gold Silk Curtain */}
+        <div className={styles.atmosphere} aria-hidden="true">
           <GoldSilkCurtain />
+        </div>
+
+        {/* Layer 1: Spatial Typography in Depth (Behind the Bust) */}
+        <div ref={typeRef} className={styles.stageTypography}>
+          <aside className={`${styles.left} ${styles.flank}`}>
+            <div className={styles.stack} data-hero-left>
+              <div className={`${styles.statement} ${styles.statementOutline}`}>
+                <span className={styles.be}>BE</span>
+                <h1 className={styles.unreal}>UNREAL</h1>
+              </div>
+            </div>
+          </aside>
+
+          <aside className={`${styles.right} ${styles.flank}`}>
+            <div className={`${styles.stack} ${styles.stackRight}`} data-hero-right>
+              <div className={`${styles.statement} ${styles.statementRight} ${styles.statementSolid}`}>
+                <span className={`${styles.be} ${styles.beRight}`}>BE</span>
+                <h2 className={styles.unreasonable}>UNREASONABLE</h2>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        {/* Layer 2: 3D Sculpture Bust (Passes in front of typography) */}
+        <div className={styles.media} aria-hidden="true" data-hero-media>
           <div className={styles.videoWrapper}>
             <TransparentBustVideo />
           </div>
         </div>
 
         <div className={styles.overlay} aria-hidden="true" />
-
-        <div className={styles.stage}>
-          <aside className={`${styles.left} ${styles.flank}`}>
-            <div className={styles.stack} data-hero-left>
-              <p className={styles.eyebrow}>
-                <span>CREATE</span>
-                <span className={styles.dot} aria-hidden="true">
-                  ·
-                </span>
-                <span>BUILD</span>
-                <span className={styles.dot} aria-hidden="true">
-                  ·
-                </span>
-                <span>GROW</span>
-              </p>
-
-              <span className={styles.rule} aria-hidden="true" data-hero-rule />
-
-              <div className={styles.statement}>
-                <span className={styles.be}>BE</span>
-                <h1 className={styles.unreal}>
-                  UNREAL<span className={styles.period}>.</span>
-                </h1>
-              </div>
-
-              <span className={styles.rule} aria-hidden="true" data-hero-rule />
-
-              <p className={styles.descriptor}>
-                We build brands, technology and growth systems
-                <br />
-                for businesses ready to move beyond the obvious.
-              </p>
-            </div>
-          </aside>
-
-          <aside className={`${styles.right} ${styles.flank}`}>
-            <div className={`${styles.stack} ${styles.stackRight}`} data-hero-right>
-              <p className={`${styles.eyebrow} ${styles.eyebrowRight}`}>MANIFESTO</p>
-
-              <span
-                className={`${styles.rule} ${styles.ruleRight}`}
-                aria-hidden="true"
-                data-hero-rule
-              />
-
-              <div className={`${styles.statement} ${styles.statementRight}`}>
-                <span className={`${styles.be} ${styles.beGold}`}>BE</span>
-                <p className={styles.unreasonable}>
-                  UNREASONABLE<span className={styles.periodGold}>.</span>
-                </p>
-              </div>
-
-              <span
-                className={`${styles.rule} ${styles.ruleRight}`}
-                aria-hidden="true"
-                data-hero-rule
-              />
-
-              <p className={`${styles.descriptor} ${styles.descriptorRight}`}>
-                Question what exists. Find what could work better.
-                <br />
-                Then build it.
-              </p>
-            </div>
-          </aside>
-
-          <div className={styles.floor} data-hero-floor>
-            <p className={styles.brandWhisper}>13 UTOPIA</p>
-
-            <a
-              href="#main-after-hero"
-              className={styles.scrollCue}
-              aria-label="Scroll to explore"
-            >
-              <span className={styles.scrollLine} aria-hidden="true" />
-            </a>
-
-            <div className={styles.floorActions}>
-              <Link
-                href="/connect/start-a-project"
-                className={styles.floorCta}
-                data-magnetic
-              >
-                Start a Project <span aria-hidden="true">→</span>
-              </Link>
-              <Link href="/work" className={styles.floorCtaSecondary} data-magnetic>
-                Explore Work
-              </Link>
-            </div>
-          </div>
-        </div>
       </HeroEnter>
     </section>
   );

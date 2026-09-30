@@ -1,48 +1,19 @@
 "use client";
 
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState, useCallback } from "react";
-import gsap from "gsap";
-import { CustomEase } from "gsap/CustomEase";
-import { primaryCta, primaryNav } from "@/content/navigation";
 import { BrandLogo } from "@/components/ui/BrandLogo";
-import { UtopianBreak } from "@/components/ui/UtopianBreak";
 import styles from "@/styles/layout/SiteHeader.module.css";
 
-gsap.registerPlugin(CustomEase);
-
-try {
-  if (!CustomEase.get("jump")) {
-    CustomEase.create("jump", "0.85, 0, 0.15, 1");
-  }
-} catch {
-  // fallback handled gracefully
-}
-
-const navMeta: Record<string, string> = {
-  "/capabilities": "Brand · Systems · Growth",
-  "/solutions": "Launch · Scale · Automate",
-  "/work": "Selected Proof & Case Stories",
-  "/perspective": "Essays & Strategic Worldview",
-  "/our-story": "The Anti-Generic Studio DNA",
-  "/collective": "Leadership & Global Advisory",
-};
-
 /**
- * SiteHeader — 13 UTOPIA Signature "1 & 3" Kinetic Navigation Engine
- * - Left: Single Solid Monolith ("1")
- * - Right: 3-Tier Staggered Cascade Shutters ("3": Create · Build · Grow)
- * - Converging Parallax Didone "1" + "3" Watermark Monogram
+ * SiteHeader — 13 UTOPIA Signature Navigation & Minimal Stealth Transmission
  */
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
-  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
-  const menuRef = useRef<HTMLDivElement | null>(null);
-  const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   const closeMenu = useCallback(() => {
     setOpen(false);
@@ -76,155 +47,6 @@ export function SiteHeader() {
     };
   }, [open]);
 
-  // Build the signature "1 and 3" master timeline
-  useEffect(() => {
-    const root = menuRef.current;
-    if (!root) return;
-
-    const leftMonolith = root.querySelector<HTMLElement>("[data-menu-monolith-1]");
-    const rightBands = Array.from(
-      root.querySelectorAll<HTMLElement>("[data-menu-band-3]"),
-    );
-    const markOne = root.querySelector<HTMLElement>("[data-watermark-1]");
-    const markThree = root.querySelector<HTMLElement>("[data-watermark-3]");
-    const lines = Array.from(root.querySelectorAll<HTMLElement>("[data-menu-line]"));
-    const secondaryItems = Array.from(
-      root.querySelectorAll<HTMLElement>("[data-menu-sec]"),
-    );
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      if (leftMonolith) gsap.set(leftMonolith, { rotate: 0, scale: 1 });
-      gsap.set(rightBands, { rotate: 0, scale: 1 });
-      if (markOne && markThree) gsap.set([markOne, markThree], { x: 0, opacity: 0.06 });
-      gsap.set([...lines, ...secondaryItems], { yPercent: 0, opacity: 1 });
-      return;
-    }
-
-    // Initial kinetic states
-    if (leftMonolith) gsap.set(leftMonolith, { rotate: 180, scale: 2 });
-    gsap.set(rightBands, { rotate: -180, scale: 2 });
-    if (markOne) gsap.set(markOne, { x: -140, opacity: 0 });
-    if (markThree) gsap.set(markThree, { x: 140, opacity: 0 });
-    gsap.set(lines, { yPercent: 120, opacity: 0 });
-    gsap.set(secondaryItems, { yPercent: 30, opacity: 0 });
-
-    const easeFunc = CustomEase.get("jump") ? "jump" : "power4.inOut";
-
-    const tl = gsap.timeline({ paused: true });
-
-    // Phase 1: The "1" Monolith Unrolls from Left (pivoted on inner seam)
-    if (leftMonolith) {
-      tl.to(
-        leftMonolith,
-        {
-          rotate: 0,
-          duration: 0.95,
-          ease: easeFunc,
-        },
-        0,
-      );
-    }
-
-    // Phase 2: The "3" Cascading Bands Unroll from Right (staggered 0.05s)
-    if (rightBands.length > 0) {
-      tl.to(
-        rightBands,
-        {
-          rotate: 0,
-          duration: 0.92,
-          stagger: 0.05,
-          ease: easeFunc,
-        },
-        0.04,
-      );
-    }
-
-    // Phase 3: Converging "1" + "3" Didone Monogram Watermarks glide into center
-    if (markOne && markThree) {
-      tl.to(
-        markOne,
-        {
-          x: 0,
-          opacity: 0.06,
-          duration: 0.9,
-          ease: "power3.out",
-        },
-        0.1,
-      ).to(
-        markThree,
-        {
-          x: 0,
-          opacity: 0.06,
-          duration: 0.9,
-          ease: "power3.out",
-        },
-        0.14,
-      );
-    }
-
-    // Phase 4: Cascading primary navigation lines
-    if (lines.length > 0) {
-      tl.to(
-        lines,
-        {
-          yPercent: 0,
-          opacity: 1,
-          duration: 0.65,
-          stagger: 0.035,
-          ease: "power3.out",
-        },
-        0.4,
-      );
-    }
-
-    // Phase 5: Secondary right-column blocks reveal
-    if (secondaryItems.length > 0) {
-      tl.to(
-        secondaryItems,
-        {
-          yPercent: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.05,
-          ease: "power3.out",
-        },
-        0.48,
-      );
-    }
-
-    tlRef.current = tl;
-    return () => {
-      tl.kill();
-      tlRef.current = null;
-    };
-  }, []);
-
-  // Handle open / close animation trigger
-  useEffect(() => {
-    const tl = tlRef.current;
-    const root = menuRef.current;
-    if (!root) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      root.classList.toggle(styles.menuActive, open);
-      return;
-    }
-
-    if (!tl) return;
-    if (open) {
-      root.classList.add(styles.menuActive);
-      tl.timeScale(1).play();
-    } else {
-      tl.timeScale(1.4).reverse();
-      const onRev = () => {
-        if (tl.progress() === 0) {
-          root.classList.remove(styles.menuActive);
-        }
-      };
-      tl.eventCallback("onReverseComplete", onRev);
-    }
-  }, [open]);
-
   // Handle Escape key to close menu
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -247,6 +69,31 @@ export function SiteHeader() {
       } ${open ? styles.menuOpen : ""} ${pathname === "/" ? styles.onHome : ""}`}
     >
       <div className={styles.inner}>
+        {/* Minimalist Top Control Hub — Single Bespoke "1 and 3" Easter Egg Trigger */}
+        <div className={styles.actions}>
+          <button
+            type="button"
+            className={`${styles.menuToggle} ${open ? styles.menuToggleActive : ""}`}
+            aria-expanded={open}
+            aria-controls="awwwards-primary-menu"
+            aria-label={open ? "Close navigation menu" : "Open navigation menu (13 UTOPIA)"}
+            onClick={() => setOpen((v) => !v)}
+            data-magnetic
+          >
+            <div className={`${styles.easterEggIcon} ${open ? styles.easterEggOpen : ""}`} aria-hidden="true">
+              {/* The "1" Vertical Monolith Line */}
+              <span className={styles.lineOne} />
+
+              {/* The "3" Horizontal Hamburger Lines */}
+              <span className={styles.linesThree}>
+                <span className={styles.barTop} />
+                <span className={styles.barMid} />
+                <span className={styles.barBot} />
+              </span>
+            </div>
+          </button>
+        </div>
+
         {/* Brand Mark */}
         <Link
           href="/"
@@ -256,224 +103,28 @@ export function SiteHeader() {
         >
           <BrandLogo variant="official" priority />
         </Link>
-
-        {/* Minimalist Top Control Hub */}
-        <div className={styles.actions}>
-          {!open && (
-            <Link href={primaryCta.href} className={styles.cta} data-magnetic>
-              <span className={styles.ctaLabel}>{primaryCta.label}</span>
-              <span className={styles.ctaArrow} aria-hidden="true">
-                →
-              </span>
-            </Link>
-          )}
-
-          {/* Luxury "13" Primary Menu Trigger */}
-          <button
-            type="button"
-            className={`${styles.menuToggle} ${open ? styles.menuToggleActive : ""}`}
-            aria-expanded={open}
-            aria-controls="awwwards-primary-menu"
-            aria-label={open ? "Close navigation menu" : "Open navigation menu"}
-            onClick={() => setOpen((v) => !v)}
-            data-magnetic
-          >
-            <span className={styles.menuBrandPrefix}>13 ·</span>
-            <span className={styles.menuToggleLabel}>
-              {open ? "CLOSE" : "MENU"}
-            </span>
-            <span
-              className={`${styles.menuBars} ${open ? styles.menuBarsOpen : ""}`}
-              aria-hidden="true"
-            >
-              <span />
-              <span />
-              <span />
-            </span>
-          </button>
-        </div>
       </div>
 
-      {/* Full-Screen Master "1 & 3" Dual-Shutter Overlay */}
+      {/* Full-Screen Pure Minimal Overlay */}
       <div
-        ref={menuRef}
         id="awwwards-primary-menu"
-        className={styles.menu}
+        className={`${styles.menu} ${open ? styles.menuActive : ""}`}
         aria-hidden={!open}
       >
-        {/* Background "1" Monolith + "3" Cascade Shutters */}
-        <div className={styles.menuBg} aria-hidden="true">
-          {/* Left: The "1" Monolith */}
-          <div className={styles.menuSideLeft}>
-            <div className={styles.menuMonolithOne} data-menu-monolith-1>
-              <span className={styles.watermarkOne} data-watermark-1>
-                1
-              </span>
-            </div>
-          </div>
-
-          {/* Right: The "3" Cascading Practice Bands */}
-          <div className={styles.menuSideRight}>
-            <div className={styles.menuBandsContainer}>
-              {/* Band 1: CREATE */}
-              <div
-                className={`${styles.menuBand} ${styles.menuBandCreate}`}
-                data-menu-band-3
-              />
-              {/* Band 2: BUILD */}
-              <div
-                className={`${styles.menuBand} ${styles.menuBandBuild}`}
-                data-menu-band-3
-              />
-              {/* Band 3: GROW */}
-              <div
-                className={`${styles.menuBand} ${styles.menuBandGrow}`}
-                data-menu-band-3
-              />
-              {/* Converging "3" Monogram */}
-              <span className={styles.watermarkThree} data-watermark-3>
-                3
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Symmetrical 2-Column Luxury Interface */}
         <div className={styles.menuContent}>
-          <div className={styles.menuGrid}>
-            {/* Left Column: "01 · THE PRACTICE INDEX" */}
-            <div className={styles.menuColPrimary}>
-              <div className={styles.colHeader} data-menu-line>
-                <UtopianBreak size="sm" className={styles.colBreak} />
-                <span>01 · THE PRACTICE INDEX</span>
-              </div>
+          <div className={styles.anonymousContainer} data-menu-body>
+            <div className={styles.transmissionBody}>
+              <h2 className={styles.transHeadline}>
+                SOMETHING UNREAL &amp;<br />
+                <span className={styles.transHeadlineGold}>UNREASONABLE</span><br />
+                IS BEING CRAFTED IN SILENCE.
+              </h2>
 
-              <nav aria-label="Primary navigation menu">
-                <ul className={styles.navList}>
-                  {primaryNav.map((item, i) => {
-                    const active =
-                      pathname === item.href ||
-                      (item.href !== "/" && pathname.startsWith(`${item.href}/`));
-
-                    return (
-                      <li key={item.href} className={styles.navItem}>
-                        <div className={styles.lineMask}>
-                          <Link
-                            href={item.href}
-                            className={`${styles.navLinkBig} ${
-                              active ? styles.navLinkBigActive : ""
-                            }`}
-                            onClick={closeMenu}
-                            onMouseEnter={() => setHoveredLink(item.href)}
-                            onMouseLeave={() => setHoveredLink(null)}
-                            tabIndex={open ? 0 : -1}
-                            data-menu-line
-                          >
-                            <span className={styles.navNum}>
-                              {String(i + 1).padStart(2, "0")}
-                            </span>
-                            <span className={styles.navLabel}>{item.label}</span>
-                            <span className={styles.navMetaText}>
-                              {navMeta[item.href]}
-                            </span>
-                            <span className={styles.navArrow} aria-hidden="true">
-                              ↗
-                            </span>
-                          </Link>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </nav>
-            </div>
-
-            {/* Right Column: "03 · WORLDS & DIRECT INTAKE" */}
-            <div className={styles.menuColSecondary}>
-              {/* The 13 Brand Equation formula badge */}
-              <div className={styles.formulaBadge} data-menu-sec>
-                <span className={styles.formulaPart}>1 UNIFIED STUDIO</span>
-                <span className={styles.formulaCross}>×</span>
-                <span className={styles.formulaPart}>3 WORLDS (CREATE · BUILD · GROW)</span>
-                <span className={styles.formulaEquals}>=</span>
-                <span className={styles.formulaResult}>13 UTOPIA</span>
-              </div>
-
-              {/* Worldview Creed */}
-              <div className={styles.worldviewCard} data-menu-sec>
-                <div className={styles.cardHeader}>
-                  <UtopianBreak size="sm" className={styles.colBreak} />
-                  <span>03 · WORLDVIEW & IMPACT</span>
-                </div>
-                <h3 className={styles.creedEquation}>
-                  POSSIBILITY × AMBITION
-                  <br />
-                  × EXECUTION
-                  <span className={styles.goldHighlight}> = IMPACT.</span>
-                </h3>
-                <p className={styles.creedBody}>
-                  The obvious answer is rarely the only answer. We question
-                  inherited assumptions and build high-performance digital engines.
-                </p>
-              </div>
-
-              {/* Direct Project Brief Action */}
-              <div className={styles.briefCard} data-menu-sec>
-                <Link
-                  href={primaryCta.href}
-                  className={styles.ctaCardLink}
-                  onClick={closeMenu}
-                  tabIndex={open ? 0 : -1}
-                  data-magnetic
-                >
-                  <div className={styles.ctaCardHeader}>
-                    <span className={styles.ctaCardKicker}>Direct Intake Brief</span>
-                    <span className={styles.ctaCardBadge}>Active Roster</span>
-                  </div>
-                  <div className={styles.ctaCardRow}>
-                    <h4 className={styles.ctaCardTitle}>Start a Project</h4>
-                    <span className={styles.ctaCardArrow} aria-hidden="true">
-                      →
-                    </span>
-                  </div>
-                </Link>
-              </div>
-
-              {/* Global Studio Coordinates */}
-              <div className={styles.coordinatesBlock} data-menu-sec>
-                <p className={styles.coordLabel}>Studio Coordinates</p>
-                <div className={styles.coordGrid}>
-                  <div className={styles.coordItem}>
-                    <span className={styles.coordDot} aria-hidden="true" />
-                    <p className={styles.coordText}>
-                      <strong>Toronto:</strong> Markham Corners, Scarborough
-                    </p>
-                  </div>
-                  <div className={styles.coordItem}>
-                    <span className={styles.coordDot} aria-hidden="true" />
-                    <p className={styles.coordText}>
-                      <strong>Ahmedabad:</strong> Iconic Shyamal, 132ft Ring Rd
-                    </p>
-                  </div>
-                </div>
-                <div className={styles.coordDirect}>
-                  <a
-                    href="mailto:info@13utopia.com"
-                    className={styles.coordEmail}
-                    tabIndex={open ? 0 : -1}
-                  >
-                    info@13utopia.com
-                  </a>
-                  <span className={styles.coordDivider}>·</span>
-                  <a
-                    href="tel:+919924131397"
-                    className={styles.coordPhone}
-                    tabIndex={open ? 0 : -1}
-                  >
-                    +91 9924131397
-                  </a>
-                </div>
-              </div>
+              <p className={styles.transManifesto}>
+                The default was never an option. We question inherited assumptions,
+                strip away generic noise, and engineer what comes next in the dark.
+                You are not looking at an agency. You are standing inside an anomaly.
+              </p>
             </div>
           </div>
         </div>

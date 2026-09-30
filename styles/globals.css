@@ -1,5 +1,61 @@
 @import "./tokens.css";
 
+/* =========================================================
+   PP Neue Montreal — Global Primary Typography (Local Webfonts)
+   ========================================================= */
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: local("PP Neue Montreal Bold"),
+       local("PPNeueMontreal-Bold"),
+       url("/fonts/neue-montreal/ppneuemontreal-bold.woff") format("woff"),
+       url("https://fonts.cdnfonts.com/s/100431/ppneuemontreal-bold.woff") format("woff");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: local("PP Neue Montreal Medium"),
+       local("PPNeueMontreal-Medium"),
+       url("/fonts/neue-montreal/ppneuemontreal-medium.woff") format("woff"),
+       url("https://fonts.cdnfonts.com/s/100431/ppneuemontreal-medium.woff") format("woff");
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: local("PP Neue Montreal Regular"),
+       local("PP Neue Montreal Book"),
+       local("PPNeueMontreal-Regular"),
+       url("/fonts/neue-montreal/ppneuemontreal-book.woff") format("woff"),
+       url("https://fonts.cdnfonts.com/s/100431/ppneuemontreal-book.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Neue Montreal";
+  src: local("PP Neue Montreal Bold"),
+       local("PPNeueMontreal-Bold"),
+       url("/fonts/neue-montreal/ppneuemontreal-bold.woff") format("woff");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Neue Montreal";
+  src: local("PP Neue Montreal Book"),
+       url("/fonts/neue-montreal/ppneuemontreal-book.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 *,
 *::before,
 *::after {
@@ -8,31 +64,35 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  height: 100%;
+  height: 100dvh;
 }
 
-/* Lenis owns the wheel — kill native smooth to avoid fighting */
-html.has-smooth-scroll {
-  scroll-behavior: auto;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 body {
   margin: 0;
-  min-height: 100vh;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  position: fixed;
+  inset: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   background: var(--color-bg);
   color: var(--color-fg);
   font-family: var(--font-body);

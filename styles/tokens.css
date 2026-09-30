@@ -27,36 +27,36 @@
   --color-border: color-mix(in srgb, var(--color-warm-white) 12%, transparent);
   --color-surface: var(--color-neutral-900);
 
-  /* Display = Didone (Bodoni Moda). Brand = logo-soft rounded (mark moments). UI = grotesk. */
-  --font-didone-stack: var(--font-didone), "Didot", "Bodoni MT", Georgia, serif;
-  --font-brand-stack: var(--font-brand-face), "Nunito", system-ui, sans-serif;
+  /* Typography System — Official: PP Neue Montreal */
+  --font-neue-montreal: "PP Neue Montreal", "Neue Montreal", var(--font-sans), system-ui, -apple-system, sans-serif;
+  --font-brand-stack: var(--font-neue-montreal);
   --font-brand: var(--font-brand-stack);
-  --font-display: var(--font-didone-stack);
-  --font-serif: var(--font-display);
-  --font-editorial: var(--font-display);
-  --font-cormorant: var(--font-display);
-  --font-type-c: var(--font-didone);
-  --font-display-face: var(--font-didone);
-  --font-body: var(--font-sans), system-ui, sans-serif;
-  --font-ui: var(--font-sans), system-ui, sans-serif;
+  --font-display: var(--font-neue-montreal);
+  --font-serif: var(--font-neue-montreal);
+  --font-editorial: var(--font-neue-montreal);
+  --font-cormorant: var(--font-neue-montreal);
+  --font-type-c: var(--font-neue-montreal);
+  --font-display-face: var(--font-neue-montreal);
+  --font-body: var(--font-neue-montreal);
+  --font-ui: var(--font-neue-montreal);
   --font-mono: var(--font-mono-face), ui-monospace, monospace;
 
-  --text-display: clamp(3rem, 7.5vw, 5.5rem);
-  --text-display-sm: clamp(2.1rem, 4.5vw, 3.4rem);
-  --text-h1: clamp(2.35rem, 5vw, 3.85rem);
-  --text-h2: clamp(1.75rem, 3.2vw, 2.6rem);
-  --text-h3: clamp(1.15rem, 1.8vw, 1.4rem);
+  --text-display: clamp(3.85rem, 8.5vw, 7.25rem);
+  --text-display-sm: clamp(2.5rem, 5.5vw, 4.4rem);
+  --text-h1: clamp(2.75rem, 6vw, 4.85rem);
+  --text-h2: clamp(2.05rem, 3.8vw, 3.25rem);
+  --text-h3: clamp(1.25rem, 2vw, 1.65rem);
   --text-body: 1.0625rem;
-  --text-body-lg: clamp(1.1rem, 1.4vw, 1.25rem);
+  --text-body-lg: clamp(1.15rem, 1.5vw, 1.35rem);
   --text-caption: 0.8125rem;
   --text-micro: 0.7rem;
 
-  --leading-tight: 1.02;
-  --leading-snug: 1.25;
+  --leading-tight: 0.94;
+  --leading-snug: 1.18;
   --leading-body: 1.65;
 
-  --tracking-display: -0.02em;
-  --tracking-label: 0.04em;
+  --tracking-display: -0.035em;
+  --tracking-label: 0.08em;
 
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;

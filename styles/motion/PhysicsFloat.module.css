@@ -1,7 +1,0 @@
-/* Physics-lite float — Animmaster physics DNA */
-
-.root {
-  display: inline-block;
-  will-change: transform;
-  transform-origin: center center;
-}

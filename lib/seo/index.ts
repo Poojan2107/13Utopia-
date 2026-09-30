@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import type { SeoFields } from "@/lib/content/types";
+
+export type SeoFields = {
+  title: string;
+  description: string;
+  ogImage?: string;
+};
 
 const SITE_NAME = "13 UTOPIA";
 
@@ -53,5 +58,5 @@ export function buildMetadata({
 export const defaultHomeSeo: SeoFields = {
   title: "13 UTOPIA — Brand, Technology & Growth",
   description:
-    "13 UTOPIA builds brands, products and growth systems — SEO, web, AI, marketing and dedicated teams for businesses ready to move beyond the obvious.",
+    "BE UNREAL. BE UNREASONABLE. 13 UTOPIA is creative technology and growth.",
 };

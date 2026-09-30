@@ -1,5 +1,0 @@
-.related {
-  background: #050505;
-  padding: clamp(3rem, 7vh, 5.5rem) clamp(1.25rem, 4vw, 3.25rem);
-  border-top: 1px solid color-mix(in srgb, var(--color-gold) 12%, transparent);
-}

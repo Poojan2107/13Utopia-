@@ -19,28 +19,35 @@ uniform sampler2D u_video;
 varying vec2 v_uv;
 
 void main() {
-  vec4 tex = texture2D(u_video, v_uv);
+  // Multi-tap soft sampling for anti-aliased smoothing
+  vec2 texel = vec2(0.00052, 0.00092);
+  vec4 c0 = texture2D(u_video, v_uv);
+  vec4 c1 = texture2D(u_video, v_uv + vec2(texel.x, 0.0));
+  vec4 c2 = texture2D(u_video, v_uv - vec2(texel.x, 0.0));
+  vec4 c3 = texture2D(u_video, v_uv + vec2(0.0, texel.y));
+  vec4 c4 = texture2D(u_video, v_uv - vec2(0.0, texel.y));
+  vec4 tex = c0 * 0.44 + (c1 + c2 + c3 + c4) * 0.14;
   
   // Calculate luminance
   float luma = dot(tex.rgb, vec3(0.299, 0.587, 0.114));
   
-  // Cutoff strictly outside the bust (background video noise is < 0.022)
-  if (luma <= 0.022) {
+  // Cutoff strictly outside the bust
+  if (luma <= 0.012) {
     discard;
   }
   
-  // Crisp antialiased boundary on the outer silhouette edge
-  float edge = smoothstep(0.022, 0.045, luma);
+  // Ultra-smooth antialiased silhouette boundary
+  float edge = smoothstep(0.012, 0.038, luma);
   
-  // Deep metallic gold grading: deep bronze shadow base in the grooves, radiant 24k highlights
-  vec3 goldDark = vec3(0.035, 0.022, 0.008);
-  vec3 goldMid  = vec3(0.88, 0.70, 0.33);
-  vec3 goldHi   = vec3(1.0, 0.94, 0.78);
+  // Luminous, radiant polished gold grading — lifted shadows for full torso & groove visibility
+  vec3 goldDark = vec3(0.22, 0.155, 0.065); // Rich warm bronze-gold shadow base (no crushed blacks)
+  vec3 goldMid  = vec3(0.92, 0.76, 0.38);   // Radiant 18k champagne gold midtones
+  vec3 goldHi   = vec3(1.0, 0.96, 0.82);   // Luminous 24k specular highlights
   
-  vec3 gold = mix(goldDark, goldMid, smoothstep(0.045, 0.58, luma));
-  gold = mix(gold, goldHi, pow(clamp(luma, 0.0, 1.0), 2.2));
+  float midProg = smoothstep(0.02, 0.50, luma);
+  vec3 gold = mix(goldDark, goldMid, midProg);
+  gold = mix(gold, goldHi, pow(clamp(luma, 0.0, 1.0), 1.85) * 0.95);
   
-  // 100% solid opacity across the bust interior (edge is 1.0 above 0.045)
   gl_FragColor = vec4(gold * edge, edge);
 }
 `;
