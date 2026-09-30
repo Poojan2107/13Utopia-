@@ -1,4 +1,4 @@
-import { HomeHero } from "@/components/home";
+import { HomeHero, HeroPreloader } from "@/components/home";
 import { SiteHeader } from "@/components/layout";
 import {
   AmbientField,
@@ -9,6 +9,7 @@ import {
 export default function HomePage() {
   return (
     <SmoothScrollProvider>
+      <HeroPreloader />
       <AmbientField />
       <MagneticCursor />
       <div className="marketing-shell">

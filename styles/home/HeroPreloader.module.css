@@ -1,0 +1,219 @@
+/* =========================================================
+   HeroPreloader — Awwwards 010 Dual-Split Guillotine Iris
+   Tailored specifically for 13 UTOPIA
+   ========================================================= */
+
+.root {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  z-index: 9999;
+  pointer-events: auto;
+  overflow: hidden;
+  user-select: none;
+  background: transparent;
+}
+
+.preloader,
+.splitOverlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: #050505;
+  color: #ffffff;
+  overflow: hidden;
+  will-change: transform, clip-path;
+}
+
+.preloader {
+  z-index: 2;
+}
+
+.splitOverlay {
+  z-index: 1;
+}
+
+.tagsOverlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Titles Positioning */
+.introTitle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  pointer-events: none;
+}
+
+.outroTitle {
+  position: absolute;
+  top: 50%;
+  left: calc(50% + clamp(2.5rem, 6vw, 6.5rem));
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.titleText {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-neue-montreal), -apple-system, sans-serif;
+  font-size: clamp(3.2rem, 8vw, 8.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Characters and Words */
+.firstChar,
+.char,
+.goldChar {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: baseline;
+  margin-top: 0.5rem;
+}
+
+.firstChar {
+  transform-origin: top left;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.firstChar span,
+.char span,
+.goldChar span {
+  position: relative;
+  display: inline-block;
+  transform: translateY(-100%);
+  will-change: transform;
+}
+
+.space {
+  display: inline-block;
+  width: clamp(0.6rem, 1.4vw, 1.8rem);
+}
+
+/* Radiant Gold Styling for Outro UTOPIA */
+.goldWord .goldChar span {
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #fff8e7 18%,
+    #e8c87e 45%,
+    #fef3d6 72%,
+    #dfb76c 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 35px rgba(232, 200, 126, 0.4));
+}
+
+/* Corner Tags Overlay */
+.tag {
+  position: absolute;
+  overflow: hidden;
+  width: max-content;
+  color: rgba(232, 224, 210, 0.65);
+  font-family: var(--font-neue-montreal), -apple-system, sans-serif;
+  font-size: clamp(0.7rem, 0.95vw, 0.825rem);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.tagWord {
+  display: inline-block;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.tagWord span {
+  display: inline-block;
+  transform: translateY(-100%);
+  will-change: transform;
+}
+
+.tag1 {
+  top: clamp(2rem, 4.5vw, 4rem);
+  left: clamp(1.75rem, 5vw, 5rem);
+}
+
+.tag2 {
+  bottom: clamp(2rem, 4.5vw, 4rem);
+  left: clamp(1.75rem, 5vw, 5rem);
+}
+
+.tag3 {
+  bottom: clamp(2rem, 4.5vw, 4rem);
+  right: clamp(1.75rem, 5vw, 5rem);
+}
+
+.tagSpace {
+  display: inline-block;
+  width: 0.35rem;
+}
+
+/* Center Dividing Horizon Line */
+.splitLine {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(232, 197, 106, 0.5) 25%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(232, 197, 106, 0.5) 75%,
+    transparent 100%
+  );
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: center center;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .titleText {
+    font-size: clamp(2.4rem, 9vw, 4.2rem);
+  }
+
+  .outroTitle {
+    left: calc(50% + clamp(1.5rem, 4vw, 3rem));
+  }
+
+  .tag1 {
+    top: 1.5rem;
+    left: 1.5rem;
+  }
+
+  .tag2 {
+    bottom: 1.5rem;
+    left: 1.5rem;
+  }
+
+  .tag3 {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+}
