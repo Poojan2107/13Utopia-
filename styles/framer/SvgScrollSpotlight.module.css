@@ -1,5 +1,6 @@
 /* =========================================================
-   13 UTOPIA // PENSATORI IRRAZIONALI SVG SCROLL ANIMATION
+   13 UTOPIA // PENSATORI IRRAZIONALI 3-ACT SVG SCROLL METAMORPHOSIS
+   (CREATE -> BUILD -> GROW via Monolith Bridge)
    ========================================================= */
 
 .scrollWrapper {
@@ -67,6 +68,7 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #222222;
+  transition: color 0.3s ease;
 }
 
 .topBarRight {
@@ -90,6 +92,29 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+
+.stageLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: opacity, transform;
+}
+
+.stageCreate {
+  opacity: 1;
+}
+
+.stageBuild {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.stageGrow {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .spotlightHeader {
@@ -118,7 +143,10 @@
   object-fit: contain;
 }
 
-.letterIGroup {
+/* ── Monolith Groups ── */
+.createStemGroup,
+.buildIGroup,
+.growRGroup {
   transform-origin: center center;
   will-change: transform;
 }
