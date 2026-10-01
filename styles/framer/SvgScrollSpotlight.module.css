@@ -1,17 +1,17 @@
 /* =========================================================
-   13 UTOPIA // 069 SVG SCROLL ANIMATION (BUILD SPOTLIGHT)
+   13 UTOPIA // PENSATORI IRRAZIONALI SVG SCROLL ANIMATION
    ========================================================= */
 
 .scrollWrapper {
   position: relative;
   width: 100%;
-  height: 220vh;
+  height: 260vh;
   background-color: #f4f3ee;
   color: #0a0a0a;
   box-sizing: border-box;
 }
 
-.stickyStage {
+.stickyContainer {
   position: sticky;
   top: 0;
   width: 100%;
@@ -20,27 +20,33 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: center;
   background-color: #f4f3ee;
   box-sizing: border-box;
 }
 
-/* ── Section eyebrow strip ── */
-.eyebrow {
+/* ── Pensatori Irrazionali Top Bar ── */
+.topBar {
   position: relative;
   z-index: 50;
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 0.55rem;
-  padding: 1.25rem clamp(1.75rem, 5.5vw, 6.5rem);
-  border-bottom: 1px solid rgba(10, 10, 10, 0.08);
-  background: rgba(244, 243, 238, 0.96);
-  backdrop-filter: blur(12px);
+  justify-content: space-between;
+  padding: 1.35rem clamp(1.75rem, 5.5vw, 6.5rem);
+  border-bottom: 1px solid rgba(10, 10, 10, 0.1);
+  background: #f4f3ee;
   box-sizing: border-box;
 }
 
-.eyebrowNum {
+.topBarLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.topBarNum {
   font-family: var(--font-mono, monospace);
   font-size: 0.68rem;
   font-weight: 600;
@@ -49,47 +55,69 @@
   color: #0a0a0a;
 }
 
-.eyebrowSep {
+.topBarSep {
   font-family: var(--font-mono, monospace);
   font-size: 0.68rem;
   color: rgba(10, 10, 10, 0.3);
 }
 
-.eyebrowLabel {
+.topBarTitle {
   font-family: var(--font-mono, monospace);
   font-size: 0.68rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #333333;
-  flex: 1;
+  color: #222222;
 }
 
-/* ── Stacked Spotlight Headers ── */
-.spotlightHeader {
-  position: absolute;
-  top: 0;
-  left: 0;
+.topBarRight {
+  display: flex;
+  align-items: center;
+}
+
+.topBarYear {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: #555555;
+}
+
+/* ── Centered Spotlight Stage ── */
+.spotlight {
+  position: relative;
   width: 100%;
-  height: 100%;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(2rem, 5vw, 4.5rem);
+  overflow: hidden;
+}
+
+.spotlightHeader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 1540px;
+  padding: clamp(1rem, 3.5vw, 2.5rem);
+  background-color: #f4f3ee;
   transform-origin: bottom center;
   will-change: transform;
-  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
 }
 
-.svgElement {
+.spotlightHeader svg {
   width: 100%;
   height: auto;
-  max-height: 80vh;
-  object-fit: contain;
+  max-height: 52vh;
+  display: block;
   overflow: visible;
+  object-fit: contain;
 }
 
-/* Pivoting Letter I */
 .letterIGroup {
   transform-origin: center center;
   will-change: transform;
@@ -110,7 +138,7 @@
 
 @media (max-width: 768px) {
   .spotlightHeader {
-    padding: 1.25rem;
+    padding: 1rem;
   }
 
   .iLinkText {

@@ -684,8 +684,8 @@ export default function ThreeCanvas({
         const ww = window.innerWidth;
         const wh = window.innerHeight;
         const isDesktop = ww > 650;
-        const hPx = Math.min(wh * 0.435, isDesktop ? 540 : 380);
-        const gapPx = isDesktop ? 100 : 32;
+        const hPx = Math.min(wh * 0.58, isDesktop ? 660 : 420);
+        const gapPx = isDesktop ? 120 : 40;
 
         let leftAccumulator = 0;
         const metrics: CardMetric[] = [];
