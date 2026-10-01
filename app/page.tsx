@@ -1,5 +1,5 @@
 import { HomeHero, HeroPreloader, HomeSectionWork } from "@/components/home";
-import { Continuous3DStory } from "@/components/plus-ex";
+import { Continuous3DStory, Master3DEmblemCanvas } from "@/components/plus-ex";
 import { SiteHeader } from "@/components/layout";
 import {
   AmbientField,
@@ -14,6 +14,9 @@ export default function HomePage() {
       <AmbientField />
       <MagneticCursor />
 
+      {/* Master Persistent 3D "13" Architectural Emblem Canvas */}
+      <Master3DEmblemCanvas />
+
       {/* Site Header */}
       <SiteHeader />
 
@@ -23,10 +26,10 @@ export default function HomePage() {
         style={{
           position: "relative",
           zIndex: 2,
-          backgroundColor: "#000000",
+          backgroundColor: "transparent",
         }}
       >
-        {/* 01 — HERO: locked silk + bust dual-flank (fixed plane - DARK) */}
+        {/* 01 — HERO: 3D model + layered typography (DARK) */}
         <HomeHero />
         {/* Flow spacer — hero is position:fixed */}
         <div
@@ -34,7 +37,7 @@ export default function HomePage() {
           style={{ height: "100dvh", width: "100%", pointerEvents: "none" }}
         />
 
-        {/* 02 — THE WORK: 3D Jesper Landberg carousel */}
+        {/* 02 — THE WORK: 3D Jesper Landberg carousel (LIGHT / CREAMY BEIGE with onyx model) */}
         <HomeSectionWork />
 
         {/* 03 — CONTINUOUS 3D MONOLITH STORY (Manifesto → Capabilities Triad → Impact Benchmarks → Initiation Finale) */}

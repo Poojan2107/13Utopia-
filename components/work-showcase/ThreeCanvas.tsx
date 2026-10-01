@@ -521,7 +521,7 @@ export default function ThreeCanvas({
     try {
       // 1. Scene & Camera
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0xf4eae0);
+      scene.background = null;
 
       const fov = 75;
       const camera = new THREE.PerspectiveCamera(
@@ -536,12 +536,12 @@ export default function ThreeCanvas({
       const isMobile = window.innerWidth <= 650;
       renderer = new THREE.WebGLRenderer({
         antialias: true,
-        alpha: false,
+        alpha: true,
         powerPreference: "high-performance",
         stencil: false,
         depth: true,
       });
-      renderer.setClearColor(0xf4eae0, 1.0);
+      renderer.setClearColor(0x000000, 0.0);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.25 : 1.75));
       renderer.setSize(window.innerWidth, window.innerHeight);
       containerRef.current.appendChild(renderer.domElement);

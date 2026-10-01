@@ -90,6 +90,31 @@ export function HomeHero() {
           <h1 className={styles.srOnly}>BE UNREAL. BE UNREASONABLE.</h1>
           <aside className={`${styles.left} ${styles.flank}`} aria-hidden="true">
             <div className={styles.stack} data-hero-left>
+              {/* Tagline Eyebrow */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  fontFamily: "var(--font-mono, monospace)",
+                  fontSize: "clamp(10px, 0.9vw, 12px)",
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: "#f4dfc8",
+                }}
+              >
+                <span
+                  style={{
+                    width: "6px",
+                    height: "6px",
+                    borderRadius: "50%",
+                    backgroundColor: "#f4dfc8",
+                    boxShadow: "0 0 8px #f4dfc8",
+                  }}
+                />
+                <span>13 UTOPIA // ANOMALOUS ARCHITECTURE</span>
+              </div>
+
               <div className={`${styles.lockup} ${styles.statementGold}`}>
                 <div className={styles.beCol}>
                   <span className={styles.beHuge}>BE</span>
@@ -99,6 +124,22 @@ export function HomeHero() {
                   <span className={styles.wordUnreasonable}>UNREASONABLE</span>
                 </div>
               </div>
+
+              {/* Layered Sub-Tagline */}
+              <p
+                style={{
+                  fontFamily: "var(--font-display, 'PP Neue Montreal', sans-serif)",
+                  fontSize: "clamp(13px, 1.1vw, 16px)",
+                  fontWeight: 300,
+                  letterSpacing: "0.04em",
+                  color: "rgba(250, 246, 240, 0.7)",
+                  margin: 0,
+                  maxWidth: "440px",
+                  lineHeight: 1.5,
+                }}
+              >
+                Forging category-defining 3D worlds, bespoke identity systems, and zero-latency digital reality.
+              </p>
             </div>
           </aside>
         </div>

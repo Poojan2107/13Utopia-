@@ -23,7 +23,7 @@
    max-height: 100dvh;
    margin: 0;
    overflow: hidden;
-   background: #000;
+   background: transparent;
    color: var(--ink);
    box-sizing: border-box;
  }
@@ -46,7 +46,7 @@
    z-index: 1;
    pointer-events: none;
    overflow: hidden;
-   background: #000;
+   background: transparent;
  }
  
  /* Bust sits under type, above silk — soft left fade kills hard canvas seam */

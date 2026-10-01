@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Plus3DCanvas } from "./Plus3DCanvas";
 import styles from "@/styles/plus-ex/Continuous3DStory.module.css";
 import Link from "next/link";
 
@@ -98,15 +97,6 @@ export function Continuous3DStory() {
         {/* Background Gradients & Architectural Grid */}
         <div className={styles.ambientGlow} />
         <div className={styles.architecturalGrid} />
-
-        {/* 3D 13 Emblem Canvas */}
-        <div className={styles.canvasContainer}>
-          <Plus3DCanvas
-            progress={scrollProgress}
-            actIndex={activeAct}
-            theme="transparent"
-          />
-        </div>
 
         {/* Dynamic Multi-Act Narrative Overlays */}
         <div className={styles.actsWrapper}>
