@@ -109,6 +109,8 @@ export function SvgScrollSpotlight() {
         };
       };
 
+      const dims = getDimensions();
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
