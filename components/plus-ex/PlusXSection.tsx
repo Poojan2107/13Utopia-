@@ -33,9 +33,9 @@ export function PlusXSection() {
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: `+=${WORDS.length * 90}vh`,
+        end: `+=${WORDS.length * 95}vh`,
         pin: true,
-        scrub: 0.55,
+        scrub: 0.5,
         anticipatePin: 1,
         onUpdate: (self) => {
           const p = self.progress;
@@ -46,9 +46,9 @@ export function PlusXSection() {
           const currentIdx = Math.min(totalSteps, Math.max(0, Math.round(exactIdx)));
           setActiveIdx(currentIdx);
 
-          // Kinetic vertical typography scrub
+          // Precision kinetic typography vertical glide
           const firstItem = track.children[0] as HTMLElement | undefined;
-          const itemHeight = firstItem ? firstItem.offsetHeight : 120;
+          const itemHeight = firstItem ? firstItem.offsetHeight : 130;
           const targetY = -exactIdx * itemHeight;
 
           gsap.set(track, {
@@ -71,10 +71,10 @@ export function PlusXSection() {
       id="outcomes"
       aria-label="13 Utopia Kinetic Perspective Architecture"
     >
-      {/* 3D 13 Emblem in Deep Spatial Background */}
+      {/* 3D 13 Emblem Canvas in Deep Spatial Background */}
       <Plus3DCanvas progress={scrollProgress} className={styles.canvas3D} />
 
-      {/* Kinetic Typography Stage */}
+      {/* Monumental Kinetic Typography Layer */}
       <div className={styles.stage}>
         <div className={styles.contentWrap}>
           {/* Static Lead Word */}
@@ -88,7 +88,7 @@ export function PlusXSection() {
               {WORDS.map((word, idx) => {
                 const isActive = idx === activeIdx;
                 const dist = Math.abs(idx - activeIdx);
-                const opacity = isActive ? 1 : Math.max(0.12, 0.38 - dist * 0.12);
+                const opacity = isActive ? 1 : Math.max(0.12, 0.35 - dist * 0.12);
 
                 return (
                   <div
