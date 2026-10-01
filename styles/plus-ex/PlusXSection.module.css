@@ -1,6 +1,6 @@
 /* =========================================================
-   13 UTOPIA // PLUS-X 15TH ANNIVERSARY SECTION
-   Monumental Kinetic Typography & 3D Three.js Perspective
+   13 UTOPIA // PLUS-X 15TH ANNIVERSARY EXACT REPLICATION
+   Pure Monumental Kinetic Typography & 3D Architectural Cross
    ========================================================= */
 
 .section {
@@ -13,22 +13,12 @@
   overflow: hidden;
   box-sizing: border-box;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
   isolation: isolate;
 }
 
-.bgShader {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  opacity: 0.55;
-  pointer-events: none;
-}
-
-.bg3D {
+.canvas3D {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -39,44 +29,35 @@
 
 .stage {
   position: relative;
-  z-index: 5;
+  z-index: 10;
   width: 100%;
-  max-width: min(94vw, 1560px);
+  max-width: min(92vw, 1540px);
   margin: 0 auto;
-  padding: 0 clamp(1.5rem, 5vw, 4.5rem);
+  padding: 0 clamp(1.5rem, 6vw, 6rem);
   box-sizing: border-box;
-  height: 100%;
   display: flex;
   align-items: center;
 }
 
-.layout {
-  display: grid;
-  grid-template-columns: 1.35fr 0.9fr;
-  gap: clamp(2rem, 5vw, 5.5rem);
-  align-items: center;
-  width: 100%;
-}
-
-/* ─── Left Column: PLUS + Kinetic Word Column ───────────── */
-.typeCol {
+.contentWrap {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
-  position: relative;
+  width: 100%;
   user-select: none;
-  perspective: 1200px;
 }
 
-.leadWrap {
-  margin-bottom: clamp(0.5rem, 1.2vh, 1rem);
+/* ─── Static Lead Title: "PLUS" ─────────────────────────── */
+.leadBox {
+  margin-bottom: clamp(0.75rem, 2vh, 1.85rem);
 }
 
-.leadWord {
+.leadTitle {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
-  font-size: clamp(3.8rem, min(12.5vh, 8.8vw), 9rem);
+  font-size: clamp(4.5rem, min(14vh, 11.5vw), 11.5rem);
   font-weight: 800;
-  line-height: 0.9;
+  line-height: 0.88;
   letter-spacing: -0.045em;
   text-transform: uppercase;
   color: #ffffff;
@@ -84,228 +65,64 @@
   padding: 0;
 }
 
+/* ─── Kinetic Vertical Word Viewport ────────────────────── */
 .kineticViewport {
   position: relative;
-  height: clamp(200px, 36vh, 320px);
+  height: clamp(140px, 26vh, 260px);
   overflow: visible;
-  mask-image: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(0, 0, 0, 1) 12%,
-    rgba(0, 0, 0, 1) 85%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(0, 0, 0, 1) 12%,
-    rgba(0, 0, 0, 1) 85%,
-    transparent 100%
-  );
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
 }
 
-.kineticStack {
+.wordsTrack {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.5rem, 1.5vh, 1.25rem);
+  gap: clamp(0.75rem, 2vh, 1.85rem);
   will-change: transform;
-  transform-style: preserve-3d;
 }
 
-.kineticWordBtn {
-  border: none;
-  background: transparent;
-  padding: 0;
-  margin: 0;
-  text-align: left;
-  cursor: pointer;
-  outline: none;
+.wordRow {
   display: block;
-  width: 100%;
+  margin: 0;
+  padding: 0;
   transition:
-    opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: left center;
 }
 
-.kineticText {
+.wordText {
   display: block;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
-  font-size: clamp(3.2rem, min(10.5vh, 7.6vw), 7.8rem);
+  font-size: clamp(4.2rem, min(13.5vh, 11vw), 11rem);
   font-weight: 800;
   line-height: 0.88;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.045em;
   text-transform: uppercase;
-  color: #444444;
+  color: #555555;
   transition:
-    color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-    text-shadow 0.3s ease;
+    color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    text-shadow 0.35s ease;
   white-space: nowrap;
 }
 
-.kineticWordActive .kineticText {
+.wordRowActive .wordText {
   color: #ffffff;
-  text-shadow:
-    0 0 35px rgba(255, 255, 255, 0.25),
-    0 0 60px rgba(232, 197, 106, 0.2);
+  text-shadow: 0 0 45px rgba(255, 255, 255, 0.3);
 }
 
-.kineticWordBtn:hover .kineticText {
-  color: #f3f1ea;
-}
-
-/* ─── Right Column: Architectural Detail Rail ───────────── */
-.detailCol {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.detailCard {
-  background: rgba(10, 10, 10, 0.78);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 1px solid rgba(232, 197, 106, 0.18);
-  border-radius: 4px;
-  padding: clamp(1.85rem, 3.5vh, 2.75rem) clamp(1.6rem, 2.8vw, 2.4rem);
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.75),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.cardHeader {
-  margin-bottom: 1.25rem;
-}
-
-.cardNum {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--color-gold, #e8c56a);
-  display: block;
-  margin-bottom: 0.6rem;
-}
-
-.cardTitle {
-  font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
-  font-size: clamp(1.25rem, 1.8vw, 1.7rem);
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  color: #ffffff;
-  margin: 0;
-}
-
-.cardDesc {
-  font-family: var(--font-ui, sans-serif);
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: rgba(243, 241, 234, 0.7);
-  margin: 0 0 1.85rem 0;
-}
-
-.delivSection {
-  margin-bottom: 2rem;
-}
-
-.delivLabel {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(243, 241, 234, 0.4);
-  margin: 0 0 0.75rem 0;
-}
-
-.delivChips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 0.4rem 0.75rem;
-  border-radius: 2px;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.7rem;
-  color: rgba(243, 241, 234, 0.85);
-  letter-spacing: 0.04em;
-}
-
-.chipDot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--color-gold, #e8c56a);
-}
-
-.cardAction {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 1.35rem;
-}
-
-.initiateBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #ffffff;
-  text-decoration: none;
-  background: linear-gradient(
-    90deg,
-    rgba(232, 197, 106, 0.14) 0%,
-    rgba(232, 197, 106, 0.04) 100%
-  );
-  border: 1px solid rgba(232, 197, 106, 0.32);
-  padding: 0.75rem 1.25rem;
-  border-radius: 2px;
-  transition: all 0.28s ease;
-}
-
-.initiateBtn:hover {
-  background: rgba(232, 197, 106, 0.22);
-  border-color: var(--color-gold, #e8c56a);
-  color: var(--color-gold, #e8c56a);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(232, 197, 106, 0.12);
-}
-
-.btnArrow {
-  transition: transform 0.28s ease;
-}
-
-.initiateBtn:hover .btnArrow {
-  transform: translateX(4px);
-}
-
-/* ─── Responsive Queries ────────────────────────────────── */
-@media (max-width: 1024px) {
-  .layout {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-
+/* ─── Responsive Media Queries ──────────────────────────── */
+@media (max-width: 900px) {
   .kineticViewport {
-    height: 180px;
+    height: clamp(90px, 20vh, 160px);
   }
 
-  .leadWord {
-    font-size: clamp(3rem, 12vw, 5.5rem);
+  .leadTitle {
+    font-size: clamp(3rem, 13vw, 5.8rem);
   }
 
-  .kineticText {
-    font-size: clamp(2.4rem, 10vw, 4.5rem);
+  .wordText {
+    font-size: clamp(2.8rem, 12vw, 5.4rem);
   }
 }
