@@ -1,5 +1,6 @@
 export { FramerSectionBelief } from "./FramerSectionBelief";
 export { FramerSectionWorld } from "./FramerSectionWorld";
+export { FramerWorldsHorizontal } from "./FramerWorldsHorizontal";
 export { EchoTitle } from "./EchoTitle";
 export { FramerSectionWork } from "./FramerSectionWork";
 export { FramerSectionOutcomes } from "./FramerSectionOutcomes";

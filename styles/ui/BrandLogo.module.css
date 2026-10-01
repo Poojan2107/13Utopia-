@@ -14,7 +14,7 @@
   display: block;
 }
 
-/* Official live PNG is white on black — screen blend drops the black plate */
+/* Locked live PNG — white plate; screen blend drops the black field */
 .official {
   display: inline-flex;
   align-items: center;

@@ -1,106 +1,160 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import styles from "@/styles/framer/FramerSectionBelief.module.css";
+
+/**
+ * Conviction — Section 02
+ * RXK structure · 13 Utopia voice · gold only on brand + DEFAULT
+ */
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-const REJECTS = ["SAME THINKING.", "SAME IDEAS.", "SAME OUTCOMES."];
+type TokenKind = "plain" | "brand" | "gold";
 
-/**
- * Belief — Section 02.
- * NexStudio statement density + 13U Work chapter craft:
- * full-bleed rules, monumental type, right meta rail.
- * Neue Montreal only. No bust.
- */
-export function FramerSectionBelief() {
+type Token = {
+  text: string;
+  kind?: TokenKind;
+};
+
+type Line = readonly Token[];
+
+/** Brand-positioned stack — anomaly, not agency; question the default */
+const LINES: readonly Line[] = [
+  [{ text: "13utopia", kind: "brand" }, { text: "IS" }],
+  [{ text: "NOT" }, { text: "AN" }, { text: "AGENCY" }],
+  [{ text: "IT" }, { text: "IS" }, { text: "AN" }, { text: "ANOMALY" }],
+  [{ text: "FOR" }, { text: "THOSE" }, { text: "WHO" }],
+  [{ text: "QUESTION" }, { text: "THE" }],
+  [{ text: "DEFAULT", kind: "gold" }],
+] as const;
+
+const SUB =
+  "We imagine what could be and build what comes next — for founders ready to leave the default behind.";
+
+function BrandMark() {
   return (
-    <section className={styles.section} aria-label="Section 02: Belief">
-      <div className={styles.eyebrow} aria-hidden="false">
-        <span className={styles.eyebrowNum}>02 // 10</span>
-        <span className={styles.eyebrowSep}>·</span>
-        <span className={styles.eyebrowLabel}>CONVICTION</span>
-        <span className={styles.eyebrowMeta}>SOVEREIGN // NOT THE DEFAULT</span>
+    <>
+      <span className={styles.gold}>1</span>
+      <span className={styles.ink}>3</span>
+      <span className={styles.gold}>utopia</span>
+    </>
+  );
+}
+
+function TokenLabel({ token }: { token: Token }) {
+  if (token.kind === "brand") return <BrandMark />;
+  if (token.kind === "gold") {
+    return <span className={styles.gold}>{token.text}</span>;
+  }
+  return <>{token.text}</>;
+}
+
+function Word({ token }: { token: Token }) {
+  const label = <TokenLabel token={token} />;
+
+  return (
+    <span className={styles.word}>
+      <span className={styles.wordAbove}>{label}</span>
+      <span className={styles.wordUnder} aria-hidden="true">
+        {label}
+      </span>
+    </span>
+  );
+}
+
+function formatClock(d: Date) {
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mm = String(d.getMinutes()).padStart(2, "0");
+  const offsetMin = -d.getTimezoneOffset();
+  const sign = offsetMin >= 0 ? "+" : "-";
+  const abs = Math.abs(offsetMin);
+  const oh = String(Math.floor(abs / 60));
+  return `${hh}:${mm} GMT${sign}${oh}`;
+}
+
+export function FramerSectionBelief() {
+  const reduce = useReducedMotion();
+  const [clock, setClock] = useState("—");
+  const stageRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(stageRef, {
+    once: true,
+    amount: 0.2,
+    margin: "0px 0px -8% 0px",
+  });
+  const [forceShow, setForceShow] = useState(false);
+  const show = reduce || inView || forceShow;
+
+  useEffect(() => {
+    const tick = () => setClock(formatClock(new Date()));
+    tick();
+    const id = window.setInterval(tick, 30_000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    const t = window.setTimeout(() => setForceShow(true), 1800);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  const aria =
+    "13 Utopia is not an agency. It is an anomaly for those who question the default.";
+
+  return (
+    <section
+      id="conviction"
+      className={styles.section}
+      aria-label="02: Conviction"
+      data-theme="dark"
+    >
+      <div className={styles.chrome} aria-hidden="true">
+        <span className={styles.chromeTime}>{clock}</span>
       </div>
 
-      <div className={styles.stage}>
-        <div className={styles.grid}>
-          <div className={styles.main}>
-            <motion.p
-              className={styles.kicker}
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.65, ease: EASE }}
-            >
-              <span className={styles.kickerNum}>02</span>
-              CONVICTION
-            </motion.p>
-
-            <motion.h2
-              className={styles.statement}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.95, delay: 0.1, ease: EASE }}
-            >
-              <span className={styles.lineGold}>Not our thing.</span>
-              <span className={styles.line}>
-                13 UTOPIA exists for businesses ready to question the default.
-              </span>
-              <span className={styles.line}>
-                We imagine what could be and build what comes next.
-              </span>
-            </motion.h2>
-          </div>
-
-          <aside className={styles.rail}>
-            <motion.div
-              className={styles.railBlock}
-              initial={{ opacity: 0, x: 24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.85, delay: 0.22, ease: EASE }}
-            >
-              <p className={styles.railLabel}>THE OBVIOUS</p>
-              <ul className={styles.rejectList}>
-                {REJECTS.map((line, idx) => (
-                  <li key={line} className={styles.rejectRow}>
-                    <span className={styles.rejectText}>{line}</span>
-                    <motion.span
-                      className={styles.rejectBar}
-                      initial={{ scaleX: 0 }}
-                      whileInView={{ scaleX: 1 }}
-                      viewport={{ once: true, amount: 0.6 }}
-                      transition={{
-                        duration: 0.5,
-                        delay: 0.4 + idx * 0.1,
-                        ease: [0.22, 1, 0.36, 1],
-                      }}
-                      aria-hidden="true"
-                    />
-                  </li>
+      <div className={styles.stage} ref={stageRef}>
+        <h2 className={styles.title} aria-label={aria}>
+          {LINES.map((tokens, li) => (
+            <span className={styles.ligne} key={li}>
+              <motion.span
+                className={styles.ligneChild}
+                initial={false}
+                animate={
+                  show
+                    ? { y: "0%", opacity: 1 }
+                    : { y: "105%", opacity: 1 }
+                }
+                transition={{
+                  duration: reduce ? 0 : 1.05,
+                  ease: EASE,
+                  delay: reduce ? 0 : 0.06 + li * 0.09,
+                }}
+              >
+                {tokens.map((token, wi) => (
+                  <Word key={`${li}-${wi}`} token={token} />
                 ))}
-              </ul>
-            </motion.div>
+              </motion.span>
+            </span>
+          ))}
+        </h2>
 
-            <motion.div
-              className={styles.railFoot}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.8, delay: 0.55, ease: EASE }}
-            >
-              <span className={styles.railFootKey}>01</span>
-              <span className={styles.railFootVal}>Question</span>
-              <span className={styles.railFootKey}>02</span>
-              <span className={styles.railFootVal}>Imagine</span>
-              <span className={styles.railFootKey}>03</span>
-              <span className={styles.railFootVal}>Build</span>
-            </motion.div>
-          </aside>
-        </div>
+        <motion.p
+          className={styles.sub}
+          initial={false}
+          animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+          transition={{
+            duration: reduce ? 0 : 0.75,
+            ease: EASE,
+            delay: reduce ? 0 : 0.5,
+          }}
+        >
+          {SUB}
+        </motion.p>
       </div>
+
+      <span className={styles.scrollHint} aria-hidden="true">
+        Scroll
+      </span>
     </section>
   );
 }

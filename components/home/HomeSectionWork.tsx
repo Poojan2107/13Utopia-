@@ -33,7 +33,6 @@ const ThreeCanvas = dynamic(
  */
 export function HomeSectionWork() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
 
   // Repeat the 8 projects 3× for seamless loop (same as WorkShowcase)
   const repeatedProjects: RepeatedProject[] = useMemo(
@@ -44,6 +43,10 @@ export function HomeSectionWork() {
     ],
     []
   );
+
+  const handleCardClick = useCallback((project: Project) => {
+    setSelectedProject(project);
+  }, []);
 
   // Physics state — direct refs, no React churn
   const scrollCurrentRef = useRef(0);
@@ -237,8 +240,7 @@ export function HomeSectionWork() {
           repeatedProjects={repeatedProjects}
           scrollCurrentRef={scrollCurrentRef}
           velocityRef={velocityRef}
-          hoveredSlug={hoveredSlug}
-          onCardClick={(project) => setSelectedProject(project)}
+          onCardClick={handleCardClick}
           onCardMetricsReady={handleCardMetricsReady}
           className={styles.canvasAbsolute}
         />
@@ -254,8 +256,6 @@ export function HomeSectionWork() {
           <button
             key={project.slug}
             onClick={() => setSelectedProject(project)}
-            onMouseEnter={() => setHoveredSlug(project.slug)}
-            onMouseLeave={() => setHoveredSlug(null)}
           >
             {project.title} — {project.role} ({project.year})
           </button>

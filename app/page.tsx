@@ -1,7 +1,7 @@
 import { HomeHero, HeroPreloader, HomeSectionWork } from "@/components/home";
 import {
   FramerSectionBelief,
-  FramerSectionWorld,
+  FramerWorldsHorizontal,
   FramerSectionOutcomes,
   FramerSectionAbout,
   FramerSectionCTA,
@@ -25,26 +25,20 @@ export default function HomePage() {
       <SiteHeader />
 
       {/* Fluid Continuous Awwwards Experience */}
-      <main id="main-content">
+      <main id="main-content" style={{ position: "relative", zIndex: 2 }}>
         {/* 01 — HERO: locked silk + bust dual-flank (fixed plane) */}
         <HomeHero />
-        {/* Flow spacer — hero is position:fixed, so Belief starts after one viewport */}
+        {/* Flow spacer — hero is position:fixed */}
         <div
           aria-hidden="true"
           style={{ height: "100dvh", width: "100%", pointerEvents: "none" }}
         />
 
-        {/* 02 — BELIEF: monumental statement (NexStudio pattern) */}
+        {/* 02 // 10 — CONVICTION: RXK-style cream display stack */}
         <FramerSectionBelief />
 
-        {/* 03 // 10 — WORLD 01: CREATE (Brands & Spatial Experience) */}
-        <FramerSectionWorld worldKey="create" />
-
-        {/* 04 // 10 — WORLD 02: BUILD (Products & Digital Engineering) */}
-        <FramerSectionWorld worldKey="build" />
-
-        {/* 05 // 10 — WORLD 03: GROW (Revenue Engines & Compounding) */}
-        <FramerSectionWorld worldKey="grow" />
+        {/* 03-05 // 10 — THE THREE WORLDS: CREATE · BUILD · GROW (Horizontal Sticky Scroll) */}
+        <FramerWorldsHorizontal />
 
         {/* 06 // 10 — THE WORK: 3D Jesper Landberg carousel — no nav chrome, continuous section */}
         <HomeSectionWork />

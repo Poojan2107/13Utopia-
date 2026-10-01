@@ -817,9 +817,9 @@
 .sheetTitle {
   font-family: var(--font-display, "PP Neue Montreal", "Neue Montreal", sans-serif);
   font-size: clamp(2.4rem, 3.8vw, 3.6rem);
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.0;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.04em;
   color: #000000;
   margin: 0;
   word-break: break-word;

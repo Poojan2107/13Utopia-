@@ -7,7 +7,8 @@ import { HeroEnter } from "@/components/motion/HeroEnter";
 import styles from "@/styles/home/HomeHero.module.css";
 
 /**
- * HomeHero — locked dual-flank: type in silk gaps, bust gold fill only (no glow).
+ * HomeHero — left type column · right-edge bust.
+ * Both couplets live in the left silk void; bust owns the right rail.
  */
 export function HomeHero() {
   const typeRef = useRef<HTMLDivElement | null>(null);
@@ -30,14 +31,14 @@ export function HomeHero() {
     };
 
     const animate = () => {
-      currentX += (targetX - currentX) * 0.06;
-      currentY += (targetY - currentY) * 0.06;
+      currentX += (targetX - currentX) * 0.05;
+      currentY += (targetY - currentY) * 0.05;
 
       if (el) {
-        el.style.setProperty("--mx", `${currentX * 14}px`);
-        el.style.setProperty("--my", `${currentY * 10}px`);
-        el.style.setProperty("--rx", `${currentY * -2.5}deg`);
-        el.style.setProperty("--ry", `${currentX * 4}deg`);
+        el.style.setProperty("--mx", `${currentX * 6}px`);
+        el.style.setProperty("--my", `${currentY * 5}px`);
+        el.style.setProperty("--rx", `${currentY * -1.2}deg`);
+        el.style.setProperty("--ry", `${currentX * 1.8}deg`);
       }
       rafId = requestAnimationFrame(animate);
     };
@@ -58,32 +59,27 @@ export function HomeHero() {
           <GoldSilkCurtain />
         </div>
 
-        <div ref={typeRef} className={styles.stageTypography}>
-          <aside className={`${styles.left} ${styles.flank}`}>
-            <div className={styles.stack} data-hero-left>
-              <div className={`${styles.statement} ${styles.statementGold}`}>
-                <span className={styles.be}>BE</span>
-                <h1 className={styles.unreal}>UNREAL</h1>
-              </div>
-            </div>
-          </aside>
-
-          <aside className={`${styles.right} ${styles.flank}`}>
-            <div className={`${styles.stack} ${styles.stackRight}`} data-hero-right>
-              <div
-                className={`${styles.statement} ${styles.statementRight} ${styles.statementGold}`}
-              >
-                <span className={`${styles.be} ${styles.beRight}`}>BE</span>
-                <h2 className={styles.unreasonable}>UNREASONABLE</h2>
-              </div>
-            </div>
-          </aside>
-        </div>
-
         <div className={styles.media} aria-hidden="true" data-hero-media>
           <div className={styles.videoWrapper}>
-            <TransparentBustVideo />
+            <TransparentBustVideo variant="edge" />
           </div>
+        </div>
+
+        <div ref={typeRef} className={styles.stageTypography}>
+          <h1 className={styles.srOnly}>BE UNREAL. BE UNREASONABLE.</h1>
+          <aside className={`${styles.left} ${styles.flank}`} aria-hidden="true">
+            <div className={styles.stack} data-hero-left>
+              <p className={`${styles.statement} ${styles.statementGold}`}>
+                <span className={styles.be}>BE</span>
+                <span className={styles.unreal}>UNREAL</span>
+              </p>
+
+              <p className={`${styles.statement} ${styles.statementGold} ${styles.statementSecond}`}>
+                <span className={styles.be}>BE</span>
+                <span className={styles.unreasonable}>UNREASONABLE</span>
+              </p>
+            </div>
+          </aside>
         </div>
 
         <div className={styles.overlay} aria-hidden="true" />

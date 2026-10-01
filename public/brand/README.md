@@ -1,6 +1,11 @@
 # Brand assets — official 13 UTOPIA logos
 
-- `13-utopia-logo-horizontal.jpeg` — primary wordmark (black + gold sparkle). Used in header/footer on a warm-white plate for dark UI contrast.
-- `13-utopia-logo-3d.jpeg` — dimensional mark on black. Used as hero visual atmosphere.
+## Locked chrome wordmark
+- `13-utopia-logo-live.png` — **source of truth for header/footer** (white plate; use `mix-blend-mode: screen` on dark UI)
 
-Prefer SVG masters when available; until then these are the source of truth. Do not redraw the logo in CSS.
+## Other assets
+- `13-utopia-wordmark.svg` — path reference only (not used in chrome)
+- `13-utopia-logo-horizontal.jpeg` — print/horizontal reference
+- `13-utopia-logo-3d.jpeg` — dimensional mark on black
+
+Do not swap the live PNG for CSS/SVG redraws in header chrome.

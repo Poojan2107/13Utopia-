@@ -16,9 +16,9 @@ interface Sparkle {
 
 /**
  * GoldSilkCurtain — 13 UTOPIA Signature Golden Silk Architecture:
- * - [ 1 ] Crown ribbon above the head
- * - Open mid gap reserved for the hero tagline (no silk through type)
- * - [ 3 ] Cascading ribbons across chest / torso
+ * - [ 1 ] Crown ribbon high above the head (top ~10-13vh)
+ * - Open mid void reserved for the hero tagline (14vh → 66vh: no silk through type)
+ * - [ 3 ] Cascading ribbons across chest / torso (68vh, 79vh, 90vh)
  * - Concentric metallic wire filaments + golden stardust
  */
 export function GoldSilkCurtain() {
@@ -134,7 +134,7 @@ export function GoldSilkCurtain() {
       ctx.fillStyle = grad;
       ctx.fill();
 
-      // 2. Concentric Metallic Wire Filaments (Matches concentric sculpture wires)
+      // 2. Concentric Metallic Wire Filaments
       ctx.globalCompositeOperation = "screen";
 
       for (let s = 0; s < numStrands; s++) {
@@ -217,7 +217,7 @@ export function GoldSilkCurtain() {
           ctx.lineTo(p.x + starLen, p.y);
           // Vertical ray
           ctx.moveTo(p.x, p.y - starLen);
-          ctx.lineTo(p.x, p.y + starLen);
+          ctx.lineTo(p.x + starLen, p.y);
           ctx.stroke();
 
           // Luminous glowing core
@@ -254,7 +254,7 @@ export function GoldSilkCurtain() {
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, width, height);
 
-      // 2. Soft Ambient Halo — tight to bust core only (no flank bloom into type)
+      // 2. Soft Ambient Halo — tight to bust core only
       const haloX = width * 0.5;
       const haloY = height * 0.52;
       const halo = ctx.createRadialGradient(
@@ -273,10 +273,10 @@ export function GoldSilkCurtain() {
 
       // =========================================================
       // 13 UTOPIA Signature Golden Silk — 1 crown + void + 3 cascade
-      // Tagline owns the mid gap. No extra ribbons through type.
+      // Tagline owns the mid gap (14vh to 66vh).
       // =========================================================
 
-      const ribbonThickness = height * 0.052;
+      const ribbonThickness = height * 0.048;
       const ribbonGoldStops: [number, string][] = [
         [0.0, "rgba(36, 18, 5, 0.55)"],
         [0.22, "rgba(135, 88, 25, 0.8)"],
@@ -289,24 +289,24 @@ export function GoldSilkCurtain() {
       drawFlankRibbon(
         -width * 0.12,
         width * 1.12,
+        height * 0.09,
         height * 0.12,
-        height * 0.16,
         ribbonThickness,
-        15,
+        14,
         2.2,
         0.46,
         ribbonGoldStops,
         16,
       );
 
-      // Mid gap (≈0.18 → 0.63) is intentional negative space for BE UNREAL / BE UNREASONABLE
+      // Mid void (≈0.14 → 0.67) is intentional negative space for BE UNREAL / BE UNREASONABLE
 
       // [ 3 ] Cascading curtains below the tagline — chest / torso
       drawFlankRibbon(
         -width * 0.12,
         width * 1.12,
-        height * 0.64,
         height * 0.68,
+        height * 0.72,
         ribbonThickness,
         16,
         2.2,
@@ -318,8 +318,8 @@ export function GoldSilkCurtain() {
       drawFlankRibbon(
         -width * 0.12,
         width * 1.12,
-        height * 0.76,
-        height * 0.80,
+        height * 0.79,
+        height * 0.83,
         ribbonThickness,
         16,
         2.2,
@@ -331,8 +331,8 @@ export function GoldSilkCurtain() {
       drawFlankRibbon(
         -width * 0.12,
         width * 1.12,
-        height * 0.88,
-        height * 0.92,
+        height * 0.90,
+        height * 0.94,
         ribbonThickness,
         16,
         2.2,

@@ -125,7 +125,8 @@ void main() {
 // Custom Fragment Shader with analytical normals & specular gloss
 const fragmentShader = `
 uniform sampler2D u_texture;
-uniform sampler2D u_hoverTex;
+uniform sampler2D u_chrome;
+uniform sampler2D u_chromeHover;
 uniform vec2 u_res;         // Plane scale in world units
 uniform vec2 u_size;        // Source texture resolution
 uniform float u_alpha;
@@ -212,10 +213,12 @@ float roundedBoxSDF(vec2 p, vec2 b, float r) {
 }
 
 void main() {
-    // Sample resting texture and hover texture
-    vec4 texNormal = texture2D(u_texture, vUv);
-    vec4 texHover = texture2D(u_hoverTex, vUv);
-    vec4 tex = mix(texNormal, texHover, u_hover);
+    // Media (VideoTexture / still) + static chrome overlay (title / pill)
+    vec4 media = texture2D(u_texture, vUv);
+    vec4 chromeN = texture2D(u_chrome, vUv);
+    vec4 chromeH = texture2D(u_chromeHover, vUv);
+    vec4 chrome = mix(chromeN, chromeH, u_hover);
+    vec3 tex = mix(media.rgb, chrome.rgb, chrome.a);
 
     // Rounded rectangle mask
     vec2 p = (vUv - 0.5) * u_res;
@@ -235,9 +238,9 @@ void main() {
     vec3 sheen = vec3(1.0, 0.95, 0.85) * spec + vec3(0.9, 0.82, 0.7) * rim;
 
     // Crisp, pure texture color with zero muddy trough darkening
-    vec3 col = tex.rgb + sheen;
+    vec3 col = tex + sheen;
 
-    gl_FragColor = vec4(col, tex.a * u_alpha * edgeAlpha);
+    gl_FragColor = vec4(col, media.a * u_alpha * edgeAlpha);
 }
 `;
 
@@ -282,103 +285,171 @@ void main() {
 }
 `;
 
-// Helper: Generates composite card canvas texture
-const createCardCanvasTexture = (
-  image: HTMLImageElement,
-  title: string,
-  isHovered: boolean,
-  aspectRatio = 1.7
-): THREE.CanvasTexture => {
-  const canvas = document.createElement("canvas");
-  const w = 1600;
-  const h = Math.round(w / aspectRatio);
-  canvas.width = w;
-  canvas.height = h;
-  const ctx = canvas.getContext("2d");
-
-  if (!ctx) return new THREE.CanvasTexture(canvas);
-
-  // 1. Draw Image with cover fit
-  const imgRatio = image.width / image.height;
+// Helper: cover-fit still into opaque canvas (image-only cards)
+const drawCover = (
+  ctx: CanvasRenderingContext2D,
+  source: CanvasImageSource,
+  sw: number,
+  sh: number,
+  w: number,
+  h: number,
+) => {
+  const srcRatio = sw / sh;
   const canvasRatio = w / h;
-  let sx = 0,
-    sy = 0,
-    sWidth = image.width,
-    sHeight = image.height;
-  if (imgRatio > canvasRatio) {
-    sWidth = image.height * canvasRatio;
-    sx = (image.width - sWidth) / 2;
+  let sx = 0;
+  let sy = 0;
+  let sWidth = sw;
+  let sHeight = sh;
+  if (srcRatio > canvasRatio) {
+    sWidth = sh * canvasRatio;
+    sx = (sw - sWidth) / 2;
   } else {
-    sHeight = image.width / canvasRatio;
-    sy = (image.height - sHeight) / 2;
+    sHeight = sw / canvasRatio;
+    sy = (sh - sHeight) / 2;
   }
-  ctx.drawImage(image, sx, sy, sWidth, sHeight, 0, 0, w, h);
+  ctx.drawImage(source, sx, sy, sWidth, sHeight, 0, 0, w, h);
+};
 
-  // 2. Soft, subtle bottom gradient vignette (doesn't wash out card image)
-  const scrim = ctx.createLinearGradient(0, h * 0.74, 0, h);
+const paintChrome = (
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  title: string,
+  meta: string,
+  isHovered: boolean,
+) => {
+  ctx.clearRect(0, 0, w, h);
+  const s = w / 1536;
+
+  const scrim = ctx.createLinearGradient(0, h * 0.58, 0, h);
   scrim.addColorStop(0, "rgba(0, 0, 0, 0)");
-  scrim.addColorStop(0.5, "rgba(0, 0, 0, 0.22)");
-  scrim.addColorStop(1, "rgba(0, 0, 0, 0.52)");
+  scrim.addColorStop(0.45, "rgba(0, 0, 0, 0.18)");
+  scrim.addColorStop(1, "rgba(0, 0, 0, 0.62)");
   ctx.fillStyle = scrim;
-  ctx.fillRect(0, h * 0.74, w, h * 0.26);
+  ctx.fillRect(0, h * 0.58, w, h * 0.42);
 
-  // 3. Project Title (PP Neue Montreal — 13 UTOPIA signature)
+  const padX = 72 * s;
+  const titleSize = Math.round(56 * s);
+  const metaSize = Math.round(26 * s);
+  const titleY = h - 110 * s;
+  const metaY = h - 68 * s;
+
   ctx.save();
-  ctx.font =
-    "600 50px 'PP Neue Montreal', 'Neue Montreal', -apple-system, BlinkMacSystemFont, sans-serif";
+  ctx.font = `600 ${titleSize}px "PP Neue Montreal", "Neue Montreal", system-ui, sans-serif`;
   ctx.fillStyle = "#ffffff";
-  ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
-  ctx.shadowBlur = 12;
-  ctx.shadowOffsetY = 2;
-  ctx.fillText(title, 55, h - 55);
+  ctx.textBaseline = "alphabetic";
+  ctx.shadowColor = "rgba(0, 0, 0, 0.55)";
+  ctx.shadowBlur = 18 * s;
+  ctx.shadowOffsetY = 2 * s;
+
+  const maxTitleW = w - padX * 2 - 120 * s;
+  let drawTitle = title;
+  if (ctx.measureText(drawTitle).width > maxTitleW) {
+    while (drawTitle.length > 1 && ctx.measureText(`${drawTitle}…`).width > maxTitleW) {
+      drawTitle = drawTitle.slice(0, -1);
+    }
+    drawTitle = `${drawTitle}…`;
+  }
+  ctx.fillText(drawTitle, padX, titleY);
   ctx.restore();
 
-  // 4. Arrow Pill Button (13 UTOPIA Gold Signature)
-  const pillX = w - 85;
-  const pillY = h - 72;
-  const pillRadius = isHovered ? 42 : 36;
+  if (meta) {
+    ctx.save();
+    ctx.font = `500 ${metaSize}px "PP Neue Montreal", "Neue Montreal", system-ui, sans-serif`;
+    ctx.fillStyle = "rgba(255, 255, 255, 0.72)";
+    ctx.textBaseline = "alphabetic";
+    ctx.fillText(meta, padX, metaY);
+    ctx.restore();
+  }
+
+  const pillX = w - 96 * s;
+  const pillY = h - 96 * s;
+  const pillRadius = (isHovered ? 44 : 38) * s;
 
   ctx.save();
   ctx.beginPath();
   ctx.arc(pillX, pillY, pillRadius, 0, Math.PI * 2);
-
   if (isHovered) {
-    ctx.fillStyle = "#dfb76c"; // Solid 13 UTOPIA Gold
+    ctx.fillStyle = "#dfb76c";
     ctx.fill();
-    ctx.shadowColor = "rgba(223, 183, 108, 0.6)";
-    ctx.shadowBlur = 18;
   } else {
-    ctx.fillStyle = "rgba(8, 7, 5, 0.85)";
+    ctx.fillStyle = "rgba(8, 7, 5, 0.78)";
     ctx.fill();
-    ctx.strokeStyle = "rgba(223, 183, 108, 0.55)"; // Gold outline
-    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = "rgba(223, 183, 108, 0.65)";
+    ctx.lineWidth = 2.25 * s;
     ctx.stroke();
   }
 
-  // Draw Arrow
   ctx.beginPath();
-  ctx.strokeStyle = isHovered ? "#000000" : "#dfb76c";
-  ctx.lineWidth = isHovered ? 4.5 : 4;
+  ctx.strokeStyle = isHovered ? "#0a0a0a" : "#dfb76c";
+  ctx.lineWidth = (isHovered ? 4.25 : 3.5) * s;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
-
-  const sz = isHovered ? 16 : 13;
-  ctx.moveTo(pillX - sz * 0.6, pillY + sz * 0.6);
-  ctx.lineTo(pillX + sz * 0.6, pillY - sz * 0.6);
-  ctx.moveTo(pillX + sz * 0.6 - sz * 0.8, pillY - sz * 0.6);
-  ctx.lineTo(pillX + sz * 0.6, pillY - sz * 0.6);
-  ctx.lineTo(pillX + sz * 0.6, pillY - sz * 0.6 + sz * 0.8);
+  const sz = (isHovered ? 17 : 14) * s;
+  ctx.moveTo(pillX - sz * 0.55, pillY + sz * 0.55);
+  ctx.lineTo(pillX + sz * 0.55, pillY - sz * 0.55);
+  ctx.moveTo(pillX + sz * 0.55 - sz * 0.85, pillY - sz * 0.55);
+  ctx.lineTo(pillX + sz * 0.55, pillY - sz * 0.55);
+  ctx.lineTo(pillX + sz * 0.55, pillY - sz * 0.55 + sz * 0.85);
   ctx.stroke();
   ctx.restore();
+};
 
+/** Sharp chrome overlay — 1536px so titles stay crisp on retina cards */
+const createChromeOverlay = (
+  title: string,
+  meta: string,
+  aspectRatio: number,
+  isHovered: boolean,
+): THREE.CanvasTexture => {
+  const w = 1536;
+  const h = Math.max(1, Math.round(w / aspectRatio));
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d", { alpha: true });
+  if (ctx) {
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    paintChrome(ctx, w, h, title, meta, isHovered);
+  }
   const texture = new THREE.CanvasTexture(canvas);
   texture.minFilter = THREE.LinearFilter;
   texture.magFilter = THREE.LinearFilter;
   texture.generateMipmaps = false;
+  texture.premultiplyAlpha = true;
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.needsUpdate = true;
   return texture;
 };
 
-// Fallback solid placeholder
+const cardMetaLine = (p: Project) =>
+  [p.year, p.role].filter(Boolean).join("  ·  ");
+
+/** Still-image media texture (poster while reel buffers) */
+const createStillMediaTexture = (
+  image: HTMLImageElement,
+  aspectRatio: number,
+): THREE.CanvasTexture => {
+  const w = 1280;
+  const h = Math.round(w / aspectRatio);
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d", { alpha: false });
+  if (ctx) {
+    ctx.fillStyle = "#111";
+    ctx.fillRect(0, 0, w, h);
+    drawCover(ctx, image, image.width, image.height, w, h);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  texture.generateMipmaps = false;
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+};
+
 const createSolidTexture = () => {
   const canvas = document.createElement("canvas");
   canvas.width = 4;
@@ -388,6 +459,15 @@ const createSolidTexture = () => {
     ctx.fillStyle = "#181818";
     ctx.fillRect(0, 0, 4, 4);
   }
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.needsUpdate = true;
+  return tex;
+};
+
+const createEmptyChrome = () => {
+  const canvas = document.createElement("canvas");
+  canvas.width = 4;
+  canvas.height = 4;
   const tex = new THREE.CanvasTexture(canvas);
   tex.needsUpdate = true;
   return tex;
@@ -406,22 +486,28 @@ interface ThreeCanvasProps {
   repeatedProjects: RepeatedProject[];
   scrollCurrentRef: React.MutableRefObject<number>;
   velocityRef: React.MutableRefObject<number>;
-  hoveredSlug: string | null;
   onCardClick: (project: Project) => void;
   onCardMetricsReady?: (metrics: CardMetric[], singleLoopWidth: number) => void;
   /** Optional className override — use to switch from fixed to absolute positioning when embedding inline */
   className?: string;
 }
 
+const MAX_PLAYING_VIDEOS = 2;
+
 export default function ThreeCanvas({
   repeatedProjects,
   scrollCurrentRef,
   velocityRef,
-  hoveredSlug,
   onCardClick,
   onCardMetricsReady,
   className,
 }: ThreeCanvasProps) {
+  // Keep callbacks in refs so the WebGL scene never remounts on parent re-renders
+  const onCardClickRef = useRef(onCardClick);
+  const onCardMetricsReadyRef = useRef(onCardMetricsReady);
+  const hoveredSlugRef = useRef<string | null>(null);
+  onCardClickRef.current = onCardClick;
+  onCardMetricsReadyRef.current = onCardMetricsReady;
   const containerRef = useRef<HTMLDivElement>(null);
   const cardMetricsRef = useRef<CardMetric[]>([]);
   const singleLoopWidthRef = useRef<number>(0);
@@ -446,65 +532,144 @@ export default function ThreeCanvas({
       );
       camera.position.set(0, 0, 27);
 
-      // 2. WebGL Renderer
+      // 2. WebGL Renderer — sharp enough for crystal cards, capped for decode budget
+      const isMobile = window.innerWidth <= 650;
       renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: false,
         powerPreference: "high-performance",
+        stencil: false,
+        depth: true,
       });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.25 : 1.75));
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.toneMapping = THREE.ACESFilmicToneMapping;
       containerRef.current.appendChild(renderer.domElement);
 
-      // 3. Shared Plane Geometry (24x24 for fluid S-curve ribbon deformation)
-      const cardGeometry = new THREE.PlaneGeometry(1, 1, 24, 24);
+      // 3. Shared Plane Geometry
+      const cardGeometry = new THREE.PlaneGeometry(1, 1, 16, 16);
 
-      // 4. Preload Textures & Cache
-      const textureCache = new Map<
-        string,
-        { normal: THREE.CanvasTexture; hover: THREE.CanvasTexture; isLoaded: boolean }
-      >();
+      // 4. Media = VideoTexture (GPU) · chrome = static overlay (CPU once)
+      type CacheEntry = {
+        media: THREE.Texture;
+        chrome: THREE.CanvasTexture;
+        chromeHover: THREE.CanvasTexture;
+        isLoaded: boolean;
+        video: HTMLVideoElement | null;
+        videoTex: THREE.VideoTexture | null;
+      };
+
+      const textureCache = new Map<string, CacheEntry>();
       const defaultPlaceholder = createSolidTexture();
+      const emptyChrome = createEmptyChrome();
+      const activeVideos: HTMLVideoElement[] = [];
 
-      // Pre-warm unique projects textures
+      const warmTexture = (tex: THREE.Texture) => {
+        const initable = renderer as
+          | (THREE.WebGLRenderer & { initTexture?: (t: THREE.Texture) => void })
+          | null;
+        if (initable && typeof initable.initTexture === "function") {
+          try {
+            initable.initTexture(tex);
+          } catch {
+            // ignore
+          }
+        }
+      };
+
       repeatedProjects.forEach((p) => {
-        if (!textureCache.has(p.slug)) {
-          const entry = {
-            normal: defaultPlaceholder,
-            hover: defaultPlaceholder,
-            isLoaded: false,
-          };
-          textureCache.set(p.slug, entry);
+        if (textureCache.has(p.slug)) return;
 
+        const aspect = p.width && p.height ? p.width / p.height : 16 / 9;
+        const meta = cardMetaLine(p);
+        const chrome = createChromeOverlay(p.title, meta, aspect, false);
+        const chromeHover = createChromeOverlay(p.title, meta, aspect, true);
+
+        const entry: CacheEntry = {
+          media: defaultPlaceholder,
+          chrome,
+          chromeHover,
+          isLoaded: false,
+          video: null,
+          videoTex: null,
+        };
+        textureCache.set(p.slug, entry);
+
+        // Repaint chrome once webfonts are ready so titles aren't fallback-blurry
+        if (typeof document !== "undefined" && document.fonts?.ready) {
+          document.fonts.ready.then(() => {
+            const next = createChromeOverlay(p.title, meta, aspect, false);
+            const nextHover = createChromeOverlay(p.title, meta, aspect, true);
+            entry.chrome.dispose();
+            entry.chromeHover.dispose();
+            entry.chrome = next;
+            entry.chromeHover = nextHover;
+            warmTexture(next);
+            warmTexture(nextHover);
+          });
+        }
+
+        if (p.video || p.cardVideo) {
+          const video = document.createElement("video");
+          video.src = p.cardVideo || p.video!;
+          video.crossOrigin = "anonymous";
+          video.muted = true;
+          video.defaultMuted = true;
+          video.loop = true;
+          video.playsInline = true;
+          video.preload = "auto";
+          video.setAttribute("playsinline", "");
+          video.setAttribute("webkit-playsinline", "");
+          video.disablePictureInPicture = true;
+          (video as HTMLVideoElement & { disableRemotePlayback?: boolean }).disableRemotePlayback =
+            true;
+
+          entry.video = video;
+          activeVideos.push(video);
+
+          const videoTex = new THREE.VideoTexture(video);
+          videoTex.minFilter = THREE.LinearFilter;
+          videoTex.magFilter = THREE.LinearFilter;
+          videoTex.generateMipmaps = false;
+          videoTex.colorSpace = THREE.SRGBColorSpace;
+          videoTex.anisotropy = Math.min(
+            8,
+            renderer?.capabilities.getMaxAnisotropy() ?? 1,
+          );
+          entry.videoTex = videoTex;
+
+          const onReady = () => {
+            entry.media = videoTex;
+            entry.isLoaded = true;
+            warmTexture(videoTex);
+            // Do NOT autoplay here — only the closest on-screen cards play
+          };
+
+          if (video.readyState >= 2) onReady();
+          else video.addEventListener("loadeddata", onReady, { once: true });
+
+          // Instant poster while first GOP buffers
+          const poster = new Image();
+          poster.crossOrigin = "anonymous";
+          poster.src = p.image;
+          poster.onload = () => {
+            if (entry.media === defaultPlaceholder) {
+              entry.media = createStillMediaTexture(poster, aspect);
+              entry.isLoaded = true;
+              warmTexture(entry.media);
+            }
+          };
+        } else {
           const img = new Image();
           img.crossOrigin = "anonymous";
           img.src = p.image;
           img.onload = () => {
             try {
-              const aspect =
-                p.width && p.height ? p.width / p.height : img.width / img.height;
-              const norm = createCardCanvasTexture(img, p.title, false, aspect);
-              const hov = createCardCanvasTexture(img, p.title, true, aspect);
-              entry.normal = norm;
-              entry.hover = hov;
+              entry.media = createStillMediaTexture(img, aspect);
               entry.isLoaded = true;
-
-              // `initTexture` exists on some renderer builds but not on the
-              // public WebGLRenderer type, so probe for it structurally.
-              const initable = renderer as
-                | (THREE.WebGLRenderer & { initTexture?: (t: THREE.Texture) => void })
-                | null;
-              if (initable && typeof initable.initTexture === "function") {
-                try {
-                  initable.initTexture(norm);
-                  initable.initTexture(hov);
-                } catch {
-                  // Safe ignore if WebGL context not ready
-                }
-              }
+              warmTexture(entry.media);
             } catch (err) {
               console.warn("Failed texture creation for", p.slug, err);
+              entry.isLoaded = true;
             }
           };
           img.onerror = () => {
@@ -542,8 +707,8 @@ export default function ThreeCanvas({
         const singleW = leftAccumulator / 3;
         singleLoopWidthRef.current = singleW;
 
-        if (onCardMetricsReady) {
-          onCardMetricsReady(metrics, singleW);
+        if (onCardMetricsReadyRef.current) {
+          onCardMetricsReadyRef.current(metrics, singleW);
         }
       };
 
@@ -565,8 +730,9 @@ export default function ThreeCanvas({
           vertexShader,
           fragmentShader,
           uniforms: {
-            u_texture: { value: entry.normal },
-            u_hoverTex: { value: entry.hover },
+            u_texture: { value: entry.media },
+            u_chrome: { value: entry.chrome },
+            u_chromeHover: { value: entry.chromeHover },
             u_res: { value: new THREE.Vector2(1, 1) },
             u_size: { value: sizeVec },
             u_alpha: { value: 1.0 },
@@ -583,7 +749,8 @@ export default function ThreeCanvas({
             u_leanW: { value: 1.0 },
           },
           transparent: true,
-          side: THREE.DoubleSide,
+          side: THREE.FrontSide,
+          depthWrite: false,
         });
 
         const mesh = new THREE.Mesh(cardGeometry, material);
@@ -634,15 +801,46 @@ export default function ThreeCanvas({
         };
       };
 
-      // 9. Main Animation Loop (High-speed 120fps Math, No Layout Reflows!)
+      // 9. Main Animation Loop
+      let sectionVisible = true;
+      let pageVisible = document.visibilityState === "visible";
+      const sectionObs =
+        typeof IntersectionObserver !== "undefined"
+          ? new IntersectionObserver(
+              ([entry]) => {
+                sectionVisible = entry.isIntersecting;
+                if (!sectionVisible) {
+                  textureCache.forEach((e) => {
+                    if (e.video && !e.video.paused) e.video.pause();
+                  });
+                }
+              },
+              { threshold: 0.05 },
+            )
+          : null;
+      if (sectionObs && containerRef.current) sectionObs.observe(containerRef.current);
+
+      const onVisibility = () => {
+        pageVisible = document.visibilityState === "visible";
+        if (!pageVisible) {
+          textureCache.forEach((e) => {
+            if (e.video && !e.video.paused) e.video.pause();
+          });
+        }
+      };
+      document.addEventListener("visibilitychange", onVisibility);
+
       const animate = () => {
         animationFrameId = requestAnimationFrame(animate);
+
+        if (!sectionVisible || !pageVisible) return;
 
         const ww = window.innerWidth;
         const wh = window.innerHeight;
         const sheet = calculateSheetParams();
         const currentVel = velocityRef.current || 0;
         const smoothVel = Math.min(Math.abs(currentVel) / 250, 1.0);
+        const scrollingHard = smoothVel > 0.42;
 
         // Frustum coordinates
         const vFov = (camera.fov * Math.PI) / 180;
@@ -661,7 +859,10 @@ export default function ThreeCanvas({
         const singleW = singleLoopWidthRef.current;
         const totalSpan = singleW * 3;
 
-        // Update cards with seamless modulo wrap
+        // Rank visible cards by distance to center — only closest N decode
+        const visibleRank: { slug: string; dist: number }[] = [];
+        const seenSlug = new Set<string>();
+
         cardMeshes.forEach(({ mesh, slug, metricIndex }) => {
           const metric = cardMetricsRef.current[metricIndex];
           if (!metric || singleW <= 0) return;
@@ -677,36 +878,40 @@ export default function ThreeCanvas({
             cardScreenX -= totalSpan;
           }
 
-          // Offscreen culling check
           if (cardScreenX < -metric.wPx - 150 || cardScreenX > ww + 150) {
             mesh.visible = false;
             return;
           }
 
           mesh.visible = true;
+          const centerDist = Math.abs(cardScreenX + metric.wPx * 0.5 - ww * 0.5);
+          if (!seenSlug.has(slug)) {
+            seenSlug.add(slug);
+            visibleRank.push({ slug, dist: centerDist });
+          }
 
-          // Convert screen pixels to Three.js world coordinates
           const scaleX = metric.wPx * pxToWorld;
           const scaleY = metric.hPx * pxToWorld;
           const worldX = (cardScreenX + metric.wPx * 0.5 - ww * 0.5) * pxToWorld;
-          const worldY = 0; // Centered vertically, matching top-1/2 -translate-y-1/2
+          const worldY = 0;
 
           mesh.scale.set(scaleX, scaleY, 1);
           mesh.position.set(worldX, worldY, 0);
 
-          // Update textures if loaded
           const pair = textureCache.get(slug);
           const u = (mesh.material as THREE.ShaderMaterial).uniforms;
           if (pair?.isLoaded) {
-            if (u.u_texture.value !== pair.normal) {
-              u.u_texture.value = pair.normal;
+            if (u.u_texture.value !== pair.media) {
+              u.u_texture.value = pair.media;
             }
-            if (u.u_hoverTex.value !== pair.hover) {
-              u.u_hoverTex.value = pair.hover;
+            if (u.u_chrome.value !== pair.chrome) {
+              u.u_chrome.value = pair.chrome;
+            }
+            if (u.u_chromeHover.value !== pair.chromeHover) {
+              u.u_chromeHover.value = pair.chromeHover;
             }
           }
 
-          // Update shader uniforms
           u.u_res.value.set(scaleX, scaleY);
           u.u_sheetW.value = sheet.W;
           u.u_sheetD.value = sheet.D;
@@ -716,10 +921,28 @@ export default function ThreeCanvas({
           u.u_leanA.value = sheet.A;
           u.u_leanW.value = sheet.W;
 
-          // Smooth hover dent & highlight lerp
-          const isHovered = hoveredSlug === slug;
+          const isHovered = hoveredSlugRef.current === slug;
           const targetHover = isHovered ? 1.0 : 0.0;
           u.u_hover.value += (targetHover - u.u_hover.value) * 0.16;
+        });
+
+        // Play at most MAX_PLAYING_VIDEOS nearest cards; freeze decode while flinging
+        visibleRank.sort((a, b) => a.dist - b.dist);
+        const playSet = new Set<string>();
+        if (!scrollingHard) {
+          for (let i = 0; i < Math.min(MAX_PLAYING_VIDEOS, visibleRank.length); i++) {
+            playSet.add(visibleRank[i].slug);
+          }
+        }
+
+        textureCache.forEach((entry, slug) => {
+          const video = entry.video;
+          if (!video) return;
+          if (playSet.has(slug)) {
+            if (video.paused) video.play().catch(() => {});
+          } else if (!video.paused) {
+            video.pause();
+          }
         });
 
         if (renderer) {
@@ -760,15 +983,32 @@ export default function ThreeCanvas({
           if (found) {
             const project = repeatedProjects[found.metricIndex];
             if (project) {
-              onCardClick(project);
+              onCardClickRef.current(project);
             }
           }
+        }
+      };
+
+      const handlePointerMove = (e: PointerEvent) => {
+        mouseVec.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseVec.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(mouseVec, camera);
+        const visibleMeshes = cardMeshes
+          .filter((c) => c.mesh.visible)
+          .map((c) => c.mesh);
+        const hits = raycaster.intersectObjects(visibleMeshes);
+        if (hits.length > 0) {
+          const found = cardMeshes.find((c) => c.mesh === hits[0].object);
+          hoveredSlugRef.current = found?.slug ?? null;
+        } else {
+          hoveredSlugRef.current = null;
         }
       };
 
       const canvasEl = renderer.domElement;
       canvasEl.style.pointerEvents = "auto";
       canvasEl.addEventListener("pointerdown", handlePointerDown);
+      canvasEl.addEventListener("pointermove", handlePointerMove);
       canvasEl.addEventListener("click", handleCanvasClick);
 
       // 11. Handle Resize
@@ -776,8 +1016,10 @@ export default function ThreeCanvas({
         if (!renderer) return;
         const w = window.innerWidth;
         const h = window.innerHeight;
+        const mobile = w <= 650;
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 1.25 : 1.75));
         renderer.setSize(w, h);
         updateMetrics();
       };
@@ -787,8 +1029,27 @@ export default function ThreeCanvas({
       return () => {
         cancelAnimationFrame(animationFrameId);
         window.removeEventListener("resize", handleResize);
+        document.removeEventListener("visibilitychange", onVisibility);
+        sectionObs?.disconnect();
         canvasEl.removeEventListener("pointerdown", handlePointerDown);
+        canvasEl.removeEventListener("pointermove", handlePointerMove);
         canvasEl.removeEventListener("click", handleCanvasClick);
+        activeVideos.forEach((video) => {
+          video.pause();
+          video.removeAttribute("src");
+          video.load();
+        });
+        textureCache.forEach((entry) => {
+          entry.media.dispose();
+          entry.chrome.dispose();
+          entry.chromeHover.dispose();
+          entry.videoTex?.dispose();
+        });
+        emptyChrome.dispose();
+        defaultPlaceholder.dispose();
+        cardGeometry.dispose();
+        floorGeo.dispose();
+        floorMat.dispose();
         if (
           containerRef.current &&
           renderer?.domElement &&
@@ -801,7 +1062,7 @@ export default function ThreeCanvas({
     } catch (e) {
       console.error("ThreeCanvas error:", e);
     }
-  }, [repeatedProjects, hoveredSlug, velocityRef, scrollCurrentRef, onCardClick, onCardMetricsReady]);
+  }, [repeatedProjects, velocityRef, scrollCurrentRef]);
 
   return <div ref={containerRef} className={className ?? styles.glCanvasContainer} />;
 }

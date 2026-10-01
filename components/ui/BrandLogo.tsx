@@ -11,8 +11,8 @@ type Props = {
 };
 
 /**
- * Official brand mark — rounded white 13 UTOPIA wordmark.
- * Prefer `official` in chrome (header/footer).
+ * Official brand mark — locked live PNG wordmark for chrome.
+ * Prefer `official` in header/footer.
  */
 export function BrandLogo({
   variant = "official",

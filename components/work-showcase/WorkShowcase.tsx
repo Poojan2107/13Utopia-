@@ -39,7 +39,6 @@ export default function WorkShowcase() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
 
   // Repeat the 8 projects 3 times for seamless wrapping
   const repeatedProjects: RepeatedProject[] = useMemo(() => {
@@ -60,6 +59,10 @@ export default function WorkShowcase() {
         originalIndex: i,
       })),
     ];
+  }, []);
+
+  const handleCardClick = useCallback((project: Project) => {
+    setSelectedProject(project);
   }, []);
 
   // Shared physics refs (read directly in RAF loop)
@@ -261,8 +264,7 @@ export default function WorkShowcase() {
           repeatedProjects={repeatedProjects}
           scrollCurrentRef={scrollCurrentRef}
           velocityRef={velocityRef}
-          hoveredSlug={hoveredSlug}
-          onCardClick={(project) => setSelectedProject(project)}
+          onCardClick={handleCardClick}
           onCardMetricsReady={handleCardMetricsReady}
         />
       )}
@@ -303,8 +305,6 @@ export default function WorkShowcase() {
             <button
               key={project.slug}
               onClick={() => setSelectedProject(project)}
-              onMouseEnter={() => setHoveredSlug(project.slug)}
-              onMouseLeave={() => setHoveredSlug(null)}
             >
               {project.title} — {project.role} ({project.year})
             </button>

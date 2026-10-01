@@ -166,6 +166,25 @@ export default function ProjectModal({
 
           {/* Stacked Large Aspect-Ratio Frames */}
           <div className={styles.mediaStack}>
+            {project.video ? (
+              <div
+                className={styles.mediaFrame}
+                style={{ aspectRatio: project.aspectRatio }}
+              >
+                <video
+                  className={styles.mediaImg}
+                  src={project.video}
+                  poster={project.image}
+                  controls
+                  playsInline
+                  autoPlay
+                  muted
+                  loop
+                  preload="auto"
+                  aria-label={`${project.title} reel`}
+                />
+              </div>
+            ) : null}
             {galleryImages.map((imgUrl, i) => (
               <div
                 key={i}
