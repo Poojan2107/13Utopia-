@@ -8,14 +8,14 @@ import styles from "@/styles/plus-ex/PlusXSection.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const WORDS = [
-  "EXPERIENCE",
-  "CURIOSITY",
-  "INQUISITIVE",
-  "EMPATHETIC",
-  "TRANSFORMATION",
-  "UNREASONABLE",
+const PILLARS = [
   "ANOMALY",
+  "UNREASONABLE",
+  "TRANSFORMATION",
+  "CONVICTION",
+  "EXPERIENCE",
+  "ARCHITECTURE",
+  "TRANSCENDENCE",
 ];
 
 export function PlusXSection() {
@@ -33,22 +33,23 @@ export function PlusXSection() {
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: `+=${WORDS.length * 95}vh`,
+        end: `+=${PILLARS.length * 100}vh`,
         pin: true,
-        scrub: 0.5,
+        scrub: 0.6,
         anticipatePin: 1,
         onUpdate: (self) => {
-          const p = self.progress;
+          const p = Math.max(0, Math.min(1, self.progress));
           setScrollProgress(p);
 
-          const totalSteps = WORDS.length - 1;
+          // Calculate active pillar index based on scroll progress
+          const totalSteps = PILLARS.length - 1;
           const exactIdx = p * totalSteps;
           const currentIdx = Math.min(totalSteps, Math.max(0, Math.round(exactIdx)));
           setActiveIdx(currentIdx);
 
-          // Precision kinetic typography vertical glide
+          // Kinetic vertical typography scrub matching Plus-X precision
           const firstItem = track.children[0] as HTMLElement | undefined;
-          const itemHeight = firstItem ? firstItem.offsetHeight : 130;
+          const itemHeight = firstItem ? firstItem.offsetHeight : 140;
           const targetY = -exactIdx * itemHeight;
 
           gsap.set(track, {
@@ -79,13 +80,13 @@ export function PlusXSection() {
         <div className={styles.contentWrap}>
           {/* Static Lead Word */}
           <div className={styles.leadBox}>
-            <h2 className={styles.leadTitle}>PLUS</h2>
+            <h2 className={styles.leadTitle}>UTOPIA</h2>
           </div>
 
           {/* Kinetic Vertical Word Viewport */}
           <div className={styles.kineticViewport}>
             <div ref={trackRef} className={styles.wordsTrack}>
-              {WORDS.map((word, idx) => {
+              {PILLARS.map((word, idx) => {
                 const isActive = idx === activeIdx;
                 const dist = Math.abs(idx - activeIdx);
                 const opacity = isActive ? 1 : Math.max(0.12, 0.35 - dist * 0.12);
