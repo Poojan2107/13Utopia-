@@ -1,6 +1,6 @@
 /* =========================================================
-   13 UTOPIA // PLUS-X 15TH ANNIVERSARY EXACT REPLICATION
-   Monumental Kinetic Typography & 3D Architectural Beams
+   13 UTOPIA // 3D CYLINDRICAL CURVATURE TYPOGRAPHY
+   Plus-X Exact 3D Perspective Drum & Architectural Monoliths
    ========================================================= */
 
 .section {
@@ -48,9 +48,10 @@
   user-select: none;
 }
 
-/* ─── Static Lead Title: "PLUS" ─────────────────────────── */
+/* ─── Static Lead Title: "UTOPIA" ───────────────────────── */
 .leadBox {
   margin-bottom: clamp(0.4rem, 1.2vh, 1rem);
+  z-index: 5;
 }
 
 .leadTitle {
@@ -65,14 +66,17 @@
   padding: 0;
 }
 
-/* ─── Kinetic Vertical Word Viewport ────────────────────── */
-.kineticViewport {
+/* ─── 3D Cylindrical Drum Viewport ──────────────────────── */
+.cylinderViewport {
   position: relative;
   height: clamp(140px, 26vh, 260px);
   overflow: visible;
   display: flex;
   align-items: flex-start;
   width: 100%;
+  perspective: 1200px;
+  perspective-origin: 20% 50%;
+  transform-style: preserve-3d;
   mask-image: linear-gradient(
     180deg,
     transparent 0%,
@@ -89,52 +93,70 @@
   );
 }
 
-.wordsTrack {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.4rem, 1.2vh, 1rem);
-  will-change: transform;
+.cylinderDrum {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
 }
 
-.wordRow {
-  display: block;
+.cylinderItem {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   margin: 0;
   padding: 0;
-  transition:
-    opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   transform-origin: left center;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  transition:
+    color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.3s ease;
 }
 
-.wordText {
+.itemText {
   display: block;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
-  font-size: clamp(4.4rem, min(14vh, 11.5vw), 12rem);
   font-weight: 800;
   line-height: 0.85;
   letter-spacing: -0.045em;
   text-transform: uppercase;
   color: #4a4a4a;
-  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.wordRowActive .wordText {
-  color: #ffffff;
+.itemSingle {
+  font-size: clamp(4.4rem, min(14vh, 11.5vw), 12rem);
+}
+
+.itemTriple {
+  font-size: clamp(2.6rem, min(8.5vh, 6.8vw), 7.2rem);
+  letter-spacing: -0.035em;
+}
+
+.itemActive .itemText {
+  color: #ffffff !important;
   text-shadow: none;
 }
 
 /* ─── Responsive Media Queries ──────────────────────────── */
 @media (max-width: 900px) {
-  .kineticViewport {
+  .cylinderViewport {
     height: clamp(90px, 18vh, 150px);
+    perspective: 800px;
   }
 
   .leadTitle {
     font-size: clamp(3.2rem, 14vw, 6rem);
   }
 
-  .wordText {
+  .itemSingle {
     font-size: clamp(3rem, 13vw, 5.6rem);
+  }
+
+  .itemTriple {
+    font-size: clamp(1.8rem, 7.5vw, 3.2rem);
   }
 }

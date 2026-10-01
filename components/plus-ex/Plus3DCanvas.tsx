@@ -11,10 +11,9 @@ interface Plus3DCanvasProps {
 
 /**
  * 3D 13 Utopia Architectural Emblem Canvas
- * - Starts at progress 0 as the iconic, pristine front-facing "1 3" emblem.
- * - Undergoes a continuous 360-degree spatial tumble through the section scroll.
- * - Resolves at progress 1 back to the exact front-facing "1 3" emblem.
- * - High-craft physical shaders: 24k gold vertical "1" pillar + obsidian titanium "3" bars.
+ * Plus-X Exact Materiality & Lighting:
+ * Matte architectural graphite monoliths with razor chamfers, deep studio lighting,
+ * and a full 360-degree rotation loop that starts and ends on the iconic front-facing "1 3" emblem.
  */
 export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -37,9 +36,9 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000);
 
-    // Camera with balanced focal length
-    const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
-    camera.position.set(0.5, 0, 10.8);
+    // Camera with cinematic perspective
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
+    camera.position.set(0.4, 0, 11.2);
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({
@@ -51,13 +50,13 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
     renderer.setPixelRatio(dpr);
     renderer.setSize(width, height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
+    renderer.toneMappingExposure = 1.3;
     container.appendChild(renderer.domElement);
 
     // 3D "13" Emblem Group
     const emblemGroup = new THREE.Group();
 
-    // Helper: Precision Pill Geometry
+    // Helper: Precision Pill Geometry with Crisp Chamfer
     const createPillGeometry = (w: number, h: number, depth: number) => {
       const shape = new THREE.Shape();
       const hw = w / 2;
@@ -87,10 +86,10 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
         steps: 1,
         depth: depth,
         bevelEnabled: true,
-        bevelThickness: 0.05,
-        bevelSize: 0.05,
+        bevelThickness: 0.045,
+        bevelSize: 0.045,
         bevelOffset: 0,
-        bevelSegments: 5,
+        bevelSegments: 4,
       };
 
       const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
@@ -98,89 +97,79 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
       return geo;
     };
 
-    // Premium Materials
-    // 24k Liquid Gold Physical Material for "1" Pillar
-    const goldMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0xd8ad42),
-      emissive: new THREE.Color(0x241804),
-      roughness: 0.22,
-      metalness: 0.94,
-      clearcoat: 0.8,
-      clearcoatRoughness: 0.14,
-      reflectivity: 0.96,
+    // Plus-X Exact Architectural Graphite & Titanium Materials
+    const verticalBeamMaterial = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0x343434), // Plus-X signature dark architectural graphite
+      roughness: 0.38,
+      metalness: 0.65,
     });
 
-    // Brushed Obsidian Titanium Physical Material for "3" Bars
-    const titaniumMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x383838),
-      emissive: new THREE.Color(0x0c0c0c),
-      roughness: 0.32,
-      metalness: 0.84,
-      clearcoat: 0.65,
-      clearcoatRoughness: 0.18,
-      reflectivity: 0.9,
+    const horizontalBeamMaterial = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0x2c2c2c), // Plus-X refined deep charcoal
+      roughness: 0.42,
+      metalness: 0.62,
     });
 
     const depth = 0.95;
 
-    // 1. The "1" Pillar: Vertical Golden Monolith
-    const oneGeo = createPillGeometry(0.72, 5.8, depth);
-    const oneMesh = new THREE.Mesh(oneGeo, goldMaterial);
-    oneMesh.position.set(-1.75, 0, 0);
+    // 1. The "1" Pillar: Vertical Architectural Pillar on Left
+    const oneGeo = createPillGeometry(0.72, 6.2, depth);
+    const oneMesh = new THREE.Mesh(oneGeo, verticalBeamMaterial);
+    oneMesh.position.set(-1.95, 0, 0);
     emblemGroup.add(oneMesh);
 
-    // 2. The "3" Bars: Three Stacked Titanium Horizontal Bars
-    const barWidth = 3.2;
+    // 2. The "3" Bars: Three Horizontal Architectural Bars on Right
+    const barWidth = 3.6;
     const barHeight = 0.72;
-    const threeX = 0.75;
-    const barSpacing = 2.05;
+    const threeX = 0.85;
+    const barSpacing = 2.2;
 
     // Top Bar
     const topGeo = createPillGeometry(barWidth, barHeight, depth);
-    const topMesh = new THREE.Mesh(topGeo, titaniumMaterial);
+    const topMesh = new THREE.Mesh(topGeo, horizontalBeamMaterial);
     topMesh.position.set(threeX, barSpacing, 0);
     emblemGroup.add(topMesh);
 
     // Middle Bar
     const midGeo = createPillGeometry(barWidth, barHeight, depth);
-    const midMesh = new THREE.Mesh(midGeo, titaniumMaterial);
+    const midMesh = new THREE.Mesh(midGeo, horizontalBeamMaterial);
     midMesh.position.set(threeX, 0, 0);
     emblemGroup.add(midMesh);
 
     // Bottom Bar
     const botGeo = createPillGeometry(barWidth, barHeight, depth);
-    const botMesh = new THREE.Mesh(botGeo, titaniumMaterial);
+    const botMesh = new THREE.Mesh(botGeo, horizontalBeamMaterial);
     botMesh.position.set(threeX, -barSpacing, 0);
     emblemGroup.add(botMesh);
 
-    // Position the group on the right side of the canvas in deep space
-    emblemGroup.position.set(1.5, 0, -1.4);
-    emblemGroup.rotation.set(0, 0, 0); // starts pristine front-facing 1 3
+    // Position in deep background to the right
+    emblemGroup.position.set(1.5, 0, -1.6);
+    emblemGroup.rotation.set(0, 0, 0); // Starts pristine front-facing "1 3"
     scene.add(emblemGroup);
     groupRef.current = emblemGroup;
 
-    // High-End Studio Lighting Setup
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    // Studio Lighting (Plus-X Clear Bevel Definition)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
     scene.add(ambientLight);
 
     // Key Light: Sharp directional light highlighting chamfered edges
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.4);
-    keyLight.position.set(6, 8, 8);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
+    keyLight.position.set(7, 9, 8);
     scene.add(keyLight);
 
     // Fill Light: Soft ambient fill for dark facets
-    const fillLight = new THREE.DirectionalLight(0xaaaaaa, 1.8);
+    const fillLight = new THREE.DirectionalLight(0xbbbbbb, 1.6);
     fillLight.position.set(-7, 2, 5);
     scene.add(fillLight);
 
-    // Warm Gold Rim Light: 13 Utopia luxury signature glint
-    const goldRimLight = new THREE.DirectionalLight(0xe8c56a, 2.8);
+    // Subtle Gold Rim Accent Light: 13 Utopia luxury signature
+    const goldRimLight = new THREE.DirectionalLight(0xe8c56a, 2.2);
     goldRimLight.position.set(4, -6, -3);
     scene.add(goldRimLight);
 
-    // Top Overhead Light
-    const topLight = new THREE.DirectionalLight(0xffffff, 1.6);
-    topLight.position.set(0, 9, 0);
+    // Overhead Light
+    const topLight = new THREE.DirectionalLight(0xffffff, 1.4);
+    topLight.position.set(0, 10, -1);
     scene.add(topLight);
 
     // Mouse tracking
@@ -222,24 +211,23 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
          * - At progress 0 (entry): rotY = 0, rotX = 0, rotZ = 0 (Pristine 1 3 face)
          * - During progress (0 -> 1): full 360-deg rotation on Y (p * Math.PI * 2)
          *   + smooth sinusoidal architectural tilt on X and Z
-         * - At progress 1 (exit): rotY = 2*PI (which equals 0 deg), rotX = 0, rotZ = 0 (Resolves back to pristine 1 3 face)
+         * - At progress 1 (exit): rotY = 2*PI (= 0 deg), rotX = 0, rotZ = 0 (Resolves back to pristine 1 3 face)
          */
         const fullSpinY = p * Math.PI * 2;
-        const archTiltX = Math.sin(p * Math.PI) * 0.48;
-        const archTiltZ = Math.sin(p * Math.PI) * 0.24;
-        const idleFloat = Math.sin(elapsed * 0.5) * 0.025;
+        const archTiltX = Math.sin(p * Math.PI) * 0.45;
+        const archTiltZ = Math.sin(p * Math.PI) * 0.22;
+        const idleFloat = Math.sin(elapsed * 0.5) * 0.02;
 
-        const targetRotX = archTiltX + mouseRef.current.y * 0.16 + idleFloat;
-        const targetRotY = fullSpinY + mouseRef.current.x * 0.22;
+        const targetRotX = archTiltX + mouseRef.current.y * 0.15 + idleFloat;
+        const targetRotY = fullSpinY + mouseRef.current.x * 0.2;
         const targetRotZ = archTiltZ + mouseRef.current.x * 0.08;
 
         emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.08;
         emblemGroup.rotation.y += (targetRotY - emblemGroup.rotation.y) * 0.08;
         emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.08;
 
-        // Subtle position depth shift
-        const targetPosX = 1.5 + mouseRef.current.x * 0.3 - p * 0.35;
-        const targetPosY = 0 - mouseRef.current.y * 0.2 + Math.sin(elapsed * 0.8) * 0.04;
+        const targetPosX = 1.5 + mouseRef.current.x * 0.25 - p * 0.3;
+        const targetPosY = 0 - mouseRef.current.y * 0.2 + Math.sin(elapsed * 0.8) * 0.03;
         emblemGroup.position.x += (targetPosX - emblemGroup.position.x) * 0.06;
         emblemGroup.position.y += (targetPosY - emblemGroup.position.y) * 0.06;
       }
@@ -260,8 +248,8 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
       topGeo.dispose();
       midGeo.dispose();
       botGeo.dispose();
-      goldMaterial.dispose();
-      titaniumMaterial.dispose();
+      verticalBeamMaterial.dispose();
+      horizontalBeamMaterial.dispose();
       renderer.dispose();
     };
   }, []);

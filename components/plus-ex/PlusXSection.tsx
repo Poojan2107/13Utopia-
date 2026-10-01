@@ -8,21 +8,32 @@ import styles from "@/styles/plus-ex/PlusXSection.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PILLARS = [
+/**
+ * 13 UTOPIA Architectural Easter Egg List:
+ * Exactly 13 items structured in the 1-3-3-1 rhythm:
+ * 1 word · 3 words · 3 words · 1 word · 3 words · 3 words · 1 word · 3 words · 3 words · 1 word · 3 words · 3 words · 1 word
+ */
+const ITEMS_13 = [
   "ANOMALY",
-  "UNREASONABLE",
+  "QUESTION THE DEFAULT",
+  "FORGE UNREAL VISIONS",
+  "SCALE",
+  "CRAFT BESPOKE WORLDS",
+  "ENGINEER ZERO LATENCY",
   "TRANSFORMATION",
+  "COMMAND DIGITAL SPACES",
+  "DEPLOY AUTONOMOUS SWARMS",
   "CONVICTION",
-  "EXPERIENCE",
-  "ARCHITECTURE",
-  "TRANSCENDENCE",
+  "REFUSE MEDIOCRE CONVENTIONS",
+  "IGNITE CATEGORY CREATION",
+  "UNREASONABLE",
 ];
 
 export function PlusXSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
-  const [activeIdx, setActiveIdx] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [exactIndex, setExactIndex] = useState(0);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -33,29 +44,43 @@ export function PlusXSection() {
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: `+=${PILLARS.length * 100}vh`,
+        end: `+=${ITEMS_13.length * 90}vh`,
         pin: true,
-        scrub: 0.6,
+        scrub: 0.5,
         anticipatePin: 1,
         onUpdate: (self) => {
           const p = Math.max(0, Math.min(1, self.progress));
           setScrollProgress(p);
 
-          // Calculate active pillar index based on scroll progress
-          const totalSteps = PILLARS.length - 1;
-          const exactIdx = p * totalSteps;
-          const currentIdx = Math.min(totalSteps, Math.max(0, Math.round(exactIdx)));
-          setActiveIdx(currentIdx);
+          const totalSteps = ITEMS_13.length - 1;
+          const currentExact = p * totalSteps;
+          setExactIndex(currentExact);
 
-          // Kinetic vertical typography scrub matching Plus-X precision
-          const firstItem = track.children[0] as HTMLElement | undefined;
-          const itemHeight = firstItem ? firstItem.offsetHeight : 140;
-          const targetY = -exactIdx * itemHeight;
+          // Update cylindrical 3D curvature positioning dynamically
+          const children = track.children;
+          const lineStep = window.innerWidth <= 900 ? 75 : 135;
 
-          gsap.set(track, {
-            y: targetY,
-            overwrite: "auto",
-          });
+          for (let i = 0; i < children.length; i++) {
+            const el = children[i] as HTMLElement;
+            const offset = i - currentExact;
+            const absOffset = Math.abs(offset);
+
+            // 3D Cylindrical Drum Curvature Transform
+            const translateY = offset * lineStep;
+            const rotateX = -offset * 26; // degrees
+            const translateZ = -Math.pow(absOffset, 1.35) * 85; // px depth
+            const scale = Math.max(0.8, 1 - absOffset * 0.07);
+            const opacity = Math.max(0.12, 1 - absOffset * 0.42);
+
+            el.style.transform = `translate3d(0px, ${translateY}px, ${translateZ}px) rotateX(${rotateX}deg) scale(${scale})`;
+            el.style.opacity = `${opacity}`;
+
+            if (absOffset < 0.45) {
+              el.classList.add(styles.itemActive);
+            } else {
+              el.classList.remove(styles.itemActive);
+            }
+          }
         },
       });
     }, section);
@@ -70,12 +95,12 @@ export function PlusXSection() {
       ref={sectionRef}
       className={styles.section}
       id="outcomes"
-      aria-label="13 Utopia Kinetic Perspective Architecture"
+      aria-label="13 Utopia 3D Curvature Perspective Architecture"
     >
-      {/* 3D 13 Emblem Canvas in Deep Spatial Background */}
+      {/* 3D "13" Emblem Canvas in Pure Obsidian Stage */}
       <Plus3DCanvas progress={scrollProgress} className={styles.canvas3D} />
 
-      {/* Monumental Kinetic Typography Layer */}
+      {/* Monumental 3D Curvature Typography Stage */}
       <div className={styles.stage}>
         <div className={styles.contentWrap}>
           {/* Static Lead Word */}
@@ -83,24 +108,21 @@ export function PlusXSection() {
             <h2 className={styles.leadTitle}>UTOPIA</h2>
           </div>
 
-          {/* Kinetic Vertical Word Viewport */}
-          <div className={styles.kineticViewport}>
-            <div ref={trackRef} className={styles.wordsTrack}>
-              {PILLARS.map((word, idx) => {
-                const isActive = idx === activeIdx;
-                const dist = Math.abs(idx - activeIdx);
-                const opacity = isActive ? 1 : Math.max(0.12, 0.35 - dist * 0.12);
-
+          {/* 3D Cylindrical Curvature Viewport */}
+          <div className={styles.cylinderViewport}>
+            <div ref={trackRef} className={styles.cylinderDrum}>
+              {ITEMS_13.map((text, idx) => {
+                const isSingleWord = !text.includes(" ");
                 return (
                   <div
-                    key={word}
-                    className={`${styles.wordRow} ${isActive ? styles.wordRowActive : ""}`}
-                    style={{
-                      opacity,
-                      transform: `scale(${isActive ? 1 : 0.96})`,
-                    }}
+                    key={text}
+                    className={`${styles.cylinderItem} ${idx === 0 ? styles.itemActive : ""}`}
                   >
-                    <span className={styles.wordText}>{word}</span>
+                    <span
+                      className={`${styles.itemText} ${isSingleWord ? styles.itemSingle : styles.itemTriple}`}
+                    >
+                      {text}
+                    </span>
                   </div>
                 );
               })}
