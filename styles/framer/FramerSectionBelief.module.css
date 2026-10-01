@@ -1,0 +1,284 @@
+/* =========================================================
+   Belief — Section 02
+   NexStudio statement + Work chapter presence
+   Full-bleed rules · monumental type · meta rail · no bust
+   ========================================================= */
+
+.section {
+  --display: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  --ink: var(--color-warm-white, #f3f1ea);
+  --gold: var(--color-gold, #e8c56a);
+  --rule: rgba(243, 241, 234, 0.1);
+
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg, #0a0a0a);
+  color: var(--ink);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Soft depth so the plane isn't flat void */
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 18% 42%,
+      color-mix(in srgb, var(--gold) 7%, transparent),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 50% 45% at 88% 70%,
+      rgba(255, 255, 255, 0.03),
+      transparent 55%
+    );
+  z-index: 0;
+}
+
+/* Work-section eyebrow strip */
+.eyebrow {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 1.35rem clamp(1.75rem, 5.5vw, 6.5rem);
+  border-top: 1px solid color-mix(in srgb, var(--gold) 18%, transparent);
+  border-bottom: 1px solid var(--rule);
+  background: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(8px);
+}
+
+.eyebrowNum {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.eyebrowSep {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  color: color-mix(in srgb, var(--gold) 35%, transparent);
+}
+
+.eyebrowLabel {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--gold) 78%, #fff 6%);
+}
+
+.eyebrowMeta {
+  margin-left: auto;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.38);
+}
+
+.stage {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vh, 6rem) clamp(1.75rem, 5.5vw, 6.5rem);
+  border-bottom: 1px solid var(--rule);
+  box-sizing: border-box;
+}
+
+.grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.55fr);
+  gap: clamp(2.5rem, 5vw, 5rem);
+  align-items: end;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.75rem, 4vh, 2.75rem);
+  min-width: 0;
+}
+
+.kicker {
+  margin: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.55);
+}
+
+.kickerNum {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.statement {
+  margin: 0;
+  width: 100%;
+  font-family: var(--display);
+  font-size: clamp(2.55rem, 6.2vw, 5.6rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.04;
+}
+
+.line {
+  display: block;
+  color: var(--ink);
+}
+
+.lineGold {
+  display: block;
+  color: var(--gold);
+}
+
+/* Right rail — fills the void with architecture, not decoration */
+.rail {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2.5rem;
+  min-height: 100%;
+  padding: 0.25rem 0 0.25rem clamp(1rem, 2vw, 1.75rem);
+  border-left: 1px solid var(--rule);
+}
+
+.railBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.railLabel {
+  margin: 0;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--gold) 72%, transparent);
+}
+
+.rejectList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.rejectRow {
+  position: relative;
+  width: fit-content;
+}
+
+.rejectText {
+  font-family: var(--display);
+  font-size: clamp(0.95rem, 1.35vw, 1.15rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.34);
+}
+
+.rejectBar {
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  top: 52%;
+  height: 1px;
+  background: var(--gold);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.railFoot {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+.railFootKey {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+}
+
+.railFootVal {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.45);
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .rail {
+    border-left: none;
+    border-top: 1px solid var(--rule);
+    padding: 1.75rem 0 0;
+    min-height: 0;
+    gap: 1.75rem;
+  }
+
+  .railFoot {
+    grid-template-columns: repeat(3, auto 1fr);
+    max-width: 28rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .eyebrow {
+    flex-wrap: wrap;
+    padding-inline: 1.25rem;
+  }
+
+  .eyebrowMeta {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .stage {
+    padding-inline: 1.25rem;
+  }
+
+  .statement {
+    font-size: clamp(1.9rem, 9vw, 2.55rem);
+  }
+
+  .railFoot {
+    grid-template-columns: auto 1fr;
+  }
+}

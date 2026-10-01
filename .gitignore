@@ -53,3 +53,9 @@ next-env.d.ts
 
 # large / stray media not needed in repo (keep metal-human assets)
 /public/20260924-*.mp4
+
+# vendored reference trees and local tool state (not part of the site)
+/web/
+/.kombai/
+/.cursor/
+/.freebuff/

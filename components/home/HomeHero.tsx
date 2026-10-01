@@ -7,8 +7,7 @@ import { HeroEnter } from "@/components/motion/HeroEnter";
 import styles from "@/styles/home/HomeHero.module.css";
 
 /**
- * HomeHero — Monumental 3D Spatial Typography with Metallic Chrome/Gold gradients,
- * dynamic mouse parallax, and spatial depth behind the bust sculpture.
+ * HomeHero — locked dual-flank: type in silk gaps, bust gold fill only (no glow).
  */
 export function HomeHero() {
   const typeRef = useRef<HTMLDivElement | null>(null);
@@ -35,10 +34,10 @@ export function HomeHero() {
       currentY += (targetY - currentY) * 0.06;
 
       if (el) {
-        el.style.setProperty("--mx", `${currentX * 18}px`);
-        el.style.setProperty("--my", `${currentY * 12}px`);
-        el.style.setProperty("--rx", `${currentY * -3.5}deg`);
-        el.style.setProperty("--ry", `${currentX * 5}deg`);
+        el.style.setProperty("--mx", `${currentX * 14}px`);
+        el.style.setProperty("--my", `${currentY * 10}px`);
+        el.style.setProperty("--rx", `${currentY * -2.5}deg`);
+        el.style.setProperty("--ry", `${currentX * 4}deg`);
       }
       rafId = requestAnimationFrame(animate);
     };
@@ -55,16 +54,14 @@ export function HomeHero() {
   return (
     <section className={styles.hero} aria-label="13 UTOPIA">
       <HeroEnter>
-        {/* Layer 0: Atmospheric Gold Silk Curtain */}
         <div className={styles.atmosphere} aria-hidden="true">
           <GoldSilkCurtain />
         </div>
 
-        {/* Layer 1: Spatial Typography in Depth (Behind the Bust) */}
         <div ref={typeRef} className={styles.stageTypography}>
           <aside className={`${styles.left} ${styles.flank}`}>
             <div className={styles.stack} data-hero-left>
-              <div className={`${styles.statement} ${styles.statementOutline}`}>
+              <div className={`${styles.statement} ${styles.statementGold}`}>
                 <span className={styles.be}>BE</span>
                 <h1 className={styles.unreal}>UNREAL</h1>
               </div>
@@ -73,7 +70,9 @@ export function HomeHero() {
 
           <aside className={`${styles.right} ${styles.flank}`}>
             <div className={`${styles.stack} ${styles.stackRight}`} data-hero-right>
-              <div className={`${styles.statement} ${styles.statementRight} ${styles.statementSolid}`}>
+              <div
+                className={`${styles.statement} ${styles.statementRight} ${styles.statementGold}`}
+              >
                 <span className={`${styles.be} ${styles.beRight}`}>BE</span>
                 <h2 className={styles.unreasonable}>UNREASONABLE</h2>
               </div>
@@ -81,7 +80,6 @@ export function HomeHero() {
           </aside>
         </div>
 
-        {/* Layer 2: 3D Sculpture Bust (Passes in front of typography) */}
         <div className={styles.media} aria-hidden="true" data-hero-media>
           <div className={styles.videoWrapper}>
             <TransparentBustVideo />

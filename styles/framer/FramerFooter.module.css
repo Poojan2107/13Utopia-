@@ -1,0 +1,148 @@
+.footer {
+  position: relative;
+  width: 100%;
+  background-color: #070707;
+  color: var(--color-text-primary, #f3f1ea);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: clamp(4rem, 8vh, 6rem) clamp(2rem, 5vw, 6rem) 3rem;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 1540px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 6vh, 4.5rem);
+}
+
+.topRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.brandBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.brandTitle {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: #f3f1ea;
+}
+
+.brandTagline {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: #dfc17b;
+  text-transform: uppercase;
+}
+
+.backToTop {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: rgba(243, 241, 234, 0.6);
+  cursor: pointer;
+  padding: 0.5rem 0;
+  transition: color 0.25s ease;
+}
+
+.backToTop:hover {
+  color: #e8c56a;
+}
+
+.arrowUp {
+  font-size: 1rem;
+}
+
+/* Matrix Row */
+.matrixRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.colTitle {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: #dfc17b;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.footerLink {
+  font-family: var(--font-sans, "PP Neue Montreal", sans-serif);
+  font-size: 0.88rem;
+  color: rgba(243, 241, 234, 0.6);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.footerLink:hover {
+  color: #f3f1ea;
+  transform: translateX(3px);
+}
+
+.colText {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: rgba(243, 241, 234, 0.45);
+  margin: 0;
+}
+
+/* Bottom Row */
+.bottomRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.motto {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: rgba(243, 241, 234, 0.7);
+  text-transform: uppercase;
+}
+
+.copyright {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: rgba(243, 241, 234, 0.35);
+}
+
+@media (max-width: 768px) {
+  .matrixRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

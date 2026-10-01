@@ -1,0 +1,844 @@
+/* =========================================================
+   Service Detail — Griflan IA × 13U Work craft
+   ========================================================= */
+
+.page {
+  --svc-accent: var(--color-gold, #e8c56a);
+  background: var(--color-bg, #0a0a0a);
+  color: #f3f1ea;
+  min-height: 100dvh;
+  padding-top: 4.75rem;
+}
+
+.topBar {
+  position: sticky;
+  top: 4.75rem;
+  z-index: 40;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem 1.5rem;
+  padding: 1rem clamp(1.25rem, 4vw, 5.5rem);
+  border-bottom: 1px solid rgba(243, 241, 234, 0.1);
+  background: color-mix(in srgb, #0a0a0a 88%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.topMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.topNum {
+  color: var(--svc-accent);
+  font-weight: 600;
+}
+
+.topSep {
+  color: color-mix(in srgb, var(--svc-accent) 40%, transparent);
+}
+
+.topTag {
+  color: rgba(243, 241, 234, 0.55);
+}
+
+.topHint {
+  margin-left: 0.65rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid rgba(243, 241, 234, 0.14);
+  color: rgba(243, 241, 234, 0.32);
+}
+
+/* ─── Hero ─── */
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 7vh, 5rem) clamp(1.25rem, 4vw, 5.5rem)
+    clamp(3rem, 8vh, 5.5rem);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 8% auto auto 55%;
+  width: min(42vw, 520px);
+  height: min(42vw, 520px);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--svc-accent) 12%, transparent),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heroCopy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.heroEyebrow {
+  margin: 0;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--svc-accent);
+}
+
+.heroEcho {
+  margin: 0.15rem 0 0.35rem;
+}
+
+.heroTitle {
+  margin: 0;
+  max-width: 18ch;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: #f3f1ea;
+}
+
+.heroLead {
+  margin: 0.35rem 0 0;
+  max-width: 34rem;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+  line-height: 1.45;
+  color: #f3f1ea;
+}
+
+.heroBody {
+  margin: 0;
+  max-width: 36rem;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.92rem, 1.05vw, 1.02rem);
+  line-height: 1.65;
+  color: rgba(243, 241, 234, 0.58);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-top: 0.85rem;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.9rem 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--svc-accent) 70%, transparent);
+  background: color-mix(in srgb, var(--svc-accent) 14%, transparent);
+  color: #f3f1ea;
+  text-decoration: none;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ctaPrimary:hover,
+.ctaPrimary:focus-visible {
+  background: color-mix(in srgb, var(--svc-accent) 28%, transparent);
+  border-color: var(--svc-accent);
+  outline: none;
+}
+
+.ctaPrimary:hover .ctaArrow {
+  transform: translateX(4px);
+}
+
+.ctaArrow {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--svc-accent);
+}
+
+.ctaGhost {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.85rem 0.35rem;
+  color: rgba(243, 241, 234, 0.55);
+  text-decoration: none;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-bottom: 1px solid transparent;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.ctaGhost:hover,
+.ctaGhost:focus-visible {
+  color: #f3f1ea;
+  border-bottom-color: color-mix(in srgb, var(--svc-accent) 55%, transparent);
+  outline: none;
+}
+
+.heroMedia {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.mediaGlow {
+  position: absolute;
+  inset: -8%;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--svc-accent) 16%, transparent),
+    transparent 68%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mediaFrame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #111;
+  isolation: isolate;
+  z-index: 1;
+}
+
+.mediaFrame:hover .mediaImage {
+  filter: saturate(1) contrast(1.08);
+}
+
+.mediaImage {
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+  filter: saturate(0.92) contrast(1.05);
+  transition: filter 0.6s ease;
+}
+
+.corner {
+  position: absolute;
+  z-index: 2;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--svc-accent) 75%, #fff);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.corner[data-c="tl"] {
+  top: 0.65rem;
+  left: 0.75rem;
+}
+.corner[data-c="tr"] {
+  top: 0.65rem;
+  right: 0.75rem;
+}
+.corner[data-c="bl"] {
+  bottom: 0.65rem;
+  left: 0.75rem;
+}
+.corner[data-c="br"] {
+  bottom: 0.65rem;
+  right: 0.75rem;
+}
+
+.mediaBadge {
+  position: absolute;
+  left: 0.9rem;
+  bottom: 0.9rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.65rem;
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(6px);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.72);
+}
+
+.badgeDot {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--svc-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--svc-accent) 25%, transparent);
+}
+
+/* ─── Proof ─── */
+.proof {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  border-top: 1px solid rgba(243, 241, 234, 0.1);
+  border-bottom: 1px solid rgba(243, 241, 234, 0.1);
+  background: rgba(243, 241, 234, 0.1);
+}
+
+.proofItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: clamp(1.25rem, 3vh, 2rem) clamp(1rem, 2.5vw, 1.75rem);
+  background: #0a0a0a;
+  transition: background 0.35s ease;
+}
+
+.proofItem:hover {
+  background: #0f0f0f;
+}
+
+.proofValue {
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  color: var(--svc-accent);
+  line-height: 1;
+}
+
+.proofLabel {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.45);
+  max-width: 16ch;
+  line-height: 1.45;
+}
+
+/* ─── Manifesto ─── */
+.manifesto {
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: clamp(4rem, 10vh, 7rem) clamp(1.25rem, 4vw, 5.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: end;
+  border-bottom: 1px solid rgba(243, 241, 234, 0.08);
+}
+
+.manifestoTitle {
+  margin: 0;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(2.4rem, 5.5vw, 5.2rem);
+  font-weight: 300;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  color: #f3f1ea;
+  max-width: 12ch;
+}
+
+.manifestoSide {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding-bottom: 0.35rem;
+}
+
+.manifestoRule {
+  display: block;
+  width: 2.75rem;
+  height: 1px;
+  background: var(--svc-accent);
+  transform-origin: left center;
+}
+
+.manifestoBody {
+  margin: 0;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.98rem, 1.2vw, 1.12rem);
+  line-height: 1.65;
+  color: rgba(243, 241, 234, 0.58);
+  max-width: 34rem;
+}
+
+/* ─── Shared blocks ─── */
+.block {
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: clamp(3.25rem, 8vh, 5.5rem) clamp(1.25rem, 4vw, 5.5rem);
+}
+
+.blockHead {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
+  padding-bottom: 1.15rem;
+}
+
+.blockIndex {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--svc-accent);
+}
+
+.blockTitle {
+  margin: 0;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.55rem, 2.8vw, 2.35rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  color: #f3f1ea;
+}
+
+.blockRule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--svc-accent) 55%, transparent),
+    rgba(243, 241, 234, 0.12) 42%,
+    transparent
+  );
+  transform-origin: left center;
+}
+
+.reasonGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 3vw, 2rem);
+}
+
+.reasonCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 0.35rem 0 1.1rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reasonCard:hover {
+  transform: translateY(-3px);
+}
+
+.reasonLine {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(243, 241, 234, 0.1);
+  transform: scaleX(0.28);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s ease;
+}
+
+.reasonCard:hover .reasonLine {
+  transform: scaleX(1);
+  background: color-mix(in srgb, var(--svc-accent) 55%, transparent);
+}
+
+.reasonNum {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--svc-accent);
+}
+
+.reasonTitle {
+  margin: 0;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+.reasonDesc {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(243, 241, 234, 0.55);
+}
+
+.capMatrix {
+  display: flex;
+  flex-direction: column;
+}
+
+.capRow {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1.2rem 0.65rem 1.2rem 0.4rem;
+  margin: 0 -0.4rem;
+  border-bottom: 1px solid rgba(243, 241, 234, 0.1);
+  border-left: 1px solid transparent;
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease,
+    padding-left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.capRow:hover {
+  background: color-mix(in srgb, var(--svc-accent) 5%, transparent);
+  border-left-color: color-mix(in srgb, var(--svc-accent) 65%, transparent);
+  padding-left: 0.75rem;
+}
+
+.capRow:hover .capTitle {
+  color: #fff;
+}
+
+.capRow:hover .capBadge {
+  color: var(--svc-accent);
+}
+
+.capNum {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--svc-accent);
+  padding-top: 0.3rem;
+}
+
+.capCopy {
+  min-width: 0;
+}
+
+.capHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.capTitle {
+  margin: 0;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.capBadge {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.38);
+}
+
+.capDesc {
+  margin: 0.4rem 0 0;
+  max-width: 42rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(243, 241, 234, 0.52);
+}
+
+.processList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: rgba(243, 241, 234, 0.1);
+  border: 1px solid rgba(243, 241, 234, 0.1);
+}
+
+.processItem {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 0.85rem;
+  padding: clamp(1.25rem, 3vh, 1.85rem);
+  background: #0a0a0a;
+  transition: background 0.35s ease;
+}
+
+.processItem:hover {
+  background: #101010;
+}
+
+.processNum {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--svc-accent);
+}
+
+.processTitle {
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.processDesc {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: rgba(243, 241, 234, 0.52);
+}
+
+/* ─── Fit ─── */
+.fit {
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 9vh, 6rem) clamp(1.25rem, 4vw, 5.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+  border-top: 1px solid rgba(243, 241, 234, 0.08);
+  border-bottom: 1px solid rgba(243, 241, 234, 0.08);
+  background:
+    radial-gradient(
+      ellipse 50% 70% at 12% 40%,
+      color-mix(in srgb, var(--svc-accent) 9%, transparent),
+      transparent 70%
+    );
+}
+
+.fitEyebrow {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--svc-accent);
+}
+
+.fitTitle {
+  margin: 0;
+  max-width: 18ch;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+.fitBody {
+  margin: 0 0 0.75rem;
+  max-width: 40rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: rgba(243, 241, 234, 0.58);
+}
+
+/* ─── Others ─── */
+.others {
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: clamp(3.25rem, 8vh, 5.5rem) clamp(1.25rem, 4vw, 5.5rem)
+    clamp(2rem, 5vh, 3rem);
+}
+
+.otherGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: rgba(243, 241, 234, 0.1);
+  border: 1px solid rgba(243, 241, 234, 0.1);
+}
+
+.otherGrid > * {
+  min-height: 100%;
+  display: flex;
+}
+
+.otherCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  height: 100%;
+  padding: clamp(1.5rem, 3.5vh, 2.25rem);
+  background: #0a0a0a;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: background 0.35s ease;
+}
+
+.otherCard::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-gold, #e8c56a) 55%, transparent),
+    transparent
+  );
+  transform: scaleX(0);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.otherCard:hover,
+.otherCard:focus-visible {
+  background: #101010;
+  outline: none;
+}
+
+.otherCard:hover::after,
+.otherCard:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.otherTag {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.4);
+}
+
+.otherLabel {
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  color: var(--color-gold, #e8c56a);
+}
+
+.otherTitle {
+  max-width: 28ch;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(243, 241, 234, 0.55);
+}
+
+.otherArrow {
+  margin-top: auto;
+  padding-top: 1.1rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.45);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+}
+
+.otherCard:hover .otherArrow {
+  transform: translateX(6px);
+  color: var(--color-gold, #e8c56a);
+}
+
+/* ─── Mobile ─── */
+@media (max-width: 980px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 2rem;
+  }
+
+  .heroMedia {
+    order: -1;
+    max-width: 28rem;
+  }
+
+  .manifesto {
+    grid-template-columns: 1fr;
+  }
+
+  .reasonGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .proof {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .processList {
+    grid-template-columns: 1fr;
+  }
+
+  .otherGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .topBar {
+    padding: 0.85rem 1rem;
+  }
+
+  .topHint {
+    display: none;
+  }
+
+  .proof {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .heroActions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .capRow {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+  }
+
+  .reasonCard:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctaPrimary,
+  .ctaGhost,
+  .ctaArrow,
+  .otherCard,
+  .otherArrow,
+  .reasonCard,
+  .reasonLine,
+  .capRow,
+  .mediaImage,
+  .processItem,
+  .proofItem {
+    transition: none;
+  }
+
+  .mediaImage {
+    height: 100%;
+    transform: none !important;
+  }
+
+  .hero::before,
+  .mediaGlow {
+    display: none;
+  }
+}

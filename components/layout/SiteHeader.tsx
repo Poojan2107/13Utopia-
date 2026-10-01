@@ -14,6 +14,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [lastPathname, setLastPathname] = useState(pathname);
 
   const closeMenu = useCallback(() => {
     setOpen(false);
@@ -58,9 +59,12 @@ export function SiteHeader() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open, closeMenu]);
 
-  useEffect(() => {
+  // Close the menu on navigation. Adjusted during render (not in an effect)
+  // so navigation never schedules a cascading setState from the effect body.
+  if (lastPathname !== pathname) {
+    setLastPathname(pathname);
     closeMenu();
-  }, [pathname, closeMenu]);
+  }
 
   return (
     <header

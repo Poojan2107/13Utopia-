@@ -49,8 +49,12 @@
   justify-content: space-between;
   align-items: center;
   pointer-events: auto;
-  padding-top: calc(var(--header-h) + 1rem);
-  padding-bottom: clamp(1.5rem, 3vh, 3rem);
+  /*
+   * Silk void ≈ 0.20 → 0.62. Keep a hard inset so type never
+   * kisses the crown or cascade ribbons.
+   */
+  padding-top: 22vh;
+  padding-bottom: 42vh;
   transform: translate3d(var(--mx, 0px), var(--my, 0px), 0) perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transform-style: preserve-3d;
   will-change: transform;
@@ -116,52 +120,34 @@
   z-index: 1;
   pointer-events: auto;
   transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Gap band height ≈ 36vh — couplets size against this */
+  height: 100%;
+  container-type: size;
 }
 
 .left {
-  align-self: center;
-  transform: translate3d(calc(var(--mx, 0px) * -0.3), -2vh, 0);
-  width: min(46vw, 44rem);
-  max-width: 44rem;
+  align-self: stretch;
+  transform: translate3d(calc(var(--mx, 0px) * -0.25), 0, 0);
+  width: min(42vw, 40rem);
+  max-width: 40rem;
 }
 
 .right {
-  align-self: center;
-  transform: translate3d(calc(var(--mx, 0px) * -0.3), -2vh, 0);
-  display: flex;
-  justify-content: flex-end;
-  width: min(46vw, 44rem);
-  max-width: 44rem;
+  align-self: stretch;
+  transform: translate3d(calc(var(--mx, 0px) * -0.25), 0, 0);
+  /* Keep column + vertical center from .flank; only pin content to the right edge */
+  align-items: flex-end;
+  width: min(42vw, 40rem);
+  max-width: 40rem;
 }
 
 .left::before,
 .right::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: -3.5rem -3rem;
-  border-radius: 50%;
-  filter: blur(56px);
-  pointer-events: none;
-}
-
-.left::before {
-  background: radial-gradient(
-    ellipse at 25% 35%,
-    rgba(223, 183, 108, 0.18) 0%,
-    rgba(0, 0, 0, 0.55) 50%,
-    transparent 100%
-  );
-}
-
-.right::before {
-  inset: -4rem -3.5rem;
-  background: radial-gradient(
-    ellipse at 80% 65%,
-    rgba(223, 183, 108, 0.22) 0%,
-    rgba(0, 0, 0, 0.6) 55%,
-    transparent 100%
-  );
+  content: none;
+  display: none;
 }
 
 .stack {
@@ -169,6 +155,7 @@
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
+  height: auto;
 }
 
 .stackRight {
@@ -182,9 +169,12 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 0;
   text-align: left;
-  width: 100%;
+  width: max-content;
+  max-width: 100%;
+  height: auto;
   text-transform: uppercase;
 }
 
@@ -193,69 +183,32 @@
   text-align: right;
 }
 
-.statementOutline {
-  cursor: default;
-}
-
-.statementOutline .be,
-.statementOutline .unreal {
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: clamp(1.5px, 0.18vw, 2.8px) rgba(255, 255, 255, 0.96);
-  text-shadow:
-    0 0 35px rgba(223, 183, 108, 0.35),
-    0 0 70px rgba(255, 255, 255, 0.2);
-  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.9));
-  transition:
-    -webkit-text-fill-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    -webkit-text-stroke 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    text-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, text-shadow, filter;
-}
-
-.statementOutline:hover .be,
-.statementOutline:hover .unreal {
-  -webkit-text-fill-color: #ffffff;
-  -webkit-text-stroke: clamp(1px, 0.15vw, 2px) #ffffff;
-  text-shadow:
-    0 0 45px rgba(223, 183, 108, 0.65),
-    0 0 90px rgba(255, 240, 200, 0.5),
-    0 4px 32px rgba(0, 0, 0, 0.98);
-}
-
-.statementSolid {
-  cursor: default;
-}
-
-.statementSolid .be,
-.statementSolid .unreasonable {
+/*
+ * Bust shader gold only — bronze → champagne → tight specular.
+ * No near-white bloom, no stroke, no shadow, no filter glow.
+ */
+.statementGold .be,
+.statementGold .unreal,
+.statementGold .unreasonable {
   background: linear-gradient(
-    135deg,
-    #ffffff 0%,
-    #fff8e7 18%,
-    #e8c87e 42%,
-    #fef3d6 68%,
-    #ffffff 88%,
-    #dfb76c 100%
+    165deg,
+    #f0d78a 0%,
+    #e4c05c 22%,
+    #c9963a 48%,
+    #e4c05c 68%,
+    #8a6428 86%,
+    #382811 100%
   );
-  background-size: 200% 200%;
+  background-size: 100% 100%;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter:
-    drop-shadow(0 14px 40px rgba(0, 0, 0, 0.98))
-    drop-shadow(0 0 40px rgba(232, 200, 126, 0.35));
-  transition:
-    filter 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, filter;
-}
-
-.statementSolid:hover .be,
-.statementSolid:hover .unreasonable {
-  filter:
-    drop-shadow(0 0 65px rgba(232, 200, 126, 0.75))
-    drop-shadow(0 0 110px rgba(255, 240, 200, 0.55));
+  color: transparent;
+  -webkit-text-stroke: 0;
+  paint-order: normal;
+  text-shadow: none;
+  filter: none;
+  transition: none;
 }
 
 .be {
@@ -263,8 +216,12 @@
   font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
   font-style: normal;
   font-weight: 700;
-  font-size: clamp(3.6rem, 8.2vw, 9.6rem);
-  line-height: 0.81;
+  /*
+   * Two-line stack fills ~80% of the silk band without kissing ribbons.
+   * Width-capped so UNREAL never clips the bust.
+   */
+  font-size: clamp(3.4rem, min(17.5vh, 52cqh, 11vw), 10.5rem);
+  line-height: 0.8;
   letter-spacing: -0.05em;
   margin: 0;
   padding: 0;
@@ -272,8 +229,9 @@
 }
 
 .beRight {
-  font-size: clamp(3.6rem, 8.2vw, 9.6rem);
-  line-height: 0.81;
+  /* Right couplet stays one unit — BE tracks UNREASONABLE scale */
+  font-size: clamp(2.5rem, min(12vh, 38cqh, 6.4vw), 7.25rem);
+  line-height: 0.8;
   letter-spacing: -0.05em;
 }
 
@@ -284,8 +242,8 @@
   font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
   font-style: normal;
   font-weight: 700;
-  font-size: clamp(3.6rem, 8.2vw, 9.6rem);
-  line-height: 0.81;
+  font-size: clamp(3.4rem, min(17.5vh, 52cqh, 11vw), 10.5rem);
+  line-height: 0.8;
   letter-spacing: -0.05em;
   white-space: nowrap;
 }
@@ -296,9 +254,9 @@
   font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
   font-style: normal;
   font-weight: 700;
-  font-size: clamp(1.95rem, 4.3vw, 5.05rem);
-  line-height: 0.84;
-  letter-spacing: -0.04em;
+  font-size: clamp(2.2rem, min(10.5vh, 33cqh, 5.4vw), 6.1rem);
+  line-height: 0.82;
+  letter-spacing: -0.045em;
   white-space: nowrap;
 }
 
@@ -451,31 +409,35 @@
     --edge: clamp(1.25rem, 3vw, 2.5rem);
   }
 
+  .stageTypography,
+  .stage {
+    padding-top: 20vh;
+    padding-bottom: 40vh;
+  }
+
   .left {
     margin-top: 0;
-    transform: translateY(-2vh);
-    width: min(48vw, 34rem);
+    width: min(46vw, 34rem);
     max-width: 34rem;
   }
 
   .right {
     margin-bottom: 0;
-    transform: translateY(-2vh);
-    width: min(50vw, 38rem);
-    max-width: 38rem;
+    width: min(48vw, 36rem);
+    max-width: 36rem;
   }
 
   .be,
-  .beRight {
-    font-size: clamp(2.75rem, 6vw, 6.2rem);
+  .unreal {
+    font-size: clamp(2.9rem, min(15vh, 50cqh, 9vw), 8.5rem);
   }
 
-  .unreal {
-    font-size: clamp(2.75rem, 6vw, 6.2rem);
+  .beRight {
+    font-size: clamp(2.2rem, min(10.5vh, 36cqh, 5.6vw), 5.75rem);
   }
 
   .unreasonable {
-    font-size: clamp(1.5rem, 3.4vw, 3.4rem);
+    font-size: clamp(1.85rem, min(9vh, 30cqh, 4.6vw), 4.75rem);
   }
 }
 
@@ -516,6 +478,7 @@
   .flank {
     width: 100%;
     max-width: 100%;
+    height: auto;
   }
 
   .left::before,
@@ -527,9 +490,18 @@
     justify-content: flex-start;
   }
 
+  .stack,
+  .statement {
+    height: auto;
+  }
+
   .stackRight {
     align-items: flex-start;
     text-align: left;
+  }
+
+  .statement {
+    justify-content: flex-start;
   }
 
   .statementRight {
@@ -541,7 +513,8 @@
     line-height: 0.88;
   }
 
-  .beGold {
+  .beGold,
+  .beRight {
     font-size: clamp(2.2rem, 8vw, 3.6rem);
     line-height: 0.88;
   }

@@ -46,8 +46,8 @@ export function HeroEnter({ children, className }: Props) {
       if (left) {
         tl.fromTo(
           left,
-          { opacity: 0, x: -28, clipPath: "inset(0 22% 0 0)" },
-          { opacity: 1, x: 0, clipPath: "inset(0 0% 0 0)", duration: 1.15 },
+          { opacity: 0, x: -36 },
+          { opacity: 1, x: 0, duration: 1.15 },
           0.18,
         );
       }
@@ -55,8 +55,8 @@ export function HeroEnter({ children, className }: Props) {
       if (right) {
         tl.fromTo(
           right,
-          { opacity: 0, x: 28, clipPath: "inset(0 0 0 22%)" },
-          { opacity: 1, x: 0, clipPath: "inset(0 0 0 0%)", duration: 1.15 },
+          { opacity: 0, x: 36 },
+          { opacity: 1, x: 0, duration: 1.15 },
           0.32,
         );
       }

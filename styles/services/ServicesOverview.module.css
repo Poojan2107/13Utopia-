@@ -1,0 +1,406 @@
+.page {
+  background: var(--color-bg, #0a0a0a);
+  color: #f3f1ea;
+  min-height: 100dvh;
+  padding-top: 4.75rem;
+}
+
+.topBar {
+  position: sticky;
+  top: 4.75rem;
+  z-index: 40;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem 1.5rem;
+  padding: 1rem clamp(1.25rem, 4vw, 5.5rem);
+  border-bottom: 1px solid rgba(243, 241, 234, 0.1);
+  background: color-mix(in srgb, #0a0a0a 88%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.topMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.topNum {
+  color: var(--color-gold, #e8c56a);
+  font-weight: 600;
+}
+
+.topSep {
+  color: color-mix(in srgb, var(--color-gold, #e8c56a) 40%, transparent);
+}
+
+.topTag {
+  color: rgba(243, 241, 234, 0.55);
+}
+
+.topHint {
+  margin-left: 0.65rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid rgba(243, 241, 234, 0.14);
+  color: rgba(243, 241, 234, 0.32);
+}
+
+.hero {
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: clamp(3rem, 9vh, 6.5rem) clamp(1.25rem, 4vw, 5.5rem)
+    clamp(2.5rem, 6vh, 4rem);
+}
+
+.eyebrow {
+  margin: 0 0 1rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold, #e8c56a);
+}
+
+.title {
+  margin: 0;
+  max-width: 14ch;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(2.8rem, 7vw, 6.5rem);
+  font-weight: 300;
+  letter-spacing: -0.045em;
+  line-height: 0.96;
+}
+
+.titleGold {
+  color: var(--color-gold, #e8c56a);
+}
+
+.lead {
+  margin: 1.35rem 0 0;
+  max-width: 38rem;
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  line-height: 1.65;
+  color: rgba(243, 241, 234, 0.58);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-top: 1.75rem;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.9rem 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--color-gold, #e8c56a) 70%, transparent);
+  background: color-mix(in srgb, var(--color-gold, #e8c56a) 14%, transparent);
+  color: #f3f1ea;
+  text-decoration: none;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.ctaPrimary:hover,
+.ctaPrimary:focus-visible {
+  background: color-mix(in srgb, var(--color-gold, #e8c56a) 28%, transparent);
+  border-color: var(--color-gold, #e8c56a);
+  outline: none;
+}
+
+.ctaPrimary:hover .ctaArrow {
+  transform: translateX(4px);
+}
+
+.ctaArrow {
+  display: inline-block;
+  color: var(--color-gold, #e8c56a);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ctaGhost {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.85rem 0.35rem;
+  color: rgba(243, 241, 234, 0.55);
+  text-decoration: none;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-bottom: 1px solid transparent;
+}
+
+.ctaGhost:hover,
+.ctaGhost:focus-visible {
+  color: #f3f1ea;
+  border-bottom-color: color-mix(in srgb, var(--color-gold, #e8c56a) 55%, transparent);
+  outline: none;
+}
+
+.worlds {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border-top: 1px solid rgba(243, 241, 234, 0.1);
+  border-bottom: 1px solid rgba(243, 241, 234, 0.1);
+  background: rgba(243, 241, 234, 0.1);
+}
+
+.worldCard {
+  --svc-accent: var(--color-gold, #e8c56a);
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+  padding: clamp(2.25rem, 6vh, 4.25rem) clamp(1.25rem, 4vw, 5.5rem);
+  background: #0a0a0a;
+  transition: background 0.4s ease;
+}
+
+.worldCard:hover {
+  background: #0c0c0c;
+}
+
+.worldCard:nth-child(even) .worldMedia {
+  order: -1;
+}
+
+.worldCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  max-width: 40rem;
+}
+
+.worldMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.42);
+}
+
+.worldLabel {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(2.6rem, 5.5vw, 5rem);
+  font-weight: 300;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  color: var(--svc-accent);
+}
+
+.worldTitle {
+  margin: 0;
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  line-height: 1.4;
+  color: #f3f1ea;
+}
+
+.worldBody {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(243, 241, 234, 0.55);
+}
+
+.capPreview {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.capPreview li {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+  color: rgba(243, 241, 234, 0.7);
+}
+
+.capPreview span {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--svc-accent);
+  padding-top: 0.2rem;
+}
+
+.worldLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.85rem;
+  width: fit-content;
+  text-decoration: none;
+  color: #f3f1ea;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-bottom: 1px solid color-mix(in srgb, var(--svc-accent) 45%, transparent);
+  padding-bottom: 0.25rem;
+  transition: color 0.28s ease, border-color 0.28s ease, gap 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.worldLink:hover,
+.worldLink:focus-visible {
+  color: var(--svc-accent);
+  border-bottom-color: var(--svc-accent);
+  gap: 0.85rem;
+  outline: none;
+}
+
+.worldMedia {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #111;
+  max-height: 34rem;
+}
+
+.worldMediaInner {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.worldImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.9) contrast(1.04);
+  transform: scale(1.03);
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+}
+
+.worldCard:hover .worldImage {
+  transform: scale(1.08);
+  filter: saturate(1) contrast(1.08);
+}
+
+.worldCorner {
+  position: absolute;
+  z-index: 2;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  color: color-mix(in srgb, var(--svc-accent) 75%, #fff);
+  line-height: 1;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.worldCorner[data-c="tl"] {
+  top: 0.6rem;
+  left: 0.7rem;
+}
+.worldCorner[data-c="tr"] {
+  top: 0.6rem;
+  right: 0.7rem;
+}
+.worldCorner[data-c="bl"] {
+  bottom: 0.6rem;
+  left: 0.7rem;
+}
+.worldCorner[data-c="br"] {
+  bottom: 0.6rem;
+  right: 0.7rem;
+}
+
+.faqBlock {
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: clamp(3.25rem, 8vh, 5.5rem) clamp(1.25rem, 4vw, 5.5rem);
+}
+
+.faqHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(243, 241, 234, 0.1);
+}
+
+.faqIndex {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: var(--color-gold, #e8c56a);
+}
+
+.faqTitle {
+  margin: 0;
+  font-size: clamp(1.55rem, 2.8vw, 2.35rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+@media (max-width: 980px) {
+  .worldCard {
+    grid-template-columns: 1fr;
+  }
+
+  .worldCard:nth-child(even) .worldMedia {
+    order: 0;
+  }
+
+  .worldMedia {
+    max-width: 26rem;
+    max-height: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .topBar {
+    padding: 0.85rem 1rem;
+  }
+
+  .topHint {
+    display: none;
+  }
+
+  .heroActions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .worldCard:hover .worldImage {
+    transform: scale(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctaPrimary,
+  .ctaArrow,
+  .worldLink,
+  .worldImage,
+  .worldCard {
+    transition: none;
+  }
+
+  .worldImage {
+    transform: none;
+  }
+}

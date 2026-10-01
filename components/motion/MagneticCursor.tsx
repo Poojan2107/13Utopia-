@@ -111,7 +111,7 @@ export function MagneticCursor() {
         view: { scale: 3, opacity: 0.9, text: "View" },
         drag: { scale: 3.2, opacity: 0.9, text: "Drag" },
       } as const;
-      const s = map[next];
+      const s = (map as Record<string, { scale: number; opacity: number; text: string }>)[next] || map.default;
       if (!sticky) {
         gsap.to(ring, {
           scale: s.scale,

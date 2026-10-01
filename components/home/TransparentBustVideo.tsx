@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import styles from "@/styles/home/TransparentBustVideo.module.css";
 
 const VS = `
@@ -52,7 +51,14 @@ void main() {
 }
 `;
 
-export function TransparentBustVideo() {
+export function TransparentBustVideo({
+  className,
+  variant = "default",
+}: {
+  className?: string;
+  /** `edge` — right-locked, shorter stage for Belief */
+  variant?: "default" | "edge";
+}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoPlaying, setVideoPlaying] = useState(false);
@@ -206,7 +212,15 @@ export function TransparentBustVideo() {
   }, []);
 
   return (
-    <div className={styles.wrapper}>
+    <div
+      className={[
+        styles.wrapper,
+        variant === "edge" ? styles.wrapperEdge : "",
+        className ?? "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       {/* Instant fallback image so the gold bust is never blank on initial load */}
       <img
         src="/metal-human/metal-human.jpg"

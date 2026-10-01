@@ -16,12 +16,10 @@ interface Sparkle {
 
 /**
  * GoldSilkCurtain — 13 UTOPIA Signature Golden Silk Architecture:
- * - Choreographed in symbolic 1 - 3 - 1 rhythm:
- *   [ 1 ] Single high crown silk ribbon sweeping above the head
- *   [ 3 ] Trio of cascading, interwoven mid-plane ribbons
- *   [ 1 ] Single foundational deep bronze liquid ribbon
- * - Concentric metallic wire filaments matching the wireframe bust
- * - Floating golden stardust and 4-pointed specular diamond sparkles
+ * - [ 1 ] Crown ribbon above the head
+ * - Open mid gap reserved for the hero tagline (no silk through type)
+ * - [ 3 ] Cascading ribbons across chest / torso
+ * - Concentric metallic wire filaments + golden stardust
  */
 export function GoldSilkCurtain() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -256,102 +254,92 @@ export function GoldSilkCurtain() {
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, width, height);
 
-      // 2. Soft Ambient Halo Bloom (Centered behind bust)
-      const haloX = width * 0.49;
-      const haloY = height * 0.46;
+      // 2. Soft Ambient Halo — tight to bust core only (no flank bloom into type)
+      const haloX = width * 0.5;
+      const haloY = height * 0.52;
       const halo = ctx.createRadialGradient(
         haloX,
         haloY,
-        15,
+        10,
         haloX,
         haloY,
-        width * 0.36,
+        width * 0.18,
       );
-      halo.addColorStop(0, "rgba(165, 115, 40, 0.22)");
-      halo.addColorStop(0.35, "rgba(95, 58, 18, 0.1)");
-      halo.addColorStop(0.7, "rgba(35, 18, 5, 0.03)");
+      halo.addColorStop(0, "rgba(165, 115, 40, 0.12)");
+      halo.addColorStop(0.45, "rgba(95, 58, 18, 0.05)");
       halo.addColorStop(1, "rgba(0, 0, 0, 0)");
       ctx.fillStyle = halo;
       ctx.fillRect(0, 0, width, height);
 
       // =========================================================
-      // IDENTICAL 1 AND 3 CURTAIN ARCHITECTURE (13 UTOPIA Signature Golden Silk)
-      // Visual design:
-      // - All ribbons share IDENTICAL 24K gold wire filaments, thickness, slope, and fluid wave dynamics
-      // - [ 1 ] Single crown ribbon high above (sweeping y: 0.18 -> 0.23 behind forehead)
-      // - Vast obsidian dark negative space (y: 0.24 -> 0.52) behind head, face, and neck
-      // - [ 3 ] Three identical cascading ribbons clearly spaced (y: 0.52, 0.65, 0.78) across chest
+      // 13 UTOPIA Signature Golden Silk — 1 crown + void + 3 cascade
+      // Tagline owns the mid gap. No extra ribbons through type.
       // =========================================================
 
-      const ribbonThickness = height * 0.058;
+      const ribbonThickness = height * 0.052;
       const ribbonGoldStops: [number, string][] = [
         [0.0, "rgba(36, 18, 5, 0.55)"],
         [0.22, "rgba(135, 88, 25, 0.8)"],
-        [0.55, "rgba(238, 184, 70, 0.94)"], // Radiant 24k gold
+        [0.55, "rgba(238, 184, 70, 0.94)"],
         [0.82, "rgba(172, 120, 38, 0.8)"],
         [1.0, "rgba(42, 22, 6, 0.5)"],
       ];
 
-      // [ 1 ] THE ONE CROWN CURTAIN (Identical solitary ribbon sweeping across upper head)
+      // [ 1 ] Crown — solitary ribbon high above the tagline
       drawFlankRibbon(
         -width * 0.12,
         width * 1.12,
-        height * 0.18,
-        height * 0.23,
+        height * 0.12,
+        height * 0.16,
         ribbonThickness,
-        18,
-        2.2,
-        0.46,
-        ribbonGoldStops,
-        16, // 16 concentric filaments
-      );
-
-      // (Dramatic obsidian black negative space: 0.24 to 0.52 behind eyes, face, and jaw)
-
-      // [ 3 ] THE THREE IDENTICAL CASCADING CURTAINS (Identical slope, thickness & gold filaments)
-      // Curtain 1 of 3 (sweeping across collarbone and shoulder line)
-      drawFlankRibbon(
-        -width * 0.12,
-        width * 1.12,
-        height * 0.52,
-        height * 0.57,
-        ribbonThickness,
-        18,
+        15,
         2.2,
         0.46,
         ribbonGoldStops,
         16,
       );
 
-      // Curtain 2 of 3 (sweeping across mid chest, with distinct dark gap)
+      // Mid gap (≈0.18 → 0.63) is intentional negative space for BE UNREAL / BE UNREASONABLE
+
+      // [ 3 ] Cascading curtains below the tagline — chest / torso
       drawFlankRibbon(
         -width * 0.12,
         width * 1.12,
-        height * 0.65,
-        height * 0.70,
+        height * 0.64,
+        height * 0.68,
         ribbonThickness,
-        18,
+        16,
         2.2,
         0.46,
         ribbonGoldStops,
         16,
       );
 
-      // Curtain 3 of 3 (sweeping across torso, with distinct dark gap)
       drawFlankRibbon(
         -width * 0.12,
         width * 1.12,
-        height * 0.78,
-        height * 0.83,
+        height * 0.76,
+        height * 0.80,
         ribbonThickness,
-        18,
+        16,
         2.2,
         0.46,
         ribbonGoldStops,
         16,
       );
 
-      // (Distinct visual count: EXACTLY 1 ribbon on top, vast dark void, and 3 IDENTICAL ribbons cascading below)
+      drawFlankRibbon(
+        -width * 0.12,
+        width * 1.12,
+        height * 0.88,
+        height * 0.92,
+        ribbonThickness,
+        16,
+        2.2,
+        0.46,
+        ribbonGoldStops,
+        16,
+      );
 
       // 3. Render Specular Golden Stardust & Diamond Sparkles
       renderSparkles();

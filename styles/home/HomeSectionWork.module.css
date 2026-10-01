@@ -1,0 +1,110 @@
+/* =========================================================
+   13 UTOPIA // HOME SECTION WORK
+   Inline 3D carousel — no nav chrome, continuous homepage section.
+   ========================================================= */
+
+.section {
+  position: relative;
+  width: 100%;
+  /* Eyebrow strip height + full canvas height */
+  background-color: #000000;
+  color: #ffffff;
+  overflow: hidden;
+  /* Matches the dark obsidian of ThreeCanvas's own background */
+}
+
+/* ── Section eyebrow strip ──────────────────────────────── */
+.eyebrow {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 1.4rem clamp(1.75rem, 5.5vw, 6.5rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  /* Top gold hairline — matches other sections */
+  border-top: 1px solid rgba(232, 197, 106, 0.15);
+}
+
+.eyebrowNum {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold, #e8c56a);
+}
+
+.eyebrowSep {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  color: rgba(232, 197, 106, 0.35);
+}
+
+.eyebrowLabel {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(232, 197, 106, 0.75);
+  flex: 1;
+}
+
+/* Archive link — right-aligned */
+.archiveLink {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(243, 241, 234, 0.4);
+  text-decoration: none;
+  transition: color 0.25s ease;
+  margin-left: auto;
+}
+
+.archiveLink:hover {
+  color: var(--color-gold, #e8c56a);
+}
+
+/* ── Canvas wrap — full viewport height ─────────────────── */
+.canvasWrap {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  /* ThreeCanvas fills this absolutely */
+}
+
+/* Passed as className override to ThreeCanvas — switches it from
+   position:fixed (standalone /work page) to position:absolute (homepage embed) */
+.canvasAbsolute {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+}
+
+.canvasAbsolute :global(canvas) {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ── Accessibility hidden layer ─────────────────────────── */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

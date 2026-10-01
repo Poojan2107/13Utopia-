@@ -12,6 +12,19 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+
+    // Vendored reference material and local tool state — not app source.
+    "web/**",
+    "Awwwards_Master_Pack/**",
+    "animmaster/**",
+    ".kilo/**",
+    ".kombai/**",
+    ".cursor/**",
+    ".freebuff/**",
+    "_recovered_hero/**",
+
+    // Build artifacts that ship in the tree:
+    "tsconfig.tsbuildinfo",
   ]),
 ]);
 

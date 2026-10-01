@@ -27,6 +27,17 @@
   --color-border: color-mix(in srgb, var(--color-warm-white) 12%, transparent);
   --color-surface: var(--color-neutral-900);
 
+  /* Light section overrides — applied via data-theme="light" or .section-light */
+  --section-bg-light: #ffffff;
+  --section-fg-light: #0a0a0a;
+
+  /* CTA dimensions */
+  --cta-pad-y: 14px;
+  --cta-pad-x: 32px;
+
+  /* Texture */
+  --grain-opacity: 0.04;
+
   /* Typography System — Official: PP Neue Montreal */
   --font-neue-montreal: "PP Neue Montreal", "Neue Montreal", var(--font-sans), system-ui, -apple-system, sans-serif;
   --font-brand-stack: var(--font-neue-montreal);
@@ -41,6 +52,8 @@
   --font-ui: var(--font-neue-montreal);
   --font-mono: var(--font-mono-face), ui-monospace, monospace;
 
+  --text-jumbo: clamp(6rem, 14vw, 14rem);
+  --text-giant: clamp(8rem, 18vw, 20rem);
   --text-display: clamp(3.85rem, 8.5vw, 7.25rem);
   --text-display-sm: clamp(2.5rem, 5.5vw, 4.4rem);
   --text-h1: clamp(2.75rem, 6vw, 4.85rem);
@@ -57,6 +70,7 @@
 
   --tracking-display: -0.035em;
   --tracking-label: 0.08em;
+  --tracking-mega: -0.05em;
 
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -78,7 +92,10 @@
   --motion-quick: 160ms;
   --motion-standard: 360ms;
   --motion-slow: 700ms;
+  --motion-dramatic: 1200ms;
   --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 
   --bp-sm: 640px;
   --bp-md: 768px;
