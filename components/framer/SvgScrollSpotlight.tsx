@@ -109,7 +109,7 @@ export function SvgScrollSpotlight() {
         };
       };
 
-      const dims = getDimensions();
+      let dims = getDimensions();
 
       const tl = gsap.timeline({
         scrollTrigger: {
