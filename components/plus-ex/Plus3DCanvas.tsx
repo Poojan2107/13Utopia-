@@ -295,8 +295,8 @@ export function Plus3DCanvas({
       cancelAnimationFrame(rafId);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", onResize);
-      if (renderer.domElement && container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
+      if (renderer.domElement) {
+        renderer.domElement.remove();
       }
       oneGeo.dispose();
       threeGeo.dispose();

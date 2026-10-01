@@ -1051,13 +1051,7 @@ export default function ThreeCanvas({
         cardGeometry.dispose();
         floorGeo.dispose();
         floorMat.dispose();
-        if (
-          containerRef.current &&
-          renderer?.domElement &&
-          renderer.domElement.parentNode === containerRef.current
-        ) {
-          containerRef.current.removeChild(renderer.domElement);
-        }
+        renderer?.domElement?.remove();
         renderer?.dispose();
       };
     } catch (e) {
