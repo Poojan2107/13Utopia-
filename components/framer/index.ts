@@ -6,4 +6,5 @@ export { FramerSectionWork } from "./FramerSectionWork";
 export { FramerSectionOutcomes } from "./FramerSectionOutcomes";
 export { FramerSectionAbout } from "./FramerSectionAbout";
 export { FramerSectionCTA } from "./FramerSectionCTA";
+export { SvgScrollSpotlight } from "./SvgScrollSpotlight";
 export { FramerFooter } from "./FramerFooter";

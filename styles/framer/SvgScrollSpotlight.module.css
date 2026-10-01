@@ -1,0 +1,119 @@
+/* =========================================================
+   13 UTOPIA // 069 SVG SCROLL ANIMATION (BUILD SPOTLIGHT)
+   ========================================================= */
+
+.scrollWrapper {
+  position: relative;
+  width: 100%;
+  height: 220vh;
+  background-color: #f4f3ee;
+  color: #0a0a0a;
+  box-sizing: border-box;
+}
+
+.stickyStage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #f4f3ee;
+  box-sizing: border-box;
+}
+
+/* ── Section eyebrow strip ── */
+.eyebrow {
+  position: relative;
+  z-index: 50;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 1.25rem clamp(1.75rem, 5.5vw, 6.5rem);
+  border-bottom: 1px solid rgba(10, 10, 10, 0.08);
+  background: rgba(244, 243, 238, 0.96);
+  backdrop-filter: blur(12px);
+  box-sizing: border-box;
+}
+
+.eyebrowNum {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+}
+
+.eyebrowSep {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  color: rgba(10, 10, 10, 0.3);
+}
+
+.eyebrowLabel {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #333333;
+  flex: 1;
+}
+
+/* ── Stacked Spotlight Headers ── */
+.spotlightHeader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 4.5rem);
+  transform-origin: bottom center;
+  will-change: transform;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.svgElement {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  overflow: visible;
+}
+
+/* Pivoting Letter I */
+.letterIGroup {
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.iLinkText {
+  fill: #ffffff;
+  text-anchor: middle;
+  dominant-baseline: central;
+  text-transform: uppercase;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-weight: 800;
+  font-size: 130px;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .spotlightHeader {
+    padding: 1.25rem;
+  }
+
+  .iLinkText {
+    font-size: 90px;
+  }
+}

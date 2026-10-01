@@ -3,6 +3,7 @@ import {
   FramerSectionBelief,
   FramerWorldsHorizontal,
   FramerSectionOutcomes,
+  SvgScrollSpotlight,
   FramerSectionAbout,
   FramerSectionCTA,
   FramerFooter,
@@ -43,16 +44,19 @@ export default function HomePage() {
         {/* 06 // 10 — THE WORK: 3D Jesper Landberg carousel (LIGHT) */}
         <HomeSectionWork />
 
-        {/* 07 // 10 — OUTCOMES: CLIENT OBJECTIVES & 3D 13 EMBLEM (DARK) */}
+        {/* 07 // OUTCOMES: CLIENT OBJECTIVES & 3D 13 EMBLEM (DARK) */}
         <FramerSectionOutcomes />
 
-        {/* 08 // 10 — ABOUT: THE ANOMALY & PRINCIPLES (LIGHT) */}
+        {/* 08 // ARCHITECTURAL SPOTLIGHT: SVG SCROLL ANIMATION (LIGHT) */}
+        <SvgScrollSpotlight />
+
+        {/* 09 // ABOUT: THE ANOMALY & PRINCIPLES (LIGHT) */}
         <FramerSectionAbout />
 
-        {/* 09 // 10 — CTA: INITIATION (DARK) */}
+        {/* 10 // CTA: INITIATION (DARK) */}
         <FramerSectionCTA />
 
-        {/* 10 // 10 — FOOTER & ARCHITECTURAL COLOPHON (DARK) */}
+        {/* 11 // FOOTER & ARCHITECTURAL COLOPHON (DARK) */}
         <FramerFooter />
       </main>
     </SmoothScrollProvider>
