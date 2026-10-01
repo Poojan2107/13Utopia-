@@ -1,6 +1,6 @@
 /* =========================================================
-   13 UTOPIA // PENSATORI IRRAZIONALI 3-ACT SVG SCROLL METAMORPHOSIS
-   (CREATE -> BUILD -> GROW via Monolith Bridge)
+   13 UTOPIA // 3-ACT CONTINUOUS MONOLITH METAMORPHOSIS
+   (CREATE -> BUILD -> GROW via Single Unbroken Pillar)
    ========================================================= */
 
 .scrollWrapper {
@@ -27,7 +27,7 @@
   box-sizing: border-box;
 }
 
-/* ── Pensatori Irrazionali Top Bar ── */
+/* ── Architectural Top Bar ── */
 .topBar {
   position: relative;
   z-index: 50;
@@ -67,7 +67,7 @@
   font-size: 0.68rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #222222;
+  color: #0a0a0a;
   transition: color 0.3s ease;
 }
 
@@ -92,29 +92,6 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-}
-
-.stageLayer {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  will-change: opacity, transform;
-}
-
-.stageCreate {
-  opacity: 1;
-}
-
-.stageBuild {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.stageGrow {
-  opacity: 0;
-  visibility: hidden;
 }
 
 .spotlightHeader {
@@ -143,12 +120,20 @@
   object-fit: contain;
 }
 
-/* ── Monolith Groups ── */
-.createStemGroup,
-.buildIGroup,
-.growRGroup {
-  transform-origin: center center;
+/* ── Letter Groups & Monolith ── */
+.createParts,
+.buildParts,
+.growParts {
+  will-change: transform, opacity;
+}
+
+.monolithGroup {
+  transform-origin: 168.75px 875px;
   will-change: transform;
+}
+
+.sharedMonolith {
+  fill: #0a0a0a;
 }
 
 .iLinkText {
