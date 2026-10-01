@@ -4,7 +4,6 @@ import {
   FramerWorldsHorizontal,
   FramerSectionOutcomes,
   SvgScrollSpotlight,
-  FramerSectionAbout,
   FramerSectionCTA,
   FramerFooter,
 } from "@/components/framer";
@@ -50,13 +49,10 @@ export default function HomePage() {
         {/* 08 // ARCHITECTURAL SPOTLIGHT: SVG SCROLL ANIMATION (LIGHT) */}
         <SvgScrollSpotlight />
 
-        {/* 09 // ABOUT: THE ANOMALY & PRINCIPLES (LIGHT) */}
-        <FramerSectionAbout />
-
-        {/* 10 // CTA: INITIATION (DARK) */}
+        {/* 09 // CTA: INITIATION (DARK) */}
         <FramerSectionCTA />
 
-        {/* 11 // FOOTER & ARCHITECTURAL COLOPHON (DARK) */}
+        {/* 10 // FOOTER & ARCHITECTURAL COLOPHON (DARK) */}
         <FramerFooter />
       </main>
     </SmoothScrollProvider>

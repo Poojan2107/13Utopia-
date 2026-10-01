@@ -103,7 +103,7 @@ export function SvgScrollSpotlight() {
       const getDimensions = () => {
         const isMobile = window.innerWidth < 1000;
         return {
-          slideDistance: isMobile ? 5000 : 2500,
+          slideDistance: isMobile ? 4500 : 2500,
           targetScale: isMobile ? 1.6 : 1.0,
           cascadeShift: isMobile ? 20 : 5,
         };
@@ -114,16 +114,17 @@ export function SvgScrollSpotlight() {
       const st = ScrollTrigger.create({
         trigger: containerRef.current,
         start: "top top",
-        end: "+=220%",
+        end: "+=260%",
         pin: true,
         pinSpacing: true,
-        scrub: 0.8,
+        scrub: 0.85,
         anticipatePin: 1,
+        invalidateOnRefresh: true,
         onUpdate: (self) => {
           const scrollProgress = self.progress;
 
-          // 1. Cascading 3D Fan-out (first 50% of scroll)
-          const cascadeProgress = Math.min(scrollProgress / 0.5, 1);
+          // 1. Cascading 3D Fan-out (first 45% of pinned scroll)
+          const cascadeProgress = Math.min(scrollProgress / 0.45, 1);
           headers.forEach((header, index) => {
             const finalScale = 1 - index * 0.075;
             const scale = 1 + (finalScale - 1) * cascadeProgress;
@@ -131,11 +132,11 @@ export function SvgScrollSpotlight() {
             gsap.set(header, { scale, y });
           });
 
-          // 2. Center Letter I Rotation, Slide, and Scale (second 50% of scroll)
+          // 2. Center Letter I Rotation, Slide, and Scale (from 45% to 85%)
           const letterIProgress = gsap.utils.clamp(
             0,
             1,
-            (scrollProgress - 0.5) / 0.5
+            (scrollProgress - 0.45) / 0.40
           );
 
           gsap.set(letterIGroup, {
@@ -144,16 +145,21 @@ export function SvgScrollSpotlight() {
             scale: gsap.utils.interpolate(1, dims.targetScale, letterIProgress),
           });
 
-          // 3. Scramble trigger
-          if (scrollProgress > 0.75 && !isRevealed) {
+          // 3. Scramble trigger (from 65% onwards)
+          if (scrollProgress > 0.65 && !isRevealed) {
             isRevealed = true;
             scrambleText(true);
-          } else if (scrollProgress < 0.75 && isRevealed) {
+          } else if (scrollProgress < 0.65 && isRevealed) {
             isRevealed = false;
             scrambleText(false);
           }
         },
       });
+
+      // Delayed refresh to guarantee accurate DOM coordinates after Three.js canvases mount
+      const refreshTimeout = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 500);
 
       const handleResize = () => {
         dims = getDimensions();
@@ -163,6 +169,7 @@ export function SvgScrollSpotlight() {
       window.addEventListener("resize", handleResize);
 
       return () => {
+        clearTimeout(refreshTimeout);
         window.removeEventListener("resize", handleResize);
         st.kill();
         if (scrambleIntervalRef.current) clearInterval(scrambleIntervalRef.current);
