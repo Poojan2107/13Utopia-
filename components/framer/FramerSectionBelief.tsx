@@ -11,7 +11,7 @@ import styles from "@/styles/framer/FramerSectionBelief.module.css";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-type TokenKind = "plain" | "brand" | "gold";
+type TokenKind = "plain" | "brand" | "copy" | "gold";
 
 type Token = {
   text: string;
@@ -20,14 +20,17 @@ type Token = {
 
 type Line = readonly Token[];
 
-/** Brand-positioned stack — anomaly, not agency; question the default */
-const LINES: readonly Line[] = [
-  [{ text: "13utopia", kind: "brand" }, { text: "IS" }],
-  [{ text: "NOT" }, { text: "AN" }, { text: "AGENCY" }],
-  [{ text: "IT" }, { text: "IS" }, { text: "AN" }, { text: "ANOMALY" }],
-  [{ text: "FOR" }, { text: "THOSE" }, { text: "WHO" }],
-  [{ text: "QUESTION" }, { text: "THE" }],
-  [{ text: "DEFAULT", kind: "gold" }],
+/** Brand-positioned stack — RXK Studio exact structure: 1 line + creative + 3 lines */
+const LINE_TOP: Line = [
+  { text: "13UTOPIA", kind: "brand" },
+  { text: "©", kind: "copy" },
+  { text: "IS" },
+] as const;
+
+const LINES_BOTTOM: readonly Line[] = [
+  [{ text: "THE" }, { text: "DIGITAL" }, { text: "STUDIO" }],
+  [{ text: "FOR" }, { text: "FOUNDERS" }, { text: "WHO" }],
+  [{ text: "QUESTION" }, { text: "THE" }, { text: "DEFAULT", kind: "gold" }],
 ] as const;
 
 const SUB =
@@ -38,13 +41,16 @@ function BrandMark() {
     <>
       <span className={styles.gold}>1</span>
       <span className={styles.ink}>3</span>
-      <span className={styles.gold}>utopia</span>
+      <span className={styles.ink}>UTOPIA</span>
     </>
   );
 }
 
 function TokenLabel({ token }: { token: Token }) {
   if (token.kind === "brand") return <BrandMark />;
+  if (token.kind === "copy") {
+    return <span className={styles.copyright}>©</span>;
+  }
   if (token.kind === "gold") {
     return <span className={styles.gold}>{token.text}</span>;
   }
@@ -99,14 +105,14 @@ export function FramerSectionBelief() {
   }, []);
 
   const aria =
-    "13 Utopia is not an agency. It is an anomaly for those who question the default.";
+    "13UTOPIA is the digital studio for founders who question the default.";
 
   return (
     <section
       id="conviction"
       className={styles.section}
       aria-label="02: Conviction"
-      data-theme="dark"
+      data-theme="light"
     >
       <div className={styles.chrome} aria-hidden="true">
         <span className={styles.chromeTime}>{clock}</span>
@@ -114,24 +120,59 @@ export function FramerSectionBelief() {
 
       <div className={styles.stage} ref={stageRef}>
         <h2 className={styles.title} aria-label={aria}>
-          {LINES.map((tokens, li) => (
+          {/* Line 1: 13UTOPIA© IS */}
+          <span className={styles.ligne}>
+            <motion.span
+              className={styles.ligneChild}
+              initial={false}
+              animate={show ? { y: "0%", opacity: 1 } : { y: "105%", opacity: 1 }}
+              transition={{
+                duration: reduce ? 0 : 1.05,
+                ease: EASE,
+                delay: reduce ? 0 : 0.06,
+              }}
+            >
+              {LINE_TOP.map((token, wi) => (
+                <Word key={`top-${wi}`} token={token} />
+              ))}
+            </motion.span>
+          </span>
+
+          {/* Creative Interactive Element / Accent Badge */}
+          <motion.div
+            className={styles.creativeWrapper}
+            initial={false}
+            animate={show ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 15, scale: 0.95 }}
+            transition={{
+              duration: reduce ? 0 : 0.85,
+              ease: EASE,
+              delay: reduce ? 0 : 0.2,
+            }}
+          >
+            <div className={styles.creativePill}>
+              <span className={styles.pulseDot} />
+              <span className={styles.creativeTag}>
+                ANOMALOUS DIGITAL LAB · DELHI / TORONTO
+              </span>
+              <span className={styles.sparkle}>✦</span>
+            </div>
+          </motion.div>
+
+          {/* Lines 2, 3, 4: 3-line monumental block */}
+          {LINES_BOTTOM.map((tokens, li) => (
             <span className={styles.ligne} key={li}>
               <motion.span
                 className={styles.ligneChild}
                 initial={false}
-                animate={
-                  show
-                    ? { y: "0%", opacity: 1 }
-                    : { y: "105%", opacity: 1 }
-                }
+                animate={show ? { y: "0%", opacity: 1 } : { y: "105%", opacity: 1 }}
                 transition={{
                   duration: reduce ? 0 : 1.05,
                   ease: EASE,
-                  delay: reduce ? 0 : 0.06 + li * 0.09,
+                  delay: reduce ? 0 : 0.28 + li * 0.09,
                 }}
               >
                 {tokens.map((token, wi) => (
-                  <Word key={`${li}-${wi}`} token={token} />
+                  <Word key={`bot-${li}-${wi}`} token={token} />
                 ))}
               </motion.span>
             </span>
@@ -145,7 +186,7 @@ export function FramerSectionBelief() {
           transition={{
             duration: reduce ? 0 : 0.75,
             ease: EASE,
-            delay: reduce ? 0 : 0.5,
+            delay: reduce ? 0 : 0.6,
           }}
         >
           {SUB}
