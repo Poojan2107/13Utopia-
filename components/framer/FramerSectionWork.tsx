@@ -35,6 +35,7 @@ export function FramerSectionWork() {
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className={styles.headerBlock}
+          >
             <h2 className={styles.mainTitle}>PROOF.</h2>
             <p className={styles.subTitle}>
               Ideas are cheap. We prefer what survives contact with reality.
