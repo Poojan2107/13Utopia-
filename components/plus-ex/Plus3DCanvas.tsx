@@ -10,9 +10,9 @@ interface Plus3DCanvasProps {
 }
 
 /**
- * 3D 13 Utopia Architectural Emblem Canvas
- * Renders the iconic "1" (vertical gold bar) and "3" (three horizontal bars)
- * rotating in 3D perspective with physical metallic shaders and lighting.
+ * 3D Architectural Monolith "13" Emblem Canvas
+ * Slender, ultra-sharp architectural steel & gold beams rendered in Three.js
+ * positioned in deep spatial perspective behind typography with cinematic studio lighting.
  */
 export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -35,9 +35,9 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000);
 
-    // Camera
-    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-    camera.position.set(-0.6, 0.2, 9.2);
+    // Camera with deep cinematic perspective
+    const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
+    camera.position.set(0.4, 0, 10.5);
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({
@@ -49,38 +49,32 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
     renderer.setPixelRatio(dpr);
     renderer.setSize(width, height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.3;
+    renderer.toneMappingExposure = 1.4;
     container.appendChild(renderer.domElement);
 
-    // Create 3D "13" Emblem Group
+    // 3D "13" Architectural Monolith Group
     const emblemGroup = new THREE.Group();
 
-    // Helper: Rounded Box Shape for extrusion
-    const createRoundedBar = (w: number, h: number, r: number, depth: number) => {
+    // Helper: Precision Slender Beveled Beam
+    const createSlenderBeam = (w: number, h: number, depth: number, bevel: number) => {
       const shape = new THREE.Shape();
       const hw = w / 2;
       const hh = h / 2;
-      const rad = Math.min(r, hw, hh);
 
-      shape.moveTo(-hw + rad, hh);
-      shape.lineTo(hw - rad, hh);
-      shape.quadraticCurveTo(hw, hh, hw, hh - rad);
-      shape.lineTo(hw, -hh + rad);
-      shape.quadraticCurveTo(hw, -hh, hw - rad, -hh);
-      shape.lineTo(-hw + rad, -hh);
-      shape.quadraticCurveTo(-hw, -hh, -hw, -hh + rad);
-      shape.lineTo(-hw, hh - rad);
-      shape.quadraticCurveTo(-hw, hh, -hw + rad, hh);
+      shape.moveTo(-hw, hh);
+      shape.lineTo(hw, hh);
+      shape.lineTo(hw, -hh);
+      shape.lineTo(-hw, -hh);
       shape.closePath();
 
       const extrudeSettings = {
         steps: 1,
         depth: depth,
         bevelEnabled: true,
-        bevelThickness: 0.14,
-        bevelSize: 0.14,
+        bevelThickness: bevel,
+        bevelSize: bevel,
         bevelOffset: 0,
-        bevelSegments: 4,
+        bevelSegments: 3,
       };
 
       const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
@@ -88,86 +82,86 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
       return geo;
     };
 
-    // Materials
-    // 18k/24k Lustrous Gold Material for "1"
-    const goldMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0xdfb248),
-      emissive: new THREE.Color(0x281c05),
-      roughness: 0.22,
-      metalness: 0.88,
-      clearcoat: 0.6,
-      clearcoatRoughness: 0.18,
+    // Premium Materials: Dark Brushed Obsidian & 18k Chamfered Gold
+    const goldBeamMaterial = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x382c16),
+      emissive: new THREE.Color(0x0d0903),
+      roughness: 0.26,
+      metalness: 0.94,
+      clearcoat: 0.7,
+      clearcoatRoughness: 0.15,
       reflectivity: 0.95,
     });
 
-    // Brushed Obsidian-Silver White Material for "3" (Three horizontal bars)
-    const whiteMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0xf2f2f2),
-      emissive: new THREE.Color(0x101010),
-      roughness: 0.28,
-      metalness: 0.75,
+    const titaniumBeamMaterial = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x1f1f1f),
+      emissive: new THREE.Color(0x060606),
+      roughness: 0.32,
+      metalness: 0.88,
       clearcoat: 0.5,
       clearcoatRoughness: 0.2,
-      reflectivity: 0.85,
+      reflectivity: 0.9,
     });
 
-    const barDepth = 1.35;
-    const cornerRadius = 0.24;
+    const beamDepth = 0.85;
+    const bevelSize = 0.035;
 
-    // 1. The "1" Bar: Vertical Pillar on the Left
-    const oneGeo = createRoundedBar(0.85, 4.6, cornerRadius, barDepth);
-    const oneMesh = new THREE.Mesh(oneGeo, goldMaterial);
-    oneMesh.position.set(-1.45, 0, 0);
+    // 1. The "1" Beam: Slender Vertical Monolith
+    const oneWidth = 0.52;
+    const oneHeight = 6.2;
+    const oneGeo = createSlenderBeam(oneWidth, oneHeight, beamDepth, bevelSize);
+    const oneMesh = new THREE.Mesh(oneGeo, goldBeamMaterial);
+    oneMesh.position.set(-1.85, 0, 0);
     emblemGroup.add(oneMesh);
 
-    // 2. The "3" Bars: Three Stacked Horizontal Bars on the Right
-    const barWidth = 2.4;
-    const barHeight = 0.85;
-    const threeX = 0.85;
-    const barSpacing = 1.88;
+    // 2. The "3" Beams: Three Slender Cantilevered Horizontal Monoliths
+    const barWidth = 3.6;
+    const barHeight = 0.52;
+    const threeX = 0.65;
+    const barSpacing = 2.15;
 
-    // Top Bar
-    const topGeo = createRoundedBar(barWidth, barHeight, cornerRadius, barDepth);
-    const topMesh = new THREE.Mesh(topGeo, whiteMaterial);
+    // Top horizontal beam
+    const topGeo = createSlenderBeam(barWidth, barHeight, beamDepth, bevelSize);
+    const topMesh = new THREE.Mesh(topGeo, titaniumBeamMaterial);
     topMesh.position.set(threeX, barSpacing, 0);
     emblemGroup.add(topMesh);
 
-    // Middle Bar
-    const midGeo = createRoundedBar(barWidth, barHeight, cornerRadius, barDepth);
-    const midMesh = new THREE.Mesh(midGeo, whiteMaterial);
+    // Middle horizontal beam
+    const midGeo = createSlenderBeam(barWidth, barHeight, beamDepth, bevelSize);
+    const midMesh = new THREE.Mesh(midGeo, titaniumBeamMaterial);
     midMesh.position.set(threeX, 0, 0);
     emblemGroup.add(midMesh);
 
-    // Bottom Bar
-    const botGeo = createRoundedBar(barWidth, barHeight, cornerRadius, barDepth);
-    const botMesh = new THREE.Mesh(botGeo, whiteMaterial);
+    // Bottom horizontal beam
+    const botGeo = createSlenderBeam(barWidth, barHeight, beamDepth, bevelSize);
+    const botMesh = new THREE.Mesh(botGeo, titaniumBeamMaterial);
     botMesh.position.set(threeX, -barSpacing, 0);
     emblemGroup.add(botMesh);
 
-    // Initial positioning of the 3D group
-    emblemGroup.position.set(-1.2, 0.1, 0);
-    emblemGroup.rotation.set(0.3, -0.65, 0.15);
+    // Deep spatial positioning: sits elegantly to the right in the background
+    emblemGroup.position.set(1.4, 0, -1.2);
+    emblemGroup.rotation.set(0.28, -0.62, 0.12);
     scene.add(emblemGroup);
     groupRef.current = emblemGroup;
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    // High-Craft Studio Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
-    // Key Directional Light (Crisp highlights on bevels)
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
-    keyLight.position.set(5, 8, 7);
+    // Key Light: Sharp directional light highlighting chamfers
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.8);
+    keyLight.position.set(7, 9, 8);
     scene.add(keyLight);
 
-    // Warm Gold Accent Light
-    const goldLight = new THREE.DirectionalLight(0xe8c56a, 2.2);
-    goldLight.position.set(-6, -4, 4);
-    scene.add(goldLight);
+    // Gold Rim Light: Warm metallic accent from opposite angle
+    const goldRimLight = new THREE.DirectionalLight(0xe8c56a, 2.6);
+    goldRimLight.position.set(-8, -5, 4);
+    scene.add(goldRimLight);
 
-    // Top-down Rim Light
-    const rimLight = new THREE.DirectionalLight(0xffffff, 1.6);
-    rimLight.position.set(0, 9, -3);
-    scene.add(rimLight);
+    // Top Overhead Light
+    const topLight = new THREE.DirectionalLight(0xffffff, 1.8);
+    topLight.position.set(0, 10, -2);
+    scene.add(topLight);
 
     // Mouse tracking
     const onMouseMove = (e: MouseEvent) => {
@@ -198,24 +192,24 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
       const elapsed = clock.getElapsedTime();
       const p = progressRef.current;
 
-      // Smooth mouse dampening
-      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
-      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
+      // Mouse inertia
+      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.04;
+      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.04;
 
       if (emblemGroup) {
-        // Continuous smooth 3D rotation driven by scroll scrub + gentle idle float + mouse tilt
-        const baseRotX = 0.3 + p * Math.PI * 0.95 + mouseRef.current.y * 0.22 + Math.sin(elapsed * 0.35) * 0.03;
-        const baseRotY = -0.65 + p * Math.PI * 1.35 + mouseRef.current.x * 0.28 + Math.cos(elapsed * 0.3) * 0.04;
-        const baseRotZ = 0.15 + p * 0.55 + mouseRef.current.x * 0.1;
+        // Architectural rotation linked to scroll scrubbing + mouse tilt
+        const targetRotX = 0.28 + p * Math.PI * 0.85 + mouseRef.current.y * 0.18 + Math.sin(elapsed * 0.3) * 0.02;
+        const targetRotY = -0.62 + p * Math.PI * 1.25 + mouseRef.current.x * 0.24 + Math.cos(elapsed * 0.25) * 0.03;
+        const targetRotZ = 0.12 + p * 0.45 + mouseRef.current.x * 0.08;
 
-        emblemGroup.rotation.x += (baseRotX - emblemGroup.rotation.x) * 0.08;
-        emblemGroup.rotation.y += (baseRotY - emblemGroup.rotation.y) * 0.08;
-        emblemGroup.rotation.z += (baseRotZ - emblemGroup.rotation.z) * 0.08;
+        emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.06;
+        emblemGroup.rotation.y += (targetRotY - emblemGroup.rotation.y) * 0.06;
+        emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.06;
 
-        const targetPosX = -1.2 + mouseRef.current.x * 0.25 - p * 0.35;
-        const targetPosY = 0.1 - mouseRef.current.y * 0.2;
-        emblemGroup.position.x += (targetPosX - emblemGroup.position.x) * 0.06;
-        emblemGroup.position.y += (targetPosY - emblemGroup.position.y) * 0.06;
+        const targetPosX = 1.4 + mouseRef.current.x * 0.35 - p * 0.4;
+        const targetPosY = 0 - mouseRef.current.y * 0.25;
+        emblemGroup.position.x += (targetPosX - emblemGroup.position.x) * 0.05;
+        emblemGroup.position.y += (targetPosY - emblemGroup.position.y) * 0.05;
       }
 
       renderer.render(scene, camera);
@@ -234,8 +228,8 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
       topGeo.dispose();
       midGeo.dispose();
       botGeo.dispose();
-      goldMaterial.dispose();
-      whiteMaterial.dispose();
+      goldBeamMaterial.dispose();
+      titaniumBeamMaterial.dispose();
       renderer.dispose();
     };
   }, []);

@@ -35,21 +35,20 @@ export function PlusXSection() {
         start: "top top",
         end: `+=${WORDS.length * 90}vh`,
         pin: true,
-        scrub: 0.6,
+        scrub: 0.55,
         anticipatePin: 1,
         onUpdate: (self) => {
           const p = self.progress;
           setScrollProgress(p);
 
-          // Calculate active index with smooth thresholding
           const totalSteps = WORDS.length - 1;
           const exactIdx = p * totalSteps;
           const currentIdx = Math.min(totalSteps, Math.max(0, Math.round(exactIdx)));
           setActiveIdx(currentIdx);
 
-          // Vertical typography glide matching Plus X kinetic motion
+          // Kinetic vertical typography scrub
           const firstItem = track.children[0] as HTMLElement | undefined;
-          const itemHeight = firstItem ? firstItem.offsetHeight : 140;
+          const itemHeight = firstItem ? firstItem.offsetHeight : 120;
           const targetY = -exactIdx * itemHeight;
 
           gsap.set(track, {
@@ -72,10 +71,10 @@ export function PlusXSection() {
       id="outcomes"
       aria-label="13 Utopia Kinetic Perspective Architecture"
     >
-      {/* 3D "13" Emblem Canvas in Pure Obsidian Stage */}
+      {/* 3D 13 Emblem in Deep Spatial Background */}
       <Plus3DCanvas progress={scrollProgress} className={styles.canvas3D} />
 
-      {/* Monumental Kinetic Typography Layer */}
+      {/* Kinetic Typography Stage */}
       <div className={styles.stage}>
         <div className={styles.contentWrap}>
           {/* Static Lead Word */}
@@ -83,13 +82,13 @@ export function PlusXSection() {
             <h2 className={styles.leadTitle}>PLUS</h2>
           </div>
 
-          {/* Kinetic Vertical Word Track */}
+          {/* Kinetic Vertical Word Viewport */}
           <div className={styles.kineticViewport}>
             <div ref={trackRef} className={styles.wordsTrack}>
               {WORDS.map((word, idx) => {
                 const isActive = idx === activeIdx;
                 const dist = Math.abs(idx - activeIdx);
-                const opacity = isActive ? 1 : Math.max(0.18, 0.42 - dist * 0.14);
+                const opacity = isActive ? 1 : Math.max(0.12, 0.38 - dist * 0.12);
 
                 return (
                   <div

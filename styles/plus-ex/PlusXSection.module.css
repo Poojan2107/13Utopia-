@@ -1,6 +1,6 @@
 /* =========================================================
    13 UTOPIA // PLUS-X 15TH ANNIVERSARY EXACT REPLICATION
-   Pure Monumental Kinetic Typography & 3D Architectural Cross
+   Monumental Kinetic Typography & 3D Architectural Beams
    ========================================================= */
 
 .section {
@@ -33,7 +33,7 @@
   width: 100%;
   max-width: min(92vw, 1540px);
   margin: 0 auto;
-  padding: 0 clamp(1.5rem, 6vw, 6rem);
+  padding: 0 clamp(2rem, 7vw, 7.5rem);
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -50,14 +50,14 @@
 
 /* ─── Static Lead Title: "PLUS" ─────────────────────────── */
 .leadBox {
-  margin-bottom: clamp(0.75rem, 2vh, 1.85rem);
+  margin-bottom: clamp(0.5rem, 1.5vh, 1.25rem);
 }
 
 .leadTitle {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
-  font-size: clamp(4.5rem, min(14vh, 11.5vw), 11.5rem);
+  font-size: clamp(4.8rem, min(15vh, 12vw), 12.5rem);
   font-weight: 800;
-  line-height: 0.88;
+  line-height: 0.85;
   letter-spacing: -0.045em;
   text-transform: uppercase;
   color: #ffffff;
@@ -78,7 +78,7 @@
 .wordsTrack {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.75rem, 2vh, 1.85rem);
+  gap: clamp(0.5rem, 1.5vh, 1.25rem);
   will-change: transform;
 }
 
@@ -95,34 +95,34 @@
 .wordText {
   display: block;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
-  font-size: clamp(4.2rem, min(13.5vh, 11vw), 11rem);
+  font-size: clamp(4.4rem, min(14vh, 11.5vw), 12rem);
   font-weight: 800;
-  line-height: 0.88;
+  line-height: 0.85;
   letter-spacing: -0.045em;
   text-transform: uppercase;
-  color: #555555;
+  color: #4a4a4a;
   transition:
-    color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    text-shadow 0.35s ease;
+    color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    text-shadow 0.3s ease;
   white-space: nowrap;
 }
 
 .wordRowActive .wordText {
   color: #ffffff;
-  text-shadow: 0 0 45px rgba(255, 255, 255, 0.3);
+  text-shadow: none;
 }
 
 /* ─── Responsive Media Queries ──────────────────────────── */
 @media (max-width: 900px) {
   .kineticViewport {
-    height: clamp(90px, 20vh, 160px);
+    height: clamp(90px, 18vh, 150px);
   }
 
   .leadTitle {
-    font-size: clamp(3rem, 13vw, 5.8rem);
+    font-size: clamp(3.2rem, 14vw, 6rem);
   }
 
   .wordText {
-    font-size: clamp(2.8rem, 12vw, 5.4rem);
+    font-size: clamp(3rem, 13vw, 5.6rem);
   }
 }
