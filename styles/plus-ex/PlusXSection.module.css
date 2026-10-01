@@ -48,46 +48,28 @@
   user-select: none;
 }
 
-/* ─── Static Lead Title: "UTOPIA" ───────────────────────── */
-.leadBox {
-  margin-bottom: clamp(0.4rem, 1.2vh, 1rem);
-  z-index: 5;
-}
-
-.leadTitle {
-  font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
-  font-size: clamp(4.8rem, min(15vh, 12vw), 12.5rem);
-  font-weight: 800;
-  line-height: 0.85;
-  letter-spacing: -0.045em;
-  text-transform: uppercase;
-  color: #ffffff;
-  margin: 0;
-  padding: 0;
-}
-
 /* ─── 3D Cylindrical Drum Viewport ──────────────────────── */
 .cylinderViewport {
   position: relative;
-  height: clamp(140px, 26vh, 260px);
+  height: clamp(200px, 36vh, 360px);
   overflow: visible;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
   perspective: 1200px;
-  perspective-origin: 20% 50%;
+  perspective-origin: 25% 50%;
   transform-style: preserve-3d;
   mask-image: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(0, 0, 0, 1) 12%,
+    rgba(0, 0, 0, 1) 15%,
     rgba(0, 0, 0, 1) 85%,
     transparent 100%
   );
   -webkit-mask-image: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(0, 0, 0, 1) 12%,
+    rgba(0, 0, 0, 1) 15%,
     rgba(0, 0, 0, 1) 85%,
     transparent 100%
   );

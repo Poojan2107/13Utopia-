@@ -103,11 +103,6 @@ export function PlusXSection() {
       {/* Monumental 3D Curvature Typography Stage */}
       <div className={styles.stage}>
         <div className={styles.contentWrap}>
-          {/* Static Lead Word */}
-          <div className={styles.leadBox}>
-            <h2 className={styles.leadTitle}>UTOPIA</h2>
-          </div>
-
           {/* 3D Cylindrical Curvature Viewport */}
           <div className={styles.cylinderViewport}>
             <div ref={trackRef} className={styles.cylinderDrum}>
