@@ -76,13 +76,12 @@
 .wrapperEdge .fallbackImage,
 .wrapperEdge .canvas {
   left: auto;
-  right: -2vw;
+  right: -3vw;
   bottom: 0;
-  transform: scale(1.32) translateY(2%);
-  transform-origin: 85% bottom;
-  height: min(100dvh, 1050px);
-  max-height: min(100dvh, 1050px);
-  max-width: min(62vw, 950px);
+  transform: none;
+  height: min(112dvh, 1200px);
+  max-height: min(112dvh, 1200px);
+  max-width: min(65vw, 1080px);
   width: auto;
   object-fit: contain;
   object-position: 80% bottom;

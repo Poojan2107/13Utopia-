@@ -13,41 +13,38 @@ void main() {
 `;
 
 const FS = `
-precision mediump float;
+precision highp float;
 uniform sampler2D u_video;
 varying vec2 v_uv;
 
 void main() {
-  // Multi-tap soft sampling for anti-aliased smoothing
-  vec2 texel = vec2(0.00052, 0.00092);
-  vec4 c0 = texture2D(u_video, v_uv);
-  vec4 c1 = texture2D(u_video, v_uv + vec2(texel.x, 0.0));
-  vec4 c2 = texture2D(u_video, v_uv - vec2(texel.x, 0.0));
-  vec4 c3 = texture2D(u_video, v_uv + vec2(0.0, texel.y));
-  vec4 c4 = texture2D(u_video, v_uv - vec2(0.0, texel.y));
-  vec4 tex = c0 * 0.44 + (c1 + c2 + c3 + c4) * 0.14;
+  vec4 tex = texture2D(u_video, v_uv);
   
-  // Calculate luminance
+  // Calculate luminance from source
   float luma = dot(tex.rgb, vec3(0.299, 0.587, 0.114));
   
-  // Cutoff strictly outside the bust
-  if (luma <= 0.012) {
+  // Clean cutoff for black background
+  if (luma <= 0.008) {
     discard;
   }
   
-  // Ultra-smooth antialiased silhouette boundary
-  float edge = smoothstep(0.012, 0.038, luma);
+  // Crisp anti-aliased edge mask at the dark contour
+  float alpha = smoothstep(0.008, 0.035, luma);
   
-  // Luminous, radiant polished gold grading — lifted shadows for full torso & groove visibility
-  vec3 goldDark = vec3(0.22, 0.155, 0.065); // Rich warm bronze-gold shadow base (no crushed blacks)
-  vec3 goldMid  = vec3(0.92, 0.76, 0.38);   // Radiant 18k champagne gold midtones
-  vec3 goldHi   = vec3(1.0, 0.96, 0.82);   // Luminous 24k specular highlights
+  // Rich 18k-24k luxury gold palette mapping that preserves all microscopic wire groove details:
+  vec3 shadowGold = vec3(0.24, 0.16, 0.05);
+  vec3 midGold    = vec3(0.95, 0.77, 0.36);
+  vec3 brightGold = vec3(1.00, 0.94, 0.70);
+  vec3 specular   = vec3(1.00, 0.99, 0.95);
   
-  float midProg = smoothstep(0.02, 0.50, luma);
-  vec3 gold = mix(goldDark, goldMid, midProg);
-  gold = mix(gold, goldHi, pow(clamp(luma, 0.0, 1.0), 1.85) * 0.95);
+  vec3 color = mix(shadowGold, midGold, smoothstep(0.01, 0.42, luma));
+  color = mix(color, brightGold, smoothstep(0.38, 0.78, luma));
+  color = mix(color, specular, pow(clamp(luma, 0.0, 1.0), 3.0));
   
-  gl_FragColor = vec4(gold * edge, edge);
+  // Modulate with original micro-detail texture highlights
+  color *= (tex.rgb / max(luma, 0.001)) * 0.20 + 0.80;
+  
+  gl_FragColor = vec4(color * alpha, alpha);
 }
 `;
 
@@ -73,6 +70,7 @@ export function TransparentBustVideo({
         alpha: true,
         premultipliedAlpha: true,
         preserveDrawingBuffer: true,
+        antialias: true,
       }) ||
       (canvas.getContext("experimental-webgl", {
         alpha: true,
@@ -130,7 +128,7 @@ export function TransparentBustVideo({
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
     const updateSize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2.0);
       const w = Math.floor((canvas.clientWidth || window.innerWidth * 0.8) * dpr);
       const h = Math.floor((canvas.clientHeight || window.innerHeight * 0.9) * dpr);
       if (w > 0 && h > 0 && (canvas.width !== w || canvas.height !== h)) {
@@ -147,7 +145,6 @@ export function TransparentBustVideo({
       video.play().then(() => {
         setVideoPlaying(true);
       }).catch(() => {
-        // Retry muted
         video.muted = true;
         video.play().catch(() => {});
       });
@@ -221,7 +218,6 @@ export function TransparentBustVideo({
         .filter(Boolean)
         .join(" ")}
     >
-      {/* Instant fallback image so the gold bust is never blank on initial load */}
       <img
         src="/metal-human/metal-human.jpg"
         alt=""

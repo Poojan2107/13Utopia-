@@ -9,231 +9,233 @@
   --gold: var(--color-gold);
   --gold-line: var(--color-gold-line);
   --ink: #ffffff;
-  --type-rail: min(64vw, 980px);
-
-  --display: var(--font-display);
-  --desc: var(--font-display);
-  --sans: var(--font-ui);
-
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100dvh;
-  min-height: 100dvh;
-  max-height: 100dvh;
-  margin: 0;
-  overflow: hidden;
-  background: #000;
-  color: var(--ink);
-  box-sizing: border-box;
-}
-
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-.atmosphere {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  overflow: hidden;
-  background: #000;
-}
-
-/* Bust sits under type, above silk — soft left fade kills hard canvas seam */
-.media {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  overflow: hidden;
-  background: transparent;
-}
-
-.videoWrapper {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  pointer-events: none;
-  overflow: visible;
-}
-
-.videoWrapper :global(canvas),
-.videoWrapper :global(img) {
-  height: min(100dvh, 1050px);
-  max-height: min(100dvh, 1050px);
-  max-width: min(62vw, 950px);
-  width: auto;
-}
-
-.overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.08) 14%, transparent 26%),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.1) 14%, transparent 28%),
-    linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.22) 0%,
-      rgba(0, 0, 0, 0.05) 18%,
-      transparent 32%,
-      transparent 70%,
-      rgba(0, 0, 0, 0.08) 88%,
-      rgba(0, 0, 0, 0.26) 100%
-    );
-}
-
-.stageTypography,
-.stage {
-  position: absolute;
-  z-index: 4;
-  left: var(--edge);
-  right: auto;
-  top: 13vh;
-  height: 52vh;
-  bottom: auto;
-  width: var(--type-rail);
-  max-width: var(--type-rail);
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  pointer-events: auto;
-  padding: 0;
-  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0) perspective(1200px)
-    rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-.stageForeground {
-  position: absolute;
-  z-index: 5;
-  left: var(--edge);
-  right: var(--edge);
-  bottom: 0;
-  pointer-events: none;
-}
-
-.flank {
-  position: relative;
-  z-index: 1;
-  pointer-events: auto;
-  transform-style: preserve-3d;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  container-type: inline-size;
-  overflow: visible;
-}
-
-.left {
-  align-self: stretch;
-  width: 100%;
-  max-width: 100%;
-  overflow: visible;
-}
-
-.right,
-.stackRight,
-.statementRight {
-  display: none;
-}
-
-.stack {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: clamp(1rem, 2.8vh, 2.4rem);
-  width: 100%;
-  overflow: visible;
-}
-
-.statement {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 0;
-  text-align: left;
-  width: 100%;
-  text-transform: uppercase;
-  overflow: visible;
-}
-
-.statementSecond {
-  opacity: 0.97;
-}
-
-.left::before,
-.right::before {
-  content: none;
-  display: none;
-}
-
-/*
- * Bust shader gold — bronze → champagne → tight specular.
- */
-.statementGold .be,
-.statementGold .unreal,
-.statementGold .unreasonable {
-  background: linear-gradient(
-    165deg,
-    #f0d78a 0%,
-    #e4c05c 22%,
-    #c9963a 48%,
-    #e4c05c 68%,
-    #8a6428 86%,
-    #382811 100%
-  );
-  background-size: 100% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  -webkit-text-stroke: 0;
-  paint-order: normal;
-  text-shadow: none;
-  filter: none;
-}
-
-.be,
-.unreal,
-.unreasonable {
-  display: block;
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
-  font-style: normal;
-  font-weight: 700;
-  line-height: 0.82;
-  white-space: nowrap;
-  overflow: visible;
-  text-align: left;
-  /* Monumental typography filling the red void box horizontally & vertically */
-  font-size: clamp(2.4rem, min(10.2vh, 15cqi, 5.6vw), 5.6rem);
-  letter-spacing: -0.06em;
-}
-
-.unreasonable {
-  letter-spacing: -0.085em;
-}
+  --type-rail: min(75vw, 1200px);
+ 
+   --display: var(--font-display);
+   --desc: var(--font-display);
+   --sans: var(--font-ui);
+ 
+   position: fixed;
+   inset: 0;
+   width: 100vw;
+   height: 100dvh;
+   min-height: 100dvh;
+   max-height: 100dvh;
+   margin: 0;
+   overflow: hidden;
+   background: #000;
+   color: var(--ink);
+   box-sizing: border-box;
+ }
+ 
+ .srOnly {
+   position: absolute;
+   width: 1px;
+   height: 1px;
+   padding: 0;
+   margin: -1px;
+   overflow: hidden;
+   clip: rect(0, 0, 0, 0);
+   white-space: nowrap;
+   border: 0;
+ }
+ 
+ .atmosphere {
+   position: absolute;
+   inset: 0;
+   z-index: 1;
+   pointer-events: none;
+   overflow: hidden;
+   background: #000;
+ }
+ 
+ /* Bust sits under type, above silk — soft left fade kills hard canvas seam */
+ .media {
+   position: absolute;
+   inset: 0;
+   z-index: 2;
+   pointer-events: none;
+   overflow: hidden;
+   background: transparent;
+ }
+ 
+ .videoWrapper {
+   position: absolute;
+   inset: 0;
+   display: flex;
+   justify-content: flex-end;
+   align-items: flex-end;
+   pointer-events: none;
+   overflow: visible;
+ }
+ 
+ .videoWrapper :global(canvas),
+ .videoWrapper :global(img) {
+   height: min(112dvh, 1200px);
+   max-height: min(112dvh, 1200px);
+   max-width: min(65vw, 1080px);
+   width: auto;
+ }
+ 
+ .overlay {
+   position: absolute;
+   inset: 0;
+   z-index: 3;
+   pointer-events: none;
+   background:
+     linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.08) 14%, transparent 26%),
+     linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.1) 14%, transparent 28%),
+     linear-gradient(
+       90deg,
+       rgba(0, 0, 0, 0.22) 0%,
+       rgba(0, 0, 0, 0.05) 18%,
+       transparent 32%,
+       transparent 70%,
+       rgba(0, 0, 0, 0.08) 88%,
+       rgba(0, 0, 0, 0.26) 100%
+     );
+ }
+ 
+ .stageTypography,
+ .stage {
+   position: absolute;
+   z-index: 4;
+   left: var(--edge);
+   right: auto;
+   top: 13vh;
+   height: 52vh;
+   bottom: auto;
+   width: var(--type-rail);
+   max-width: var(--type-rail);
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   pointer-events: auto;
+   padding: 0;
+   transform: translate3d(var(--mx, 0px), var(--my, 0px), 0) perspective(1200px)
+     rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+   transform-style: preserve-3d;
+   will-change: transform;
+ }
+ 
+ .stageForeground {
+   position: absolute;
+   z-index: 5;
+   left: var(--edge);
+   right: var(--edge);
+   bottom: 0;
+   pointer-events: none;
+ }
+ 
+ .flank {
+   position: relative;
+   z-index: 1;
+   pointer-events: auto;
+   transform-style: preserve-3d;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   width: 100%;
+   height: 100%;
+   container-type: inline-size;
+   overflow: visible;
+ }
+ 
+ .left {
+   align-self: stretch;
+   width: 100%;
+   max-width: 100%;
+   overflow: visible;
+ }
+ 
+ .right,
+ .stackRight,
+ .statementRight {
+   display: none;
+ }
+ 
+ .stack {
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   gap: clamp(1rem, 2.8vh, 2.4rem);
+   width: 100%;
+   overflow: visible;
+ }
+ 
+ .statement {
+   margin: 0;
+   padding: 0;
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   justify-content: flex-start;
+   gap: 0;
+   text-align: left;
+   width: 100%;
+   text-transform: uppercase;
+   overflow: visible;
+ }
+ 
+ .statementSecond {
+   opacity: 0.97;
+ }
+ 
+ .left::before,
+ .right::before {
+   content: none;
+   display: none;
+ }
+ 
+ /*
+  * Bust shader gold — bronze → champagne → tight specular.
+  */
+ .statementGold .be,
+ .statementGold .unreal,
+ .statementGold .unreasonable {
+   background: linear-gradient(
+     165deg,
+     #f0d78a 0%,
+     #e4c05c 22%,
+     #c9963a 48%,
+     #e4c05c 68%,
+     #8a6428 86%,
+     #382811 100%
+   );
+   background-size: 100% 100%;
+   -webkit-background-clip: text;
+   background-clip: text;
+   -webkit-text-fill-color: transparent;
+   color: transparent;
+   -webkit-text-stroke: 0;
+   paint-order: normal;
+   text-shadow: none;
+   filter: none;
+ }
+ 
+ .be,
+ .unreal,
+ .unreasonable {
+   display: block;
+   margin: 0;
+   padding: 0;
+   font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
+   font-style: normal;
+   font-weight: 700;
+   line-height: 0.82;
+   white-space: nowrap;
+   overflow: visible;
+   text-align: left;
+   /* Monumental typography filling the red void box horizontally & vertically */
+   font-size: clamp(2.3rem, min(9.8vh, 14cqi, 5.2vw), 5.2rem);
+   letter-spacing: -0.015em;
+   transform: scaleX(1.18);
+   transform-origin: left center;
+ }
+ 
+ .unreasonable {
+   letter-spacing: -0.035em;
+ }
 
 .floor {
   position: absolute;
