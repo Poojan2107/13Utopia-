@@ -1,345 +1,263 @@
 /* =========================================================
-   13 UTOPIA // PLUS-X MANDATES & OUTCOMES
-   Inherited from 15th.plus-ex.com & WebGL Gradient Blinds
+   13 UTOPIA // PLUS-X 15TH ANNIVERSARY SECTION
+   Monumental Kinetic Typography & 3D Three.js Perspective
    ========================================================= */
 
 .section {
   position: relative;
-  width: 100%;
-  min-height: 100vh;
-  min-height: 100dvh;
-  background-color: #030303;
-  color: #f3f1ea;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #000000;
+  color: #ffffff;
   overflow: hidden;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
   isolation: isolate;
-  padding: clamp(4rem, 8vh, 7rem) 0;
 }
 
-.bgCanvas {
+.bgShader {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   z-index: 0;
-  opacity: 0.65;
+  opacity: 0.55;
   pointer-events: none;
 }
 
-.plusWatermark {
+.bg3D {
   position: absolute;
-  right: -5vw;
-  top: 15%;
-  width: min(55vw, 650px);
-  height: min(55vw, 650px);
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.45;
-  transform: rotate(12deg);
-}
-
-.plusSvg {
+  inset: 0;
   width: 100%;
   height: 100%;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .stage {
   position: relative;
   z-index: 5;
   width: 100%;
-  max-width: min(92vw, 1480px);
+  max-width: min(94vw, 1560px);
   margin: 0 auto;
-  padding: 0 clamp(1.5rem, 4.5vw, 4rem);
+  padding: 0 clamp(1.5rem, 5vw, 4.5rem);
   box-sizing: border-box;
-}
-
-/* ─── Header Block ──────────────────────────────────────── */
-.header {
-  margin-bottom: clamp(2.5rem, 5vh, 4rem);
-}
-
-.titleStack {
-  max-width: min(85vw, 850px);
-}
-
-.monumentalTitle {
-  font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
-  font-size: clamp(2.4rem, min(7.5vh, 6vw), 4.8rem);
-  font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
-  text-transform: uppercase;
-  color: #ffffff;
-  margin: 0 0 1.25rem 0;
-}
-
-.highlightText {
-  background: linear-gradient(
-    135deg,
-    #fff8e0 0%,
-    #f3cf7a 40%,
-    #c9963a 80%,
-    #8a6428 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-.subtitle {
-  font-family: var(--font-ui, sans-serif);
-  font-size: clamp(0.95rem, 1.35vw, 1.2rem);
-  line-height: 1.5;
-  color: rgba(243, 241, 234, 0.6);
-  max-width: 42ch;
-  margin: 0;
-}
-
-/* ─── Layout: Mandate Strip + Detail Rail ─────────────────── */
-.layout {
-  display: grid;
-  grid-template-columns: 1.15fr 0.95fr;
-  gap: clamp(2rem, 4.5vw, 5rem);
-  align-items: flex-start;
-}
-
-/* ─── Mandate Strip ─────────────────────────────────────── */
-.strip {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.mandateRow {
-  position: relative;
+  height: 100%;
   display: flex;
   align-items: center;
-  gap: clamp(1rem, 2.2vw, 2.2rem);
-  padding: clamp(1.15rem, 2.2vh, 1.85rem) 0;
-  border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: transparent;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.35fr 0.9fr;
+  gap: clamp(2rem, 5vw, 5.5rem);
+  align-items: center;
   width: 100%;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.mandateRow::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 1px;
-  background: var(--color-gold, #e8c56a);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.mandateRow:hover::after,
-.mandateRowActive::after {
-  transform: scaleX(1);
-}
-
-.rowNum {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  color: rgba(243, 241, 234, 0.35);
-  transition: color 0.3s ease;
-  min-width: 2.2rem;
-}
-
-.mandateRowActive .rowNum,
-.mandateRow:hover .rowNum {
-  color: var(--color-gold, #e8c56a);
-}
-
-.rowNameWrap {
+/* ─── Left Column: PLUS + Kinetic Word Column ───────────── */
+.typeCol {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  flex: 1;
-}
-
-.rowKeyword {
-  font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
-  font-size: clamp(1.4rem, 2.2vw, 2.2rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
-  transition: all 0.3s ease;
-}
-
-.mandateRowActive .rowKeyword,
-.mandateRow:hover .rowKeyword {
-  color: #ffffff;
-  transform: translateX(6px);
-}
-
-.rowTagline {
-  font-family: var(--font-ui, sans-serif);
-  font-size: 0.85rem;
-  color: rgba(243, 241, 234, 0.45);
-  line-height: 1.4;
-  transition: color 0.3s ease;
-}
-
-.mandateRowActive .rowTagline {
-  color: rgba(243, 241, 234, 0.85);
-}
-
-.rowArrow {
-  font-family: var(--font-mono, monospace);
-  font-size: 1.1rem;
-  color: rgba(243, 241, 234, 0.3);
-  transition: all 0.3s ease;
-}
-
-.mandateRowActive .rowArrow {
-  color: var(--color-gold, #e8c56a);
-  transform: rotate(0deg);
-}
-
-/* ─── Detail Rail (Plus-X Glassmorphic Card) ────────────── */
-.detailRail {
+  justify-content: center;
   position: relative;
-  min-height: 440px;
+  user-select: none;
+  perspective: 1200px;
+}
+
+.leadWrap {
+  margin-bottom: clamp(0.5rem, 1.2vh, 1rem);
+}
+
+.leadWord {
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
+  font-size: clamp(3.8rem, min(12.5vh, 8.8vw), 9rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+.kineticViewport {
+  position: relative;
+  height: clamp(200px, 36vh, 320px);
+  overflow: visible;
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 1) 12%,
+    rgba(0, 0, 0, 1) 85%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 1) 12%,
+    rgba(0, 0, 0, 1) 85%,
+    transparent 100%
+  );
+}
+
+.kineticStack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.5vh, 1.25rem);
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.kineticWordBtn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  display: block;
+  width: 100%;
+  transition:
+    opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kineticText {
+  display: block;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
+  font-size: clamp(3.2rem, min(10.5vh, 7.6vw), 7.8rem);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: #444444;
+  transition:
+    color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    text-shadow 0.3s ease;
+  white-space: nowrap;
+}
+
+.kineticWordActive .kineticText {
+  color: #ffffff;
+  text-shadow:
+    0 0 35px rgba(255, 255, 255, 0.25),
+    0 0 60px rgba(232, 197, 106, 0.2);
+}
+
+.kineticWordBtn:hover .kineticText {
+  color: #f3f1ea;
+}
+
+/* ─── Right Column: Architectural Detail Rail ───────────── */
+.detailCol {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .detailCard {
-  position: relative;
-  background: rgba(14, 14, 14, 0.75);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(232, 197, 106, 0.2);
+  background: rgba(10, 10, 10, 0.78);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(232, 197, 106, 0.18);
   border-radius: 4px;
-  padding: clamp(2rem, 3.5vh, 2.85rem) clamp(1.75rem, 3vw, 2.5rem);
-  box-sizing: border-box;
-  overflow: hidden;
+  padding: clamp(1.85rem, 3.5vh, 2.75rem) clamp(1.6rem, 2.8vw, 2.4rem);
   box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.ghostNum {
-  position: absolute;
-  right: -1rem;
-  top: -2rem;
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 14rem;
-  font-weight: 900;
-  line-height: 1;
-  color: rgba(255, 255, 255, 0.02);
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
+    0 24px 60px rgba(0, 0, 0, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .cardHeader {
-  position: relative;
-  z-index: 2;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
-.cardBadge {
-  display: inline-block;
+.cardNum {
   font-family: var(--font-mono, monospace);
   font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-gold, #e8c56a);
-  margin-bottom: 0.65rem;
+  display: block;
+  margin-bottom: 0.6rem;
 }
 
-.cardTagline {
+.cardTitle {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
-  font-size: clamp(1.35rem, 2vw, 1.85rem);
+  font-size: clamp(1.25rem, 1.8vw, 1.7rem);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.25;
   letter-spacing: -0.02em;
   color: #ffffff;
   margin: 0;
 }
 
 .cardDesc {
-  position: relative;
-  z-index: 2;
   font-family: var(--font-ui, sans-serif);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   line-height: 1.6;
-  color: rgba(243, 241, 234, 0.75);
-  margin: 0 0 2rem 0;
+  color: rgba(243, 241, 234, 0.7);
+  margin: 0 0 1.85rem 0;
 }
 
-/* Deliverables Grid */
-.deliverablesSection {
-  position: relative;
-  z-index: 2;
-  margin-bottom: 2.25rem;
+.delivSection {
+  margin-bottom: 2rem;
 }
 
-.delivHeading {
+.delivLabel {
   font-family: var(--font-mono, monospace);
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(243, 241, 234, 0.45);
-  margin: 0 0 0.85rem 0;
+  color: rgba(243, 241, 234, 0.4);
+  margin: 0 0 0.75rem 0;
 }
 
-.delivGrid {
+.delivChips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.65rem;
+  gap: 0.55rem;
 }
 
-.delivPill {
-  display: flex;
+.chip {
+  display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.45rem;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.45rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.4rem 0.75rem;
   border-radius: 2px;
   font-family: var(--font-mono, monospace);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: rgba(243, 241, 234, 0.85);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
 }
 
-.delivDot {
-  width: 5px;
-  height: 5px;
+.chipDot {
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--color-gold, #e8c56a);
 }
 
-/* Card CTA Button */
-.cardFooter {
-  position: relative;
-  z-index: 2;
+.cardAction {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 1.5rem;
+  padding-top: 1.35rem;
 }
 
-.ctaButton {
+.initiateBtn {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
   font-family: var(--font-mono, monospace);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -347,61 +265,47 @@
   text-decoration: none;
   background: linear-gradient(
     90deg,
-    rgba(232, 197, 106, 0.15) 0%,
-    rgba(232, 197, 106, 0.05) 100%
+    rgba(232, 197, 106, 0.14) 0%,
+    rgba(232, 197, 106, 0.04) 100%
   );
-  border: 1px solid rgba(232, 197, 106, 0.35);
-  padding: 0.85rem 1.4rem;
+  border: 1px solid rgba(232, 197, 106, 0.32);
+  padding: 0.75rem 1.25rem;
   border-radius: 2px;
-  transition: all 0.3s ease;
+  transition: all 0.28s ease;
 }
 
-.ctaButton:hover {
-  background: rgba(232, 197, 106, 0.25);
+.initiateBtn:hover {
+  background: rgba(232, 197, 106, 0.22);
   border-color: var(--color-gold, #e8c56a);
   color: var(--color-gold, #e8c56a);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(232, 197, 106, 0.15);
+  box-shadow: 0 8px 24px rgba(232, 197, 106, 0.12);
 }
 
-.ctaArrow {
-  transition: transform 0.3s ease;
+.btnArrow {
+  transition: transform 0.28s ease;
 }
 
-.ctaButton:hover .ctaArrow {
+.initiateBtn:hover .btnArrow {
   transform: translateX(4px);
 }
 
-/* ─── Responsive Media Queries ──────────────────────────── */
+/* ─── Responsive Queries ────────────────────────────────── */
 @media (max-width: 1024px) {
   .layout {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
   }
 
-  .detailRail {
-    min-height: auto;
-  }
-}
-
-@media (max-width: 640px) {
-  .section {
-    padding: 3.5rem 0;
+  .kineticViewport {
+    height: 180px;
   }
 
-  .mandateRow {
-    gap: 0.85rem;
+  .leadWord {
+    font-size: clamp(3rem, 12vw, 5.5rem);
   }
 
-  .rowKeyword {
-    font-size: 1.3rem;
-  }
-
-  .rowTagline {
-    font-size: 0.78rem;
-  }
-
-  .detailCard {
-    padding: 1.5rem 1.25rem;
+  .kineticText {
+    font-size: clamp(2.4rem, 10vw, 4.5rem);
   }
 }
