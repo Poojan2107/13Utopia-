@@ -20,24 +20,26 @@ export function SiteHeader() {
     setOpen(false);
   }, []);
 
-  // Header scroll appearance & auto-hide
+  // Header scroll appearance & hide once scrolled past hero
   useEffect(() => {
-    let lastY = window.scrollY;
     const onScroll = () => {
       const y = window.scrollY;
+      const heroThreshold = (window.innerHeight || 800) * 0.75;
       setScrolled(y > 12);
       if (open) {
         setHidden(false);
-        lastY = y;
         return;
       }
-      const goingDown = y > lastY && y > 80;
-      setHidden(goingDown);
-      lastY = y;
+      // Completely hidden when past hero
+      setHidden(y > heroThreshold);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [open]);
 
   // Lock body scroll when overlay is active

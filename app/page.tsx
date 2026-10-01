@@ -25,8 +25,8 @@ export default function HomePage() {
       <SiteHeader />
 
       {/* Fluid Continuous Awwwards Experience */}
-      <main id="main-content" style={{ position: "relative", zIndex: 2 }}>
-        {/* 01 — HERO: locked silk + bust dual-flank (fixed plane) */}
+      <main id="main-content" style={{ position: "relative", zIndex: 2, backgroundColor: "#000000" }}>
+        {/* 01 — HERO: locked silk + bust dual-flank (fixed plane - DARK) */}
         <HomeHero />
         {/* Flow spacer — hero is position:fixed */}
         <div
@@ -34,27 +34,27 @@ export default function HomePage() {
           style={{ height: "100dvh", width: "100%", pointerEvents: "none" }}
         />
 
-        {/* 02 // 10 — CONVICTION: RXK-style cream display stack */}
+        {/* 02 // 10 — CONVICTION: RXK-style cream display stack (LIGHT) */}
         <FramerSectionBelief />
 
-        {/* 03-05 // 10 — THE THREE WORLDS: CREATE · BUILD · GROW (Horizontal Sticky Scroll) */}
+        {/* 03-05 // 10 — THE THREE WORLDS: CREATE · BUILD · GROW (Horizontal Sticky Scroll - DARK) */}
         <FramerWorldsHorizontal />
 
-        {/* 06 // 10 — THE WORK: 3D Jesper Landberg carousel — no nav chrome, continuous section */}
+        {/* 06 // 10 — THE WORK: 3D Jesper Landberg carousel (LIGHT) */}
         <HomeSectionWork />
 
-        {/* 07 // 10 — OUTCOMES: CLIENT OBJECTIVES */}
+        {/* 07 // 10 — OUTCOMES: CLIENT OBJECTIVES & 3D 13 EMBLEM (DARK) */}
         <FramerSectionOutcomes />
 
-        {/* 08 // 10 — ABOUT: THE ANOMALY & PRINCIPLES */}
+        {/* 08 // 10 — ABOUT: THE ANOMALY & PRINCIPLES (LIGHT) */}
         <FramerSectionAbout />
 
-        {/* 09 // 10 — CTA: INITIATION */}
+        {/* 09 // 10 — CTA: INITIATION (DARK) */}
         <FramerSectionCTA />
-      </main>
 
-      {/* 10 // 10 — FOOTER & ARCHITECTURAL COLOPHON */}
-      <FramerFooter />
+        {/* 10 // 10 — FOOTER & ARCHITECTURAL COLOPHON (DARK) */}
+        <FramerFooter />
+      </main>
     </SmoothScrollProvider>
   );
 }

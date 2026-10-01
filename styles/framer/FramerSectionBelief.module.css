@@ -28,28 +28,7 @@
   padding-block: 4rem;
 }
 
-.chrome {
-  position: absolute;
-  top: clamp(1.5rem, 4vh, 3.25rem);
-  left: 0;
-  right: 0;
-  z-index: 5;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-inline: var(--gutter);
-  pointer-events: none;
-  font-family: var(--display);
-  font-weight: 600;
-  font-size: clamp(0.75rem, 0.95vw, 0.9rem);
-  letter-spacing: -0.01em;
-  color: #555555;
-}
 
-.chromeTime {
-  pointer-events: auto;
-  font-variant-numeric: tabular-nums;
-}
 
 .stage {
   position: relative;
@@ -156,71 +135,6 @@
 
 .ink {
   color: var(--ink);
-}
-
-/* ─── Creative Interactive Element ──────────────────────── */
-.creativeWrapper {
-  margin: clamp(1rem, 2.2vh, 2rem) 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.creativePill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 0.45rem 1.15rem;
-  background: rgba(10, 10, 10, 0.04);
-  border: 1px solid rgba(10, 10, 10, 0.12);
-  border-radius: 9999px;
-  font-family: var(--display);
-  font-size: clamp(0.7rem, 0.9vw, 0.85rem);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #222222;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: pointer;
-  user-select: none;
-}
-
-.creativePill:hover {
-  background: #0a0a0a;
-  color: #f4f3ee;
-  border-color: #0a0a0a;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.15);
-}
-
-.pulseDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #2e7d32;
-  box-shadow: 0 0 8px rgba(46, 125, 50, 0.6);
-  animation: pulseGlow 2s infinite ease-in-out;
-}
-
-.creativePill:hover .pulseDot {
-  background: #4ade80;
-  box-shadow: 0 0 10px rgba(74, 222, 128, 0.8);
-}
-
-@keyframes pulseGlow {
-  0%, 100% {
-    transform: scale(0.9);
-    opacity: 0.7;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-}
-
-.sparkle {
-  font-size: 0.85em;
-  color: var(--gold);
 }
 
 .sub {

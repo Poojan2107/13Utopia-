@@ -12,6 +12,27 @@ import styles from "@/styles/home/HomeHero.module.css";
  */
 export function HomeHero() {
   const typeRef = useRef<HTMLDivElement | null>(null);
+  const heroRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const h = window.innerHeight || 800;
+      if (hero) {
+        if (y > h * 1.25) {
+          hero.style.visibility = "hidden";
+          hero.style.pointerEvents = "none";
+        } else {
+          hero.style.visibility = "visible";
+          hero.style.pointerEvents = "auto";
+        }
+      }
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const el = typeRef.current;
@@ -53,7 +74,7 @@ export function HomeHero() {
   }, []);
 
   return (
-    <section className={styles.hero} aria-label="13 UTOPIA">
+    <section ref={heroRef} className={styles.hero} aria-label="13 UTOPIA">
       <HeroEnter>
         <div className={styles.atmosphere} aria-hidden="true">
           <GoldSilkCurtain />

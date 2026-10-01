@@ -21,6 +21,8 @@
 
 .hidden {
   transform: translateY(-110%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .menuOpen {

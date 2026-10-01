@@ -6,8 +6,8 @@
 .section {
   position: relative;
   width: 100%;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #f4f3ee;
+  color: #0a0a0a;
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -20,10 +20,10 @@
   align-items: center;
   gap: 0.55rem;
   padding: 1.35rem clamp(1.75rem, 5.5vw, 6.5rem);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(0, 0, 0, 0.9);
+  border-bottom: 1px solid rgba(10, 10, 10, 0.08);
+  background: rgba(244, 243, 238, 0.95);
   backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(232, 197, 106, 0.15);
+  border-top: 1px solid rgba(10, 10, 10, 0.08);
 }
 
 .eyebrowNum {
@@ -32,13 +32,13 @@
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-gold, #e8c56a);
+  color: #0a0a0a;
 }
 
 .eyebrowSep {
   font-family: var(--font-mono, monospace);
   font-size: 0.68rem;
-  color: rgba(232, 197, 106, 0.35);
+  color: rgba(10, 10, 10, 0.3);
 }
 
 .eyebrowLabel {
@@ -46,7 +46,7 @@
   font-size: 0.68rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(232, 197, 106, 0.75);
+  color: #333333;
   flex: 1;
 }
 
@@ -56,14 +56,14 @@
   font-size: 0.65rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(243, 241, 234, 0.4);
+  color: #555555;
   text-decoration: none;
   transition: color 0.25s ease;
   margin-left: auto;
 }
 
 .archiveLink:hover {
-  color: var(--color-gold, #e8c56a);
+  color: #0a0a0a;
 }
 
 /* ── Monumental Title Header Block ──────────────────────── */
@@ -76,7 +76,7 @@
   align-items: flex-end;
   gap: 2rem;
   flex-wrap: wrap;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(10, 10, 10, 0.08);
 }
 
 .titleWrap {
@@ -89,6 +89,7 @@
 .workEchoTitle {
   font-size: clamp(3.2rem, 7.5vw, 7.5rem) !important;
   margin: 0;
+  color: #0a0a0a !important;
 }
 
 .workLead {
@@ -97,7 +98,7 @@
   font-size: clamp(1rem, 1.3vw, 1.25rem);
   font-weight: 400;
   line-height: 1.45;
-  color: rgba(243, 241, 234, 0.65);
+  color: #555555;
 }
 
 .interactionHint {
@@ -105,8 +106,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.35rem 0.75rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(10, 10, 10, 0.04);
+  border: 1px solid rgba(10, 10, 10, 0.1);
   border-radius: 9999px;
   margin-bottom: 0.5rem;
 }
@@ -115,7 +116,7 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--color-gold, #e8c56a);
+  background: #0a0a0a;
   animation: hintPulse 2s infinite ease-in-out;
 }
 
@@ -129,7 +130,7 @@
   font-size: 0.58rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(243, 241, 234, 0.6);
+  color: #444444;
 }
 
 /* ── Canvas wrap — full viewport height ─────────────────── */
