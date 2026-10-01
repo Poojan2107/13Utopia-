@@ -51,26 +51,30 @@
 /* ─── 3D Cylindrical Drum Viewport ──────────────────────── */
 .cylinderViewport {
   position: relative;
-  height: clamp(200px, 36vh, 360px);
+  height: clamp(260px, 44vh, 440px);
   overflow: visible;
   display: flex;
   align-items: center;
   width: 100%;
-  perspective: 1200px;
-  perspective-origin: 25% 50%;
+  perspective: 1100px;
+  perspective-origin: 20% 50%;
   transform-style: preserve-3d;
   mask-image: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(0, 0, 0, 1) 15%,
-    rgba(0, 0, 0, 1) 85%,
+    rgba(0, 0, 0, 0.3) 12%,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 1) 70%,
+    rgba(0, 0, 0, 0.3) 88%,
     transparent 100%
   );
   -webkit-mask-image: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(0, 0, 0, 1) 15%,
-    rgba(0, 0, 0, 1) 85%,
+    rgba(0, 0, 0, 0.3) 12%,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 1) 70%,
+    rgba(0, 0, 0, 0.3) 88%,
     transparent 100%
   );
 }
@@ -93,29 +97,21 @@
   transform-style: preserve-3d;
   will-change: transform, opacity;
   transition:
-    color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.3s ease;
+    color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.25s ease;
 }
 
 .itemText {
   display: block;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
   font-weight: 800;
-  line-height: 0.85;
-  letter-spacing: -0.045em;
+  font-size: clamp(3.6rem, min(12.5vh, 9vw), 9.2rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
   color: #4a4a4a;
   white-space: nowrap;
-  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.itemSingle {
-  font-size: clamp(4.4rem, min(14vh, 11.5vw), 12rem);
-}
-
-.itemTriple {
-  font-size: clamp(2.6rem, min(8.5vh, 6.8vw), 7.2rem);
-  letter-spacing: -0.035em;
+  transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .itemActive .itemText {
@@ -126,19 +122,13 @@
 /* ─── Responsive Media Queries ──────────────────────────── */
 @media (max-width: 900px) {
   .cylinderViewport {
-    height: clamp(90px, 18vh, 150px);
+    height: clamp(140px, 24vh, 200px);
     perspective: 800px;
+    perspective-origin: 30% 50%;
   }
 
-  .leadTitle {
-    font-size: clamp(3.2rem, 14vw, 6rem);
-  }
-
-  .itemSingle {
-    font-size: clamp(3rem, 13vw, 5.6rem);
-  }
-
-  .itemTriple {
-    font-size: clamp(1.8rem, 7.5vw, 3.2rem);
+  .itemText {
+    font-size: clamp(2.4rem, 11vw, 4.8rem);
+    letter-spacing: -0.03em;
   }
 }
