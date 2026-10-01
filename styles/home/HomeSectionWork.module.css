@@ -6,8 +6,8 @@
 .section {
   position: relative;
   width: 100%;
-  background-color: #f4f3ee;
-  color: #0a0a0a;
+  background-color: #faf6f0;
+  color: #000000;
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -20,10 +20,10 @@
   align-items: center;
   gap: 0.55rem;
   padding: 1.35rem clamp(1.75rem, 5.5vw, 6.5rem);
-  border-bottom: 1px solid rgba(10, 10, 10, 0.08);
-  background: rgba(244, 243, 238, 0.95);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(250, 246, 240, 0.96);
   backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(10, 10, 10, 0.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .eyebrowNum {
@@ -152,7 +152,7 @@
   height: 94dvh;
   min-height: 640px;
   overflow: hidden;
-  background-color: #f4f3ee;
+  background-color: #faf6f0;
 }
 
 .canvasAbsolute {

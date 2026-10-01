@@ -521,7 +521,7 @@ export default function ThreeCanvas({
     try {
       // 1. Scene & Camera
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0xf4f3ee);
+      scene.background = new THREE.Color(0xfaf6f0);
 
       const fov = 75;
       const camera = new THREE.PerspectiveCamera(
@@ -541,7 +541,7 @@ export default function ThreeCanvas({
         stencil: false,
         depth: true,
       });
-      renderer.setClearColor(0xf4f3ee, 1.0);
+      renderer.setClearColor(0xfaf6f0, 1.0);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.25 : 1.75));
       renderer.setSize(window.innerWidth, window.innerHeight);
       containerRef.current.appendChild(renderer.domElement);
@@ -772,8 +772,8 @@ export default function ThreeCanvas({
         vertexShader: floorVertexShader,
         fragmentShader: floorFragmentShader,
         uniforms: {
-          u_c0: { value: new THREE.Color(0xf4f3ee) },
-          u_c1: { value: new THREE.Color(0xdcdad2) },
+          u_c0: { value: new THREE.Color(0xfaf6f0) },
+          u_c1: { value: new THREE.Color(0xf4dfc8) },
           u_alpha: { value: 0.15 },
           u_gridF: { value: new THREE.Vector2(40, 20) },
           u_leanA: { value: -0.06 },

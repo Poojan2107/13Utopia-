@@ -5,9 +5,9 @@
    ========================================================= */
 
 .section {
-  --ink: #0a0a0a;
-  --ground: #f4f3ee;
-  --gold: #dfb76c;
+  --ink: #000000;
+  --ground: #faf6f0;
+  --gold: #f4dfc8;
   --display: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
   --gutter: clamp(1.25rem, 3.5vw, 3rem);
 
@@ -37,8 +37,8 @@
   align-items: center;
   gap: 0.55rem;
   padding: 1.25rem clamp(1.75rem, 5.5vw, 6.5rem);
-  border-bottom: 1px solid rgba(10, 10, 10, 0.08);
-  background: rgba(244, 243, 238, 0.96);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(250, 246, 240, 0.96);
   backdrop-filter: blur(12px);
   box-sizing: border-box;
 }
