@@ -33,22 +33,21 @@ export function PlusXSection() {
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: `+=${WORDS.length * 85}vh`,
+        end: `+=${WORDS.length * 90}vh`,
         pin: true,
-        scrub: 0.5,
+        scrub: 0.6,
         anticipatePin: 1,
         onUpdate: (self) => {
           const p = self.progress;
           setScrollProgress(p);
 
-          // Calculate active index with smooth thresholds
+          // Calculate active index with smooth thresholding
           const totalSteps = WORDS.length - 1;
           const exactIdx = p * totalSteps;
           const currentIdx = Math.min(totalSteps, Math.max(0, Math.round(exactIdx)));
           setActiveIdx(currentIdx);
 
-          // Vertical typography glide
-          // Get step height dynamically
+          // Vertical typography glide matching Plus X kinetic motion
           const firstItem = track.children[0] as HTMLElement | undefined;
           const itemHeight = firstItem ? firstItem.offsetHeight : 140;
           const targetY = -exactIdx * itemHeight;
@@ -71,9 +70,9 @@ export function PlusXSection() {
       ref={sectionRef}
       className={styles.section}
       id="outcomes"
-      aria-label="Plus-X 15th Anniversary Kinetic Typography"
+      aria-label="13 Utopia Kinetic Perspective Architecture"
     >
-      {/* 3D Plus Object in solid obsidian background */}
+      {/* 3D "13" Emblem Canvas in Pure Obsidian Stage */}
       <Plus3DCanvas progress={scrollProgress} className={styles.canvas3D} />
 
       {/* Monumental Kinetic Typography Layer */}
@@ -90,7 +89,7 @@ export function PlusXSection() {
               {WORDS.map((word, idx) => {
                 const isActive = idx === activeIdx;
                 const dist = Math.abs(idx - activeIdx);
-                const opacity = isActive ? 1 : Math.max(0.18, 0.45 - dist * 0.15);
+                const opacity = isActive ? 1 : Math.max(0.18, 0.42 - dist * 0.14);
 
                 return (
                   <div
