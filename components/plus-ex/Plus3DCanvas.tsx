@@ -36,9 +36,9 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000);
 
-    // Camera with cinematic perspective
+    // Camera with cinematic perspective centered
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    camera.position.set(0.4, 0, 11.2);
+    camera.position.set(0, 0, 11.2);
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({
@@ -115,13 +115,13 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
     // 1. The "1" Pillar: Vertical Architectural Pillar on Left
     const oneGeo = createPillGeometry(0.72, 6.2, depth);
     const oneMesh = new THREE.Mesh(oneGeo, verticalBeamMaterial);
-    oneMesh.position.set(-1.95, 0, 0);
+    oneMesh.position.set(-2.2, 0, 0);
     emblemGroup.add(oneMesh);
 
     // 2. The "3" Bars: Three Horizontal Architectural Bars on Right
     const barWidth = 3.6;
     const barHeight = 0.72;
-    const threeX = 0.85;
+    const threeX = 0.76;
     const barSpacing = 2.2;
 
     // Top Bar
@@ -142,8 +142,8 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
     botMesh.position.set(threeX, -barSpacing, 0);
     emblemGroup.add(botMesh);
 
-    // Position in deep background to the right
-    emblemGroup.position.set(1.5, 0, -1.6);
+    // Center the emblem group in the screen in deep spatial background
+    emblemGroup.position.set(0, 0, -1.4);
     emblemGroup.rotation.set(0, 0, 0); // Starts pristine front-facing "1 3"
     scene.add(emblemGroup);
     groupRef.current = emblemGroup;
@@ -226,7 +226,7 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
         emblemGroup.rotation.y += (targetRotY - emblemGroup.rotation.y) * 0.08;
         emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.08;
 
-        const targetPosX = 1.5 + mouseRef.current.x * 0.25 - p * 0.3;
+        const targetPosX = 0 + mouseRef.current.x * 0.3;
         const targetPosY = 0 - mouseRef.current.y * 0.2 + Math.sin(elapsed * 0.8) * 0.03;
         emblemGroup.position.x += (targetPosX - emblemGroup.position.x) * 0.06;
         emblemGroup.position.y += (targetPosY - emblemGroup.position.y) * 0.06;
