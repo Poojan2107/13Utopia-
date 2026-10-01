@@ -20,9 +20,10 @@
 }
 
 .hidden {
-  transform: translateY(-110%);
-  opacity: 0;
-  pointer-events: none;
+  transform: translateY(-120%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
 }
 
 .menuOpen {

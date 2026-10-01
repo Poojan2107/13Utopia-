@@ -23,8 +23,8 @@ export function SiteHeader() {
   // Header scroll appearance & hide once scrolled past hero
   useEffect(() => {
     const onScroll = () => {
-      const y = window.scrollY;
-      const heroThreshold = (window.innerHeight || 800) * 0.75;
+      const y = window.scrollY || document.documentElement.scrollTop || 0;
+      const heroThreshold = (window.innerHeight || 800) * 0.65;
       setScrolled(y > 12);
       if (open) {
         setHidden(false);
@@ -33,12 +33,34 @@ export function SiteHeader() {
       // Completely hidden when past hero
       setHidden(y > heroThreshold);
     };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
+
+    // Hook to Lenis scroll instance
+    let intervalId: number | undefined;
+    const lenis = (window as unknown as { __lenis?: { on: (e: string, cb: () => void) => void; off: (e: string, cb: () => void) => void } }).__lenis;
+    if (lenis && typeof lenis.on === "function") {
+      lenis.on("scroll", onScroll);
+    } else {
+      intervalId = window.setInterval(() => {
+        const l = (window as unknown as { __lenis?: { on: (e: string, cb: () => void) => void } }).__lenis;
+        if (l && typeof l.on === "function") {
+          l.on("scroll", onScroll);
+          window.clearInterval(intervalId);
+        }
+      }, 150);
+    }
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      if (intervalId) window.clearInterval(intervalId);
+      const l = (window as unknown as { __lenis?: { off: (e: string, cb: () => void) => void } }).__lenis;
+      if (l && typeof l.off === "function") {
+        l.off("scroll", onScroll);
+      }
     };
   }, [open]);
 

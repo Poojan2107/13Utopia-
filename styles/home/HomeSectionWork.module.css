@@ -90,6 +90,17 @@
   font-size: clamp(3.2rem, 7.5vw, 7.5rem) !important;
   margin: 0;
   color: #0a0a0a !important;
+  --echo-ink: #0a0a0a !important;
+  --echo-stroke: rgba(10, 10, 10, 0.25) !important;
+}
+
+.workEchoTitle :global(span) {
+  color: #0a0a0a !important;
+}
+
+.workEchoTitle :global([class*="layer"]) {
+  color: transparent !important;
+  -webkit-text-stroke: 1px rgba(10, 10, 10, 0.22) !important;
 }
 
 .workLead {
@@ -141,6 +152,7 @@
   height: 82dvh;
   min-height: 520px;
   overflow: hidden;
+  background-color: #f4f3ee;
 }
 
 .canvasAbsolute {
