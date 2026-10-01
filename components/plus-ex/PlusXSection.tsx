@@ -79,7 +79,7 @@ export function PlusXSection() {
             const rotateX = -offset * 20; // Tangential cylinder rotation in degrees
             const translateZ = -Math.pow(absOffset, 1.25) * 65; // Spatial depth curve
             const scale = Math.max(0.85, 1 - absOffset * 0.045);
-            const opacity = Math.max(0.08, 1 - absOffset * 0.38);
+            const opacity = Math.max(0.2, 1 - absOffset * 0.28);
 
             el.style.transform = `translate3d(0px, ${translateY}px, ${translateZ}px) rotateX(${rotateX}deg) scale(${scale})`;
             el.style.opacity = `${opacity}`;

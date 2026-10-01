@@ -66,18 +66,14 @@ export function HomeHero() {
         </div>
 
         <div ref={typeRef} className={styles.stageTypography}>
-          <h1 className={styles.srOnly}>BE UNREAL. BE UNREASONABLE.</h1>
+          <h1 className={styles.srOnly}>BE UNREAL. UNREASONABLE.</h1>
           <aside className={`${styles.left} ${styles.flank}`} aria-hidden="true">
             <div className={styles.stack} data-hero-left>
-              <p className={`${styles.statement} ${styles.statementGold}`}>
+              <div className={`${styles.statement} ${styles.statementGold}`}>
                 <span className={styles.be}>BE</span>
                 <span className={styles.unreal}>UNREAL</span>
-              </p>
-
-              <p className={`${styles.statement} ${styles.statementGold} ${styles.statementSecond}`}>
-                <span className={styles.be}>BE</span>
                 <span className={styles.unreasonable}>UNREASONABLE</span>
-              </p>
+              </div>
             </div>
           </aside>
         </div>
