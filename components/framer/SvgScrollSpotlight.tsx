@@ -109,54 +109,61 @@ export function SvgScrollSpotlight() {
         };
       };
 
-      let dims = getDimensions();
-
-      const st = ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: "top top",
-        end: "+=260%",
-        pin: true,
-        pinSpacing: true,
-        scrub: 0.85,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          const scrollProgress = self.progress;
-
-          // 1. Cascading 3D Fan-out (first 45% of pinned scroll)
-          const cascadeProgress = Math.min(scrollProgress / 0.45, 1);
-          headers.forEach((header, index) => {
-            const finalScale = 1 - index * 0.075;
-            const scale = 1 + (finalScale - 1) * cascadeProgress;
-            const y = index * dims.cascadeShift * cascadeProgress;
-            gsap.set(header, { scale, y });
-          });
-
-          // 2. Center Letter I Rotation, Slide, and Scale (from 45% to 85%)
-          const letterIProgress = gsap.utils.clamp(
-            0,
-            1,
-            (scrollProgress - 0.45) / 0.40
-          );
-
-          gsap.set(letterIGroup, {
-            rotation: gsap.utils.interpolate(0, 90, letterIProgress),
-            y: gsap.utils.interpolate(0, dims.slideDistance, letterIProgress),
-            scale: gsap.utils.interpolate(1, dims.targetScale, letterIProgress),
-          });
-
-          // 3. Scramble trigger (from 65% onwards)
-          if (scrollProgress > 0.65 && !isRevealed) {
-            isRevealed = true;
-            scrambleText(true);
-          } else if (scrollProgress < 0.65 && isRevealed) {
-            isRevealed = false;
-            scrambleText(false);
-          }
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: () => `+=${Math.max(3000, window.innerHeight * 3.2)}`,
+          scrub: 1.0,
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const p = self.progress;
+            if (p > 0.62 && !isRevealed) {
+              isRevealed = true;
+              scrambleText(true);
+            } else if (p < 0.62 && isRevealed) {
+              isRevealed = false;
+              scrambleText(false);
+            }
+          },
         },
       });
 
-      // Delayed refresh to guarantee accurate DOM coordinates after Three.js canvases mount
+      // Phase 1 (0.0 to 0.45): Cascading 3D Fan-out
+      headers.forEach((header, index) => {
+        const finalScale = 1 - index * 0.075;
+        const yOffset = index * dims.cascadeShift;
+        tl.to(
+          header,
+          {
+            scale: finalScale,
+            y: yOffset,
+            ease: "none",
+            duration: 0.45,
+          },
+          0
+        );
+      });
+
+      // Phase 2 (0.45 to 0.82): Letter I rotation, slide, and scale
+      tl.to(
+        letterIGroup,
+        {
+          rotation: 90,
+          y: dims.slideDistance,
+          scale: dims.targetScale,
+          ease: "none",
+          duration: 0.37,
+        },
+        0.45
+      );
+
+      // Phase 3 (0.82 to 1.0): Hold state buffer — stays locked so user clearly sees the finished transform
+      tl.to({}, { duration: 0.18 }, 0.82);
+
       const refreshTimeout = setTimeout(() => {
         ScrollTrigger.refresh();
       }, 500);
@@ -171,7 +178,7 @@ export function SvgScrollSpotlight() {
       return () => {
         clearTimeout(refreshTimeout);
         window.removeEventListener("resize", handleResize);
-        st.kill();
+        tl.kill();
         if (scrambleIntervalRef.current) clearInterval(scrambleIntervalRef.current);
       };
     }, containerRef);
