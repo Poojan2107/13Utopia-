@@ -220,6 +220,16 @@ export function HomeSectionWork() {
       aria-label="06: The Work — 3D Portfolio Showcase"
       className={styles.section}
     >
+      {/* Editorial Chapter Eyebrow */}
+      <div className={styles.eyebrow}>
+        <span className={styles.eyebrowNum}>06</span>
+        <span className={styles.eyebrowSep}>//</span>
+        <span className={styles.eyebrowLabel}>THE WORK · 3D PORTFOLIO SHOWCASE</span>
+        <a href="/work" className={styles.archiveLink}>
+          VIEW ARCHIVE [8] ↗
+        </a>
+      </div>
+
       {/* Monumental Work Section Title Header */}
       <div className={styles.headerBlock}>
         <div className={styles.titleWrap}>

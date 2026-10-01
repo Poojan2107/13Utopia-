@@ -2,45 +2,91 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: #f4f3ee;
   color: #0a0a0a;
-  padding: clamp(6rem, 14vh, 12rem) clamp(2rem, 5vw, 6rem);
   box-sizing: border-box;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ── Section eyebrow strip (matches Conviction & Work) ── */
+.eyebrow {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 1.25rem clamp(1.75rem, 5.5vw, 6.5rem);
+  border-bottom: 1px solid rgba(10, 10, 10, 0.08);
+  background: rgba(244, 243, 238, 0.96);
+  backdrop-filter: blur(12px);
+  box-sizing: border-box;
+}
+
+.eyebrowNum {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+}
+
+.eyebrowSep {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  color: rgba(10, 10, 10, 0.3);
+}
+
+.eyebrowLabel {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #333333;
+  flex: 1;
 }
 
 .container {
   width: 100%;
-  max-width: 1540px;
+  max-width: 1600px;
+  margin: auto auto;
   display: grid;
-  grid-template-columns: minmax(460px, 1fr) minmax(420px, 560px);
-  gap: clamp(3rem, 6vw, 7rem);
+  grid-template-columns: minmax(460px, 1.15fr) minmax(380px, 0.85fr);
+  gap: clamp(3rem, 6vw, 6.5rem);
   align-items: center;
+  padding-inline: clamp(1.75rem, 5.5vw, 6.5rem);
+  padding-block: clamp(3rem, 6vh, 5.5rem);
+  box-sizing: border-box;
 }
 
 /* ─── Left Column ─── */
 .manifestoCol {
   display: flex;
   flex-direction: column;
-  gap: clamp(1.4rem, 2.8vh, 2.2rem);
+  gap: clamp(1.5rem, 3vh, 2.4rem);
 }
 
 .headline {
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: clamp(2.4rem, 4.5vw, 4.2rem);
-  font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
+  font-size: clamp(2.4rem, 4.4vw, 4.4rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
   margin: 0;
   color: #0a0a0a;
+  text-transform: uppercase;
 }
 
 .bodyText {
-  font-family: var(--font-sans, "PP Neue Montreal", sans-serif);
-  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
-  line-height: 1.65;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.95rem, 1.2vw, 1.125rem);
+  line-height: 1.6;
   color: #444444;
   margin: 0;
   max-width: 620px;
@@ -49,95 +95,105 @@
 .metricsBar {
   display: flex;
   align-items: center;
-  gap: clamp(1rem, 2vw, 2rem);
-  padding: 1.4rem 1.8rem;
+  gap: clamp(1rem, 2vw, 2.25rem);
+  padding: 1rem 1.75rem;
   background: rgba(10, 10, 10, 0.03);
-  border: 1px solid rgba(10, 10, 10, 0.1);
-  border-radius: 4px;
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  border-radius: 9999px;
+  width: fit-content;
   flex-wrap: wrap;
 }
 
 .metricItem {
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  align-items: baseline;
+  gap: 0.5rem;
 }
 
 .metricVal {
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   color: #0a0a0a;
 }
 
 .metricKey {
   font-family: var(--font-mono, monospace);
   font-size: 0.6rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   color: #666666;
   text-transform: uppercase;
 }
 
 .metricDivider {
   width: 1px;
-  height: 36px;
-  background: rgba(10, 10, 10, 0.1);
+  height: 20px;
+  background: rgba(10, 10, 10, 0.12);
 }
 
 /* ─── Right Column: Principles ─── */
 .principlesCol {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .principleRow {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  padding: 1.2rem 1.4rem;
-  border-left: 2px solid rgba(10, 10, 10, 0.25);
+  gap: 0.45rem;
+  padding: 1.2rem 1.5rem;
+  border-left: 2px solid rgba(10, 10, 10, 0.14);
   background: rgba(10, 10, 10, 0.02);
-  transition: all 0.3s ease;
+  border-radius: 0 8px 8px 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .principleRow:hover {
-  background: rgba(10, 10, 10, 0.05);
+  background: rgba(10, 10, 10, 0.045);
   border-left-color: #0a0a0a;
   transform: translateX(4px);
 }
 
 .principleHeader {
   display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
 }
 
 .principleNum {
   font-family: var(--font-mono, monospace);
-  font-size: 0.7rem;
-  color: #777777;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #888888;
 }
 
 .principleVerb {
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: 1.18rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   color: #0a0a0a;
+  text-transform: uppercase;
 }
 
 .principleArchetype {
   font-family: var(--font-mono, monospace);
-  font-size: 0.65rem;
+  font-size: 0.58rem;
   letter-spacing: 0.14em;
   color: #555555;
   text-transform: uppercase;
+  background: rgba(10, 10, 10, 0.04);
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  border-radius: 9999px;
+  padding: 0.15rem 0.55rem;
 }
 
 .principleDesc {
-  font-family: var(--font-sans, "PP Neue Montreal", sans-serif);
-  font-size: 0.86rem;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: 0.88rem;
   line-height: 1.5;
   color: #555555;
   margin: 0;
@@ -147,5 +203,9 @@
   .container {
     grid-template-columns: 1fr;
     gap: 3.5rem;
+  }
+
+  .metricsBar {
+    border-radius: 12px;
   }
 }

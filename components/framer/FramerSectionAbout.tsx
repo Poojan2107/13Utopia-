@@ -29,6 +29,13 @@ const PRINCIPLES = [
 export function FramerSectionAbout() {
   return (
     <section className={styles.section} aria-label="Section 08: About 13 UTOPIA" id="about">
+      {/* Editorial Chapter Eyebrow */}
+      <div className={styles.eyebrow}>
+        <span className={styles.eyebrowNum}>08</span>
+        <span className={styles.eyebrowSep}>//</span>
+        <span className={styles.eyebrowLabel}>ABOUT · THE ANOMALY & PRINCIPLES</span>
+      </div>
+
       <div className={styles.container}>
         {/* Left Column: Manifesto & Studio Rigor */}
         <div className={styles.manifestoCol}>

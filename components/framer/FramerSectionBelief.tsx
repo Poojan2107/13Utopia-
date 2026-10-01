@@ -86,6 +86,13 @@ export function FramerSectionBelief() {
       aria-label="02: Conviction"
       data-theme="light"
     >
+      {/* Editorial Chapter Eyebrow */}
+      <div className={styles.eyebrow}>
+        <span className={styles.eyebrowNum}>02</span>
+        <span className={styles.eyebrowSep}>//</span>
+        <span className={styles.eyebrowLabel}>CONVICTION · PHILOSOPHY</span>
+      </div>
+
       <div className={styles.stage} ref={stageRef}>
         <h2 className={styles.title} aria-label={aria}>
           {LINES.map((tokens, li) => (

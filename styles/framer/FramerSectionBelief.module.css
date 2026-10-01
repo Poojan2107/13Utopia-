@@ -7,7 +7,7 @@
 .section {
   --ink: #0a0a0a;
   --ground: #f4f3ee;
-  --gold: #b38b32;
+  --gold: #dfb76c;
   --display: var(--font-neue-montreal, "PP Neue Montreal", "Neue Montreal", sans-serif);
   --gutter: clamp(1.25rem, 3.5vw, 3rem);
 
@@ -18,17 +18,54 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background: var(--ground);
   color: var(--ink);
   box-sizing: border-box;
   overflow: hidden;
   isolation: isolate;
-  padding-block: 4rem;
+  padding-block: 0 4rem;
 }
 
+/* ── Section eyebrow strip (matches Work & About chapters) ── */
+.eyebrow {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 1.25rem clamp(1.75rem, 5.5vw, 6.5rem);
+  border-bottom: 1px solid rgba(10, 10, 10, 0.08);
+  background: rgba(244, 243, 238, 0.96);
+  backdrop-filter: blur(12px);
+  box-sizing: border-box;
+}
 
+.eyebrowNum {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.eyebrowSep {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  color: rgba(10, 10, 10, 0.3);
+}
+
+.eyebrowLabel {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #333333;
+  flex: 1;
+}
 
 .stage {
   position: relative;
@@ -39,8 +76,9 @@
   justify-content: center;
   width: 100%;
   max-width: 1600px;
-  margin: 0 auto;
+  margin: auto auto;
   padding-inline: var(--gutter);
+  padding-block: clamp(2rem, 5vh, 4rem);
   box-sizing: border-box;
 }
 
