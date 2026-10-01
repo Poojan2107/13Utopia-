@@ -74,13 +74,6 @@ export function FramerSectionOutcomes() {
       aria-label="Section 07: Client Outcomes"
       id="outcomes"
     >
-      <div className={styles.eyebrowStrip}>
-        <span className={styles.eyebrowNum}>07 // 10</span>
-        <span className={styles.eyebrowSep}>·</span>
-        <span className={styles.eyebrowLabel}>OBJECTIVES</span>
-        <span className={styles.eyebrowMeta}>SIX MANDATES // ONE FOCUS</span>
-      </div>
-
       <div className={styles.stage}>
         <div className={styles.header}>
           <motion.h2

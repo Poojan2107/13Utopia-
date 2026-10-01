@@ -32,18 +32,6 @@ export function FramerSectionAbout() {
       <div className={styles.container}>
         {/* Left Column: Manifesto & Studio Rigor */}
         <div className={styles.manifestoCol}>
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className={styles.eyebrow}
-          >
-            <span className={styles.eyebrowNum}>08 // 10</span>
-            <span className={styles.eyebrowDot}>·</span>
-            <span className={styles.eyebrowLabel}>ANOMALY</span>
-          </motion.div>
-
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}

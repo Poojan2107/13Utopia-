@@ -35,12 +35,6 @@ export function FramerSectionWork() {
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className={styles.headerBlock}
-          >
-            <div className={styles.indexBox}>
-              <span className={styles.indexNum}>06 // 10</span>
-              <span className={styles.indexDot}>·</span>
-              <span className={styles.indexLabel}>THE WORK</span>
-            </div>
             <h2 className={styles.mainTitle}>PROOF.</h2>
             <p className={styles.subTitle}>
               Ideas are cheap. We prefer what survives contact with reality.

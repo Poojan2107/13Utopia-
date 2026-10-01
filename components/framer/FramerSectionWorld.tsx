@@ -199,14 +199,6 @@ export function FramerSectionWorld({ worldKey }: Props) {
       id={`world-${config.id}`}
       style={{ "--world-accent": config.accent } as React.CSSProperties}
     >
-      {/* Work-parity eyebrow strip */}
-      <div className={styles.eyebrowStrip}>
-        <span className={styles.eyebrowNum}>{config.indexNum}</span>
-        <span className={styles.eyebrowSep}>·</span>
-        <span className={styles.eyebrowLabel}>{config.worldTag}</span>
-        <span className={styles.eyebrowMeta}>{config.tagline}</span>
-      </div>
-
       <div className={`${styles.stage} ${flip ? styles.stageFlip : ""}`}>
         <div className={styles.copyCol}>
           <EchoTitle text={config.title} />

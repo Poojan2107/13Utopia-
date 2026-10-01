@@ -254,14 +254,6 @@ export function FramerWorldsHorizontal() {
       id="worlds-architecture"
       style={{ "--world-accent": activeWorld.accent } as React.CSSProperties}
     >
-      {/* Clean Work-parity Eyebrow Strip */}
-      <div className={styles.eyebrowStrip}>
-        <span className={styles.eyebrowNum}>{activeWorld.indexNum}</span>
-        <span className={styles.eyebrowSep}>·</span>
-        <span className={styles.eyebrowLabel}>{activeWorld.worldTag}</span>
-        <span className={styles.eyebrowMeta}>{activeWorld.tagline}</span>
-      </div>
-
       {/* Horizontal Pinned Track */}
       <div className={styles.viewportWindow}>
         <div ref={trackRef} className={styles.horizontalTrack}>
