@@ -59,16 +59,21 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
     // Helper: Tapered Architectural Monolith for "1"
     const createOneShape = () => {
       const shape = new THREE.Shape();
-      const topR = 0.38;
-      const botR = 0.62;
-      const topY = 2.72;
-      const botY = -2.52;
+      const topR = 0.44;
+      const botR = 0.68;
+      const topY = 2.62;
+      const botY = -2.42;
 
+      // Start at left bottom
       shape.moveTo(-botR, botY);
+      // Line up to left top
       shape.lineTo(-topR, topY);
-      shape.absarc(0, topY, topR, Math.PI, 0, false);
+      // Top convex dome (clockwise from PI to 0)
+      shape.absarc(0, topY, topR, Math.PI, 0, true);
+      // Line down to right bottom
       shape.lineTo(botR, botY);
-      shape.absarc(0, botY, botR, 0, Math.PI, false);
+      // Bottom convex dome (clockwise from 0 to PI)
+      shape.absarc(0, botY, botR, 0, Math.PI, true);
       shape.closePath();
       return shape;
     };
