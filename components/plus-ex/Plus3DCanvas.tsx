@@ -56,45 +56,68 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
     // 3D "13" Emblem Group
     const emblemGroup = new THREE.Group();
 
-    // Helper: Precision Pill Geometry with Crisp Chamfer
-    const createPillGeometry = (w: number, h: number, depth: number) => {
+    // Helper: Tapered Architectural Monolith for "1"
+    const createOneShape = () => {
       const shape = new THREE.Shape();
-      const hw = w / 2;
-      const hh = h / 2;
-      const r = Math.min(hw, hh);
+      const topR = 0.38;
+      const botR = 0.62;
+      const topY = 2.72;
+      const botY = -2.52;
 
-      if (h >= w) {
-        // Vertical pill
-        const straightH = hh - r;
-        shape.moveTo(-hw, -straightH);
-        shape.lineTo(-hw, straightH);
-        shape.absarc(0, straightH, r, Math.PI, 0, true);
-        shape.lineTo(hw, -straightH);
-        shape.absarc(0, -straightH, r, 0, Math.PI, true);
-      } else {
-        // Horizontal pill
-        const straightW = hw - r;
-        shape.moveTo(-straightW, -hh);
-        shape.lineTo(straightW, -hh);
-        shape.absarc(straightW, 0, r, -Math.PI / 2, Math.PI / 2, false);
-        shape.lineTo(-straightW, hh);
-        shape.absarc(-straightW, 0, r, Math.PI / 2, (3 * Math.PI) / 2, false);
-      }
+      shape.moveTo(-botR, botY);
+      shape.lineTo(-topR, topY);
+      shape.absarc(0, topY, topR, Math.PI, 0, false);
+      shape.lineTo(botR, botY);
+      shape.absarc(0, botY, botR, 0, Math.PI, false);
       shape.closePath();
+      return shape;
+    };
 
-      const extrudeSettings = {
-        steps: 1,
-        depth: depth,
-        bevelEnabled: true,
-        bevelThickness: 0.045,
-        bevelSize: 0.045,
-        bevelOffset: 0,
-        bevelSegments: 4,
-      };
+    // Helper: Continuous Organic Ribbon for "3" (13 Utopia Brand Mark)
+    const createThreeShape = () => {
+      const shape = new THREE.Shape();
 
-      const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-      geo.center();
-      return geo;
+      // Top outer cap & upper arch
+      shape.moveTo(-0.45, 2.82);
+      shape.bezierCurveTo(0.30, 3.12, 1.30, 3.08, 1.88, 2.48);
+      shape.bezierCurveTo(2.38, 1.95, 2.28, 1.12, 1.72, 0.52);
+
+      // Outer waist transition
+      shape.bezierCurveTo(1.32, 0.12, 1.12, 0.02, 1.18, -0.02);
+
+      // Outer lower bowl & bottom crest
+      shape.bezierCurveTo(1.38, -0.22, 2.18, -0.68, 2.32, -1.38);
+      shape.bezierCurveTo(2.46, -2.18, 1.78, -3.12, 0.62, -3.12);
+      shape.bezierCurveTo(-0.18, -3.12, -0.65, -2.82, -0.92, -2.32);
+
+      // Bottom terminal rounded bulb
+      shape.bezierCurveTo(-1.18, -1.82, -1.02, -1.32, -0.52, -1.38);
+
+      // Inner lower bowl returning to center waist
+      shape.bezierCurveTo(0.18, -1.42, 0.88, -1.68, 1.28, -1.32);
+      shape.bezierCurveTo(1.58, -1.02, 1.48, -0.42, 0.98, -0.12);
+      shape.bezierCurveTo(0.58, 0.12, 0.22, 0.18, 0.18, 0.08);
+
+      // Inner upper bowl returning to top terminal
+      shape.bezierCurveTo(0.12, -0.02, 0.38, 0.58, 0.78, 0.98);
+      shape.bezierCurveTo(1.32, 1.48, 1.28, 1.98, 0.88, 2.18);
+      shape.bezierCurveTo(0.38, 2.38, -0.12, 2.18, -0.48, 1.88);
+
+      // Top terminal rounded cap closure
+      shape.bezierCurveTo(-0.95, 1.92, -0.95, 2.78, -0.45, 2.82);
+
+      shape.closePath();
+      return shape;
+    };
+
+    const extrudeSettings = {
+      steps: 1,
+      depth: 0.95,
+      bevelEnabled: true,
+      bevelThickness: 0.045,
+      bevelSize: 0.045,
+      bevelOffset: 0,
+      bevelSegments: 4,
     };
 
     // Plus-X Exact Architectural Graphite & Titanium Materials
@@ -110,39 +133,21 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
       metalness: 0.62,
     });
 
-    const depth = 0.95;
-
-    // 1. The "1" Pillar: Vertical Architectural Pillar on Left
-    const oneGeo = createPillGeometry(0.72, 6.2, depth);
+    // 1. The "1" Tapered Monolith
+    const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
+    oneGeo.center();
     const oneMesh = new THREE.Mesh(oneGeo, verticalBeamMaterial);
-    oneMesh.position.set(-2.2, 0, 0);
+    oneMesh.position.set(-1.85, 0, 0);
     emblemGroup.add(oneMesh);
 
-    // 2. The "3" Bars: Three Horizontal Architectural Bars on Right
-    const barWidth = 3.6;
-    const barHeight = 0.72;
-    const threeX = 0.76;
-    const barSpacing = 2.2;
+    // 2. The "3" Brand Ribbon
+    const threeGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
+    threeGeo.center();
+    const threeMesh = new THREE.Mesh(threeGeo, horizontalBeamMaterial);
+    threeMesh.position.set(0.95, 0, 0);
+    emblemGroup.add(threeMesh);
 
-    // Top Bar
-    const topGeo = createPillGeometry(barWidth, barHeight, depth);
-    const topMesh = new THREE.Mesh(topGeo, horizontalBeamMaterial);
-    topMesh.position.set(threeX, barSpacing, 0);
-    emblemGroup.add(topMesh);
-
-    // Middle Bar
-    const midGeo = createPillGeometry(barWidth, barHeight, depth);
-    const midMesh = new THREE.Mesh(midGeo, horizontalBeamMaterial);
-    midMesh.position.set(threeX, 0, 0);
-    emblemGroup.add(midMesh);
-
-    // Bottom Bar
-    const botGeo = createPillGeometry(barWidth, barHeight, depth);
-    const botMesh = new THREE.Mesh(botGeo, horizontalBeamMaterial);
-    botMesh.position.set(threeX, -barSpacing, 0);
-    emblemGroup.add(botMesh);
-
-    // Center the emblem group in the screen in deep spatial background
+    // Center the entire 13 emblem group in the screen
     emblemGroup.position.set(0, 0, -1.4);
     emblemGroup.rotation.set(0, 0, 0); // Starts pristine front-facing "1 3"
     scene.add(emblemGroup);
