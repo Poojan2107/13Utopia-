@@ -250,9 +250,7 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
         container.removeChild(renderer.domElement);
       }
       oneGeo.dispose();
-      topGeo.dispose();
-      midGeo.dispose();
-      botGeo.dispose();
+      threeGeo.dispose();
       verticalBeamMaterial.dispose();
       horizontalBeamMaterial.dispose();
       renderer.dispose();
