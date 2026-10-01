@@ -11,6 +11,7 @@ import dynamic from "next/dynamic";
 import { PROJECTS, RepeatedProject } from "@/components/work-showcase/projects";
 import ProjectModal from "@/components/work-showcase/ProjectModal";
 import { CardMetric } from "@/components/work-showcase/ThreeCanvas";
+import { EchoTitle } from "@/components/framer/EchoTitle";
 import type { Project } from "@/components/work-showcase/projects";
 import styles from "@/styles/home/HomeSectionWork.module.css";
 
@@ -24,17 +25,13 @@ const ThreeCanvas = dynamic(
  * HomeSectionWork — Section 06 on the homepage.
  *
  * The exact same Jesper Landberg 3D ribbon carousel (ThreeCanvas) and
- * physics engine as the standalone /work page — but stripped of its own
- * nav chrome (no Portfolio header, no In Orbit/Archive toggle, no Start
- * a Brief footer) so it integrates as a continuous homepage section.
- *
- * A minimal section eyebrow and a "VIEW FULL ARCHIVE →" link to /work
- * are the only chrome additions.
+ * physics engine as the standalone /work page — with a monumental title
+ * introduction header, site-parity eyebrow, and minimal archive link.
  */
 export function HomeSectionWork() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  // Repeat the 8 projects 3× for seamless loop (same as WorkShowcase)
+  // Repeat the 8 projects 3× for seamless loop
   const repeatedProjects: RepeatedProject[] = useMemo(
     () => [
       ...PROJECTS.map((p, i) => ({ ...p, uniqueId: `set0-${i}-${p.slug}`, originalIndex: i })),
@@ -96,7 +93,7 @@ export function HomeSectionWork() {
     []
   );
 
-  // Physics loop — same as WorkShowcase
+  // Physics loop
   useEffect(() => {
     const p = physicsRef.current;
     let animId: number;
@@ -223,18 +220,32 @@ export function HomeSectionWork() {
       aria-label="06: The Work — 3D Portfolio Showcase"
       className={styles.section}
     >
-      {/* Section eyebrow — consistent with rest of homepage */}
+      {/* Section eyebrow */}
       <div className={styles.eyebrow} aria-hidden="true">
         <span className={styles.eyebrowNum}>06 // 10</span>
         <span className={styles.eyebrowSep}>·</span>
-        <span className={styles.eyebrowLabel}>THE WORK</span>
+        <span className={styles.eyebrowLabel}>THE ARCHIVE</span>
         <a href="/work" className={styles.archiveLink} aria-label="View full work archive">
           VIEW FULL ARCHIVE
           <span aria-hidden="true"> →</span>
         </a>
       </div>
 
-      {/* The 3D canvas — full bleed, takes the rest of the section height */}
+      {/* Monumental Work Section Title Header */}
+      <div className={styles.headerBlock}>
+        <div className={styles.titleWrap}>
+          <EchoTitle text="WORK." className={styles.workEchoTitle} />
+          <p className={styles.workLead}>
+            Anomalies in production. Spatial architectures, bespoke SaaS platforms, and living brands.
+          </p>
+        </div>
+        <div className={styles.interactionHint} aria-hidden="true">
+          <span className={styles.hintDot} />
+          <span className={styles.hintText}>3D ORBIT · DRAG OR SCROLL TO EXPLORE</span>
+        </div>
+      </div>
+
+      {/* The 3D canvas — full width ribbon carousel */}
       <div className={styles.canvasWrap}>
         <ThreeCanvas
           repeatedProjects={repeatedProjects}
@@ -262,7 +273,7 @@ export function HomeSectionWork() {
         ))}
       </div>
 
-      {/* Project detail modal — reused from WorkShowcase */}
+      {/* Project detail modal */}
       <ProjectModal
         project={selectedProject}
         onClose={() => setSelectedProject(null)}

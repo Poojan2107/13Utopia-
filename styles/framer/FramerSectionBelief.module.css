@@ -157,20 +157,6 @@
   text-align: center;
 }
 
-.scrollHint {
-  position: absolute;
-  bottom: var(--gutter);
-  left: var(--gutter);
-  z-index: 2;
-  font-family: var(--display);
-  font-weight: 500;
-  font-size: 0.8125rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--ink) 55%, transparent);
-  pointer-events: none;
-}
-
 @media (max-width: 720px) {
   .title {
     font-size: clamp(1.85rem, 10.5vw, 3.75rem);

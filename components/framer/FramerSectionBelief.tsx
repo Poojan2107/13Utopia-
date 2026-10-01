@@ -151,10 +151,6 @@ export function FramerSectionBelief() {
           {SUB}
         </motion.p>
       </div>
-
-      <span className={styles.scrollHint} aria-hidden="true">
-        Scroll
-      </span>
     </section>
   );
 }
