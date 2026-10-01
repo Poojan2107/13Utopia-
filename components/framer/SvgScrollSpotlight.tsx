@@ -114,8 +114,11 @@ export function SvgScrollSpotlight() {
       const st = ScrollTrigger.create({
         trigger: containerRef.current,
         start: "top top",
-        end: "bottom bottom",
+        end: "+=220%",
+        pin: true,
+        pinSpacing: true,
         scrub: 0.8,
+        anticipatePin: 1,
         onUpdate: (self) => {
           const scrollProgress = self.progress;
 
