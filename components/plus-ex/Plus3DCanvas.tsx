@@ -4,26 +4,38 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import styles from "@/styles/plus-ex/Plus3DCanvas.module.css";
 
-interface Plus3DCanvasProps {
+export interface Plus3DCanvasProps {
   progress?: number;
+  actIndex?: number;
   className?: string;
+  theme?: "dark" | "light" | "transparent";
 }
 
 /**
  * 3D 13 Utopia Architectural Emblem Canvas
  * Plus-X Exact Materiality & Lighting:
  * Matte architectural graphite monoliths with razor chamfers, deep studio lighting,
- * and a full 360-degree rotation loop that starts and ends on the iconic front-facing "1 3" emblem.
+ * responsive spatial shifts, and a full continuous 360-degree rotation story.
  */
-export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
+export function Plus3DCanvas({
+  progress = 0,
+  actIndex = 0,
+  className,
+  theme = "transparent",
+}: Plus3DCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const groupRef = useRef<THREE.Group | null>(null);
   const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
   const progressRef = useRef(progress);
+  const actRef = useRef(actIndex);
 
   useEffect(() => {
     progressRef.current = progress;
   }, [progress]);
+
+  useEffect(() => {
+    actRef.current = actIndex;
+  }, [actIndex]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -34,7 +46,13 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
 
     // Scene
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
+    if (theme === "dark") {
+      scene.background = new THREE.Color(0x000000);
+    } else if (theme === "light") {
+      scene.background = new THREE.Color(0xf4eae0);
+    } else {
+      scene.background = null;
+    }
 
     // Camera with cinematic perspective centered
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
@@ -42,7 +60,7 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({
-      alpha: false,
+      alpha: true,
       antialias: true,
       powerPreference: "high-performance",
     });
@@ -50,7 +68,7 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
     renderer.setPixelRatio(dpr);
     renderer.setSize(width, height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.3;
+    renderer.toneMappingExposure = 1.35;
     container.appendChild(renderer.domElement);
 
     // 3D "13" Emblem Group
@@ -66,13 +84,9 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
 
       // Start at left bottom
       shape.moveTo(-botR, botY);
-      // Line up to left top
       shape.lineTo(-topR, topY);
-      // Top convex dome (clockwise from PI to 0)
       shape.absarc(0, topY, topR, Math.PI, 0, true);
-      // Line down to right bottom
       shape.lineTo(botR, botY);
-      // Bottom convex dome (clockwise from 0 to PI)
       shape.absarc(0, botY, botR, 0, Math.PI, true);
       shape.closePath();
       return shape;
@@ -127,15 +141,15 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
 
     // Plus-X Exact Architectural Graphite & Titanium Materials
     const verticalBeamMaterial = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x343434), // Plus-X signature dark architectural graphite
-      roughness: 0.38,
-      metalness: 0.65,
+      color: new THREE.Color(0x2d2d2d),
+      roughness: 0.35,
+      metalness: 0.72,
     });
 
     const horizontalBeamMaterial = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x2c2c2c), // Plus-X refined deep charcoal
-      roughness: 0.42,
-      metalness: 0.62,
+      color: new THREE.Color(0x242424),
+      roughness: 0.38,
+      metalness: 0.68,
     });
 
     // 1. The "1" Tapered Monolith
@@ -154,31 +168,31 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
 
     // Center the entire 13 emblem group in the screen
     emblemGroup.position.set(0, 0, -1.4);
-    emblemGroup.rotation.set(0, 0, 0); // Starts pristine front-facing "1 3"
+    emblemGroup.rotation.set(0, 0, 0);
     scene.add(emblemGroup);
     groupRef.current = emblemGroup;
 
-    // Studio Lighting (Plus-X Clear Bevel Definition)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
+    // Studio Lighting (Crisp Chamfer Definition & Bevel Highlights)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
     scene.add(ambientLight);
 
-    // Key Light: Sharp directional light highlighting chamfered edges
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
+    // Key Light
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.4);
     keyLight.position.set(7, 9, 8);
     scene.add(keyLight);
 
-    // Fill Light: Soft ambient fill for dark facets
-    const fillLight = new THREE.DirectionalLight(0xbbbbbb, 1.6);
+    // Fill Light
+    const fillLight = new THREE.DirectionalLight(0xbbbbbb, 1.8);
     fillLight.position.set(-7, 2, 5);
     scene.add(fillLight);
 
-    // Subtle Gold Rim Accent Light: 13 Utopia luxury signature
-    const goldRimLight = new THREE.DirectionalLight(0xe8c56a, 2.2);
+    // Champagne/Gold Luxury Rim Accent Light
+    const goldRimLight = new THREE.DirectionalLight(0xf4dfc8, 2.5);
     goldRimLight.position.set(4, -6, -3);
     scene.add(goldRimLight);
 
-    // Overhead Light
-    const topLight = new THREE.DirectionalLight(0xffffff, 1.4);
+    // Top Overhead Light
+    const topLight = new THREE.DirectionalLight(0xffffff, 1.5);
     topLight.position.set(0, 10, -1);
     scene.add(topLight);
 
@@ -204,12 +218,14 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
 
     // Render loop
     let rafId: number;
-    let clock = new THREE.Clock();
+    const clock = new THREE.Clock();
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
       const p = Math.max(0, Math.min(1, progressRef.current));
+      const act = actRef.current;
+      const isMobile = window.innerWidth <= 900;
 
       // Mouse inertia
       mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
@@ -217,29 +233,57 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
 
       if (emblemGroup) {
         /**
-         * FULL 360-DEGREE ROTATION SEQUENCE:
-         * - At progress 0 (entry): rotY = 0, rotX = 0, rotZ = 0 (Pristine 1 3 face)
-         * - During progress (0 -> 1): full 360-deg rotation on Y (p * Math.PI * 2)
-         *   + smooth sinusoidal architectural tilt on X and Z
-         * - At progress 1 (exit): rotY = 2*PI (= 0 deg), rotX = 0, rotZ = 0 (Resolves back to pristine 1 3 face)
+         * FULL 360-DEGREE CONTINUOUS NARRATIVE ROTATION:
+         * - Multi-act dynamic spin, tilt, and spatial positioning
          */
         const fullSpinY = p * Math.PI * 2;
-        const archTiltX = Math.sin(p * Math.PI) * 0.45;
-        const archTiltZ = Math.sin(p * Math.PI) * 0.22;
-        const idleFloat = Math.sin(elapsed * 0.5) * 0.02;
+        const archTiltX = Math.sin(p * Math.PI) * 0.42;
+        const archTiltZ = Math.sin(p * Math.PI * 1.5) * 0.18;
+        const idleFloat = Math.sin(elapsed * 0.6) * 0.025;
 
-        const targetRotX = archTiltX + mouseRef.current.y * 0.15 + idleFloat;
-        const targetRotY = fullSpinY + mouseRef.current.x * 0.2;
-        const targetRotZ = archTiltZ + mouseRef.current.x * 0.08;
+        const targetRotX = archTiltX + mouseRef.current.y * 0.12 + idleFloat;
+        const targetRotY = fullSpinY + mouseRef.current.x * 0.18;
+        const targetRotZ = archTiltZ + mouseRef.current.x * 0.06;
 
         emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.08;
         emblemGroup.rotation.y += (targetRotY - emblemGroup.rotation.y) * 0.08;
         emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.08;
 
-        const targetPosX = 0 + mouseRef.current.x * 0.3;
-        const targetPosY = 0 - mouseRef.current.y * 0.2 + Math.sin(elapsed * 0.8) * 0.03;
-        emblemGroup.position.x += (targetPosX - emblemGroup.position.x) * 0.06;
-        emblemGroup.position.y += (targetPosY - emblemGroup.position.y) * 0.06;
+        // Dynamic spatial translation according to Act
+        let actTargetX = 0;
+        let actTargetY = 0;
+        let actTargetZ = -1.4;
+
+        if (isMobile) {
+          actTargetY = act === 1 ? -1.0 : act === 2 ? 1.0 : 0;
+          actTargetZ = -2.8;
+        } else {
+          if (act === 0) {
+            // Genesis: Centered monumental
+            actTargetX = 0;
+            actTargetY = 0;
+          } else if (act === 1) {
+            // Triad of Creation: Offset to right, leaving left for editorial cards
+            actTargetX = 2.0;
+            actTargetY = 0.2;
+          } else if (act === 2) {
+            // Architectural Benchmarks: Offset to left, leaving right for metrics
+            actTargetX = -2.0;
+            actTargetY = -0.1;
+          } else {
+            // Initiation Finale: Centered
+            actTargetX = 0;
+            actTargetY = 0;
+          }
+        }
+
+        const finalX = actTargetX + mouseRef.current.x * 0.3;
+        const finalY = actTargetY - mouseRef.current.y * 0.2 + Math.sin(elapsed * 0.8) * 0.03;
+        const finalZ = actTargetZ;
+
+        emblemGroup.position.x += (finalX - emblemGroup.position.x) * 0.06;
+        emblemGroup.position.y += (finalY - emblemGroup.position.y) * 0.06;
+        emblemGroup.position.z += (finalZ - emblemGroup.position.z) * 0.06;
       }
 
       renderer.render(scene, camera);
@@ -260,7 +304,7 @@ export function Plus3DCanvas({ progress = 0, className }: Plus3DCanvasProps) {
       horizontalBeamMaterial.dispose();
       renderer.dispose();
     };
-  }, []);
+  }, [theme]);
 
   return (
     <div
