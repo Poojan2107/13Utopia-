@@ -270,12 +270,12 @@ export function Continuous3DStory() {
           >
             <div className={styles.initiationContent}>
               <h2 className={styles.initiationHeading}>
-                <span className={styles.headingLine}>HAVE AN</span>
-                <span className={styles.headingHighlight}>UNREASONABLE IDEA?</span>
+                <span className={styles.headingLine}>READY TO TRANSCEND</span>
+                <span className={styles.headingHighlight}>THE DEFAULT?</span>
               </h2>
 
               <p className={styles.initiationSub}>
-                We select only 13 bespoke commissions annually. Let&apos;s build what conventional companies cannot.
+                We take on a strictly limited number of commissions per quarter to ensure obsessive craft, bespoke GPU engineering, and categorical market dominance.
               </p>
 
               <div className={styles.initiationActions}>
@@ -283,10 +283,10 @@ export function Continuous3DStory() {
                   href="mailto:hello@13utopia.com?subject=Project%20Commission%20Inquiry"
                   className={styles.primaryCta}
                 >
-                  Start Something Unreasonable
+                  Start a Commission →
                 </a>
-                <Link href="/work" className={styles.secondaryCta}>
-                  Explore Case Stories
+                <Link href="/model" className={styles.secondaryCta}>
+                  Inspect 3D Emblem
                 </Link>
               </div>
             </div>

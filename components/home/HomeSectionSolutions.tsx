@@ -135,12 +135,6 @@ export function HomeSectionSolutions() {
       <div className={styles.container}>
         {/* Section Header */}
         <div className={styles.headerBlock}>
-          <div className={styles.eyebrow}>
-            <span className={styles.eyebrowNum}>04</span>
-            <span className={styles.eyebrowDot} />
-            <span>CAPABILITY ARCHITECTURE // 5 CORE DISCIPLINES</span>
-          </div>
-
           <div className={styles.titleRow}>
             <h2 className={styles.mainTitle}>
               WHERE WE INTERVENE.

@@ -15,42 +15,28 @@ export function HomeCTASection() {
       aria-label="Initiate Commission with 13 Utopia"
     >
       <div className={styles.ctaContainer}>
-        <div className={styles.eyebrow}>
-          <span className={styles.dot} />
-          <span>INITIATE COMMISSION // 2026–2027</span>
-        </div>
-
         <h2 className={styles.title}>
-          READY TO TRANSCEND<br />
-          <span className={styles.titleHighlight}>THE DEFAULT?</span>
+          HAVE AN<br />
+          <span className={styles.titleHighlight}>UNREASONABLE IDEA?</span>
         </h2>
 
         <p className={styles.subtitle}>
-          We take on a strictly limited number of commissions per quarter to ensure 
-          obsessive craft, bespoke GPU engineering, and categorical market dominance.
+          We select only 13 bespoke commissions annually. Let&apos;s build what
+          conventional companies cannot.
         </p>
 
         <div className={styles.actions}>
           <a
-            href="mailto:contact@13utopia.com"
+            href="mailto:contact@13utopia.com?subject=Project%20Commission%20Inquiry"
             className={styles.primaryBtn}
             data-magnetic
           >
-            <span>START A COMMISSION</span>
-            <span className={styles.btnArrow}>→</span>
+            <span>Start Something Unreasonable</span>
           </a>
 
-          <Link href="/model" className={styles.secondaryBtn} data-magnetic>
-            <span>INSPECT 3D EMBLEM</span>
+          <Link href="/work" className={styles.secondaryBtn} data-magnetic>
+            <span>Explore Case Stories</span>
           </Link>
-        </div>
-
-        <div className={styles.telemetryFooter}>
-          <span>AVAILABILITY: Q2/Q3 2026</span>
-          <span>·</span>
-          <span>GLOBAL CLIENTELE (EST / PST / UTC)</span>
-          <span>·</span>
-          <span>ENCRYPTED DISPATCH</span>
         </div>
       </div>
     </section>
