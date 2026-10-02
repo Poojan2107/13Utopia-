@@ -158,20 +158,20 @@
 
 .alignRight {
   align-items: flex-start;
-  padding-left: clamp(35vw, 43vw, 48vw);
-  padding-right: clamp(1.5rem, 4vw, 4rem);
+  padding-left: clamp(48vw, 50vw, 52vw);
+  padding-right: clamp(2rem, 5vw, 6rem);
 }
 
 .alignLeft {
   align-items: flex-start;
-  padding-right: clamp(35vw, 43vw, 48vw);
-  padding-left: clamp(1.5rem, 4vw, 4rem);
+  padding-right: clamp(48vw, 50vw, 52vw);
+  padding-left: clamp(2rem, 5vw, 6rem);
 }
 
 .worldContainer {
   position: relative;
   width: 100%;
-  max-width: clamp(520px, 50vw, 840px);
+  max-width: 100%;
   min-height: 480px;
   display: flex;
   flex-direction: column;
@@ -221,7 +221,7 @@
 
 .headerTitle {
   font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
-  font-size: clamp(2.4rem, 4.4vw, 4.8rem);
+  font-size: clamp(2.6rem, 4.8vw, 5.4rem);
   font-weight: 800;
   letter-spacing: -0.03em;
   color: #ffffff;
@@ -269,14 +269,14 @@
 }
 
 .drumItemActive {
-  font-size: clamp(2.2rem, 3.8vw, 4.5rem);
+  font-size: clamp(2.4rem, 4.2vw, 4.8rem);
   font-weight: 800;
   color: #ffffff;
   text-shadow: 0 0 35px rgba(255, 255, 255, 0.28);
 }
 
 .drumItemDimmed {
-  font-size: clamp(1.9rem, 3.3vw, 3.9rem);
+  font-size: clamp(2.0rem, 3.6vw, 4.2rem);
   font-weight: 700;
   color: rgba(255, 255, 255, 0.38);
 }

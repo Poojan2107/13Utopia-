@@ -251,21 +251,21 @@ export function Plus3DCanvas({
         const targetSlideY = (1 - entryP) * -4.2;
 
         // Synchronized trajectory calculation:
-        // Act 0: Manifesto [0.00 -> 0.15] -> Center (x=0, rotY=0)
-        // Transition 0 -> 1 [0.15 -> 0.22] -> Sweeps Center -> Left (x: 0 -> -3.1), Full 360° Spin (rotY: 0.2 -> 2π + 0.22)
-        // Act 1: CREATE [0.22 -> 0.44] -> Settle Left (x = -3.1, rotY = 2π + 0.22)
-        // Transition 1 -> 2 [0.44 -> 0.51] -> Sweeps Left -> Right (x: -3.1 -> +3.1), Full 360° Spin (rotY: 2π + 0.22 -> 4π - 0.22)
-        // Act 2: BUILD [0.51 -> 0.73] -> Settle Right (x = +3.1, rotY = 4π - 0.22)
-        // Transition 2 -> 3 [0.73 -> 0.80] -> Sweeps Right -> Left (x: +3.1 -> -3.1), Full 360° Spin (rotY: 4π - 0.22 -> 6π + 0.22)
-        // Act 3: GROW [0.80 -> 0.94] -> Settle Left (x = -3.1, rotY = 6π + 0.22)
-        // Transition 3 -> 4 [0.94 -> 0.97] -> Sweeps Left -> Center (x: -3.1 -> 0), Full 360° Spin (rotY: 6π + 0.22 -> 8π)
-        // Finale [0.97 -> 1.00] -> Settle Center (x = 0, rotY = 8π)
+        // Act 0: Manifesto [0.00 -> 0.15] -> Center (x=0, scale=0.88, rotY=0)
+        // Transition 0 -> 1 [0.15 -> 0.22] -> Sweeps Center -> Left Column (x: 0 -> -3.9, scale: 0.88 -> 0.96), Full 360° Spin
+        // Act 1: CREATE [0.22 -> 0.44] -> Settle Full Left Column (x = -3.9, scale = 0.96, rotY = 2π + 0.22)
+        // Transition 1 -> 2 [0.44 -> 0.51] -> Sweeps Left -> Right Column (x: -3.9 -> +3.9), Full 360° Spin
+        // Act 2: BUILD [0.51 -> 0.73] -> Settle Full Right Column (x = +3.9, scale = 0.96, rotY = 4π - 0.22)
+        // Transition 2 -> 3 [0.73 -> 0.80] -> Sweeps Right -> Left Column (x: +3.9 -> -3.9), Full 360° Spin
+        // Act 3: GROW [0.80 -> 0.94] -> Settle Full Left Column (x = -3.9, scale = 0.96, rotY = 6π + 0.22)
+        // Transition 3 -> 4 [0.94 -> 0.97] -> Sweeps Left -> Center (x: -3.9 -> 0, scale: 0.96 -> 0.88), Full 360° Spin
+        // Finale [0.97 -> 1.00] -> Settle Center (x = 0, scale = 0.88, rotY = 8π)
 
         let targetX = 0;
         let targetRotY = 0;
         let targetRotX = 0.08;
         let targetRotZ = 0;
-        let targetScale = 0.80;
+        let targetScale = 0.88;
 
         if (p < 0.15) {
           // Act 0: Centered Manifesto
@@ -274,63 +274,63 @@ export function Plus3DCanvas({
           targetRotY = localP * 0.20;
           targetRotX = 0.06;
           targetRotZ = 0;
-          targetScale = 0.82;
+          targetScale = 0.88;
         } else if (p >= 0.15 && p < 0.22) {
-          // Transition 0 -> 1: Center -> Left sweep with 360° roll
+          // Transition 0 -> 1: Center -> Full Left Column sweep with 360° roll
           const t = smoothstep(0.15, 0.22, p);
-          targetX = -3.1 * t;
+          targetX = -3.9 * t;
           targetRotY = 0.20 * (1 - t) + (Math.PI * 2 + 0.22) * t;
           targetRotX = 0.06 + Math.sin(t * Math.PI) * 0.12;
           targetRotZ = 0.04 * t;
-          targetScale = 0.82 - 0.04 * t;
+          targetScale = 0.88 + 0.08 * t;
         } else if (p >= 0.22 && p < 0.44) {
-          // Act 1: CREATE (Settled Left)
+          // Act 1: CREATE (Settled Full Left Column)
           const localP = (p - 0.22) / 0.22;
-          targetX = -3.1;
+          targetX = -3.9;
           targetRotY = Math.PI * 2 + 0.22 + Math.sin(localP * Math.PI) * 0.08;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = 0.04;
-          targetScale = 0.78;
+          targetScale = 0.96;
         } else if (p >= 0.44 && p < 0.51) {
-          // Transition 1 -> 2: Left -> Right sweep with full 360° roll
+          // Transition 1 -> 2: Left -> Right Column sweep with full 360° roll
           const t = smoothstep(0.44, 0.51, p);
-          targetX = -3.1 + 6.2 * t;
+          targetX = -3.9 + 7.8 * t;
           targetRotY = (Math.PI * 2 + 0.22) * (1 - t) + (Math.PI * 4 - 0.22) * t;
           targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
           targetRotZ = 0.04 * (1 - 2 * t);
-          targetScale = 0.78;
+          targetScale = 0.96;
         } else if (p >= 0.51 && p < 0.73) {
-          // Act 2: BUILD (Settled Right)
+          // Act 2: BUILD (Settled Full Right Column)
           const localP = (p - 0.51) / 0.22;
-          targetX = 3.1;
+          targetX = 3.9;
           targetRotY = Math.PI * 4 - 0.22 - Math.sin(localP * Math.PI) * 0.08;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = -0.04;
-          targetScale = 0.78;
+          targetScale = 0.96;
         } else if (p >= 0.73 && p < 0.80) {
-          // Transition 2 -> 3: Right -> Left sweep with full 360° roll
+          // Transition 2 -> 3: Right -> Left Column sweep with full 360° roll
           const t = smoothstep(0.73, 0.80, p);
-          targetX = 3.1 - 6.2 * t;
+          targetX = 3.9 - 7.8 * t;
           targetRotY = (Math.PI * 4 - 0.22) * (1 - t) + (Math.PI * 6 + 0.22) * t;
           targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
           targetRotZ = -0.04 * (1 - 2 * t);
-          targetScale = 0.78;
+          targetScale = 0.96;
         } else if (p >= 0.80 && p < 0.94) {
-          // Act 3: GROW (Settled Left)
+          // Act 3: GROW (Settled Full Left Column)
           const localP = (p - 0.80) / 0.14;
-          targetX = -3.1;
+          targetX = -3.9;
           targetRotY = Math.PI * 6 + 0.22 + Math.sin(localP * Math.PI) * 0.08;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = 0.04;
-          targetScale = 0.78;
+          targetScale = 0.96;
         } else if (p >= 0.94 && p < 0.97) {
           // Transition 3 -> 4: Left -> Center sweep
           const t = smoothstep(0.94, 0.97, p);
-          targetX = -3.1 * (1 - t);
+          targetX = -3.9 * (1 - t);
           targetRotY = (Math.PI * 6 + 0.22) * (1 - t) + (Math.PI * 8) * t;
           targetRotX = 0.08 - 0.02 * t;
           targetRotZ = 0.04 * (1 - t);
-          targetScale = 0.78 + 0.04 * t;
+          targetScale = 0.96 - 0.08 * t;
         } else {
           // Finale: Center
           const localP = (p - 0.97) / 0.03;
@@ -338,7 +338,7 @@ export function Plus3DCanvas({
           targetRotY = Math.PI * 8 + localP * 0.15;
           targetRotX = 0.06;
           targetRotZ = 0;
-          targetScale = 0.82;
+          targetScale = 0.88;
         }
 
         // Luxurious physics with high-inertia smooth damping for crafted cinematic motion
