@@ -277,19 +277,21 @@ export function ModelViewer() {
     eMesh.position.set(2.12, 0, 0);
     beGroup.add(eMesh);
 
-    // ── 03. "13 ✕ BE" UNIFIED X FUSION GROUP (Formed by Merging 3 from 13 and E from BE) ───
+    // ── 03. "13 ✕ BE" UNIFIED X FUSION GROUP (Monumental Diagonal Monolith Cross) ───
     const xGroup = new THREE.Group();
     xGroupRef.current = xGroup;
 
-    // Left wing of X: "3" from the 13 model (branches open to top-left & bottom-left)
-    const xLeftMesh = new THREE.Mesh(threeGeo, matOne);
-    xLeftMesh.position.set(-1.55, 0, 0);
-    xGroup.add(xLeftMesh);
+    // Diagonal Beam 1 (\) - crafted from 13 "1" Pillar geometry
+    const xBeam1 = new THREE.Mesh(oneGeo, matOne);
+    xBeam1.rotation.z = Math.PI / 5.2; // ~35°
+    xBeam1.position.z = 0.04;
+    xGroup.add(xBeam1);
 
-    // Right wing of X: "E" (mirrored 3) from the BE model (branches open to top-right & bottom-right)
-    const xRightMesh = new THREE.Mesh(eGeo, matThree);
-    xRightMesh.position.set(1.55, 0, 0);
-    xGroup.add(xRightMesh);
+    // Diagonal Beam 2 (/) - crafted from 13 "1" Pillar geometry
+    const xBeam2 = new THREE.Mesh(oneGeo, matThree);
+    xBeam2.rotation.z = -Math.PI / 5.2; // -35°
+    xBeam2.position.z = -0.04;
+    xGroup.add(xBeam2);
 
     // ── ROOT ORBIT ANCHOR ──────────────────────────────────────
     const rootGroup = new THREE.Group();
