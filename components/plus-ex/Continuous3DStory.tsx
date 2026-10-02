@@ -269,11 +269,6 @@ export function Continuous3DStory() {
             className={`${styles.act} ${scrollProgress >= 0.95 ? styles.actVisible : styles.actHidden}`}
           >
             <div className={styles.initiationContent}>
-              <div className={styles.initiationEyebrow}>
-                <span className={styles.livePulse} />
-                <span className={styles.eyebrowTag}>2026 COMMISSIONS · 04 OF 13 SLOTS OPEN</span>
-              </div>
-
               <h2 className={styles.initiationHeading}>
                 <span className={styles.headingLine}>HAVE AN</span>
                 <span className={styles.headingHighlight}>UNREASONABLE IDEA?</span>
@@ -293,11 +288,6 @@ export function Continuous3DStory() {
                 <Link href="/work" className={styles.secondaryCta}>
                   Explore Case Stories
                 </Link>
-              </div>
-
-              <div className={styles.initiationFootnote}>
-                <span className={styles.footnoteDot} />
-                <span>EST. 2026 // TORONTO · BANGALORE · TOKYO · SAN FRANCISCO</span>
               </div>
             </div>
           </div>
