@@ -209,19 +209,19 @@ export function Plus3DCanvas({
     // "B": Signature "1" + "3" docked together from the 13 brand mark
     const bGroup = new THREE.Group();
     const bSpine = new THREE.Mesh(oneGeo, matTitaniumOne);
-    bSpine.position.set(-0.95, 0, 0);
+    bSpine.position.set(-1.00, 0, 0);
     const bBowls = new THREE.Mesh(threeGeo, matTitaniumThree);
-    bBowls.position.set(0.60, 0, 0);
+    bBowls.position.set(0.40, 0, 0);
     bGroup.add(bSpine);
     bGroup.add(bBowls);
-    bGroup.position.set(-1.85, 0, 0);
+    bGroup.position.set(-2.60, 0, 0);
     beGroup.add(bGroup);
 
-    // "E": Organic "3" ribbon mirrored with balanced kerning space
+    // "E": Organic "3" ribbon mirrored with visible gap separating B and E
     const eGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
     eGeo.center();
     const eMesh = new THREE.Mesh(eGeo, matTitaniumThree);
-    eMesh.position.set(1.85, 0, 0);
+    eMesh.position.set(2.40, 0, 0);
     beGroup.add(eMesh);
 
     beGroup.visible = false;

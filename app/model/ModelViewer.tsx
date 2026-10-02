@@ -260,25 +260,25 @@ export function ModelViewer() {
     // "B": Signature "1" + "3" docked together from the 13 brand mark
     const bGroup = new THREE.Group();
     const bSpine = new THREE.Mesh(oneGeo, matOne);
-    bSpine.position.set(-0.95, 0, 0);
+    bSpine.position.set(-1.00, 0, 0);
     const bBowls = new THREE.Mesh(threeGeo, matThree);
-    bBowls.position.set(0.60, 0, 0);
+    bBowls.position.set(0.40, 0, 0);
     bGroup.add(bSpine);
     bGroup.add(bBowls);
-    bGroup.position.set(-1.85, 0, 0);
+    bGroup.position.set(-2.60, 0, 0);
     beGroup.add(bGroup);
 
-    // "E": Organic "3" ribbon mirrored with balanced kerning space
+    // "E": Organic "3" ribbon mirrored with visible gap separating B and E
     const eGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
     eGeo.center();
     const eMesh = new THREE.Mesh(eGeo, matThree);
-    eMesh.position.set(1.85, 0, 0);
+    eMesh.position.set(2.40, 0, 0);
     beGroup.add(eMesh);
 
     // ── ROOT ORBIT ANCHOR ──────────────────────────────────────
     const rootGroup = new THREE.Group();
     rootGroupRef.current = rootGroup;
-    rootGroup.scale.setScalar(0.80);
+    rootGroup.scale.setScalar(0.72);
     rootGroup.position.set(0, 0, 0);
 
     thirteenGroup.visible = activeModel === "13";
