@@ -9,9 +9,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * ExperimentHeroVideoPortal:
- * - Centered solid white "BE UNREAL UNREASONABLE" typography on load (no video visible).
- * - As the user scrolls, the video physically emerges directly OUT OF THE LETTER "O",
- *   morphing/expanding in position & scale until it sets down as the full-bleed video section.
+ * - Liquid smooth GPU-accelerated emergence of video out of letter "O".
+ * - Uses GPU-composited `clipPath: inset(...)` & camera dolly zoom without layout reflows.
  */
 export function ExperimentHeroVideoPortal() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -26,105 +25,110 @@ export function ExperimentHeroVideoPortal() {
     const typeLayer = typeLayerRef.current;
     const letterO = letterORef.current;
     const videoCard = videoCardRef.current;
+    const videoEl = videoElementRef.current;
     const hud = hudRef.current;
 
-    if (!container || !typeLayer || !letterO || !videoCard) return;
+    if (!container || !typeLayer || !letterO || !videoCard || !videoEl) return;
 
     const ctx = gsap.context(() => {
-      // Calculate current bounding box of letter "O" relative to container
-      const getORect = () => {
+      // Calculate precise insets for letter O relative to the window
+      const getOInsets = () => {
         const rect = letterO.getBoundingClientRect();
-        return {
-          x: rect.left,
-          y: rect.top,
-          w: Math.max(rect.width, 40),
-          h: Math.max(rect.height, 50),
-        };
+        const top = rect.top;
+        const right = window.innerWidth - rect.right;
+        const bottom = window.innerHeight - rect.bottom;
+        const left = rect.left;
+        const radius = Math.min(rect.width, rect.height) * 0.48;
+        return { top, right, bottom, left, radius };
       };
 
-      let initialO = getORect();
+      let insets = getOInsets();
 
-      // Master Scroll-Driven Timeline
+      // Set initial clip-path tucked precisely inside letter O with opacity 0
+      gsap.set(videoCard, {
+        clipPath: `inset(${insets.top}px ${insets.right}px ${insets.bottom}px ${insets.left}px round ${insets.radius}px)`,
+        opacity: 0,
+      });
+      gsap.set(videoEl, {
+        scale: 1.35,
+      });
+
+      // Master High-Performance GPU Scroll Timeline
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
           start: "top top",
-          end: "+=1800",
+          end: "+=2200",
           pin: true,
-          scrub: 0.6,
+          scrub: 0.85, // Smooth cinematic momentum damping
           onRefresh: () => {
-            initialO = getORect();
+            insets = getOInsets();
           },
         },
       });
 
-      // Set initial values right at letter "O"
-      tl.set(videoCard, {
-        left: () => initialO.x,
-        top: () => initialO.y,
-        width: () => initialO.w,
-        height: () => initialO.h,
-        borderRadius: "50%",
-        opacity: 0,
-        scale: 0.95,
-      });
-
-      // ── Step 1 (0 -> 0.10): Video awakens and pops out of O ──
+      // ── 01. Video awakens inside O (0 -> 0.08) ──
       tl.to(
         videoCard,
         {
           opacity: 1,
-          scale: 1,
-          duration: 0.12,
-          ease: "power1.out",
+          duration: 0.08,
+          ease: "none",
         },
-        0.02
+        0.01
       );
 
-      // ── Step 2 (0.05 -> 0.75): Video expands from O's coords to Full Viewport ──
+      // ── 02. Smooth GPU Inset Unroll from O to 100vw × 100vh (0.04 -> 0.72) ──
       tl.to(
         videoCard,
         {
-          left: 0,
-          top: 0,
-          width: "100vw",
-          height: "100vh",
-          borderRadius: "0px",
-          boxShadow: "0 0 0 rgba(0,0,0,0)",
-          duration: 0.70,
+          clipPath: "inset(0px 0px 0px 0px round 0px)",
+          duration: 0.68,
           ease: "power2.inOut",
         },
-        0.05
+        0.04
       );
 
-      // Typography smoothly dissolves and pushes back into spatial depth
+      // Camera dolly zoom smoothly widens from telephoto O crop to wide-angle full bleed
+      tl.to(
+        videoEl,
+        {
+          scale: 1.0,
+          duration: 0.68,
+          ease: "power2.inOut",
+        },
+        0.04
+      );
+
+      // Typography smoothly dissolves and recedes in 3D perspective
       tl.to(
         typeLayer,
         {
           opacity: 0,
-          scale: 0.92,
-          filter: "blur(8px)",
-          duration: 0.50,
+          scale: 0.88,
+          y: -40,
+          filter: "blur(12px)",
+          duration: 0.45,
           ease: "power2.inOut",
         },
-        0.05
+        0.04
       );
 
-      // ── Step 3 (0.70 -> 0.95): Video settles in place, HUD caption reveals ──
+      // ── 03. Video settles flush, HUD caption reveals (0.68 -> 0.90) ──
       if (hud) {
         tl.to(
           hud,
           {
             opacity: 1,
             y: 0,
-            duration: 0.25,
+            duration: 0.22,
             ease: "power2.out",
           },
-          0.70
+          0.68
         );
       }
 
-      // Settle buffer before smooth scroll handoff to 3D Monolith section
+      // Settled buffer before releasing pin into next section
       tl.to({}, { duration: 0.20 });
     }, container);
 
@@ -155,7 +159,7 @@ export function ExperimentHeroVideoPortal() {
               <span className={styles.wordTop}>UNREAL</span>
               <div className={styles.wordBottom}>
                 <span>UNREAS</span>
-                {/* Clean solid letter "O" where the video physically emerges */}
+                {/* Clean solid letter "O" where video emerges */}
                 <span ref={letterORef} className={styles.letterO}>
                   O
                 </span>
@@ -165,7 +169,7 @@ export function ExperimentHeroVideoPortal() {
           </div>
         </div>
 
-        {/* ── 02. The Emerging Video Card (Physical Expansion out of "O") ── */}
+        {/* ── 02. GPU-Accelerated Emerging Video Layer ─────────────── */}
         <div ref={videoCardRef} className={styles.emergingVideoCard}>
           <video
             ref={videoElementRef}

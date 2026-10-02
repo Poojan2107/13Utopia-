@@ -1,6 +1,6 @@
 /* =========================================================
-   13 UTOPIA // IMMERSIVE "O" APERTURE VIDEO EMERGENCE
-   Physical emergence of video out of the letter "O"
+   13 UTOPIA // GPU-ACCELERATED "O" APERTURE VIDEO EXPANSION
+   Zero-layout-shift, 120fps GPU compositor pipeline
    ========================================================= */
 
 .pinnedWrapper {
@@ -24,6 +24,7 @@
   justify-content: center;
   background-color: #000000;
   overflow: hidden;
+  perspective: 1200px;
 }
 
 /* ── 01. Hero Typography Layer ────────────────────────────── */
@@ -38,6 +39,7 @@
   box-sizing: border-box;
   padding: 0 clamp(1.5rem, 4vw, 4rem);
   will-change: transform, opacity, filter;
+  transform: translateZ(0);
 }
 
 .monumentLockup {
@@ -114,39 +116,38 @@
   white-space: nowrap;
 }
 
-/* Pristine solid letter "O" */
+/* Pure solid letter "O" */
 .letterO {
   display: inline-block;
   color: #ffffff;
   position: relative;
+  line-height: 1;
 }
 
-/* ── 02. The Emerging Video Container ─────────────────────── */
-/* Physically originates from letter O and expands to full bleed */
+/* ── 02. GPU-Accelerated Emerging Video Layer ──────────────── */
 .emergingVideoCard {
   position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 5;
-  overflow: hidden;
-  background-color: #000000;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(244, 223, 200, 0.15);
-  pointer-events: none;
-  opacity: 0;
-  will-change: width, height, left, top, border-radius, opacity, transform;
-}
-
-.videoElement {
+  inset: 0;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
+  z-index: 5;
+  overflow: hidden;
+  background-color: #000000;
+  pointer-events: none;
+  opacity: 0;
+  will-change: clip-path, opacity, transform;
+  transform: translateZ(0);
+}
+
+.videoElement {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: block;
   filter: grayscale(100%) contrast(1.15) brightness(0.96);
+  will-change: transform;
+  transform: scale(1.25) translateZ(0);
 }
 
 .videoScrim {
@@ -200,7 +201,7 @@
   z-index: 7;
   pointer-events: none;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(24px) translateZ(0);
   will-change: opacity, transform;
 }
 
