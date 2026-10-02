@@ -157,51 +157,6 @@ export function Plus3DCanvas({
       return shape;
     };
 
-    // Helper: Unified Monolithic Symmetrical 4-Lobe Clover "X" (13 ✕ BE Collaboration Mark)
-    const createXShape = () => {
-      const shape = new THREE.Shape();
-
-      // 1. Outer boundary: 4 flared outer lobes with deep center clefts
-      shape.moveTo(0, 1.70);
-      // Top-right lobe
-      shape.bezierCurveTo(0.60, 2.30, 1.25, 2.85, 1.85, 2.85);
-      shape.bezierCurveTo(2.45, 2.85, 2.80, 2.30, 2.75, 1.65);
-      shape.bezierCurveTo(2.70, 1.05, 2.05, 0.45, 1.35, 0.00);
-      // Bottom-right lobe
-      shape.bezierCurveTo(2.05, -0.45, 2.70, -1.05, 2.75, -1.65);
-      shape.bezierCurveTo(2.80, -2.30, 2.45, -2.85, 1.85, -2.85);
-      shape.bezierCurveTo(1.25, -2.85, 0.60, -2.30, 0, -1.70);
-      // Bottom-left lobe
-      shape.bezierCurveTo(-0.60, -2.30, -1.25, -2.85, -1.85, -2.85);
-      shape.bezierCurveTo(-2.45, -2.85, -2.80, -2.30, -2.75, -1.65);
-      shape.bezierCurveTo(-2.70, -1.05, -2.05, -0.45, -1.35, 0.00);
-      // Top-left lobe
-      shape.bezierCurveTo(-2.05, 0.45, -2.70, 1.05, -2.75, 1.65);
-      shape.bezierCurveTo(-2.80, 2.30, -2.45, 2.85, -1.85, 2.85);
-      shape.bezierCurveTo(-1.25, 2.85, -0.60, 2.30, 0, 1.70);
-      shape.closePath();
-
-      // 2. Inner cut-out hole: expansive 4-pointed cross negative space
-      const hole = new THREE.Path();
-      hole.moveTo(0, 0.88);
-      // Top-right inner lobe
-      hole.bezierCurveTo(0.40, 0.95, 0.90, 1.35, 1.15, 1.10);
-      hole.bezierCurveTo(1.35, 0.85, 0.95, 0.35, 0.50, 0.00);
-      // Bottom-right inner lobe
-      hole.bezierCurveTo(0.95, -0.35, 1.35, -0.85, 1.15, -1.10);
-      hole.bezierCurveTo(0.90, -1.35, 0.40, -0.95, 0, -0.88);
-      // Bottom-left inner lobe
-      hole.bezierCurveTo(-0.40, -0.95, -0.90, -1.35, -1.15, -1.10);
-      hole.bezierCurveTo(-1.35, -0.85, -0.95, -0.35, -0.50, 0.00);
-      // Top-left inner lobe
-      hole.bezierCurveTo(-0.95, 0.35, -1.35, 0.85, -1.15, 1.10);
-      hole.bezierCurveTo(-0.90, 1.35, -0.40, 0.95, 0, 0.88);
-      hole.closePath();
-
-      shape.holes.push(hole);
-      return shape;
-    };
-
     const extrudeSettings = {
       steps: 1,
       depth: 0.96,
@@ -272,13 +227,18 @@ export function Plus3DCanvas({
     beGroup.visible = false;
     emblemGroup.add(beGroup);
 
-    // ── 03. SUB-GROUP: "13 ✕ BE" UNIFIED X FUSION EMBLEM (Reference Symmetrical 4-Lobe Clover X) ────
+    // ── 03. SUB-GROUP: "13 ✕ BE" UNIFIED X FUSION EMBLEM (Formed by Merging E from BE and 3 from 13) ────
     const xGroup = new THREE.Group();
 
-    const xGeo = new THREE.ExtrudeGeometry(createXShape(), extrudeSettings);
-    xGeo.center();
-    const xMesh = new THREE.Mesh(xGeo, matTitaniumOne);
-    xGroup.add(xMesh);
+    // Left piece: Mirrored "3" / "E" from the BE model
+    const xLeftMesh = new THREE.Mesh(eGeo, matTitaniumOne);
+    xLeftMesh.position.set(-1.80, 0, 0);
+    xGroup.add(xLeftMesh);
+
+    // Right piece: "3" from the 13 model
+    const xRightMesh = new THREE.Mesh(threeGeo, matTitaniumThree);
+    xRightMesh.position.set(1.80, 0, 0);
+    xGroup.add(xRightMesh);
 
     xGroup.visible = false;
     emblemGroup.add(xGroup);
@@ -482,7 +442,6 @@ export function Plus3DCanvas({
       oneGeo.dispose();
       threeGeo.dispose();
       eGeo.dispose();
-      xGeo.dispose();
       matTitaniumOne.dispose();
       matTitaniumThree.dispose();
       renderer.dispose();
