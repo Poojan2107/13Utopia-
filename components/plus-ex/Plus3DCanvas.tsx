@@ -145,23 +145,23 @@ export function Plus3DCanvas({
       bevelSegments: 5,
     };
 
-    // 13 Utopia Signature Liquid Champagne Gold Physical Materials with Crisp Chamfer Highlights
+    // Finalized Architectural Titanium Graphite Physical Materials with Crisp Chamfer Highlights
     const verticalBeamMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0xd4af37), // 13 Utopia Signature Champagne Gold
-      roughness: 0.22,
-      metalness: 0.88,
-      clearcoat: 0.45,
-      clearcoatRoughness: 0.18,
-      reflectivity: 0.90,
+      color: new THREE.Color(0x28292d),
+      roughness: 0.26,
+      metalness: 0.86,
+      clearcoat: 0.35,
+      clearcoatRoughness: 0.22,
+      reflectivity: 0.85,
     });
 
     const horizontalBeamMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0xc59e38), // Rich Warm Gold Accent
-      roughness: 0.24,
-      metalness: 0.85,
-      clearcoat: 0.45,
-      clearcoatRoughness: 0.18,
-      reflectivity: 0.90,
+      color: new THREE.Color(0x222326),
+      roughness: 0.28,
+      metalness: 0.84,
+      clearcoat: 0.35,
+      clearcoatRoughness: 0.22,
+      reflectivity: 0.85,
     });
 
     // 1. The "1" Tapered Monolith
@@ -185,32 +185,32 @@ export function Plus3DCanvas({
     scene.add(emblemGroup);
     groupRef.current = emblemGroup;
 
-    // Luminous Studio Lighting Rig with Warm Gold Rims
-    const ambientLight = new THREE.AmbientLight(0xfff5e6, 2.0);
+    // Studio Lighting (Crisp Chamfer Definition & Bevel Highlights)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
     scene.add(ambientLight);
 
-    // Key Light (Warm Champagne Glow)
-    const keyLight = new THREE.DirectionalLight(0xffeedd, 4.6);
+    // Key Light
+    const keyLight = new THREE.DirectionalLight(0xffffff, 4.2);
     keyLight.position.set(6, 8, 9);
     scene.add(keyLight);
 
-    // Fill Light (Soft Champagne Ambient)
-    const fillLight = new THREE.DirectionalLight(0xf4dfc8, 2.8);
+    // Fill Light (Soft cool fill)
+    const fillLight = new THREE.DirectionalLight(0xdde5f0, 2.4);
     fillLight.position.set(-7, 2, 6);
     scene.add(fillLight);
 
-    // High-Intensity Gold Rim Light (Left Chamfer Gleam)
-    const leftRimLight = new THREE.DirectionalLight(0xffe2a4, 5.0);
+    // High-Intensity Left Rim Light (Crisp chamfer edge gleam)
+    const leftRimLight = new THREE.DirectionalLight(0xffffff, 4.5);
     leftRimLight.position.set(-9, 4, -4);
     scene.add(leftRimLight);
 
-    // Warm Gold Right Rim Accent Light
-    const rightRimLight = new THREE.DirectionalLight(0xf5d77f, 4.4);
+    // Champagne Luxury Right Rim Accent Light
+    const rightRimLight = new THREE.DirectionalLight(0xf5ebe0, 3.8);
     rightRimLight.position.set(9, -3, -4);
     scene.add(rightRimLight);
 
     // Top Overhead Light
-    const topLight = new THREE.DirectionalLight(0xffffff, 2.4);
+    const topLight = new THREE.DirectionalLight(0xffffff, 2.2);
     topLight.position.set(0, 10, 1);
     scene.add(topLight);
 
