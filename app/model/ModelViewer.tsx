@@ -158,36 +158,49 @@ export function ModelViewer() {
     threeMesh.position.set(0.65, 0, 0);
     thirteenGroup.add(threeMesh);
 
-    // ── GEOMETRY B: "BE" MONUMENTAL EMBLEM ────────────────────
+    // ── GEOMETRY B: "BE" MONUMENTAL EMBLEM (Exact 1:1 "13" Font & Ribbon Kinship) ────
     const createBShape = () => {
       const shape = new THREE.Shape();
       const topY = 2.62;
       const botY = -2.42;
-      const midY = 0.12;
 
-      // Outer boundary of 'B'
-      shape.moveTo(-1.10, botY);
-      shape.lineTo(-1.10, topY);
-      shape.lineTo(0.20, topY);
-      shape.bezierCurveTo(1.40, topY, 1.60, midY + 0.35, 0.45, midY);
-      shape.bezierCurveTo(1.75, midY - 0.25, 1.85, botY, 0.35, botY);
+      // Outer outline: Left "1" Tapered Monolith Pillar + Right "3" Dual Ribbon Bowls
+      // 1. Left Monolith Spine (matching '1')
+      shape.moveTo(-1.20, botY);
+      shape.lineTo(-1.05, topY);
+      shape.absarc(-0.65, topY, 0.44, Math.PI, Math.PI * 0.5, true);
+
+      // 2. Top Ribbon Upper Bowl (matching '3' top curve)
+      shape.bezierCurveTo(0.30, 3.12, 1.30, 3.08, 1.88, 2.48);
+      shape.bezierCurveTo(2.38, 1.95, 2.28, 1.12, 1.72, 0.52);
+
+      // 3. Middle Waist Transition into Center Joint
+      shape.bezierCurveTo(1.32, 0.12, 0.95, 0.05, 0.25, 0.08);
+
+      // 4. Lower Ribbon Bowl (matching '3' bottom curve)
+      shape.bezierCurveTo(0.95, 0.05, 1.38, -0.22, 2.18, -0.68);
+      shape.bezierCurveTo(2.46, -1.38, 2.40, -2.18, 1.78, -2.85);
+      shape.bezierCurveTo(1.20, -3.12, 0.45, -3.12, -0.25, -3.10);
+
+      // 5. Bottom Rounded Base Closure
+      shape.absarc(-0.65, botY, 0.55, 0, Math.PI, true);
       shape.closePath();
 
-      // Top loop counter cutout
+      // Top Inner Loop Hole (matching '3' upper hollow)
       const topHole = new THREE.Path();
-      topHole.moveTo(-0.40, topY - 0.72);
-      topHole.lineTo(0.18, topY - 0.72);
-      topHole.bezierCurveTo(0.85, topY - 0.72, 0.85, midY + 0.48, 0.18, midY + 0.48);
-      topHole.lineTo(-0.40, midY + 0.48);
+      topHole.moveTo(-0.55, 0.65);
+      topHole.lineTo(-0.55, 2.30);
+      topHole.bezierCurveTo(-0.05, 2.40, 0.55, 2.35, 0.88, 1.98);
+      topHole.bezierCurveTo(1.25, 1.55, 1.15, 0.95, 0.68, 0.68);
       topHole.closePath();
       shape.holes.push(topHole);
 
-      // Bottom loop counter cutout
+      // Bottom Inner Loop Hole (matching '3' lower hollow)
       const botHole = new THREE.Path();
-      botHole.moveTo(-0.40, midY - 0.38);
-      botHole.lineTo(0.25, midY - 0.38);
-      botHole.bezierCurveTo(0.95, midY - 0.38, 0.95, botY + 0.72, 0.25, botY + 0.72);
-      botHole.lineTo(-0.40, botY + 0.72);
+      botHole.moveTo(-0.55, -0.45);
+      botHole.lineTo(0.68, -0.45);
+      botHole.bezierCurveTo(1.35, -0.75, 1.35, -1.85, 0.85, -2.25);
+      botHole.bezierCurveTo(0.35, -2.48, -0.15, -2.45, -0.55, -2.30);
       botHole.closePath();
       shape.holes.push(botHole);
 
@@ -198,25 +211,32 @@ export function ModelViewer() {
       const shape = new THREE.Shape();
       const topY = 2.62;
       const botY = -2.42;
-      const midY = 0.10;
-      const leftX = -1.10;
-      const rightX = 1.35;
-      const midRightX = 0.95;
-      const barH = 0.72;
-      const spineW = 0.70;
 
-      shape.moveTo(leftX, botY);
-      shape.lineTo(leftX, topY);
-      shape.lineTo(rightX, topY);
-      shape.lineTo(rightX, topY - barH);
-      shape.lineTo(leftX + spineW, topY - barH);
-      shape.lineTo(leftX + spineW, midY + barH * 0.5);
-      shape.lineTo(midRightX, midY + barH * 0.5);
-      shape.lineTo(midRightX, midY - barH * 0.5);
-      shape.lineTo(leftX + spineW, midY - barH * 0.5);
-      shape.lineTo(leftX + spineW, botY + barH);
-      shape.lineTo(rightX, botY + barH);
-      shape.lineTo(rightX, botY);
+      // 'E' Shape built from Left '1' Pillar + 3 Continuous '3' Ribbon Cantilevers
+      // 1. Left Monolith Pillar
+      shape.moveTo(-1.15, botY);
+      shape.lineTo(-1.02, topY);
+      shape.absarc(-0.62, topY, 0.42, Math.PI, Math.PI * 0.5, true);
+
+      // 2. Top Curved Arm (ending with '3' top bulb curvature)
+      shape.lineTo(1.15, topY + 0.42);
+      shape.bezierCurveTo(1.75, topY + 0.42, 1.95, topY - 0.25, 1.55, topY - 0.55);
+      shape.bezierCurveTo(1.25, -topY + 0.65, 0.35, topY - 0.62, -0.35, topY - 0.62);
+
+      // 3. Middle Stem & Waist Arm
+      shape.lineTo(-0.35, 0.42);
+      shape.lineTo(0.95, 0.42);
+      shape.bezierCurveTo(1.45, 0.42, 1.45, -0.28, 0.95, -0.28);
+      shape.lineTo(-0.35, -0.28);
+
+      // 4. Lower Stem & Bottom Curved Arm (ending with '3' bottom bulb curvature)
+      shape.lineTo(-0.35, botY + 0.68);
+      shape.lineTo(1.35, botY + 0.68);
+      shape.bezierCurveTo(2.05, botY + 0.68, 1.95, botY - 0.55, 1.25, botY - 0.55);
+      shape.lineTo(-0.25, botY - 0.55);
+
+      // 5. Bottom Pillar Base Closure
+      shape.absarc(-0.62, botY, 0.53, 0, Math.PI, true);
       shape.closePath();
 
       return shape;
