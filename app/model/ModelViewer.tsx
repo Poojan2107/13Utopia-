@@ -7,7 +7,7 @@ import styles from "./ModelViewer.module.css";
 
 export function ModelViewer() {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [activeModel, setActiveModel] = useState<"BE" | "13">("BE");
+  const [activeModel, setActiveModel] = useState<"13" | "X" | "BE">("X");
   const [colorMode, setColorMode] = useState<"titanium" | "chrome" | "clay" | "gold">("chrome");
   const [lightBoost, setLightBoost] = useState(true);
   const [wireframeMode, setWireframeMode] = useState(false);
@@ -18,6 +18,7 @@ export function ModelViewer() {
 
   const rootGroupRef = useRef<THREE.Group | null>(null);
   const thirteenGroupRef = useRef<THREE.Group | null>(null);
+  const xGroupRef = useRef<THREE.Group | null>(null);
   const beGroupRef = useRef<THREE.Group | null>(null);
   const matOneRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
   const matThreeRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
@@ -106,10 +107,11 @@ export function ModelViewer() {
     }
   }, [lightBoost]);
 
-  // Switch visible model
+  // Switch visible model (13 vs X Fusion vs BE)
   useEffect(() => {
-    if (thirteenGroupRef.current && beGroupRef.current) {
+    if (thirteenGroupRef.current && xGroupRef.current && beGroupRef.current) {
       thirteenGroupRef.current.visible = activeModel === "13";
+      xGroupRef.current.visible = activeModel === "X";
       beGroupRef.current.visible = activeModel === "BE";
     }
   }, [activeModel]);
@@ -177,14 +179,6 @@ export function ModelViewer() {
     };
 
     // 4b. Glowing Golden Edge Lines
-    const goldEdgeMaterial = new THREE.LineBasicMaterial({
-      color: new THREE.Color(0xf5d77f),
-      transparent: true,
-      opacity: 0.42,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-
     // ── GEOMETRY A: "13" BRAND EMBLEM ─────────────────────────
     const createOneShape = () => {
       const shape = new THREE.Shape();
@@ -223,6 +217,29 @@ export function ModelViewer() {
       return shape;
     };
 
+    // Helper: Mirrored Organic Ribbon for "E" (Exact 1:1 Kinship to "3", Mirrored)
+    const createMirroredThreeShape = () => {
+      const shape = new THREE.Shape();
+      shape.moveTo(0.45, 2.82);
+      shape.bezierCurveTo(-0.30, 3.12, -1.30, 3.08, -1.88, 2.48);
+      shape.bezierCurveTo(-2.38, 1.95, -2.28, 1.12, -1.72, 0.52);
+      shape.bezierCurveTo(-1.32, 0.12, -1.12, 0.02, -1.18, -0.02);
+      shape.bezierCurveTo(-1.38, -0.22, -2.18, -0.68, -2.32, -1.38);
+      shape.bezierCurveTo(-2.46, -2.18, -1.78, -3.12, -0.62, -3.12);
+      shape.bezierCurveTo(0.18, -3.12, 0.65, -2.82, 0.92, -2.32);
+      shape.bezierCurveTo(1.18, -1.82, 1.02, -1.32, 0.52, -1.38);
+      shape.bezierCurveTo(-0.18, -1.42, -0.88, -1.68, -1.28, -1.32);
+      shape.bezierCurveTo(-1.58, -1.02, -1.48, -0.42, -0.98, -0.12);
+      shape.bezierCurveTo(-0.58, 0.12, -0.22, 0.18, -0.18, 0.08);
+      shape.bezierCurveTo(-0.12, -0.02, -0.38, 0.58, -0.78, 0.98);
+      shape.bezierCurveTo(-1.32, 1.48, -1.28, 1.98, -0.88, 2.18);
+      shape.bezierCurveTo(-0.38, 2.38, 0.12, 2.18, 0.48, 1.88);
+      shape.bezierCurveTo(0.95, 1.92, 0.95, 2.78, 0.45, 2.82);
+      shape.closePath();
+      return shape;
+    };
+
+    // ── 01. "13" GROUP ─────────────────────────────────────────
     const thirteenGroup = new THREE.Group();
     thirteenGroupRef.current = thirteenGroup;
 
@@ -232,147 +249,45 @@ export function ModelViewer() {
     oneMesh.position.set(-1.35, 0, 0);
     thirteenGroup.add(oneMesh);
 
-    const oneEdgesGeo = new THREE.EdgesGeometry(oneGeo, 26);
-    const oneEdgeLine = new THREE.LineSegments(oneEdgesGeo, goldEdgeMaterial);
-    oneMesh.add(oneEdgeLine);
-
     const threeGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
     threeGeo.center();
     const threeMesh = new THREE.Mesh(threeGeo, matThree);
     threeMesh.position.set(0.65, 0, 0);
     thirteenGroup.add(threeMesh);
 
-    const threeEdgesGeo = new THREE.EdgesGeometry(threeGeo, 26);
-    const threeEdgeLine = new THREE.LineSegments(threeEdgesGeo, goldEdgeMaterial);
-    threeMesh.add(threeEdgeLine);
+    // ── 02. "X FUSION" GROUP (E3 Clover X Symmetry) ───────────
+    const xGroup = new THREE.Group();
+    xGroupRef.current = xGroup;
 
-    // ── GEOMETRY B: "BE" MONUMENTAL EMBLEM (Exact 1:1 "13" Font & Ribbon Kinship) ────
-    const createBShape = () => {
-      const shape = new THREE.Shape();
-      const topY = 2.62;
-      const botY = -2.42;
+    const xLeftGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
+    xLeftGeo.center();
+    const xLeftMesh = new THREE.Mesh(xLeftGeo, matOne);
+    xLeftMesh.position.set(-0.62, 0, 0);
+    xGroup.add(xLeftMesh);
 
-      // Outer outline of 'B':
-      // 1. Start at bottom of left spine
-      shape.moveTo(-1.15, botY);
-      // 2. Ascend left vertical spine (tapered like '1')
-      shape.lineTo(-0.90, topY);
-      // 3. Top-left rounded shoulder
-      shape.bezierCurveTo(-0.90, topY + 0.33, -0.60, 2.95, -0.15, 2.95);
-      // 4. Top horizontal shelf
-      shape.lineTo(0.30, 2.95);
-      // 5. Top outer bowl arch (matching '3' upper curve)
-      shape.bezierCurveTo(1.10, 2.95, 1.95, 2.55, 1.95, 1.60);
-      shape.bezierCurveTo(1.95, 0.85, 1.40, 0.25, 0.70, 0.08);
-      // 6. Center waist pinch transitioning into bottom bowl
-      shape.bezierCurveTo(1.50, -0.08, 2.15, -0.65, 2.15, -1.55);
-      // 7. Bottom outer bowl arch (matching '3' lower curve)
-      shape.bezierCurveTo(2.15, -2.45, 1.35, -2.95, 0.35, -2.95);
-      // 8. Bottom horizontal shelf
-      shape.lineTo(-0.15, -2.95);
-      // 9. Bottom-left rounded shoulder
-      shape.bezierCurveTo(-0.65, -2.95, -1.15, -2.75, -1.15, botY);
-      shape.closePath();
+    const xRightMesh = new THREE.Mesh(threeGeo, matThree);
+    xRightMesh.position.set(0.62, 0, 0);
+    xGroup.add(xRightMesh);
 
-      // Top Counter Hole (Silky smooth organic D-capsule)
-      const topHole = new THREE.Path();
-      topHole.moveTo(-0.15, 0.75);
-      topHole.lineTo(-0.15, 2.15);
-      topHole.bezierCurveTo(-0.15, 2.45, 0.20, 2.45, 0.50, 2.35);
-      topHole.bezierCurveTo(1.10, 2.15, 1.10, 1.10, 0.50, 0.85);
-      topHole.bezierCurveTo(0.20, 0.75, -0.15, 0.75, -0.15, 0.75);
-      topHole.closePath();
-      shape.holes.push(topHole);
-
-      // Bottom Counter Hole (Silky smooth organic D-capsule)
-      const botHole = new THREE.Path();
-      botHole.moveTo(-0.15, -2.25);
-      botHole.lineTo(-0.15, -0.65);
-      botHole.bezierCurveTo(-0.15, -0.40, 0.25, -0.40, 0.60, -0.52);
-      botHole.bezierCurveTo(1.25, -0.78, 1.25, -1.95, 0.60, -2.22);
-      botHole.bezierCurveTo(0.25, -2.35, -0.15, -2.35, -0.15, -2.25);
-      botHole.closePath();
-      shape.holes.push(botHole);
-
-      return shape;
-    };
-
-    const createEShape = () => {
-      const shape = new THREE.Shape();
-      const topY = 2.62;
-      const botY = -2.42;
-
-      // 1. Bottom-left spine anchor
-      shape.moveTo(-1.15, botY);
-
-      // 2. Left vertical spine ascending (tapered like '1')
-      shape.lineTo(-0.90, topY);
-
-      // 3. Top-left rounded shoulder
-      shape.bezierCurveTo(-0.90, topY + 0.33, -0.60, 2.95, -0.15, 2.95);
-
-      // 4. Top horizontal arm top edge
-      shape.lineTo(1.50, 2.95);
-
-      // 5. Top arm rounded terminal cap (matching '3' top bulb)
-      shape.bezierCurveTo(1.95, 2.95, 1.95, 2.05, 1.50, 2.05);
-
-      // 6. Top inner bay underside returning to left spine
-      shape.lineTo(0.05, 2.05);
-      // Smooth inner corner fillet into vertical spine wall
-      shape.bezierCurveTo(-0.25, 2.05, -0.25, 1.65, -0.25, 1.15);
-      shape.lineTo(-0.25, 0.80);
-      // Smooth fillet turning out into middle arm
-      shape.bezierCurveTo(-0.25, 0.40, 0.05, 0.40, 0.20, 0.40);
-
-      // 7. Middle horizontal arm
-      shape.lineTo(1.15, 0.40);
-      // Middle arm rounded terminal cap
-      shape.bezierCurveTo(1.55, 0.40, 1.55, -0.40, 1.15, -0.40);
-      // Middle arm underside returning to left spine
-      shape.lineTo(0.20, -0.40);
-      // Smooth fillet turning down into lower bay
-      shape.bezierCurveTo(0.05, -0.40, -0.25, -0.40, -0.25, -0.80);
-      shape.lineTo(-0.25, -1.15);
-      // Smooth fillet turning out into bottom arm
-      shape.bezierCurveTo(-0.25, -1.65, -0.25, -2.05, 0.05, -2.05);
-
-      // 8. Bottom horizontal arm top edge
-      shape.lineTo(1.55, -2.05);
-      // Bottom arm rounded terminal cap (matching '3' bottom bulb)
-      shape.bezierCurveTo(2.05, -2.05, 2.05, -2.95, 1.55, -2.95);
-
-      // 9. Bottom shelf returning to bottom-left corner
-      shape.lineTo(-0.15, -2.95);
-      // Bottom-left rounded shoulder
-      shape.bezierCurveTo(-0.65, -2.95, -1.15, -2.75, -1.15, botY);
-
-      shape.closePath();
-      return shape;
-    };
-
+    // ── 03. "BE" MONUMENTAL GROUP ──────────────────────────────
     const beGroup = new THREE.Group();
     beGroupRef.current = beGroup;
 
-    const bGeo = new THREE.ExtrudeGeometry(createBShape(), extrudeSettings);
-    bGeo.center();
-    const bMesh = new THREE.Mesh(bGeo, matOne);
-    bMesh.position.set(-1.45, 0, 0);
-    beGroup.add(bMesh);
+    // "B": Monolith spine 1 + dual-bowl 3
+    const bGroup = new THREE.Group();
+    const bSpine = new THREE.Mesh(oneGeo, matOne);
+    bSpine.position.set(-0.75, 0, 0);
+    const bBowls = new THREE.Mesh(threeGeo, matThree);
+    bBowls.position.set(0.35, 0, 0);
+    bGroup.add(bSpine);
+    bGroup.add(bBowls);
+    bGroup.position.set(-1.45, 0, 0);
+    beGroup.add(bGroup);
 
-    const bEdgesGeo = new THREE.EdgesGeometry(bGeo, 26);
-    const bEdgeLine = new THREE.LineSegments(bEdgesGeo, goldEdgeMaterial);
-    bMesh.add(bEdgeLine);
-
-    const eGeo = new THREE.ExtrudeGeometry(createEShape(), extrudeSettings);
-    eGeo.center();
-    const eMesh = new THREE.Mesh(eGeo, matThree);
-    eMesh.position.set(1.25, 0, 0);
+    // "E": Exact mirrored 3-ribbon
+    const eMesh = new THREE.Mesh(xLeftGeo, matOne);
+    eMesh.position.set(1.45, 0, 0);
     beGroup.add(eMesh);
-
-    const eEdgesGeo = new THREE.EdgesGeometry(eGeo, 26);
-    const eEdgeLine = new THREE.LineSegments(eEdgesGeo, goldEdgeMaterial);
-    eMesh.add(eEdgeLine);
 
     // ── ROOT ORBIT ANCHOR ──────────────────────────────────────
     const rootGroup = new THREE.Group();
@@ -381,13 +296,15 @@ export function ModelViewer() {
     rootGroup.position.set(0, 0, 0);
 
     thirteenGroup.visible = activeModel === "13";
+    xGroup.visible = activeModel === "X";
     beGroup.visible = activeModel === "BE";
 
     rootGroup.add(thirteenGroup);
+    rootGroup.add(xGroup);
     rootGroup.add(beGroup);
     scene.add(rootGroup);
 
-    // 6. Studio Lighting Setup (Signature Champagne Gold Bevel Rim Reflections)
+    // 6. Studio Lighting Setup (Signature Luxury Reflections)
     const ambientLight = new THREE.AmbientLight(0xffffff, lightBoost ? 2.4 : 1.4);
     ambientLightRef.current = ambientLight;
     scene.add(ambientLight);
@@ -403,12 +320,6 @@ export function ModelViewer() {
 
     const goldRimLight = new THREE.DirectionalLight(0xf4dfc8, 4.5);
     goldRimLight.position.set(4, -6, -3);
-    scene.add(goldRimLight);
-
-    // Dynamic Orbital Gold Border Sweep Light (Animates smoothly around model perimeter)
-    const orbitGoldLight = new THREE.PointLight(0xffdf99, 4.5, 14);
-    orbitGoldLight.position.set(0, 0, 2.5);
-    scene.add(orbitGoldLight);
     scene.add(goldRimLight);
 
     const leftRimLight = new THREE.DirectionalLight(0xffffff, 3.2);
@@ -533,13 +444,7 @@ export function ModelViewer() {
       renderer.dispose();
       oneGeo.dispose();
       threeGeo.dispose();
-      oneEdgesGeo.dispose();
-      threeEdgesGeo.dispose();
-      bGeo.dispose();
-      eGeo.dispose();
-      bEdgesGeo.dispose();
-      eEdgesGeo.dispose();
-      goldEdgeMaterial.dispose();
+      xLeftGeo.dispose();
       matOne.dispose();
       matThree.dispose();
       if (container.contains(renderer.domElement)) {
@@ -578,21 +483,28 @@ export function ModelViewer() {
           <span className={styles.hudBadge}>OFFICIAL 3D ARTIFACT</span>
         </div>
 
-        {/* Model Switcher Pill Deck */}
+        {/* Model Switcher Pill Deck: 13, X Fusion, BE */}
         <div className={styles.modelSwitcher}>
-          <button
-            className={`${styles.modelSwitchBtn} ${activeModel === "BE" ? styles.modelSwitchBtnActive : ""}`}
-            onClick={() => setActiveModel("BE")}
-            type="button"
-          >
-            BE MONOLITH
-          </button>
           <button
             className={`${styles.modelSwitchBtn} ${activeModel === "13" ? styles.modelSwitchBtnActive : ""}`}
             onClick={() => setActiveModel("13")}
             type="button"
           >
             13 EMBLEM
+          </button>
+          <button
+            className={`${styles.modelSwitchBtn} ${activeModel === "X" ? styles.modelSwitchBtnActive : ""}`}
+            onClick={() => setActiveModel("X")}
+            type="button"
+          >
+            X FUSION (E3)
+          </button>
+          <button
+            className={`${styles.modelSwitchBtn} ${activeModel === "BE" ? styles.modelSwitchBtnActive : ""}`}
+            onClick={() => setActiveModel("BE")}
+            type="button"
+          >
+            BE MONOLITH
           </button>
         </div>
 
@@ -611,7 +523,9 @@ export function ModelViewer() {
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>ARTIFACT</span>
           <span className={styles.telemetryVal}>
-            {activeModel === "BE" ? "BE MONUMENTAL MONOLITH (OFFICIAL)" : "13 MONOLITH EMBLEM (OFFICIAL)"}
+            {activeModel === "13" && "13 MONOLITH EMBLEM (OFFICIAL)"}
+            {activeModel === "X" && "X FUSION EMBLEM (E3 CLOVER SYMMETRY)"}
+            {activeModel === "BE" && "BE MONUMENTAL MONOLITH (OFFICIAL)"}
           </span>
         </div>
         <div className={styles.telemetryRow}>
