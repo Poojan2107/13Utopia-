@@ -3,27 +3,24 @@
 import styles from "./ExperimentHeroTypography.module.css";
 
 /**
- * ExperimentHeroTypography — Full-Screen Monumental Tagline Lockup:
- * - Full Viewport (100vw × 100vh)
- * - Left 38vw / 100vh: Common Enlarged "BE" spanning full vertical height
- * - Right 62vw:
- *     - Top 50vh: "UNREAL"
- *     - Bottom 50vh: "UNREASONABLE"
+ * ExperimentHeroTypography — Centered Compound Tagline Lockup:
+ * - Center of the screen
+ * - "BE" enlarged and common on the left
+ * - Stacked on the right: "UNREAL" on top, and "UNREASONABLE" underneath
  */
 export function ExperimentHeroTypography() {
   return (
     <div className={styles.centerLayout}>
-      {/* ── 01. Left Anchor: "BE" Common Enlarged Full-Height ── */}
-      <div className={styles.beCommonBlock}>
-        <span className={styles.beWord}>BE</span>
-      </div>
-
-      {/* ── 02. Right Stacked Branch: UNREAL + UNREASONABLE ── */}
-      <div className={styles.stackedBlock}>
-        <div className={styles.wordTopWrapper}>
-          <span className={styles.wordTop}>UNREAL</span>
+      {/* ── Centerpiece Compound Lockup ── */}
+      <div className={styles.monumentLockup}>
+        {/* Common Enlarged "BE" */}
+        <div className={styles.beCommonBlock}>
+          <span className={styles.beWord}>BE</span>
         </div>
-        <div className={styles.wordBottomWrapper}>
+
+        {/* Stacked Branch: UNREAL + UNREASONABLE */}
+        <div className={styles.stackedBlock}>
+          <span className={styles.wordTop}>UNREAL</span>
           <span className={styles.wordBottom}>UNREASONABLE</span>
         </div>
       </div>
