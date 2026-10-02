@@ -144,7 +144,7 @@
 }
 
 .socialLink:hover {
-  color: #f4dfc8;
+  color: #ffffff;
   transform: translateX(-4px);
 }
 
@@ -185,8 +185,8 @@
 }
 
 .settledThirteen {
-  color: #f4dfc8;
-  text-shadow: 0 0 60px rgba(244, 223, 200, 0.4);
+  color: #ffffff;
+  text-shadow: 0 0 60px rgba(255, 255, 255, 0.45);
   animation: glowPulse 0.75s ease-out forwards;
 }
 
@@ -223,8 +223,8 @@
 
 .wordmarkChar:hover {
   transform: translateY(-8px) scale(1.03);
-  color: #f4eae0;
-  text-shadow: 0 10px 40px rgba(244, 223, 200, 0.35);
+  color: #ffffff;
+  text-shadow: 0 10px 40px rgba(255, 255, 255, 0.4);
 }
 
 @keyframes charUnfold {
