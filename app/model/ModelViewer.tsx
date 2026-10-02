@@ -7,13 +7,16 @@ import styles from "./ModelViewer.module.css";
 
 export function ModelViewer() {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [activeModel, setActiveModel] = useState<"BE" | "13">("BE");
   const [wireframeMode, setWireframeMode] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
   const [showGrid, setShowGrid] = useState(true);
   const [copied, setCopied] = useState(false);
   const [rotationCoords, setRotationCoords] = useState({ x: 0, y: 0 });
 
-  const emblemGroupRef = useRef<THREE.Group | null>(null);
+  const rootGroupRef = useRef<THREE.Group | null>(null);
+  const thirteenGroupRef = useRef<THREE.Group | null>(null);
+  const beGroupRef = useRef<THREE.Group | null>(null);
   const matOneRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
   const matThreeRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
   const isDraggingRef = useRef(false);
@@ -31,6 +34,14 @@ export function ModelViewer() {
       matThreeRef.current.wireframe = wireframeMode;
     }
   }, [wireframeMode]);
+
+  // Switch visible model
+  useEffect(() => {
+    if (thirteenGroupRef.current && beGroupRef.current) {
+      thirteenGroupRef.current.visible = activeModel === "13";
+      beGroupRef.current.visible = activeModel === "BE";
+    }
+  }, [activeModel]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -83,7 +94,7 @@ export function ModelViewer() {
     });
     matThreeRef.current = matThree;
 
-    // 5. Finalized "13" Emblem Geometry (Exact 1:1 Homepage Parity)
+    // 5. Extrusion & Bevel Settings (Exact Architectural Standard)
     const extrudeSettings = {
       steps: 1,
       depth: 0.96,
@@ -94,7 +105,7 @@ export function ModelViewer() {
       bevelSegments: 5,
     };
 
-    // Shape 1: Tapered Monolith "1"
+    // ── GEOMETRY A: "13" BRAND EMBLEM ─────────────────────────
     const createOneShape = () => {
       const shape = new THREE.Shape();
       const topR = 0.44;
@@ -111,7 +122,6 @@ export function ModelViewer() {
       return shape;
     };
 
-    // Shape 3: Finalized Continuous Organic Ribbon "3"
     const createThreeShape = () => {
       const shape = new THREE.Shape();
       shape.moveTo(-0.45, 2.82);
@@ -133,24 +143,112 @@ export function ModelViewer() {
       return shape;
     };
 
-    const emblemGroup = new THREE.Group();
-    emblemGroupRef.current = emblemGroup;
+    const thirteenGroup = new THREE.Group();
+    thirteenGroupRef.current = thirteenGroup;
 
     const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
     oneGeo.center();
     const oneMesh = new THREE.Mesh(oneGeo, matOne);
     oneMesh.position.set(-1.35, 0, 0);
-    emblemGroup.add(oneMesh);
+    thirteenGroup.add(oneMesh);
 
     const threeGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
     threeGeo.center();
     const threeMesh = new THREE.Mesh(threeGeo, matThree);
     threeMesh.position.set(0.65, 0, 0);
-    emblemGroup.add(threeMesh);
+    thirteenGroup.add(threeMesh);
 
-    emblemGroup.scale.setScalar(0.80);
-    emblemGroup.position.set(0, 0, 0);
-    scene.add(emblemGroup);
+    // ── GEOMETRY B: "BE" MONUMENTAL EMBLEM ────────────────────
+    const createBShape = () => {
+      const shape = new THREE.Shape();
+      const topY = 2.62;
+      const botY = -2.42;
+      const midY = 0.12;
+
+      // Outer boundary of 'B'
+      shape.moveTo(-1.10, botY);
+      shape.lineTo(-1.10, topY);
+      shape.lineTo(0.20, topY);
+      shape.bezierCurveTo(1.40, topY, 1.60, midY + 0.35, 0.45, midY);
+      shape.bezierCurveTo(1.75, midY - 0.25, 1.85, botY, 0.35, botY);
+      shape.closePath();
+
+      // Top loop counter cutout
+      const topHole = new THREE.Path();
+      topHole.moveTo(-0.40, topY - 0.72);
+      topHole.lineTo(0.18, topY - 0.72);
+      topHole.bezierCurveTo(0.85, topY - 0.72, 0.85, midY + 0.48, 0.18, midY + 0.48);
+      topHole.lineTo(-0.40, midY + 0.48);
+      topHole.closePath();
+      shape.holes.push(topHole);
+
+      // Bottom loop counter cutout
+      const botHole = new THREE.Path();
+      botHole.moveTo(-0.40, midY - 0.38);
+      botHole.lineTo(0.25, midY - 0.38);
+      botHole.bezierCurveTo(0.95, midY - 0.38, 0.95, botY + 0.72, 0.25, botY + 0.72);
+      botHole.lineTo(-0.40, botY + 0.72);
+      botHole.closePath();
+      shape.holes.push(botHole);
+
+      return shape;
+    };
+
+    const createEShape = () => {
+      const shape = new THREE.Shape();
+      const topY = 2.62;
+      const botY = -2.42;
+      const midY = 0.10;
+      const leftX = -1.10;
+      const rightX = 1.35;
+      const midRightX = 0.95;
+      const barH = 0.72;
+      const spineW = 0.70;
+
+      shape.moveTo(leftX, botY);
+      shape.lineTo(leftX, topY);
+      shape.lineTo(rightX, topY);
+      shape.lineTo(rightX, topY - barH);
+      shape.lineTo(leftX + spineW, topY - barH);
+      shape.lineTo(leftX + spineW, midY + barH * 0.5);
+      shape.lineTo(midRightX, midY + barH * 0.5);
+      shape.lineTo(midRightX, midY - barH * 0.5);
+      shape.lineTo(leftX + spineW, midY - barH * 0.5);
+      shape.lineTo(leftX + spineW, botY + barH);
+      shape.lineTo(rightX, botY + barH);
+      shape.lineTo(rightX, botY);
+      shape.closePath();
+
+      return shape;
+    };
+
+    const beGroup = new THREE.Group();
+    beGroupRef.current = beGroup;
+
+    const bGeo = new THREE.ExtrudeGeometry(createBShape(), extrudeSettings);
+    bGeo.center();
+    const bMesh = new THREE.Mesh(bGeo, matOne);
+    bMesh.position.set(-1.45, 0, 0);
+    beGroup.add(bMesh);
+
+    const eGeo = new THREE.ExtrudeGeometry(createEShape(), extrudeSettings);
+    eGeo.center();
+    const eMesh = new THREE.Mesh(eGeo, matThree);
+    eMesh.position.set(1.25, 0, 0);
+    beGroup.add(eMesh);
+
+    // ── ROOT ORBIT ANCHOR ──────────────────────────────────────
+    const rootGroup = new THREE.Group();
+    rootGroupRef.current = rootGroup;
+    rootGroup.scale.setScalar(0.80);
+    rootGroup.position.set(0, 0, 0);
+
+    thirteenGroup.visible = activeModel === "13";
+    beGroup.visible = activeModel === "BE";
+
+    rootGroup.add(thirteenGroup);
+    rootGroup.add(beGroup);
+    scene.add(rootGroup);
 
     // 6. Studio Lighting Setup (Signature Champagne Gold Bevel Rim Reflections)
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
@@ -158,6 +256,7 @@ export function ModelViewer() {
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 3.8);
     keyLight.position.set(7, 9, 8);
+    scene.add(keyLight);
     scene.add(keyLight);
 
     const fillLight = new THREE.DirectionalLight(0xcccccc, 1.8);
@@ -183,12 +282,12 @@ export function ModelViewer() {
     };
 
     const onMouseMove = (e: MouseEvent) => {
-      if (!isDraggingRef.current || !emblemGroupRef.current) return;
+      if (!isDraggingRef.current || !rootGroupRef.current) return;
       const deltaX = e.clientX - previousMousePosRef.current.x;
       const deltaY = e.clientY - previousMousePosRef.current.y;
 
-      emblemGroupRef.current.rotation.y += deltaX * 0.008;
-      emblemGroupRef.current.rotation.x += deltaY * 0.008;
+      rootGroupRef.current.rotation.y += deltaX * 0.008;
+      rootGroupRef.current.rotation.x += deltaY * 0.008;
 
       previousMousePosRef.current = { x: e.clientX, y: e.clientY };
     };
@@ -210,12 +309,12 @@ export function ModelViewer() {
     };
 
     const onTouchMove = (e: TouchEvent) => {
-      if (!isDraggingRef.current || !emblemGroupRef.current || e.touches.length !== 1) return;
+      if (!isDraggingRef.current || !rootGroupRef.current || e.touches.length !== 1) return;
       const deltaX = e.touches[0].clientX - previousMousePosRef.current.x;
       const deltaY = e.touches[0].clientY - previousMousePosRef.current.y;
 
-      emblemGroupRef.current.rotation.y += deltaX * 0.01;
-      emblemGroupRef.current.rotation.x += deltaY * 0.01;
+      rootGroupRef.current.rotation.y += deltaX * 0.01;
+      rootGroupRef.current.rotation.x += deltaY * 0.01;
 
       previousMousePosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     };
@@ -250,16 +349,16 @@ export function ModelViewer() {
     const animate = () => {
       rafId = requestAnimationFrame(animate);
 
-      if (emblemGroupRef.current) {
+      if (rootGroupRef.current) {
         if (autoRotateRef.current && !isDraggingRef.current) {
-          emblemGroupRef.current.rotation.y += 0.006;
+          rootGroupRef.current.rotation.y += 0.006;
         }
 
         stepCount++;
         if (stepCount % 10 === 0) {
           setRotationCoords({
-            x: Math.round(((emblemGroupRef.current.rotation.x * 180) / Math.PI) % 360),
-            y: Math.round(((emblemGroupRef.current.rotation.y * 180) / Math.PI) % 360),
+            x: Math.round(((rootGroupRef.current.rotation.x * 180) / Math.PI) % 360),
+            y: Math.round(((rootGroupRef.current.rotation.y * 180) / Math.PI) % 360),
           });
         }
       }
@@ -283,6 +382,8 @@ export function ModelViewer() {
       renderer.dispose();
       oneGeo.dispose();
       threeGeo.dispose();
+      bGeo.dispose();
+      eGeo.dispose();
       matOne.dispose();
       matThree.dispose();
       if (container.contains(renderer.domElement)) {
@@ -292,8 +393,8 @@ export function ModelViewer() {
   }, [showGrid]);
 
   const handleResetCamera = () => {
-    if (emblemGroupRef.current) {
-      emblemGroupRef.current.rotation.set(0, 0, 0);
+    if (rootGroupRef.current) {
+      rootGroupRef.current.rotation.set(0, 0, 0);
     }
   };
 
@@ -321,6 +422,24 @@ export function ModelViewer() {
           <span className={styles.hudBadge}>OFFICIAL 3D ARTIFACT</span>
         </div>
 
+        {/* Model Switcher Pill Deck */}
+        <div className={styles.modelSwitcher}>
+          <button
+            className={`${styles.modelSwitchBtn} ${activeModel === "BE" ? styles.modelSwitchBtnActive : ""}`}
+            onClick={() => setActiveModel("BE")}
+            type="button"
+          >
+            BE MONOLITH
+          </button>
+          <button
+            className={`${styles.modelSwitchBtn} ${activeModel === "13" ? styles.modelSwitchBtnActive : ""}`}
+            onClick={() => setActiveModel("13")}
+            type="button"
+          >
+            13 EMBLEM
+          </button>
+        </div>
+
         <div className={styles.hudActions}>
           <button onClick={handleShare} className={styles.hudButton} type="button">
             {copied ? "Link Copied!" : "Share Model ↗"}
@@ -335,11 +454,13 @@ export function ModelViewer() {
       <div className={styles.telemetryPanel}>
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>ARTIFACT</span>
-          <span className={styles.telemetryVal}>13 MONOLITH EMBLEM (OFFICIAL)</span>
+          <span className={styles.telemetryVal}>
+            {activeModel === "BE" ? "BE MONUMENTAL MONOLITH (OFFICIAL)" : "13 MONOLITH EMBLEM (OFFICIAL)"}
+          </span>
         </div>
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>MATERIAL</span>
-          <span className={styles.telemetryVal}>SMOKED BRONZE & CHAMPAGNE TITANIUM</span>
+          <span className={styles.telemetryVal}>DARK ARCHITECTURAL TITANIUM OBSIDIAN</span>
         </div>
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>COORDINATES</span>
