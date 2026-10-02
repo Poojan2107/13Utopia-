@@ -239,6 +239,47 @@ export function ModelViewer() {
       return shape;
     };
 
+    // Helper: Unified Monolithic Symmetrical 4-Lobe Clover "X" (13 ✕ BE Collaboration Mark)
+    const createXShape = () => {
+      const shape = new THREE.Shape();
+
+      // Outer boundary: continuous 4-lobed perimeter matching '3' and 'E' curve thickness
+      shape.moveTo(0, 2.82);
+      // Top-right lobe
+      shape.bezierCurveTo(0.75, 3.08, 1.85, 3.02, 2.38, 2.32);
+      shape.bezierCurveTo(2.80, 1.72, 2.55, 0.85, 1.68, 0.00);
+      // Bottom-right lobe
+      shape.bezierCurveTo(2.55, -0.85, 2.80, -1.72, 2.38, -2.32);
+      shape.bezierCurveTo(1.85, -3.02, 0.75, -3.08, 0, -2.82);
+      // Bottom-left lobe
+      shape.bezierCurveTo(-0.75, -3.08, -1.85, -3.02, -2.38, -2.32);
+      shape.bezierCurveTo(-2.80, -1.72, -2.55, -0.85, -1.68, 0.00);
+      // Top-left lobe
+      shape.bezierCurveTo(-2.55, 0.85, -2.80, 1.72, -2.38, 2.32);
+      shape.bezierCurveTo(-1.85, 3.02, -0.75, 3.08, 0, 2.82);
+      shape.closePath();
+
+      // Inner cut-out hole: perfectly matching the 4-pointed organic cross from reference
+      const hole = new THREE.Path();
+      hole.moveTo(0, 1.82);
+      // Top-right inner corner
+      hole.bezierCurveTo(0.62, 1.82, 1.05, 1.38, 0.75, 0.68);
+      hole.bezierCurveTo(0.55, 0.22, 0.85, 0.00, 1.62, 0.00);
+      // Bottom-right inner corner
+      hole.bezierCurveTo(0.85, 0.00, 0.55, -0.22, 0.75, -0.68);
+      hole.bezierCurveTo(1.05, -1.38, 0.62, -1.82, 0, -1.82);
+      // Bottom-left inner corner
+      hole.bezierCurveTo(-0.62, -1.82, -1.05, -1.38, -0.75, -0.68);
+      hole.bezierCurveTo(-0.55, -0.22, -0.85, 0.00, -1.62, 0.00);
+      // Top-left inner corner
+      hole.bezierCurveTo(-0.85, 0.00, -0.55, 0.22, -0.75, 0.68);
+      hole.bezierCurveTo(-1.05, 1.38, -0.62, 1.82, 0, 1.82);
+      hole.closePath();
+
+      shape.holes.push(hole);
+      return shape;
+    };
+
     // ── 01. "13" GROUP ─────────────────────────────────────────
     const thirteenGroup = new THREE.Group();
     thirteenGroupRef.current = thirteenGroup;
@@ -281,15 +322,10 @@ export function ModelViewer() {
     const xGroup = new THREE.Group();
     xGroupRef.current = xGroup;
 
-    // Left half: Mirrored 3 (E), open arms pointing inwards to center
-    const xLeftMesh = new THREE.Mesh(eGeo, matOne);
-    xLeftMesh.position.set(-0.88, 0, 0);
-    xGroup.add(xLeftMesh);
-
-    // Right half: Normal 3, open arms pointing inwards to center
-    const xRightMesh = new THREE.Mesh(threeGeo, matThree);
-    xRightMesh.position.set(0.88, 0, 0);
-    xGroup.add(xRightMesh);
+    const xGeo = new THREE.ExtrudeGeometry(createXShape(), extrudeSettings);
+    xGeo.center();
+    const xMesh = new THREE.Mesh(xGeo, matOne);
+    xGroup.add(xMesh);
 
     // ── ROOT ORBIT ANCHOR ──────────────────────────────────────
     const rootGroup = new THREE.Group();
@@ -440,6 +476,7 @@ export function ModelViewer() {
       oneGeo.dispose();
       threeGeo.dispose();
       eGeo.dispose();
+      xGeo.dispose();
       matOne.dispose();
       matThree.dispose();
       if (container.contains(renderer.domElement)) {
