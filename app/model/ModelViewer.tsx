@@ -7,7 +7,7 @@ import styles from "./ModelViewer.module.css";
 
 export function ModelViewer() {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [activeModel, setActiveModel] = useState<"13" | "X" | "BE">("X");
+  const [activeModel, setActiveModel] = useState<"BE" | "13">("BE");
   const [colorMode, setColorMode] = useState<"titanium" | "chrome" | "clay" | "gold">("chrome");
   const [lightBoost, setLightBoost] = useState(true);
   const [wireframeMode, setWireframeMode] = useState(false);
@@ -18,7 +18,6 @@ export function ModelViewer() {
 
   const rootGroupRef = useRef<THREE.Group | null>(null);
   const thirteenGroupRef = useRef<THREE.Group | null>(null);
-  const xGroupRef = useRef<THREE.Group | null>(null);
   const beGroupRef = useRef<THREE.Group | null>(null);
   const matOneRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
   const matThreeRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
@@ -107,11 +106,10 @@ export function ModelViewer() {
     }
   }, [lightBoost]);
 
-  // Switch visible model (13 vs X Fusion vs BE)
+  // Switch visible model (13 vs BE)
   useEffect(() => {
-    if (thirteenGroupRef.current && xGroupRef.current && beGroupRef.current) {
+    if (thirteenGroupRef.current && beGroupRef.current) {
       thirteenGroupRef.current.visible = activeModel === "13";
-      xGroupRef.current.visible = activeModel === "X";
       beGroupRef.current.visible = activeModel === "BE";
     }
   }, [activeModel]);
@@ -255,23 +253,12 @@ export function ModelViewer() {
     threeMesh.position.set(0.65, 0, 0);
     thirteenGroup.add(threeMesh);
 
-    // ── 02. "X FUSION" GROUP (E3 Clover X Symmetry) ───────────
-    const xGroup = new THREE.Group();
-    xGroupRef.current = xGroup;
-
-    const xLeftGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
-    xLeftGeo.center();
-    const xLeftMesh = new THREE.Mesh(xLeftGeo, matOne);
-    xLeftMesh.position.set(-0.62, 0, 0);
-    xGroup.add(xLeftMesh);
-
-    const xRightMesh = new THREE.Mesh(threeGeo, matThree);
-    xRightMesh.position.set(0.62, 0, 0);
-    xGroup.add(xRightMesh);
-
-    // ── 03. "BE" MONUMENTAL GROUP ──────────────────────────────
+    // ── 02. "BE" MONUMENTAL GROUP ──────────────────────────────
     const beGroup = new THREE.Group();
     beGroupRef.current = beGroup;
+
+    const eGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
+    eGeo.center();
 
     // "B": Monolith spine 1 + dual-bowl 3
     const bGroup = new THREE.Group();
@@ -285,7 +272,7 @@ export function ModelViewer() {
     beGroup.add(bGroup);
 
     // "E": Exact mirrored 3-ribbon
-    const eMesh = new THREE.Mesh(xLeftGeo, matOne);
+    const eMesh = new THREE.Mesh(eGeo, matOne);
     eMesh.position.set(1.45, 0, 0);
     beGroup.add(eMesh);
 
@@ -296,11 +283,9 @@ export function ModelViewer() {
     rootGroup.position.set(0, 0, 0);
 
     thirteenGroup.visible = activeModel === "13";
-    xGroup.visible = activeModel === "X";
     beGroup.visible = activeModel === "BE";
 
     rootGroup.add(thirteenGroup);
-    rootGroup.add(xGroup);
     rootGroup.add(beGroup);
     scene.add(rootGroup);
 
@@ -404,13 +389,6 @@ export function ModelViewer() {
     const animate = () => {
       rafId = requestAnimationFrame(animate);
 
-      const time = performance.now() * 0.0018;
-      // Fluid orbital sweep around the letter contours
-      orbitGoldLight.position.x = Math.sin(time * 1.2) * 4.2;
-      orbitGoldLight.position.y = Math.cos(time * 1.5) * 3.4;
-      orbitGoldLight.position.z = 2.2 + Math.sin(time * 2.1) * 0.8;
-      goldEdgeMaterial.opacity = 0.32 + 0.22 * Math.sin(time * 2.4);
-
       if (rootGroupRef.current) {
         if (autoRotateRef.current && !isDraggingRef.current) {
           rootGroupRef.current.rotation.y += 0.006;
@@ -444,7 +422,7 @@ export function ModelViewer() {
       renderer.dispose();
       oneGeo.dispose();
       threeGeo.dispose();
-      xLeftGeo.dispose();
+      eGeo.dispose();
       matOne.dispose();
       matThree.dispose();
       if (container.contains(renderer.domElement)) {
@@ -483,28 +461,21 @@ export function ModelViewer() {
           <span className={styles.hudBadge}>OFFICIAL 3D ARTIFACT</span>
         </div>
 
-        {/* Model Switcher Pill Deck: 13, X Fusion, BE */}
+        {/* Model Switcher Pill Deck: BE MONOLITH and 13 EMBLEM */}
         <div className={styles.modelSwitcher}>
-          <button
-            className={`${styles.modelSwitchBtn} ${activeModel === "13" ? styles.modelSwitchBtnActive : ""}`}
-            onClick={() => setActiveModel("13")}
-            type="button"
-          >
-            13 EMBLEM
-          </button>
-          <button
-            className={`${styles.modelSwitchBtn} ${activeModel === "X" ? styles.modelSwitchBtnActive : ""}`}
-            onClick={() => setActiveModel("X")}
-            type="button"
-          >
-            X FUSION (E3)
-          </button>
           <button
             className={`${styles.modelSwitchBtn} ${activeModel === "BE" ? styles.modelSwitchBtnActive : ""}`}
             onClick={() => setActiveModel("BE")}
             type="button"
           >
             BE MONOLITH
+          </button>
+          <button
+            className={`${styles.modelSwitchBtn} ${activeModel === "13" ? styles.modelSwitchBtnActive : ""}`}
+            onClick={() => setActiveModel("13")}
+            type="button"
+          >
+            13 EMBLEM
           </button>
         </div>
 
@@ -523,9 +494,7 @@ export function ModelViewer() {
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>ARTIFACT</span>
           <span className={styles.telemetryVal}>
-            {activeModel === "13" && "13 MONOLITH EMBLEM (OFFICIAL)"}
-            {activeModel === "X" && "X FUSION EMBLEM (E3 CLOVER SYMMETRY)"}
-            {activeModel === "BE" && "BE MONUMENTAL MONOLITH (OFFICIAL)"}
+            {activeModel === "BE" ? "BE MONUMENTAL MONOLITH (OFFICIAL)" : "13 MONOLITH EMBLEM (OFFICIAL)"}
           </span>
         </div>
         <div className={styles.telemetryRow}>

@@ -218,27 +218,11 @@ export function Plus3DCanvas({
 
     emblemGroup.add(thirteenGroup);
 
-    // ── 02. SUB-GROUP: "X / E3 FUSION" EMBLEM (Clover X Symmetry) ────
-    // Merges Mirrored '3' (E) on left and '3' on right meeting at center to form the iconic X
-    const xGroup = new THREE.Group();
-
-    const xLeftGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
-    xLeftGeo.center();
-    const xLeftMesh = new THREE.Mesh(xLeftGeo, matTitaniumOne);
-    xLeftMesh.position.set(-0.62, 0, 0);
-    xGroup.add(xLeftMesh);
-
-    const xRightGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
-    xRightGeo.center();
-    const xRightMesh = new THREE.Mesh(xRightGeo, matTitaniumThree);
-    xRightMesh.position.set(0.62, 0, 0);
-    xGroup.add(xRightMesh);
-
-    xGroup.visible = false;
-    emblemGroup.add(xGroup);
-
-    // ── 03. SUB-GROUP: "BE" MONOLITH EMBLEM ────────────────────
+    // ── 02. SUB-GROUP: "BE" MONOLITH EMBLEM ────────────────────
     const beGroup = new THREE.Group();
+
+    const eGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
+    eGeo.center();
 
     // "B": Composed of 1-monolith spine + 3-ribbon dual bowl
     const bGroup = new THREE.Group();
@@ -252,7 +236,7 @@ export function Plus3DCanvas({
     beGroup.add(bGroup);
 
     // "E": Composed of the exact mirrored 3-ribbon
-    const eMesh = new THREE.Mesh(xLeftGeo, matTitaniumOne);
+    const eMesh = new THREE.Mesh(eGeo, matTitaniumOne);
     eMesh.position.set(1.45, 0, 0);
     beGroup.add(eMesh);
 
@@ -306,7 +290,7 @@ export function Plus3DCanvas({
     };
     window.addEventListener("resize", onResize);
 
-    // Render loop — continuous scroll-driven cinematic kinematics & 13 ⇄ X ⇄ BE ⇄ X ⇄ 13 transformations
+    // Render loop — continuous scroll-driven cinematic kinematics & clean 13 ⇄ BE transformations
     let rafId: number;
     let currentX = 0;
     let currentY = 0;
@@ -315,7 +299,7 @@ export function Plus3DCanvas({
     let currentRotY = 0;
     let currentRotZ = 0;
     let currentScale = 0.80;
-    let currentMorph = 0; // 0 = "13", 0.5 = "X", 1.0 = "BE"
+    let currentMorph = 0; // 0 = "13", 1.0 = "BE"
 
     // Smoothstep easing helper
     const smoothstep = (min: number, max: number, value: number) => {
@@ -337,7 +321,7 @@ export function Plus3DCanvas({
         let targetRotX = 0.08;
         let targetRotZ = 0;
         let targetScale = 0.88;
-        let targetMorph = 0; // 0 = 13, 0.5 = X Fusion, 1.0 = BE
+        let targetMorph = 0; // 0 = 13, 1.0 = BE
 
         if (p < 0.16) {
           // Act 0: Centered Manifesto -> Pure 13
@@ -350,14 +334,14 @@ export function Plus3DCanvas({
           targetMorph = 0;
         } else if (p >= 0.16 && p < 0.28) {
           // Transition 0 -> 1: Center -> Left Column with 360° spin
-          // Progresses: 13 (0.0) -> X Fusion (0.5) -> BE (1.0)
+          // Transforms dynamically from 13 -> BE during the spin
           const t = smoothstep(0.16, 0.28, p);
           targetX = -3.9 * t;
           targetRotY = 0.20 * (1 - t) + (Math.PI * 2 + 0.22) * t;
           targetRotX = 0.06 + Math.sin(t * Math.PI) * 0.12;
           targetRotZ = 0.04 * t;
           targetScale = 0.88 + 0.08 * t;
-          targetMorph = t; // 0 -> 1 (passing through 0.5 X Fusion)
+          targetMorph = t;
         } else if (p >= 0.28 && p < 0.46) {
           // Act 1: CREATE (Settled Full Left Column as BE)
           const localP = (p - 0.28) / 0.18;
@@ -366,17 +350,17 @@ export function Plus3DCanvas({
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = 0.04;
           targetScale = 0.96;
-          targetMorph = 1.0; // Pure BE
+          targetMorph = 1.0;
         } else if (p >= 0.46 && p < 0.54) {
           // Transition 1 -> 2: Left -> Right Column sweep with 360° spin
-          // Progresses: BE (1.0) -> X Fusion (0.5) -> 13 (0.0)
+          // Transforms dynamically from BE -> 13 during the sweep
           const t = smoothstep(0.46, 0.54, p);
           targetX = -3.9 + 7.8 * t;
           targetRotY = (Math.PI * 2 + 0.22) * (1 - t) + (Math.PI * 4 - 0.22) * t;
           targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
           targetRotZ = 0.04 * (1 - 2 * t);
           targetScale = 0.96;
-          targetMorph = 1.0 - t; // 1 -> 0 (passing through 0.5 X Fusion)
+          targetMorph = 1.0 - t;
         } else if (p >= 0.54 && p < 0.74) {
           // Act 2: BUILD (Settled Full Right Column as 13)
           const localP = (p - 0.54) / 0.20;
@@ -385,17 +369,17 @@ export function Plus3DCanvas({
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = -0.04;
           targetScale = 0.96;
-          targetMorph = 0; // Pure 13
+          targetMorph = 0;
         } else if (p >= 0.74 && p < 0.82) {
           // Transition 2 -> 3: Right -> Left Column sweep with 360° spin
-          // Progresses: 13 (0.0) -> X Fusion (0.5) -> BE (1.0)
+          // Transforms dynamically from 13 -> BE during the sweep
           const t = smoothstep(0.74, 0.82, p);
           targetX = 3.9 - 7.8 * t;
           targetRotY = (Math.PI * 4 - 0.22) * (1 - t) + (Math.PI * 6 + 0.22) * t;
           targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
           targetRotZ = -0.04 * (1 - 2 * t);
           targetScale = 0.96;
-          targetMorph = t; // 0 -> 1 (passing through 0.5 X Fusion)
+          targetMorph = t;
         } else if (p >= 0.82 && p < 0.94) {
           // Act 3: GROW (Settled Full Left Column as BE)
           const localP = (p - 0.82) / 0.12;
@@ -404,7 +388,7 @@ export function Plus3DCanvas({
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = 0.04;
           targetScale = 0.96;
-          targetMorph = 1.0; // Pure BE
+          targetMorph = 1.0;
         } else {
           // Finale [0.94 -> 1.00]: Sweeps to Center, settles back to 13
           const t = smoothstep(0.94, 1.00, p);
@@ -413,7 +397,7 @@ export function Plus3DCanvas({
           targetRotX = 0.08;
           targetRotZ = 0.04 * (1 - t);
           targetScale = 0.96 - 0.08 * t;
-          targetMorph = 1.0 - t; // Settles to 13
+          targetMorph = 1.0 - t;
         }
 
         // High-inertia smooth damping for cinematic motion & transformation
@@ -432,10 +416,9 @@ export function Plus3DCanvas({
         emblemGroup.scale.setScalar(currentScale);
         emblemGroup.rotation.set(currentRotX, currentRotY, currentRotZ);
 
-        // State selector: 13 [0.0 - 0.35], X FUSION [0.35 - 0.65], BE [0.65 - 1.0]
-        thirteenGroup.visible = currentMorph < 0.35;
-        xGroup.visible = currentMorph >= 0.35 && currentMorph <= 0.65;
-        beGroup.visible = currentMorph > 0.65;
+        // Seamless solid edge-on flip (0 wireframe or depth clipping)
+        thirteenGroup.visible = currentMorph < 0.50;
+        beGroup.visible = currentMorph >= 0.50;
       }
 
       renderer.render(scene, camera);
@@ -451,8 +434,7 @@ export function Plus3DCanvas({
       }
       oneGeo.dispose();
       threeGeo.dispose();
-      xLeftGeo.dispose();
-      xRightGeo.dispose();
+      eGeo.dispose();
       matTitaniumOne.dispose();
       matTitaniumThree.dispose();
       renderer.dispose();
