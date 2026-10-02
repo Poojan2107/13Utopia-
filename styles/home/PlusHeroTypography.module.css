@@ -1,9 +1,9 @@
 /* =========================================================
    13 UTOPIA // PURE MONUMENTAL HERO TYPOGRAPHY
-   Solid architectural scale matching Plus-X 15th anniversary:
-   - Line 1 & 2: BE / UNREAL (Top-Left)
-   - Line 3: BE (Middle-Right, optically linked to UNREAL & UNREASONABLE)
-   - Line 4: UNREASONABLE (Bottom, solid monolithic word fitted edge-to-edge)
+   - Upper Gap for Navbar clearance
+   - Line 1: Single-Line Centered Monumental "BE UNREAL"
+   - Line 2: Small refined editorial statement "BE UNREASONABLE"
+   - Bottom: Full screen cohesive unified lockup with UTOPIA
    ========================================================= */
 
 .heroLayout {
@@ -14,124 +14,139 @@
   background-color: #000000;
   overflow: hidden;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: clamp(5.5rem, 9.5vh, 7.5rem) clamp(1.5rem, 4vw, 5rem) clamp(1.5rem, 3.5vh, 3.5rem);
   pointer-events: none;
   z-index: 3;
 }
 
-/* ── 01. Top-Left Block (BE / UNREAL — Exactly 0 to 50vh) ──── */
-.topLeftBlock {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 50vh;
-  padding: 0;
-  margin: 0;
+/* ── 01. Top Navbar Clearance ────────────────────────────── */
+.navbarGap {
+  width: 100%;
+  height: clamp(1.5rem, 3vh, 3rem);
+  flex-shrink: 0;
+}
+
+/* ── 02. Center Monolithic Container ─────────────────────── */
+.centerContainer {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  text-align: left;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: auto 0;
+  gap: clamp(1rem, 2.5vh, 2.2rem);
+  width: 100%;
+  max-width: 100vw;
   pointer-events: auto;
-  z-index: 2;
-  line-height: 0.77;
 }
 
-.word {
-  display: block;
+/* Main Single Line: BE UNREAL */
+.mainLine {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: clamp(0.6rem, 1.8vw, 2.4rem);
   font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: clamp(7rem, 23.5vw, 32.5vh);
+  font-size: clamp(3.2rem, 12.8vw, 12.5rem);
   font-weight: 800;
   text-transform: uppercase;
   color: #ffffff;
-  line-height: 0.77;
-  letter-spacing: -0.05em;
-  user-select: none;
-  margin: 0;
-  padding: 0;
-  margin-top: -0.02em;
-  margin-left: -0.02em;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
   white-space: nowrap;
-}
-
-/* ── 02. Middle-Right Block (BE — Exactly 50vh to 75vh) ─────── */
-/* Starts right at 50vh split line and reaches down to 75vh */
-.middleRightBlock {
-  position: absolute;
-  top: 50vh;
-  right: 0;
-  height: 25vh;
-  padding: 0;
   margin: 0;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
-  pointer-events: auto;
-  z-index: 2;
-  line-height: 0.77;
-}
-
-.middleRightBlock .word {
-  font-size: clamp(7rem, 23.5vw, 32.5vh);
-  margin-right: -0.02em;
-  margin-left: 0;
-  margin-top: -0.02em;
-}
-
-/* ── 03. Bottom Full-Width Block (UNREASONABLE — 75vh to 100vh) */
-/* Starts right at 75vh meeting BE's baseline, and kisses right screen edge */
-.bottomBlock {
-  position: absolute;
-  top: 75vh;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100vw;
-  width: 100%;
-  height: 25vh;
   padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  pointer-events: auto;
-  z-index: 2;
-  line-height: 0.76;
-  overflow: hidden;
+  user-select: none;
+  text-shadow: 0 4px 50px rgba(0, 0, 0, 0.95);
 }
 
-.wordUnreasonable {
-  display: block;
-  width: 100%;
+.wordBe,
+.wordUnreal {
+  display: inline-block;
+  line-height: 0.88;
+}
+
+/* Small Sub-statement: BE UNREASONABLE */
+.subStatement {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: clamp(4.5rem, 13.76vw, 25vh);
-  font-weight: 800;
+  font-size: clamp(0.85rem, 1.6vw, 1.65rem);
+  font-weight: 600;
   text-transform: uppercase;
-  color: #ffffff;
-  line-height: 0.76;
-  letter-spacing: -0.024em;
-  user-select: none;
+  letter-spacing: 0.32em;
+  color: rgba(255, 255, 255, 0.72);
   margin: 0;
   padding: 0;
-  margin-top: -0.02em;
-  margin-left: -0.02em;
-  text-align: left;
-  white-space: nowrap;
+  user-select: none;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9);
 }
 
-/* ── Responsive Mobile Scaling ───────────────────────────── */
-@media (max-width: 900px) {
-  .word {
-    font-size: clamp(3.8rem, 20vw, 15vh);
-    line-height: 0.78;
+/* ── 03. Bottom Unified Ground Anchor (BE UNREAL · BE UNREASONABLE · 13 UTOPIA) ─ */
+.bottomUnifiedBlock {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: clamp(1rem, 2vh, 1.8rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  pointer-events: auto;
+  flex-shrink: 0;
+}
+
+.monumentalRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1720px;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: clamp(0.75rem, 1.25vw, 1.25rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.55);
+  user-select: none;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.unitUnreal,
+.unitUnreasonable {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.unitUtopia {
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.unitDivider {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* ── Responsive Mobile Rules ─────────────────────────────── */
+@media (max-width: 768px) {
+  .heroLayout {
+    padding: 5rem 1.25rem 2rem;
   }
 
-  .wordUnreasonable {
-    font-size: clamp(2.8rem, 13vw, 10vh);
-    line-height: 0.78;
+  .mainLine {
+    font-size: clamp(2.6rem, 14vw, 4.5rem);
+    gap: 0.5rem;
   }
 
-  .middleRightBlock {
-    top: 42vh;
+  .subStatement {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+  }
+
+  .monumentalRow {
+    justify-content: center;
+    font-size: 0.6875rem;
+    gap: 0.6rem;
   }
 }
