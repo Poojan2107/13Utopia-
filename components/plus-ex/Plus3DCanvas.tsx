@@ -145,9 +145,9 @@ export function Plus3DCanvas({
       bevelSegments: 5,
     };
 
-    // 13 Utopia Signature Smoked Bronze & Titanium Physical Materials (Subtle Golden Warmth)
+    // 13 Utopia Signature Dark Titanium Body with Champagne Gold Bevel Rim Reflections
     const verticalBeamMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x38332c), // Smoked Warm Bronze Titanium
+      color: new THREE.Color(0x222428), // Dark architectural titanium
       roughness: 0.28,
       metalness: 0.82,
       clearcoat: 0.35,
@@ -156,7 +156,7 @@ export function Plus3DCanvas({
     });
 
     const horizontalBeamMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x302c26), // Deep Smoked Bronze Accent
+      color: new THREE.Color(0x1e2024), // Deep obsidian graphite
       roughness: 0.30,
       metalness: 0.80,
       clearcoat: 0.35,
@@ -185,33 +185,33 @@ export function Plus3DCanvas({
     scene.add(emblemGroup);
     groupRef.current = emblemGroup;
 
-    // Warm Studio Lighting (Champagne & Golden Chamfer Highlights)
-    const ambientLight = new THREE.AmbientLight(0xfffaf4, 1.8);
+    // Studio Lighting (Deep Dark Body with Signature Champagne Gold Chamfer Rim Gleam)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
     scene.add(ambientLight);
 
-    // Key Light (Warm Sunlight Glow)
-    const keyLight = new THREE.DirectionalLight(0xfff8f0, 4.0);
-    keyLight.position.set(6, 8, 9);
+    // Key Light
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.8);
+    keyLight.position.set(7, 9, 8);
     scene.add(keyLight);
 
-    // Fill Light (Soft Champagne)
-    const fillLight = new THREE.DirectionalLight(0xe8ded4, 2.2);
-    fillLight.position.set(-7, 2, 6);
+    // Soft Fill Light
+    const fillLight = new THREE.DirectionalLight(0xcccccc, 1.8);
+    fillLight.position.set(-7, 2, 5);
     scene.add(fillLight);
 
-    // Champagne Left Rim Light (Crisp Warm Chamfer Gleam)
-    const leftRimLight = new THREE.DirectionalLight(0xf4dfc8, 4.2);
-    leftRimLight.position.set(-9, 4, -4);
+    // Signature Champagne Gold Luxury Rim Accent Light (Inner Chamfers & Curves)
+    const goldRimLight = new THREE.DirectionalLight(0xf4dfc8, 4.5);
+    goldRimLight.position.set(4, -6, -3);
+    scene.add(goldRimLight);
+
+    // Left Rim Light (Edge Definition)
+    const leftRimLight = new THREE.DirectionalLight(0xffffff, 3.2);
+    leftRimLight.position.set(-8, 3, -4);
     scene.add(leftRimLight);
 
-    // Champagne Luxury Right Rim Accent Light
-    const rightRimLight = new THREE.DirectionalLight(0xf5d77f, 3.8);
-    rightRimLight.position.set(9, -3, -4);
-    scene.add(rightRimLight);
-
     // Top Overhead Light
-    const topLight = new THREE.DirectionalLight(0xffffff, 2.0);
-    topLight.position.set(0, 10, 1);
+    const topLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    topLight.position.set(0, 10, -1);
     scene.add(topLight);
 
     // Resize

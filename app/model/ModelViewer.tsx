@@ -62,9 +62,9 @@ export function ModelViewer() {
     gridHelper.position.y = -3.2;
     scene.add(gridHelper);
 
-    // 4. Finalized 1:1 Website Materials (Signature Smoked Bronze Titanium Monolith)
+    // 4. Finalized 1:1 Website Materials (Signature Dark Titanium with Champagne Gold Rim)
     const matOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x38332c), // Smoked Warm Bronze Titanium
+      color: new THREE.Color(0x222428), // Dark architectural titanium
       roughness: 0.28,
       metalness: 0.82,
       clearcoat: 0.35,
@@ -74,7 +74,7 @@ export function ModelViewer() {
     matOneRef.current = matOne;
 
     const matThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x302c26), // Deep Smoked Bronze Accent
+      color: new THREE.Color(0x1e2024), // Deep obsidian graphite
       roughness: 0.30,
       metalness: 0.80,
       clearcoat: 0.35,
@@ -152,28 +152,28 @@ export function ModelViewer() {
     emblemGroup.position.set(0, 0, 0);
     scene.add(emblemGroup);
 
-    // 6. Warm Studio Lighting Setup (Champagne & Golden Chamfer Highlights)
-    const ambientLight = new THREE.AmbientLight(0xfffaf4, 1.8);
+    // 6. Studio Lighting Setup (Signature Champagne Gold Bevel Rim Reflections)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff8f0, 4.0);
-    keyLight.position.set(6, 8, 9);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.8);
+    keyLight.position.set(7, 9, 8);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xe8ded4, 2.2);
-    fillLight.position.set(-7, 2, 6);
+    const fillLight = new THREE.DirectionalLight(0xcccccc, 1.8);
+    fillLight.position.set(-7, 2, 5);
     scene.add(fillLight);
 
-    const leftRimLight = new THREE.DirectionalLight(0xf4dfc8, 4.2);
-    leftRimLight.position.set(-9, 4, -4);
+    const goldRimLight = new THREE.DirectionalLight(0xf4dfc8, 4.5);
+    goldRimLight.position.set(4, -6, -3);
+    scene.add(goldRimLight);
+
+    const leftRimLight = new THREE.DirectionalLight(0xffffff, 3.2);
+    leftRimLight.position.set(-8, 3, -4);
     scene.add(leftRimLight);
 
-    const rightRimLight = new THREE.DirectionalLight(0xf5d77f, 3.8);
-    rightRimLight.position.set(9, -3, -4);
-    scene.add(rightRimLight);
-
-    const topLight = new THREE.DirectionalLight(0xffffff, 2.0);
-    topLight.position.set(0, 10, 1);
+    const topLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    topLight.position.set(0, 10, -1);
     scene.add(topLight);
 
     // 7. Interactive Orbit & Drag Mechanics
