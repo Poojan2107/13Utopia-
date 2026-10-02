@@ -227,15 +227,17 @@ export function Plus3DCanvas({
     beGroup.visible = false;
     emblemGroup.add(beGroup);
 
-    // ── 03. SUB-GROUP: "13 ✕ BE" UNIFIED X FUSION EMBLEM ────────
+    // ── 03. SUB-GROUP: "13 ✕ BE" UNIFIED X FUSION EMBLEM (Reference Symmetrical 4-Lobe Clover X) ────
     const xGroup = new THREE.Group();
 
-    const xLeftMesh = new THREE.Mesh(threeGeo, matTitaniumOne);
-    xLeftMesh.position.set(-1.70, 0, 0);
+    // Left half: Mirrored 3 (E), open arms pointing inwards to center
+    const xLeftMesh = new THREE.Mesh(eGeo, matTitaniumOne);
+    xLeftMesh.position.set(-0.88, 0, 0);
     xGroup.add(xLeftMesh);
 
-    const xRightMesh = new THREE.Mesh(eGeo, matTitaniumThree);
-    xRightMesh.position.set(1.70, 0, 0);
+    // Right half: Normal 3, open arms pointing inwards to center
+    const xRightMesh = new THREE.Mesh(threeGeo, matTitaniumThree);
+    xRightMesh.position.set(0.88, 0, 0);
     xGroup.add(xRightMesh);
 
     xGroup.visible = false;
@@ -332,14 +334,14 @@ export function Plus3DCanvas({
           targetMorph = 0;
         } else if (p >= 0.16 && p < 0.28) {
           // Transition 0 -> 1: Center -> Left Column with 360° spin
-          // Transforms dynamically from 13 -> BE during the spin
+          // Sequence: 13 => X (in the center void) => BE
           const t = smoothstep(0.16, 0.28, p);
           targetX = -3.9 * t;
           targetRotY = 0.20 * (1 - t) + (Math.PI * 2 + 0.22) * t;
           targetRotX = 0.06 + Math.sin(t * Math.PI) * 0.12;
           targetRotZ = 0.04 * t;
           targetScale = 0.88 + 0.08 * t;
-          targetMorph = t;
+          targetMorph = t < 0.32 ? 0.0 : (t > 0.68 ? 1.0 : 0.50);
         } else if (p >= 0.28 && p < 0.46) {
           // Act 1: CREATE (Settled Full Left Column as BE)
           const localP = (p - 0.28) / 0.18;
@@ -351,14 +353,14 @@ export function Plus3DCanvas({
           targetMorph = 1.0;
         } else if (p >= 0.46 && p < 0.54) {
           // Transition 1 -> 2: Left -> Right Column sweep with 360° spin
-          // Transforms dynamically from BE -> 13 during the sweep
+          // Sequence: BE => X (in the center void) => 13
           const t = smoothstep(0.46, 0.54, p);
           targetX = -3.9 + 7.8 * t;
           targetRotY = (Math.PI * 2 + 0.22) * (1 - t) + (Math.PI * 4 - 0.22) * t;
           targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
           targetRotZ = 0.04 * (1 - 2 * t);
           targetScale = 0.96;
-          targetMorph = 1.0 - t;
+          targetMorph = t < 0.32 ? 1.0 : (t > 0.68 ? 0.0 : 0.50);
         } else if (p >= 0.54 && p < 0.74) {
           // Act 2: BUILD (Settled Full Right Column as 13)
           const localP = (p - 0.54) / 0.20;
@@ -367,17 +369,17 @@ export function Plus3DCanvas({
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = -0.04;
           targetScale = 0.96;
-          targetMorph = 0;
+          targetMorph = 0.0;
         } else if (p >= 0.74 && p < 0.82) {
           // Transition 2 -> 3: Right -> Left Column sweep with 360° spin
-          // Transforms dynamically from 13 -> BE during the sweep
+          // Sequence: 13 => X (in the center void) => BE
           const t = smoothstep(0.74, 0.82, p);
           targetX = 3.9 - 7.8 * t;
           targetRotY = (Math.PI * 4 - 0.22) * (1 - t) + (Math.PI * 6 + 0.22) * t;
           targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
           targetRotZ = -0.04 * (1 - 2 * t);
           targetScale = 0.96;
-          targetMorph = t;
+          targetMorph = t < 0.32 ? 0.0 : (t > 0.68 ? 1.0 : 0.50);
         } else if (p >= 0.82 && p < 0.94) {
           // Act 3: GROW (Settled Full Left Column as BE)
           const localP = (p - 0.82) / 0.12;
@@ -389,13 +391,14 @@ export function Plus3DCanvas({
           targetMorph = 1.0;
         } else {
           // Finale [0.94 -> 1.00]: Sweeps to Center, settles back to 13
+          // Sequence: BE => X (in the center void) => 13
           const t = smoothstep(0.94, 1.00, p);
           targetX = -3.9 * (1 - t);
           targetRotY = (Math.PI * 6 + 0.22) * (1 - t) + (Math.PI * 8) * t;
           targetRotX = 0.08;
           targetRotZ = 0.04 * (1 - t);
           targetScale = 0.96 - 0.08 * t;
-          targetMorph = 1.0 - t;
+          targetMorph = t < 0.35 ? 1.0 : (t > 0.75 ? 0.0 : 0.50);
         }
 
         // High-inertia smooth damping for cinematic motion & transformation

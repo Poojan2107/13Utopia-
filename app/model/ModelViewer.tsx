@@ -277,16 +277,18 @@ export function ModelViewer() {
     eMesh.position.set(2.12, 0, 0);
     beGroup.add(eMesh);
 
-    // ── 03. "13 ✕ BE" UNIFIED X FUSION GROUP ────────────────────
+    // ── 03. "13 ✕ BE" UNIFIED X FUSION GROUP (Reference Symmetrical 4-Lobe Clover X) ───
     const xGroup = new THREE.Group();
     xGroupRef.current = xGroup;
 
-    const xLeftMesh = new THREE.Mesh(threeGeo, matOne);
-    xLeftMesh.position.set(-1.70, 0, 0);
+    // Left half: Mirrored 3 (E), open arms pointing inwards to center
+    const xLeftMesh = new THREE.Mesh(eGeo, matOne);
+    xLeftMesh.position.set(-0.88, 0, 0);
     xGroup.add(xLeftMesh);
 
-    const xRightMesh = new THREE.Mesh(eGeo, matThree);
-    xRightMesh.position.set(1.70, 0, 0);
+    // Right half: Normal 3, open arms pointing inwards to center
+    const xRightMesh = new THREE.Mesh(threeGeo, matThree);
+    xRightMesh.position.set(0.88, 0, 0);
     xGroup.add(xRightMesh);
 
     // ── ROOT ORBIT ANCHOR ──────────────────────────────────────
