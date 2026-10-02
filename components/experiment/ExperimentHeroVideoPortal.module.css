@@ -1,42 +1,40 @@
 /* =========================================================
-   13 UTOPIA // EXPERIMENT: "O" APERTURE VIDEO PORTAL HERO
+   13 UTOPIA // EXPERIMENT: CRAWL-DOWN "O" APERTURE VIDEO EXPANSION
+   Natural continuous vertical scroll flow
    ========================================================= */
 
-.pinnedContainer {
+.portalWrapper {
+  position: relative;
+  width: 100%;
+  background-color: #000000;
+  overflow: visible;
+}
+
+/* ── 01. Hero Section (100vh) ─────────────────────────────── */
+.heroSection {
   position: relative;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  background-color: #000000;
-  overflow: hidden;
-  z-index: 2;
-}
-
-.stage {
-  position: absolute;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #000000;
-  overflow: hidden;
-}
-
-/* ── Typography Layer ─────────────────────────────────────── */
-.typeLayer {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 4;
-  pointer-events: none;
   box-sizing: border-box;
   padding: 0 clamp(1.5rem, 4vw, 4rem);
-  will-change: transform, opacity, filter;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.typeContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 88vw;
+  margin: 0 auto;
+  will-change: transform, opacity;
 }
 
 .monumentLockup {
@@ -45,11 +43,8 @@
   justify-content: center;
   gap: clamp(1rem, 2.8vw, 3.2rem);
   width: auto;
-  max-width: 88vw;
-  margin: 0 auto;
   pointer-events: auto;
   user-select: none;
-  box-sizing: border-box;
 }
 
 .beCommonBlock {
@@ -113,58 +108,40 @@
   white-space: nowrap;
 }
 
-/* ── The Aperture Letter "O" ──────────────────────────────── */
-.letterOContainer {
-  position: relative;
-  display: inline-block;
-  line-height: 1;
-}
-
-.letterOText {
+/* Pure solid letter "O" */
+.letterO {
   display: inline-block;
   color: #ffffff;
   position: relative;
-  z-index: 1;
+  transition: color 0.3s ease;
 }
 
-/* Inner miniature preview window inside the O */
-.miniVideoWindow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 58%;
-  height: 62%;
-  border-radius: 50%;
-  overflow: hidden;
-  z-index: 2;
-  pointer-events: none;
-  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.8), 0 0 16px rgba(244, 223, 200, 0.35);
-  border: 1px solid rgba(244, 223, 200, 0.4);
-}
-
-.miniVideoElement {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  filter: grayscale(100%) contrast(1.2);
-}
-
-/* ── Expanding Full-Bleed Video Portal Layer ─────────────── */
-.expandingPortal {
-  position: absolute;
-  inset: 0;
+/* ── 02. Natural Scroll Video Section (100vh) ─────────────── */
+.videoSection {
+  position: relative;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  z-index: 5;
-  pointer-events: none;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000;
   overflow: hidden;
-  will-change: clip-path, opacity;
+  z-index: 3;
 }
 
-.portalVideo {
+.videoWrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #000000;
+  will-change: clip-path, transform, opacity;
+}
+
+.videoElement {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -180,14 +157,37 @@
     linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.8) 0%,
-      rgba(0, 0, 0, 0.1) 35%,
-      rgba(0, 0, 0, 0.1) 65%,
+      rgba(0, 0, 0, 0.08) 35%,
+      rgba(0, 0, 0, 0.08) 65%,
       rgba(0, 0, 0, 0.85) 100%
     );
   pointer-events: none;
 }
 
-/* ── Video HUD Caption ───────────────────────────────────── */
+/* Top & Bottom Architectural Fades */
+.fadeTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(to bottom, #000000 0%, rgba(0, 0, 0, 0.6) 40%, transparent 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.fadeBottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0.6) 40%, transparent 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Video Editorial HUD Caption */
 .hudBottom {
   position: absolute;
   bottom: clamp(1.5rem, 3.5vh, 3.5rem);
@@ -237,29 +237,6 @@
   color: rgba(255, 255, 255, 0.65);
   margin: 0;
   font-weight: 400;
-}
-
-/* Subtle Top & Bottom Architectural Fades */
-.fadeTop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 140px;
-  background: linear-gradient(to bottom, #000000 0%, rgba(0, 0, 0, 0.6) 40%, transparent 100%);
-  pointer-events: none;
-  z-index: 7;
-}
-
-.fadeBottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 140px;
-  background: linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0.6) 40%, transparent 100%);
-  pointer-events: none;
-  z-index: 7;
 }
 
 @media (max-width: 768px) {
