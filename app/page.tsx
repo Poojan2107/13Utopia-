@@ -1,7 +1,6 @@
 import {
   HomeHero,
   HomeVideoSection,
-  HomeSectionSolutions,
   HomeSectionWork,
   HomeCTASection,
 } from "@/components/home";
@@ -40,16 +39,13 @@ export default function HomePage() {
         {/* 03 — 3D MONOLITH EDITORIAL STATEMENT & CREATE · BUILD · GROW CAPABILITIES TRIAD */}
         <Continuous3DStory />
 
-        {/* 04 — WHAT WE SOLVE: Impact Domains & Capability Solutions Matrix */}
-        <HomeSectionSolutions />
-
-        {/* 05 — SELECTED COMMISSIONS: 3D Jesper Landberg Portfolio Carousel */}
+        {/* 04 — SELECTED COMMISSIONS: 3D Jesper Landberg Portfolio Carousel */}
         <HomeSectionWork />
 
-        {/* 07 — INITIATION: Commission Call-To-Action */}
+        {/* 05 — INITIATION: Commission Call-To-Action (HAVE AN UNREASONABLE IDEA?) */}
         <HomeCTASection />
 
-        {/* 08 — FOOTER: Luxury Agency Footer with Live Telemetry & Directory */}
+        {/* 06 — FOOTER: Luxury Agency Footer with Live Telemetry & Directory */}
         <SiteFooter />
       </main>
     </SmoothScrollProvider>
