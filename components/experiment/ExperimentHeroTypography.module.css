@@ -12,22 +12,26 @@
   box-sizing: border-box;
   pointer-events: none;
   z-index: 3;
-  padding: clamp(1.5rem, 4vw, 4rem);
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
 }
 
-/* ── Central Monumental Compound Lockup (Centered & Gracefully Scaled) ── */
+/* ── Central Compound Lockup: Zero Clipping Guaranteed ──────── */
 .monumentLockup {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(1.5rem, 3.5vw, 4.2rem);
-  max-width: 92vw;
+  gap: clamp(1rem, 2.8vw, 3.2rem);
+  width: auto;
+  max-width: 88vw;
+  margin: 0 auto;
   pointer-events: auto;
   user-select: none;
+  box-sizing: border-box;
 }
 
 /* ── 01. Left Anchor: "BE" Common Enlarged ─────────────────── */
 .beCommonBlock {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,7 +41,8 @@
 .beWord {
   display: block;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: clamp(9.5rem, 23vw, 48vh);
+  /* Sized to match the exact total height of the 2 stacked words */
+  font-size: min(15.2vw, 32vh);
   font-weight: 800;
   text-transform: uppercase;
   color: #ffffff;
@@ -55,22 +60,23 @@
 
 /* ── 02. Right Stacked Branch: "UNREAL" + "UNREASONABLE" ──── */
 .stackedBlock {
+  flex: 0 1 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: clamp(0.4rem, 1.2vw, 1.4rem);
+  gap: clamp(0.3rem, 0.9vw, 1.1rem);
   line-height: 0.78;
 }
 
 .wordTop {
   display: block;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: clamp(4.8rem, 11.6vw, 23.5vh);
+  font-size: min(7.5vw, 15.6vh);
   font-weight: 800;
   text-transform: uppercase;
   color: #ffffff;
-  line-height: 0.80;
+  line-height: 0.78;
   letter-spacing: -0.05em;
   margin: 0;
   padding: 0;
@@ -81,11 +87,11 @@
 .wordBottom {
   display: block;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: clamp(4.8rem, 11.6vw, 23.5vh);
+  font-size: min(7.5vw, 15.6vh);
   font-weight: 800;
   text-transform: uppercase;
   color: #ffffff;
-  line-height: 0.80;
+  line-height: 0.78;
   letter-spacing: -0.055em;
   margin: 0;
   padding: 0;
@@ -103,15 +109,16 @@
   .monumentLockup {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.6rem;
+    gap: 0.4rem;
+    max-width: 92vw;
   }
 
   .beWord {
-    font-size: clamp(6.5rem, 30vw, 22vh);
+    font-size: min(24vw, 16vh);
   }
 
   .wordTop,
   .wordBottom {
-    font-size: clamp(3.2rem, 14vw, 12vh);
+    font-size: min(11.5vw, 7.8vh);
   }
 }
