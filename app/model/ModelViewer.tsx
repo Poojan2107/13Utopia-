@@ -41,10 +41,10 @@ export function ModelViewer() {
 
     // 1. Scene & Camera
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x050505);
+    scene.background = new THREE.Color(0x000000);
 
-    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-    camera.position.set(0, 0, 10.5);
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
+    camera.position.set(0, 0, 11.2);
 
     // 2. WebGL Renderer
     const renderer = new THREE.WebGLRenderer({
@@ -58,11 +58,11 @@ export function ModelViewer() {
     container.appendChild(renderer.domElement);
 
     // 3. Grid Helper
-    const gridHelper = new THREE.GridHelper(20, 20, 0x333333, 0x181818);
+    const gridHelper = new THREE.GridHelper(20, 20, 0x222222, 0x111111);
     gridHelper.position.y = -3.2;
     scene.add(gridHelper);
 
-    // 4. Finalized Physical Titanium Graphite Materials
+    // 4. Finalized 1:1 Website Materials (Signature Dark Architectural Monolith)
     const matOne = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(0x28292d),
       roughness: 0.26,
@@ -83,7 +83,7 @@ export function ModelViewer() {
     });
     matThreeRef.current = matThree;
 
-    // 5. Finalized "13" Emblem Geometry
+    // 5. Finalized "13" Emblem Geometry (Exact 1:1 Homepage Parity)
     const extrudeSettings = {
       steps: 1,
       depth: 0.96,
@@ -139,27 +139,29 @@ export function ModelViewer() {
     const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
     oneGeo.center();
     const oneMesh = new THREE.Mesh(oneGeo, matOne);
-    oneMesh.position.set(-1.45, 0, 0);
+    oneMesh.position.set(-1.35, 0, 0);
     emblemGroup.add(oneMesh);
 
     const threeGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
     threeGeo.center();
     const threeMesh = new THREE.Mesh(threeGeo, matThree);
-    threeMesh.position.set(0.75, 0, 0);
+    threeMesh.position.set(0.65, 0, 0);
     emblemGroup.add(threeMesh);
 
+    emblemGroup.scale.setScalar(0.80);
+    emblemGroup.position.set(0, 0, 0);
     scene.add(emblemGroup);
 
-    // 6. Studio Lighting Setup
+    // 6. Exact 1:1 Studio Lighting Setup from Homepage
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 4.5);
-    keyLight.position.set(7, 9, 8);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 4.2);
+    keyLight.position.set(6, 8, 9);
     scene.add(keyLight);
 
     const fillLight = new THREE.DirectionalLight(0xdde5f0, 2.4);
-    fillLight.position.set(-8, 3, 5);
+    fillLight.position.set(-7, 2, 6);
     scene.add(fillLight);
 
     const leftRimLight = new THREE.DirectionalLight(0xffffff, 4.5);
@@ -337,7 +339,7 @@ export function ModelViewer() {
         </div>
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>MATERIAL</span>
-          <span className={styles.telemetryVal}>TITANIUM GRAPHITE PHYSICAL</span>
+          <span className={styles.telemetryVal}>ARCHITECTURAL TITANIUM GRAPHITE</span>
         </div>
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>COORDINATES</span>
