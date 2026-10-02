@@ -135,6 +135,111 @@ export function Plus3DCanvas({
       return shape;
     };
 
+    // ── GEOMETRY B: "BE" MONUMENTAL EMBLEM (Exact 1:1 "13" Font & Ribbon Kinship) ────
+    const createBShape = () => {
+      const shape = new THREE.Shape();
+      const topY = 2.62;
+      const botY = -2.42;
+
+      // Outer outline of 'B':
+      // 1. Start at bottom of left spine
+      shape.moveTo(-1.15, botY);
+      // 2. Ascend left vertical spine (tapered like '1')
+      shape.lineTo(-0.90, topY);
+      // 3. Top-left rounded shoulder
+      shape.bezierCurveTo(-0.90, topY + 0.33, -0.60, 2.95, -0.15, 2.95);
+      // 4. Top horizontal shelf
+      shape.lineTo(0.30, 2.95);
+      // 5. Top outer bowl arch (matching '3' upper curve)
+      shape.bezierCurveTo(1.10, 2.95, 1.95, 2.55, 1.95, 1.60);
+      shape.bezierCurveTo(1.95, 0.85, 1.40, 0.25, 0.70, 0.08);
+      // 6. Center waist pinch transitioning into bottom bowl
+      shape.bezierCurveTo(1.50, -0.08, 2.15, -0.65, 2.15, -1.55);
+      // 7. Bottom outer bowl arch (matching '3' lower curve)
+      shape.bezierCurveTo(2.15, -2.45, 1.35, -2.95, 0.35, -2.95);
+      // 8. Bottom horizontal shelf
+      shape.lineTo(-0.15, -2.95);
+      // 9. Bottom-left rounded shoulder
+      shape.bezierCurveTo(-0.65, -2.95, -1.15, -2.75, -1.15, botY);
+      shape.closePath();
+
+      // Top Counter Hole (Silky smooth organic D-capsule)
+      const topHole = new THREE.Path();
+      topHole.moveTo(-0.15, 0.75);
+      topHole.lineTo(-0.15, 2.15);
+      topHole.bezierCurveTo(-0.15, 2.45, 0.20, 2.45, 0.50, 2.35);
+      topHole.bezierCurveTo(1.10, 2.15, 1.10, 1.10, 0.50, 0.85);
+      topHole.bezierCurveTo(0.20, 0.75, -0.15, 0.75, -0.15, 0.75);
+      topHole.closePath();
+      shape.holes.push(topHole);
+
+      // Bottom Counter Hole (Silky smooth organic D-capsule)
+      const botHole = new THREE.Path();
+      botHole.moveTo(-0.15, -2.25);
+      botHole.lineTo(-0.15, -0.65);
+      botHole.bezierCurveTo(-0.15, -0.40, 0.25, -0.40, 0.60, -0.52);
+      botHole.bezierCurveTo(1.25, -0.78, 1.25, -1.95, 0.60, -2.22);
+      botHole.bezierCurveTo(0.25, -2.35, -0.15, -2.35, -0.15, -2.25);
+      botHole.closePath();
+      shape.holes.push(botHole);
+
+      return shape;
+    };
+
+    const createEShape = () => {
+      const shape = new THREE.Shape();
+      const topY = 2.62;
+      const botY = -2.42;
+
+      // 1. Bottom-left spine anchor
+      shape.moveTo(-1.15, botY);
+
+      // 2. Left vertical spine ascending (tapered like '1')
+      shape.lineTo(-0.90, topY);
+
+      // 3. Top-left rounded shoulder
+      shape.bezierCurveTo(-0.90, topY + 0.33, -0.60, 2.95, -0.15, 2.95);
+
+      // 4. Top horizontal arm top edge
+      shape.lineTo(1.50, 2.95);
+
+      // 5. Top arm rounded terminal cap (matching '3' top bulb)
+      shape.bezierCurveTo(1.95, 2.95, 1.95, 2.05, 1.50, 2.05);
+
+      // 6. Top inner bay underside returning to left spine
+      shape.lineTo(0.05, 2.05);
+      // Smooth inner corner fillet into vertical spine wall
+      shape.bezierCurveTo(-0.25, 2.05, -0.25, 1.65, -0.25, 1.15);
+      shape.lineTo(-0.25, 0.80);
+      // Smooth fillet turning out into middle arm
+      shape.bezierCurveTo(-0.25, 0.40, 0.05, 0.40, 0.20, 0.40);
+
+      // 7. Middle horizontal arm
+      shape.lineTo(1.15, 0.40);
+      // Middle arm rounded terminal cap
+      shape.bezierCurveTo(1.55, 0.40, 1.55, -0.40, 1.15, -0.40);
+      // Middle arm underside returning to left spine
+      shape.lineTo(0.20, -0.40);
+      // Smooth fillet turning down into lower bay
+      shape.bezierCurveTo(0.05, -0.40, -0.25, -0.40, -0.25, -0.80);
+      shape.lineTo(-0.25, -1.15);
+      // Smooth fillet turning out into bottom arm
+      shape.bezierCurveTo(-0.25, -1.65, -0.25, -2.05, 0.05, -2.05);
+
+      // 8. Bottom horizontal arm top edge
+      shape.lineTo(1.55, -2.05);
+      // Bottom arm rounded terminal cap (matching '3' bottom bulb)
+      shape.bezierCurveTo(2.05, -2.05, 2.05, -2.95, 1.55, -2.95);
+
+      // 9. Bottom shelf returning to bottom-left corner
+      shape.lineTo(-0.15, -2.95);
+      // Bottom-left rounded shoulder
+      shape.bezierCurveTo(-0.65, -2.95, -1.15, -2.75, -1.15, botY);
+
+      shape.closePath();
+      return shape;
+    };
+
     const extrudeSettings = {
       steps: 1,
       depth: 0.96,
@@ -146,37 +251,84 @@ export function Plus3DCanvas({
     };
 
     // 13 Utopia Signature Dark Titanium Body with Champagne Gold Bevel Rim Reflections
-    const verticalBeamMaterial = new THREE.MeshPhysicalMaterial({
+    const mat13_One = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(0x222428), // Dark architectural titanium
       roughness: 0.28,
       metalness: 0.82,
       clearcoat: 0.35,
       clearcoatRoughness: 0.20,
       reflectivity: 0.85,
+      transparent: true,
+      opacity: 1,
     });
 
-    const horizontalBeamMaterial = new THREE.MeshPhysicalMaterial({
+    const mat13_Three = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(0x1e2024), // Deep obsidian graphite
       roughness: 0.30,
       metalness: 0.80,
       clearcoat: 0.35,
       clearcoatRoughness: 0.20,
       reflectivity: 0.85,
+      transparent: true,
+      opacity: 1,
     });
 
-    // 1. The "1" Tapered Monolith
+    const matBE_B = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x222428),
+      roughness: 0.28,
+      metalness: 0.82,
+      clearcoat: 0.35,
+      clearcoatRoughness: 0.20,
+      reflectivity: 0.85,
+      transparent: true,
+      opacity: 0,
+    });
+
+    const matBE_E = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x1e2024),
+      roughness: 0.30,
+      metalness: 0.80,
+      clearcoat: 0.35,
+      clearcoatRoughness: 0.20,
+      reflectivity: 0.85,
+      transparent: true,
+      opacity: 0,
+    });
+
+    // ── SUB-GROUP A: "13" ──────────────────────────────────────
+    const thirteenGroup = new THREE.Group();
+
     const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
     oneGeo.center();
-    const oneMesh = new THREE.Mesh(oneGeo, verticalBeamMaterial);
+    const oneMesh = new THREE.Mesh(oneGeo, mat13_One);
     oneMesh.position.set(-1.35, 0, 0);
-    emblemGroup.add(oneMesh);
+    thirteenGroup.add(oneMesh);
 
-    // 2. The "3" Brand Ribbon
     const threeGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
     threeGeo.center();
-    const threeMesh = new THREE.Mesh(threeGeo, horizontalBeamMaterial);
+    const threeMesh = new THREE.Mesh(threeGeo, mat13_Three);
     threeMesh.position.set(0.65, 0, 0);
-    emblemGroup.add(threeMesh);
+    thirteenGroup.add(threeMesh);
+
+    emblemGroup.add(thirteenGroup);
+
+    // ── SUB-GROUP B: "BE" ──────────────────────────────────────
+    const beGroup = new THREE.Group();
+
+    const bGeo = new THREE.ExtrudeGeometry(createBShape(), extrudeSettings);
+    bGeo.center();
+    const bMesh = new THREE.Mesh(bGeo, matBE_B);
+    bMesh.position.set(-1.45, 0, 0);
+    beGroup.add(bMesh);
+
+    const eGeo = new THREE.ExtrudeGeometry(createEShape(), extrudeSettings);
+    eGeo.center();
+    const eMesh = new THREE.Mesh(eGeo, matBE_E);
+    eMesh.position.set(1.25, 0, 0);
+    beGroup.add(eMesh);
+
+    beGroup.visible = false;
+    emblemGroup.add(beGroup);
 
     // Center the entire 13 emblem group in the screen and scale for Plus-X parity
     emblemGroup.scale.setScalar(0.80);
@@ -225,7 +377,7 @@ export function Plus3DCanvas({
     };
     window.addEventListener("resize", onResize);
 
-    // Render loop — continuous scroll-driven cinematic kinematics with full 360° revolutions between sections
+    // Render loop — continuous scroll-driven kinematics & smooth 13 <-> BE transformation
     let rafId: number;
     let currentX = 0;
     let currentY = 0;
@@ -234,6 +386,7 @@ export function Plus3DCanvas({
     let currentRotY = 0;
     let currentRotZ = 0;
     let currentScale = 0.80;
+    let currentMorph = 0; // 0 = 13, 1 = BE
 
     // Smoothstep easing helper
     const smoothstep = (min: number, max: number, value: number) => {
@@ -250,83 +403,93 @@ export function Plus3DCanvas({
         // Slide smoothly from behind video during entry (entryP: 0 -> 1)
         const targetSlideY = (1 - entryP) * -4.2;
 
-        // Synchronized trajectory calculation:
-        // Act 0: Manifesto [0.00 -> 0.15] -> Center (x=0, scale=0.88, rotY=0)
-        // Transition 0 -> 1 [0.15 -> 0.22] -> Sweeps Center -> Left Column (x: 0 -> -3.9, scale: 0.88 -> 0.96), Full 360° Spin
-        // Act 1: CREATE [0.22 -> 0.44] -> Settle Full Left Column (x = -3.9, scale = 0.96, rotY = 2π + 0.22)
-        // Transition 1 -> 2 [0.44 -> 0.51] -> Sweeps Left -> Right Column (x: -3.9 -> +3.9), Full 360° Spin
-        // Act 2: BUILD [0.51 -> 0.73] -> Settle Full Right Column (x = +3.9, scale = 0.96, rotY = 4π - 0.22)
-        // Transition 2 -> 3 [0.73 -> 0.80] -> Sweeps Right -> Left Column (x: +3.9 -> -3.9), Full 360° Spin
-        // Act 3: GROW [0.80 -> 0.94] -> Settle Full Left Column (x = -3.9, scale = 0.96, rotY = 6π + 0.22)
-        // Transition 3 -> 4 [0.94 -> 0.97] -> Sweeps Left -> Center (x: -3.9 -> 0, scale: 0.96 -> 0.88), Full 360° Spin
-        // Finale [0.97 -> 1.00] -> Settle Center (x = 0, scale = 0.88, rotY = 8π)
-
         let targetX = 0;
         let targetRotY = 0;
         let targetRotX = 0.08;
         let targetRotZ = 0;
         let targetScale = 0.88;
+        let targetMorph = 0; // 0 = 13, 1 = BE
 
         if (p < 0.18) {
-          // Act 0: Centered Manifesto
+          // Act 0: Centered Manifesto -> Pure 13
           const localP = p / 0.18;
           targetX = 0;
           targetRotY = localP * 0.20;
           targetRotX = 0.06;
           targetRotZ = 0;
           targetScale = 0.88;
-        } else if (p >= 0.18 && p < 0.24) {
+          targetMorph = 0;
+        } else if (p >= 0.18 && p < 0.26) {
           // Transition 0 -> 1: Center -> Full Left Column sweep with 360° roll
-          const t = smoothstep(0.18, 0.24, p);
+          // Transforms dynamically from 13 -> BE during the 360° revolution
+          const t = smoothstep(0.18, 0.26, p);
           targetX = -3.9 * t;
           targetRotY = 0.20 * (1 - t) + (Math.PI * 2 + 0.22) * t;
           targetRotX = 0.06 + Math.sin(t * Math.PI) * 0.12;
           targetRotZ = 0.04 * t;
           targetScale = 0.88 + 0.08 * t;
-        } else if (p >= 0.24 && p < 0.46) {
-          // Act 1: CREATE (Settled Full Left Column)
-          const localP = (p - 0.24) / 0.22;
+          targetMorph = t; // Seamless transition 13 -> BE
+        } else if (p >= 0.26 && p < 0.46) {
+          // Act 1: CREATE (Settled Full Left Column as BE)
+          const localP = (p - 0.26) / 0.20;
           targetX = -3.9;
           targetRotY = Math.PI * 2 + 0.22 + Math.sin(localP * Math.PI) * 0.08;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = 0.04;
           targetScale = 0.96;
-        } else if (p >= 0.46 && p < 0.52) {
+          targetMorph = 1; // Pure BE
+        } else if (p >= 0.46 && p < 0.54) {
           // Transition 1 -> 2: Left -> Right Column sweep with full 360° roll
-          const t = smoothstep(0.46, 0.52, p);
+          // Transforms dynamically from BE -> 13 during the sweep
+          const t = smoothstep(0.46, 0.54, p);
           targetX = -3.9 + 7.8 * t;
           targetRotY = (Math.PI * 2 + 0.22) * (1 - t) + (Math.PI * 4 - 0.22) * t;
           targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
           targetRotZ = 0.04 * (1 - 2 * t);
           targetScale = 0.96;
-        } else if (p >= 0.52 && p < 0.74) {
-          // Act 2: BUILD (Settled Full Right Column)
-          const localP = (p - 0.52) / 0.22;
+          targetMorph = 1 - t; // Seamless transition BE -> 13
+        } else if (p >= 0.54 && p < 0.74) {
+          // Act 2: BUILD (Settled Full Right Column as 13)
+          const localP = (p - 0.54) / 0.20;
           targetX = 3.9;
           targetRotY = Math.PI * 4 - 0.22 - Math.sin(localP * Math.PI) * 0.08;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = -0.04;
           targetScale = 0.96;
-        } else if (p >= 0.74 && p < 0.80) {
+          targetMorph = 0; // Pure 13
+        } else if (p >= 0.74 && p < 0.82) {
           // Transition 2 -> 3: Right -> Left Column sweep with full 360° roll
-          const t = smoothstep(0.74, 0.80, p);
+          // Transforms dynamically from 13 -> BE during the sweep
+          const t = smoothstep(0.74, 0.82, p);
           targetX = 3.9 - 7.8 * t;
           targetRotY = (Math.PI * 4 - 0.22) * (1 - t) + (Math.PI * 6 + 0.22) * t;
           targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
           targetRotZ = -0.04 * (1 - 2 * t);
           targetScale = 0.96;
-        } else {
-          // Act 3: GROW (Settled Full Left Column through conclusion)
-          const localP = Math.min(1, (p - 0.80) / 0.20);
+          targetMorph = t; // Seamless transition 13 -> BE
+        } else if (p >= 0.82 && p < 0.94) {
+          // Act 3: GROW (Settled Full Left Column as BE)
+          const localP = (p - 0.82) / 0.12;
           targetX = -3.9;
           targetRotY = Math.PI * 6 + 0.22 + Math.sin(localP * Math.PI) * 0.08;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = 0.04;
           targetScale = 0.96;
+          targetMorph = 1; // Pure BE
+        } else {
+          // Finale [0.94 -> 1.00]: Sweeps to Center, settles back to 13
+          const t = smoothstep(0.94, 1.00, p);
+          targetX = -3.9 * (1 - t);
+          targetRotY = (Math.PI * 6 + 0.22) * (1 - t) + (Math.PI * 8) * t;
+          targetRotX = 0.08;
+          targetRotZ = 0.04 * (1 - t);
+          targetScale = 0.96 - 0.08 * t;
+          targetMorph = 1 - t; // Settles to 13
         }
 
-        // Luxurious physics with high-inertia smooth damping for crafted cinematic motion
+        // High-inertia smooth damping for cinematic motion & transformation
         const dampFactor = 0.036;
+        const morphDamp = 0.048;
 
         currentX += (targetX - currentX) * dampFactor;
         currentY += (targetSlideY - currentY) * dampFactor;
@@ -334,10 +497,26 @@ export function Plus3DCanvas({
         currentRotX += (targetRotX - currentRotX) * dampFactor;
         currentRotY += (targetRotY - currentRotY) * dampFactor;
         currentRotZ += (targetRotZ - currentRotZ) * dampFactor;
+        currentMorph += (targetMorph - currentMorph) * morphDamp;
 
         emblemGroup.position.set(currentX, currentY, currentZ);
         emblemGroup.scale.setScalar(currentScale);
         emblemGroup.rotation.set(currentRotX, currentRotY, currentRotZ);
+
+        // Update Morph Visibility & Material Opacities
+        thirteenGroup.visible = currentMorph < 0.98;
+        beGroup.visible = currentMorph > 0.02;
+
+        const op13 = Math.max(0, Math.min(1, Math.cos(currentMorph * Math.PI * 0.5)));
+        const opBE = Math.max(0, Math.min(1, Math.sin(currentMorph * Math.PI * 0.5)));
+
+        mat13_One.opacity = op13;
+        mat13_Three.opacity = op13;
+        matBE_B.opacity = opBE;
+        matBE_E.opacity = opBE;
+
+        thirteenGroup.scale.set(1 - 0.08 * currentMorph, 1 - 0.04 * currentMorph, 1);
+        beGroup.scale.set(0.92 + 0.08 * currentMorph, 0.96 + 0.04 * currentMorph, 1);
       }
 
       renderer.render(scene, camera);
@@ -353,8 +532,12 @@ export function Plus3DCanvas({
       }
       oneGeo.dispose();
       threeGeo.dispose();
-      verticalBeamMaterial.dispose();
-      horizontalBeamMaterial.dispose();
+      bGeo.dispose();
+      eGeo.dispose();
+      mat13_One.dispose();
+      mat13_Three.dispose();
+      matBE_B.dispose();
+      matBE_E.dispose();
       renderer.dispose();
     };
   }, [theme]);

@@ -8,6 +8,8 @@ import styles from "./ModelViewer.module.css";
 export function ModelViewer() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [activeModel, setActiveModel] = useState<"BE" | "13">("BE");
+  const [colorMode, setColorMode] = useState<"titanium" | "chrome" | "clay" | "gold">("chrome");
+  const [lightBoost, setLightBoost] = useState(true);
   const [wireframeMode, setWireframeMode] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
   const [showGrid, setShowGrid] = useState(true);
@@ -19,6 +21,8 @@ export function ModelViewer() {
   const beGroupRef = useRef<THREE.Group | null>(null);
   const matOneRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
   const matThreeRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
+  const keyLightRef = useRef<THREE.DirectionalLight | null>(null);
+  const ambientLightRef = useRef<THREE.AmbientLight | null>(null);
   const isDraggingRef = useRef(false);
   const previousMousePosRef = useRef({ x: 0, y: 0 });
   const autoRotateRef = useRef(autoRotate);
@@ -34,6 +38,73 @@ export function ModelViewer() {
       matThreeRef.current.wireframe = wireframeMode;
     }
   }, [wireframeMode]);
+
+  // Update Material Color Mode (Titanium vs Bright Chrome vs Clay vs Gold)
+  useEffect(() => {
+    if (!matOneRef.current || !matThreeRef.current) return;
+
+    if (colorMode === "chrome") {
+      // Highly visible bright silver platinum chrome
+      matOneRef.current.color.setHex(0xd0d5dd);
+      matOneRef.current.roughness = 0.18;
+      matOneRef.current.metalness = 0.95;
+      matOneRef.current.clearcoat = 0.90;
+      matOneRef.current.clearcoatRoughness = 0.10;
+
+      matThreeRef.current.color.setHex(0xb0b8c4);
+      matThreeRef.current.roughness = 0.20;
+      matThreeRef.current.metalness = 0.92;
+      matThreeRef.current.clearcoat = 0.90;
+      matThreeRef.current.clearcoatRoughness = 0.10;
+    } else if (colorMode === "clay") {
+      // Architectural Matte Studio Clay
+      matOneRef.current.color.setHex(0xe5e7eb);
+      matOneRef.current.roughness = 0.45;
+      matOneRef.current.metalness = 0.15;
+      matOneRef.current.clearcoat = 0.20;
+      matOneRef.current.clearcoatRoughness = 0.30;
+
+      matThreeRef.current.color.setHex(0xd1d5db);
+      matThreeRef.current.roughness = 0.45;
+      matThreeRef.current.metalness = 0.15;
+      matThreeRef.current.clearcoat = 0.20;
+      matThreeRef.current.clearcoatRoughness = 0.30;
+    } else if (colorMode === "gold") {
+      // Polished 18k Gold
+      matOneRef.current.color.setHex(0xdfb76c);
+      matOneRef.current.roughness = 0.22;
+      matOneRef.current.metalness = 0.92;
+      matOneRef.current.clearcoat = 0.50;
+      matOneRef.current.clearcoatRoughness = 0.15;
+
+      matThreeRef.current.color.setHex(0xc59e55);
+      matThreeRef.current.roughness = 0.24;
+      matThreeRef.current.metalness = 0.90;
+      matThreeRef.current.clearcoat = 0.50;
+      matThreeRef.current.clearcoatRoughness = 0.15;
+    } else {
+      // Default Website Dark Titanium Obsidian
+      matOneRef.current.color.setHex(0x222428);
+      matOneRef.current.roughness = 0.28;
+      matOneRef.current.metalness = 0.82;
+      matOneRef.current.clearcoat = 0.35;
+      matOneRef.current.clearcoatRoughness = 0.20;
+
+      matThreeRef.current.color.setHex(0x1e2024);
+      matThreeRef.current.roughness = 0.30;
+      matThreeRef.current.metalness = 0.80;
+      matThreeRef.current.clearcoat = 0.35;
+      matThreeRef.current.clearcoatRoughness = 0.20;
+    }
+  }, [colorMode]);
+
+  // Update Light Boost
+  useEffect(() => {
+    if (keyLightRef.current && ambientLightRef.current) {
+      keyLightRef.current.intensity = lightBoost ? 5.8 : 3.8;
+      ambientLightRef.current.intensity = lightBoost ? 2.4 : 1.4;
+    }
+  }, [lightBoost]);
 
   // Switch visible model
   useEffect(() => {
@@ -164,43 +235,45 @@ export function ModelViewer() {
       const topY = 2.62;
       const botY = -2.42;
 
-      // Outer outline: Left "1" Tapered Monolith Pillar + Right "3" Dual Ribbon Bowls
-      // 1. Left Monolith Spine (matching '1')
-      shape.moveTo(-1.20, botY);
-      shape.lineTo(-1.05, topY);
-      shape.absarc(-0.65, topY, 0.44, Math.PI, Math.PI * 0.5, true);
-
-      // 2. Top Ribbon Upper Bowl (matching '3' top curve)
-      shape.bezierCurveTo(0.30, 3.12, 1.30, 3.08, 1.88, 2.48);
-      shape.bezierCurveTo(2.38, 1.95, 2.28, 1.12, 1.72, 0.52);
-
-      // 3. Middle Waist Transition into Center Joint
-      shape.bezierCurveTo(1.32, 0.12, 0.95, 0.05, 0.25, 0.08);
-
-      // 4. Lower Ribbon Bowl (matching '3' bottom curve)
-      shape.bezierCurveTo(0.95, 0.05, 1.38, -0.22, 2.18, -0.68);
-      shape.bezierCurveTo(2.46, -1.38, 2.40, -2.18, 1.78, -2.85);
-      shape.bezierCurveTo(1.20, -3.12, 0.45, -3.12, -0.25, -3.10);
-
-      // 5. Bottom Rounded Base Closure
-      shape.absarc(-0.65, botY, 0.55, 0, Math.PI, true);
+      // Outer outline of 'B':
+      // 1. Start at bottom of left spine
+      shape.moveTo(-1.15, botY);
+      // 2. Ascend left vertical spine (tapered like '1')
+      shape.lineTo(-0.90, topY);
+      // 3. Top-left rounded shoulder
+      shape.bezierCurveTo(-0.90, topY + 0.33, -0.60, 2.95, -0.15, 2.95);
+      // 4. Top horizontal shelf
+      shape.lineTo(0.30, 2.95);
+      // 5. Top outer bowl arch (matching '3' upper curve)
+      shape.bezierCurveTo(1.10, 2.95, 1.95, 2.55, 1.95, 1.60);
+      shape.bezierCurveTo(1.95, 0.85, 1.40, 0.25, 0.70, 0.08);
+      // 6. Center waist pinch transitioning into bottom bowl
+      shape.bezierCurveTo(1.50, -0.08, 2.15, -0.65, 2.15, -1.55);
+      // 7. Bottom outer bowl arch (matching '3' lower curve)
+      shape.bezierCurveTo(2.15, -2.45, 1.35, -2.95, 0.35, -2.95);
+      // 8. Bottom horizontal shelf
+      shape.lineTo(-0.15, -2.95);
+      // 9. Bottom-left rounded shoulder
+      shape.bezierCurveTo(-0.65, -2.95, -1.15, -2.75, -1.15, botY);
       shape.closePath();
 
-      // Top Inner Loop Hole (matching '3' upper hollow)
+      // Top Counter Hole (Silky smooth organic D-capsule)
       const topHole = new THREE.Path();
-      topHole.moveTo(-0.55, 0.65);
-      topHole.lineTo(-0.55, 2.30);
-      topHole.bezierCurveTo(-0.05, 2.40, 0.55, 2.35, 0.88, 1.98);
-      topHole.bezierCurveTo(1.25, 1.55, 1.15, 0.95, 0.68, 0.68);
+      topHole.moveTo(-0.15, 0.75);
+      topHole.lineTo(-0.15, 2.15);
+      topHole.bezierCurveTo(-0.15, 2.45, 0.20, 2.45, 0.50, 2.35);
+      topHole.bezierCurveTo(1.10, 2.15, 1.10, 1.10, 0.50, 0.85);
+      topHole.bezierCurveTo(0.20, 0.75, -0.15, 0.75, -0.15, 0.75);
       topHole.closePath();
       shape.holes.push(topHole);
 
-      // Bottom Inner Loop Hole (matching '3' lower hollow)
+      // Bottom Counter Hole (Silky smooth organic D-capsule)
       const botHole = new THREE.Path();
-      botHole.moveTo(-0.55, -0.45);
-      botHole.lineTo(0.68, -0.45);
-      botHole.bezierCurveTo(1.35, -0.75, 1.35, -1.85, 0.85, -2.25);
-      botHole.bezierCurveTo(0.35, -2.48, -0.15, -2.45, -0.55, -2.30);
+      botHole.moveTo(-0.15, -2.25);
+      botHole.lineTo(-0.15, -0.65);
+      botHole.bezierCurveTo(-0.15, -0.40, 0.25, -0.40, 0.60, -0.52);
+      botHole.bezierCurveTo(1.25, -0.78, 1.25, -1.95, 0.60, -2.22);
+      botHole.bezierCurveTo(0.25, -2.35, -0.15, -2.35, -0.15, -2.25);
       botHole.closePath();
       shape.holes.push(botHole);
 
@@ -212,33 +285,52 @@ export function ModelViewer() {
       const topY = 2.62;
       const botY = -2.42;
 
-      // 'E' Shape built from Left '1' Pillar + 3 Continuous '3' Ribbon Cantilevers
-      // 1. Left Monolith Pillar
+      // 1. Bottom-left spine anchor
       shape.moveTo(-1.15, botY);
-      shape.lineTo(-1.02, topY);
-      shape.absarc(-0.62, topY, 0.42, Math.PI, Math.PI * 0.5, true);
 
-      // 2. Top Curved Arm (ending with '3' top bulb curvature)
-      shape.lineTo(1.15, topY + 0.42);
-      shape.bezierCurveTo(1.75, topY + 0.42, 1.95, topY - 0.25, 1.55, topY - 0.55);
-      shape.bezierCurveTo(1.25, -topY + 0.65, 0.35, topY - 0.62, -0.35, topY - 0.62);
+      // 2. Left vertical spine ascending (tapered like '1')
+      shape.lineTo(-0.90, topY);
 
-      // 3. Middle Stem & Waist Arm
-      shape.lineTo(-0.35, 0.42);
-      shape.lineTo(0.95, 0.42);
-      shape.bezierCurveTo(1.45, 0.42, 1.45, -0.28, 0.95, -0.28);
-      shape.lineTo(-0.35, -0.28);
+      // 3. Top-left rounded shoulder
+      shape.bezierCurveTo(-0.90, topY + 0.33, -0.60, 2.95, -0.15, 2.95);
 
-      // 4. Lower Stem & Bottom Curved Arm (ending with '3' bottom bulb curvature)
-      shape.lineTo(-0.35, botY + 0.68);
-      shape.lineTo(1.35, botY + 0.68);
-      shape.bezierCurveTo(2.05, botY + 0.68, 1.95, botY - 0.55, 1.25, botY - 0.55);
-      shape.lineTo(-0.25, botY - 0.55);
+      // 4. Top horizontal arm top edge
+      shape.lineTo(1.50, 2.95);
 
-      // 5. Bottom Pillar Base Closure
-      shape.absarc(-0.62, botY, 0.53, 0, Math.PI, true);
+      // 5. Top arm rounded terminal cap (matching '3' top bulb)
+      shape.bezierCurveTo(1.95, 2.95, 1.95, 2.05, 1.50, 2.05);
+
+      // 6. Top inner bay underside returning to left spine
+      shape.lineTo(0.05, 2.05);
+      // Smooth inner corner fillet into vertical spine wall
+      shape.bezierCurveTo(-0.25, 2.05, -0.25, 1.65, -0.25, 1.15);
+      shape.lineTo(-0.25, 0.80);
+      // Smooth fillet turning out into middle arm
+      shape.bezierCurveTo(-0.25, 0.40, 0.05, 0.40, 0.20, 0.40);
+
+      // 7. Middle horizontal arm
+      shape.lineTo(1.15, 0.40);
+      // Middle arm rounded terminal cap
+      shape.bezierCurveTo(1.55, 0.40, 1.55, -0.40, 1.15, -0.40);
+      // Middle arm underside returning to left spine
+      shape.lineTo(0.20, -0.40);
+      // Smooth fillet turning down into lower bay
+      shape.bezierCurveTo(0.05, -0.40, -0.25, -0.40, -0.25, -0.80);
+      shape.lineTo(-0.25, -1.15);
+      // Smooth fillet turning out into bottom arm
+      shape.bezierCurveTo(-0.25, -1.65, -0.25, -2.05, 0.05, -2.05);
+
+      // 8. Bottom horizontal arm top edge
+      shape.lineTo(1.55, -2.05);
+      // Bottom arm rounded terminal cap (matching '3' bottom bulb)
+      shape.bezierCurveTo(2.05, -2.05, 2.05, -2.95, 1.55, -2.95);
+
+      // 9. Bottom shelf returning to bottom-left corner
+      shape.lineTo(-0.15, -2.95);
+      // Bottom-left rounded shoulder
+      shape.bezierCurveTo(-0.65, -2.95, -1.15, -2.75, -1.15, botY);
+
       shape.closePath();
-
       return shape;
     };
 
@@ -271,12 +363,13 @@ export function ModelViewer() {
     scene.add(rootGroup);
 
     // 6. Studio Lighting Setup (Signature Champagne Gold Bevel Rim Reflections)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, lightBoost ? 2.4 : 1.4);
+    ambientLightRef.current = ambientLight;
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.8);
+    const keyLight = new THREE.DirectionalLight(0xffffff, lightBoost ? 5.8 : 3.8);
     keyLight.position.set(7, 9, 8);
-    scene.add(keyLight);
+    keyLightRef.current = keyLight;
     scene.add(keyLight);
 
     const fillLight = new THREE.DirectionalLight(0xcccccc, 1.8);
@@ -480,7 +573,12 @@ export function ModelViewer() {
         </div>
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>MATERIAL</span>
-          <span className={styles.telemetryVal}>DARK ARCHITECTURAL TITANIUM OBSIDIAN</span>
+          <span className={styles.telemetryVal}>
+            {colorMode === "chrome" && "BRIGHT HIGH-VISIBILITY CHROME"}
+            {colorMode === "clay" && "ARCHITECTURAL STUDIO CLAY"}
+            {colorMode === "gold" && "POLISHED 18K GOLD ACCENT"}
+            {colorMode === "titanium" && "DARK TITANIUM OBSIDIAN (WEBSITE)"}
+          </span>
         </div>
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>COORDINATES</span>
@@ -489,8 +587,10 @@ export function ModelViewer() {
           </span>
         </div>
         <div className={styles.telemetryRow}>
-          <span className={styles.telemetryKey}>RENDERER</span>
-          <span className={styles.telemetryVal}>WebGL · Physical ACES Filmic</span>
+          <span className={styles.telemetryKey}>LIGHTING</span>
+          <span className={styles.telemetryVal}>
+            {lightBoost ? "BOOSTED STUDIO (5.8X)" : "WEBSITE AMBIENT (3.8X)"}
+          </span>
         </div>
         <div className={styles.telemetryTip}>
           <span>Drag to orbit · Scroll to zoom</span>
@@ -499,7 +599,51 @@ export function ModelViewer() {
 
       {/* Control Deck (Bottom Right) */}
       <div className={styles.controlDeck}>
+        {/* Material Presets */}
+        <div className={styles.materialRow}>
+          <span className={styles.controlSectionLabel}>INSPECTION MATERIAL</span>
+          <div className={styles.materialBtnGroup}>
+            <button
+              className={`${styles.matBtn} ${colorMode === "chrome" ? styles.matBtnActive : ""}`}
+              onClick={() => setColorMode("chrome")}
+              type="button"
+            >
+              Bright Chrome
+            </button>
+            <button
+              className={`${styles.matBtn} ${colorMode === "clay" ? styles.matBtnActive : ""}`}
+              onClick={() => setColorMode("clay")}
+              type="button"
+            >
+              Studio Clay
+            </button>
+            <button
+              className={`${styles.matBtn} ${colorMode === "gold" ? styles.matBtnActive : ""}`}
+              onClick={() => setColorMode("gold")}
+              type="button"
+            >
+              Gold Accent
+            </button>
+            <button
+              className={`${styles.matBtn} ${colorMode === "titanium" ? styles.matBtnActive : ""}`}
+              onClick={() => setColorMode("titanium")}
+              type="button"
+            >
+              Titanium (Site)
+            </button>
+          </div>
+        </div>
+
+        {/* Viewport & Lighting Toggles */}
         <div className={styles.toggleRow}>
+          <button
+            className={`${styles.toggleBtn} ${lightBoost ? styles.toggleBtnActive : ""}`}
+            onClick={() => setLightBoost(!lightBoost)}
+            type="button"
+          >
+            {lightBoost ? "Light Boost: ON" : "Light Boost: OFF"}
+          </button>
+
           <button
             className={`${styles.toggleBtn} ${wireframeMode ? styles.toggleBtnActive : ""}`}
             onClick={() => setWireframeMode(!wireframeMode)}
