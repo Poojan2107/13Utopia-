@@ -145,22 +145,22 @@ export function Plus3DCanvas({
       bevelSegments: 5,
     };
 
-    // Finalized Architectural Titanium Graphite Physical Materials with Crisp Chamfer Highlights
+    // 13 Utopia Signature Smoked Bronze & Titanium Physical Materials (Subtle Golden Warmth)
     const verticalBeamMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x28292d),
-      roughness: 0.26,
-      metalness: 0.86,
+      color: new THREE.Color(0x38332c), // Smoked Warm Bronze Titanium
+      roughness: 0.28,
+      metalness: 0.82,
       clearcoat: 0.35,
-      clearcoatRoughness: 0.22,
+      clearcoatRoughness: 0.20,
       reflectivity: 0.85,
     });
 
     const horizontalBeamMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x222326),
-      roughness: 0.28,
-      metalness: 0.84,
+      color: new THREE.Color(0x302c26), // Deep Smoked Bronze Accent
+      roughness: 0.30,
+      metalness: 0.80,
       clearcoat: 0.35,
-      clearcoatRoughness: 0.22,
+      clearcoatRoughness: 0.20,
       reflectivity: 0.85,
     });
 
@@ -185,32 +185,32 @@ export function Plus3DCanvas({
     scene.add(emblemGroup);
     groupRef.current = emblemGroup;
 
-    // Studio Lighting (Crisp Chamfer Definition & Bevel Highlights)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
+    // Warm Studio Lighting (Champagne & Golden Chamfer Highlights)
+    const ambientLight = new THREE.AmbientLight(0xfffaf4, 1.8);
     scene.add(ambientLight);
 
-    // Key Light
-    const keyLight = new THREE.DirectionalLight(0xffffff, 4.2);
+    // Key Light (Warm Sunlight Glow)
+    const keyLight = new THREE.DirectionalLight(0xfff8f0, 4.0);
     keyLight.position.set(6, 8, 9);
     scene.add(keyLight);
 
-    // Fill Light (Soft cool fill)
-    const fillLight = new THREE.DirectionalLight(0xdde5f0, 2.4);
+    // Fill Light (Soft Champagne)
+    const fillLight = new THREE.DirectionalLight(0xe8ded4, 2.2);
     fillLight.position.set(-7, 2, 6);
     scene.add(fillLight);
 
-    // High-Intensity Left Rim Light (Crisp chamfer edge gleam)
-    const leftRimLight = new THREE.DirectionalLight(0xffffff, 4.5);
+    // Champagne Left Rim Light (Crisp Warm Chamfer Gleam)
+    const leftRimLight = new THREE.DirectionalLight(0xf4dfc8, 4.2);
     leftRimLight.position.set(-9, 4, -4);
     scene.add(leftRimLight);
 
     // Champagne Luxury Right Rim Accent Light
-    const rightRimLight = new THREE.DirectionalLight(0xf5ebe0, 3.8);
+    const rightRimLight = new THREE.DirectionalLight(0xf5d77f, 3.8);
     rightRimLight.position.set(9, -3, -4);
     scene.add(rightRimLight);
 
     // Top Overhead Light
-    const topLight = new THREE.DirectionalLight(0xffffff, 2.2);
+    const topLight = new THREE.DirectionalLight(0xffffff, 2.0);
     topLight.position.set(0, 10, 1);
     scene.add(topLight);
 
