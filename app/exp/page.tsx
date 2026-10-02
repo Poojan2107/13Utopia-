@@ -19,29 +19,30 @@ export default function ExperimentHomePage() {
       <AmbientField />
       <MagneticCursor />
 
-      {/* Floating Sandbox Telemetry Pill */}
+      {/* Floating Sandbox Telemetry Pill (Top Center) */}
       <aside
         style={{
           position: "fixed",
-          bottom: "1.5rem",
-          left: "1.5rem",
+          top: "1.2rem",
+          left: "50%",
+          transform: "translateX(-50%)",
           zIndex: 9999,
           background: "rgba(10, 10, 10, 0.85)",
           border: "1px solid rgba(255, 255, 255, 0.2)",
           backdropFilter: "blur(16px)",
           WebkitBackdropFilter: "blur(16px)",
-          padding: "0.45rem 0.95rem",
+          padding: "0.35rem 0.85rem",
           borderRadius: "9999px",
           display: "flex",
           alignItems: "center",
-          gap: "0.75rem",
+          gap: "0.6rem",
           fontFamily: "var(--font-mono, monospace)",
-          fontSize: "0.68rem",
+          fontSize: "0.65rem",
           color: "rgba(255, 255, 255, 0.7)",
           pointerEvents: "auto",
         }}
       >
-        <span style={{ color: "#dfb76c", fontWeight: 700 }}>🧪 LAB / EXP CLONE</span>
+        <span style={{ color: "#dfb76c", fontWeight: 700 }}>🧪 LAB CLONE</span>
         <span style={{ color: "rgba(255,255,255,0.25)" }}>|</span>
         <Link
           href="/"
@@ -52,7 +53,7 @@ export default function ExperimentHomePage() {
             transition: "opacity 0.2s ease",
           }}
         >
-          View Main Site (/)
+          Main (/)
         </Link>
         <span style={{ color: "rgba(255,255,255,0.25)" }}>|</span>
         <Link
@@ -64,7 +65,7 @@ export default function ExperimentHomePage() {
             transition: "opacity 0.2s ease",
           }}
         >
-          View 3D Models (/model)
+          Models (/model)
         </Link>
       </aside>
 
@@ -80,7 +81,7 @@ export default function ExperimentHomePage() {
           backgroundColor: "transparent",
         }}
       >
-        {/* 01 — EXPERIMENT HERO (Isolated for custom experiments) */}
+        {/* 01 — EXPERIMENT HERO (Full-Screen Enlarged Lockup) */}
         <ExperimentHero />
 
         {/* 02 — VIDEO SHOWCASE: Full-Bleed Spatial Cinematic Reel */}
