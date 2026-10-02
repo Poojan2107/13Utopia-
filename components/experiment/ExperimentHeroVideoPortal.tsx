@@ -9,92 +9,124 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * ExperimentHeroVideoPortal:
- * - Pure solid white centered "BE UNREAL UNREASONABLE" hero tagline (no video visible on load).
- * - As the user scrolls naturally down the page, the video section emerges directly out of the
- *   letter "O" in UNREASONABLE, crawling down and expanding to fill the video section before settling.
+ * - Centered solid white "BE UNREAL UNREASONABLE" typography on load (no video visible).
+ * - As the user scrolls, the video physically emerges directly OUT OF THE LETTER "O",
+ *   morphing/expanding in position & scale until it sets down as the full-bleed video section.
  */
 export function ExperimentHeroVideoPortal() {
-  const rootRef = useRef<HTMLDivElement | null>(null);
-  const heroRef = useRef<HTMLElement | null>(null);
-  const typeContainerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const typeLayerRef = useRef<HTMLDivElement | null>(null);
   const letterORef = useRef<HTMLSpanElement | null>(null);
-  const videoSectionRef = useRef<HTMLElement | null>(null);
-  const videoWrapperRef = useRef<HTMLDivElement | null>(null);
+  const videoCardRef = useRef<HTMLDivElement | null>(null);
   const videoElementRef = useRef<HTMLVideoElement | null>(null);
   const hudRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const root = rootRef.current;
-    const hero = heroRef.current;
-    const typeContainer = typeContainerRef.current;
+    const container = containerRef.current;
+    const typeLayer = typeLayerRef.current;
     const letterO = letterORef.current;
-    const videoSection = videoSectionRef.current;
-    const videoWrapper = videoWrapperRef.current;
+    const videoCard = videoCardRef.current;
     const hud = hudRef.current;
 
-    if (!root || !hero || !typeContainer || !letterO || !videoSection || !videoWrapper) return;
+    if (!container || !typeLayer || !letterO || !videoCard) return;
 
     const ctx = gsap.context(() => {
-      // Calculate origin point of letter O relative to screen
-      const getOOrigin = () => {
+      // Calculate current bounding box of letter "O" relative to container
+      const getORect = () => {
         const rect = letterO.getBoundingClientRect();
-        const percentX = ((rect.left + rect.width / 2) / window.innerWidth) * 100;
-        return { percentX };
+        return {
+          x: rect.left,
+          y: rect.top,
+          w: Math.max(rect.width, 40),
+          h: Math.max(rect.height, 50),
+        };
       };
 
-      let { percentX } = getOOrigin();
+      let initialO = getORect();
 
-      // Set initial state of the crawling video wrapper
-      gsap.set(videoWrapper, {
-        clipPath: `ellipse(12% 8% at ${percentX}% 0%)`,
-        scale: 0.75,
-        opacity: 0.15,
-        transformOrigin: `${percentX}% top`,
-      });
-
-      // Continuous natural scroll-driven crawl & unroll
-      ScrollTrigger.create({
-        trigger: videoSection,
-        start: "top bottom",
-        end: "top top",
-        scrub: 0.5,
-        onRefresh: () => {
-          percentX = getOOrigin().percentX;
-        },
-        onUpdate: (self) => {
-          const p = self.progress; // 0 (just entering viewport) -> 1 (fully at top)
-
-          // 1. Unroll & expand clip path from letter O's column downward into full bleed
-          const clipX = 12 + (100 - 12) * p;
-          const clipY = 8 + (100 - 8) * p;
-          const currentOriginX = percentX * (1 - p) + 50 * p;
-          const currentOriginY = 0 * (1 - p) + 50 * p;
-
-          gsap.set(videoWrapper, {
-            clipPath: `ellipse(${clipX}% ${clipY}% at ${currentOriginX}% ${currentOriginY}%)`,
-            scale: 0.75 + 0.25 * p,
-            opacity: Math.min(1, 0.15 + p * 1.5),
-            transformOrigin: `${currentOriginX}% ${currentOriginY}%`,
-          });
-
-          // 2. Dissolve and parallax-lift the hero typography as user scrolls away
-          gsap.set(typeContainer, {
-            y: -120 * p,
-            opacity: Math.max(0, 1 - p * 1.6),
-            scale: 1 - 0.08 * p,
-          });
-
-          // 3. Reveal HUD caption when nearly settled
-          if (hud) {
-            const hudP = Math.max(0, (p - 0.65) / 0.35);
-            gsap.set(hud, {
-              opacity: hudP,
-              y: 20 * (1 - hudP),
-            });
-          }
+      // Master Scroll-Driven Timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          start: "top top",
+          end: "+=1800",
+          pin: true,
+          scrub: 0.6,
+          onRefresh: () => {
+            initialO = getORect();
+          },
         },
       });
-    }, root);
+
+      // Set initial values right at letter "O"
+      tl.set(videoCard, {
+        left: () => initialO.x,
+        top: () => initialO.y,
+        width: () => initialO.w,
+        height: () => initialO.h,
+        borderRadius: "50%",
+        opacity: 0,
+        scale: 0.95,
+      });
+
+      // ── Step 1 (0 -> 0.10): Video awakens and pops out of O ──
+      tl.to(
+        videoCard,
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.12,
+          ease: "power1.out",
+        },
+        0.02
+      );
+
+      // ── Step 2 (0.05 -> 0.75): Video expands from O's coords to Full Viewport ──
+      tl.to(
+        videoCard,
+        {
+          left: 0,
+          top: 0,
+          width: "100vw",
+          height: "100vh",
+          borderRadius: "0px",
+          boxShadow: "0 0 0 rgba(0,0,0,0)",
+          duration: 0.70,
+          ease: "power2.inOut",
+        },
+        0.05
+      );
+
+      // Typography smoothly dissolves and pushes back into spatial depth
+      tl.to(
+        typeLayer,
+        {
+          opacity: 0,
+          scale: 0.92,
+          filter: "blur(8px)",
+          duration: 0.50,
+          ease: "power2.inOut",
+        },
+        0.05
+      );
+
+      // ── Step 3 (0.70 -> 0.95): Video settles in place, HUD caption reveals ──
+      if (hud) {
+        tl.to(
+          hud,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.25,
+            ease: "power2.out",
+          },
+          0.70
+        );
+      }
+
+      // Settle buffer before smooth scroll handoff to 3D Monolith section
+      tl.to({}, { duration: 0.20 });
+    }, container);
 
     const onResize = () => {
       ScrollTrigger.refresh();
@@ -108,10 +140,10 @@ export function ExperimentHeroVideoPortal() {
   }, []);
 
   return (
-    <div ref={rootRef} className={styles.portalWrapper}>
-      {/* ── 01. HERO SECTION (100vh) — Pristine Clean Solid Typography ── */}
-      <section ref={heroRef} className={styles.heroSection} id="hero" aria-label="13 UTOPIA">
-        <div ref={typeContainerRef} className={styles.typeContainer}>
+    <section ref={containerRef} className={styles.pinnedWrapper} id="hero-video-portal">
+      <div className={styles.stage}>
+        {/* ── 01. Pristine Hero Typography Layer ────────────────── */}
+        <div ref={typeLayerRef} className={styles.typeLayer}>
           <div className={styles.monumentLockup}>
             {/* Common Enlarged "BE" */}
             <div className={styles.beCommonBlock}>
@@ -123,7 +155,7 @@ export function ExperimentHeroVideoPortal() {
               <span className={styles.wordTop}>UNREAL</span>
               <div className={styles.wordBottom}>
                 <span>UNREAS</span>
-                {/* Clean solid letter O (portal anchor point on scroll) */}
+                {/* Clean solid letter "O" where the video physically emerges */}
                 <span ref={letterORef} className={styles.letterO}>
                   O
                 </span>
@@ -132,21 +164,9 @@ export function ExperimentHeroVideoPortal() {
             </div>
           </div>
         </div>
-      </section>
 
-      {/* ── 02. VIDEO SHOWCASE SECTION (100vh) — Natural Scroll Unroll Target ── */}
-      <section
-        ref={videoSectionRef}
-        className={styles.videoSection}
-        id="video-showcase"
-        aria-label="13 Utopia Cinematic Showcase Reel"
-      >
-        {/* Top/Bottom Architectural Gradient Vignettes */}
-        <div className={styles.fadeTop} aria-hidden="true" />
-        <div className={styles.fadeBottom} aria-hidden="true" />
-
-        {/* Video Wrapper that crawls and blooms out from letter O */}
-        <div ref={videoWrapperRef} className={styles.videoWrapper}>
+        {/* ── 02. The Emerging Video Card (Physical Expansion out of "O") ── */}
+        <div ref={videoCardRef} className={styles.emergingVideoCard}>
           <video
             ref={videoElementRef}
             src="/metal-human/metal-human.mp4"
@@ -160,7 +180,11 @@ export function ExperimentHeroVideoPortal() {
           />
           <div className={styles.videoScrim} />
 
-          {/* Minimal Editorial Caption */}
+          {/* Top/Bottom Subtle Vignette */}
+          <div className={styles.fadeTop} aria-hidden="true" />
+          <div className={styles.fadeBottom} aria-hidden="true" />
+
+          {/* Video Section Editorial HUD Caption */}
           <div ref={hudRef} className={styles.hudBottom}>
             <div className={styles.captionBlock}>
               <span className={styles.chapterNum}>ACT 01 // SHOWCASE</span>
@@ -171,7 +195,7 @@ export function ExperimentHeroVideoPortal() {
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }
