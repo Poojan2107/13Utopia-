@@ -6,6 +6,7 @@ import styles from "@/styles/plus-ex/Plus3DCanvas.module.css";
 
 export interface Plus3DCanvasProps {
   progress?: number;
+  entryProgress?: number;
   actIndex?: number;
   className?: string;
   theme?: "dark" | "light" | "transparent";
@@ -15,23 +16,28 @@ export interface Plus3DCanvasProps {
  * 3D 13 Utopia Architectural Emblem Canvas
  * Plus-X Exact Materiality & Lighting:
  * Matte architectural graphite monoliths with razor chamfers, deep studio lighting,
- * responsive spatial shifts, and a full continuous 360-degree rotation story.
+ * and a full continuous scroll-driven rotation story.
  */
 export function Plus3DCanvas({
   progress = 0,
+  entryProgress = 1,
   actIndex = 0,
   className,
   theme = "transparent",
 }: Plus3DCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const groupRef = useRef<THREE.Group | null>(null);
-  const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
   const progressRef = useRef(progress);
+  const entryProgressRef = useRef(entryProgress);
   const actRef = useRef(actIndex);
 
   useEffect(() => {
     progressRef.current = progress;
   }, [progress]);
+
+  useEffect(() => {
+    entryProgressRef.current = entryProgress;
+  }, [entryProgress]);
 
   useEffect(() => {
     actRef.current = actIndex;
@@ -131,79 +137,82 @@ export function Plus3DCanvas({
 
     const extrudeSettings = {
       steps: 1,
-      depth: 0.95,
+      depth: 0.96,
       bevelEnabled: true,
-      bevelThickness: 0.045,
-      bevelSize: 0.045,
+      bevelThickness: 0.075,
+      bevelSize: 0.065,
       bevelOffset: 0,
-      bevelSegments: 4,
+      bevelSegments: 5,
     };
 
-    // Plus-X Exact Architectural Graphite & Titanium Materials
-    const verticalBeamMaterial = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x2d2d2d),
-      roughness: 0.35,
-      metalness: 0.72,
+    // Plus-X Exact Architectural Graphite & Titanium Physical Materials with Crisp Chamfer Highlights
+    const verticalBeamMaterial = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x28292d),
+      roughness: 0.26,
+      metalness: 0.86,
+      clearcoat: 0.35,
+      clearcoatRoughness: 0.22,
+      reflectivity: 0.85,
     });
 
-    const horizontalBeamMaterial = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x242424),
-      roughness: 0.38,
-      metalness: 0.68,
+    const horizontalBeamMaterial = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x222326),
+      roughness: 0.28,
+      metalness: 0.84,
+      clearcoat: 0.35,
+      clearcoatRoughness: 0.22,
+      reflectivity: 0.85,
     });
 
     // 1. The "1" Tapered Monolith
     const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
     oneGeo.center();
     const oneMesh = new THREE.Mesh(oneGeo, verticalBeamMaterial);
-    oneMesh.position.set(-1.85, 0, 0);
+    oneMesh.position.set(-1.35, 0, 0);
     emblemGroup.add(oneMesh);
 
     // 2. The "3" Brand Ribbon
     const threeGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
     threeGeo.center();
     const threeMesh = new THREE.Mesh(threeGeo, horizontalBeamMaterial);
-    threeMesh.position.set(0.95, 0, 0);
+    threeMesh.position.set(0.65, 0, 0);
     emblemGroup.add(threeMesh);
 
-    // Center the entire 13 emblem group in the screen
-    emblemGroup.position.set(0, 0, -1.4);
+    // Center the entire 13 emblem group in the screen and scale for Plus-X parity
+    emblemGroup.scale.setScalar(0.80);
+    emblemGroup.position.set(0, 0, -1.0);
     emblemGroup.rotation.set(0, 0, 0);
     scene.add(emblemGroup);
     groupRef.current = emblemGroup;
 
     // Studio Lighting (Crisp Chamfer Definition & Bevel Highlights)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
     scene.add(ambientLight);
 
     // Key Light
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.4);
-    keyLight.position.set(7, 9, 8);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 4.2);
+    keyLight.position.set(6, 8, 9);
     scene.add(keyLight);
 
-    // Fill Light
-    const fillLight = new THREE.DirectionalLight(0xbbbbbb, 1.8);
-    fillLight.position.set(-7, 2, 5);
+    // Fill Light (Soft cool fill)
+    const fillLight = new THREE.DirectionalLight(0xdde5f0, 2.4);
+    fillLight.position.set(-7, 2, 6);
     scene.add(fillLight);
 
-    // Champagne/Gold Luxury Rim Accent Light
-    const goldRimLight = new THREE.DirectionalLight(0xf4dfc8, 2.5);
-    goldRimLight.position.set(4, -6, -3);
-    scene.add(goldRimLight);
+    // High-Intensity Left Rim Light (Crisp chamfer edge gleam)
+    const leftRimLight = new THREE.DirectionalLight(0xffffff, 4.5);
+    leftRimLight.position.set(-9, 4, -4);
+    scene.add(leftRimLight);
+
+    // Champagne Luxury Right Rim Accent Light
+    const rightRimLight = new THREE.DirectionalLight(0xf5ebe0, 3.8);
+    rightRimLight.position.set(9, -3, -4);
+    scene.add(rightRimLight);
 
     // Top Overhead Light
-    const topLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    topLight.position.set(0, 10, -1);
+    const topLight = new THREE.DirectionalLight(0xffffff, 2.2);
+    topLight.position.set(0, 10, 1);
     scene.add(topLight);
-
-    // Mouse tracking
-    const onMouseMove = (e: MouseEvent) => {
-      const cx = window.innerWidth / 2;
-      const cy = window.innerHeight / 2;
-      mouseRef.current.targetX = (e.clientX - cx) / cx;
-      mouseRef.current.targetY = (e.clientY - cy) / cy;
-    };
-    window.addEventListener("mousemove", onMouseMove, { passive: true });
 
     // Resize
     const onResize = () => {
@@ -216,74 +225,135 @@ export function Plus3DCanvas({
     };
     window.addEventListener("resize", onResize);
 
-    // Render loop
+    // Render loop — continuous scroll-driven cinematic kinematics with full 360° revolutions between sections
     let rafId: number;
-    const clock = new THREE.Clock();
+    let currentX = 0;
+    let currentY = 0;
+    let currentZ = -1.0;
+    let currentRotX = 0.08;
+    let currentRotY = 0;
+    let currentRotZ = 0;
+    let currentScale = 0.80;
+
+    // Smoothstep easing helper
+    const smoothstep = (min: number, max: number, value: number) => {
+      const x = Math.max(0, Math.min(1, (value - min) / (max - min)));
+      return x * x * (3 - 2 * x);
+    };
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);
-      const elapsed = clock.getElapsedTime();
       const p = Math.max(0, Math.min(1, progressRef.current));
-      const act = actRef.current;
-      const isMobile = window.innerWidth <= 900;
-
-      // Mouse inertia
-      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
-      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
+      const entryP = Math.max(0, Math.min(1, entryProgressRef.current));
 
       if (emblemGroup) {
-        /**
-         * FULL 360-DEGREE CONTINUOUS NARRATIVE ROTATION:
-         * - Multi-act dynamic spin, tilt, and spatial positioning
-         */
-        const fullSpinY = p * Math.PI * 2;
-        const archTiltX = Math.sin(p * Math.PI) * 0.42;
-        const archTiltZ = Math.sin(p * Math.PI * 1.5) * 0.18;
-        const idleFloat = Math.sin(elapsed * 0.6) * 0.025;
+        // Slide smoothly from behind video during entry (entryP: 0 -> 1)
+        const targetSlideY = (1 - entryP) * -4.2;
 
-        const targetRotX = archTiltX + mouseRef.current.y * 0.12 + idleFloat;
-        const targetRotY = fullSpinY + mouseRef.current.x * 0.18;
-        const targetRotZ = archTiltZ + mouseRef.current.x * 0.06;
+        // Synchronized trajectory calculation:
+        // Act 0: Manifesto [0.00 -> 0.15] -> Center (x=0, rotY=0)
+        // Transition 0 -> 1 [0.15 -> 0.22] -> Sweeps Center -> Left (x: 0 -> -3.1), Full 360° Spin (rotY: 0.2 -> 2π + 0.22)
+        // Act 1: CREATE [0.22 -> 0.44] -> Settle Left (x = -3.1, rotY = 2π + 0.22)
+        // Transition 1 -> 2 [0.44 -> 0.51] -> Sweeps Left -> Right (x: -3.1 -> +3.1), Full 360° Spin (rotY: 2π + 0.22 -> 4π - 0.22)
+        // Act 2: BUILD [0.51 -> 0.73] -> Settle Right (x = +3.1, rotY = 4π - 0.22)
+        // Transition 2 -> 3 [0.73 -> 0.80] -> Sweeps Right -> Left (x: +3.1 -> -3.1), Full 360° Spin (rotY: 4π - 0.22 -> 6π + 0.22)
+        // Act 3: GROW [0.80 -> 0.94] -> Settle Left (x = -3.1, rotY = 6π + 0.22)
+        // Transition 3 -> 4 [0.94 -> 0.97] -> Sweeps Left -> Center (x: -3.1 -> 0), Full 360° Spin (rotY: 6π + 0.22 -> 8π)
+        // Finale [0.97 -> 1.00] -> Settle Center (x = 0, rotY = 8π)
 
-        emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.08;
-        emblemGroup.rotation.y += (targetRotY - emblemGroup.rotation.y) * 0.08;
-        emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.08;
+        let targetX = 0;
+        let targetRotY = 0;
+        let targetRotX = 0.08;
+        let targetRotZ = 0;
+        let targetScale = 0.80;
 
-        // Dynamic spatial translation according to Act
-        let actTargetX = 0;
-        let actTargetY = 0;
-        let actTargetZ = -1.4;
-
-        if (isMobile) {
-          actTargetY = act === 1 ? -1.0 : act === 2 ? 1.0 : 0;
-          actTargetZ = -2.8;
+        if (p < 0.15) {
+          // Act 0: Centered Manifesto
+          const localP = p / 0.15;
+          targetX = 0;
+          targetRotY = localP * 0.20;
+          targetRotX = 0.06;
+          targetRotZ = 0;
+          targetScale = 0.82;
+        } else if (p >= 0.15 && p < 0.22) {
+          // Transition 0 -> 1: Center -> Left sweep with 360° roll
+          const t = smoothstep(0.15, 0.22, p);
+          targetX = -3.1 * t;
+          targetRotY = 0.20 * (1 - t) + (Math.PI * 2 + 0.22) * t;
+          targetRotX = 0.06 + Math.sin(t * Math.PI) * 0.12;
+          targetRotZ = 0.04 * t;
+          targetScale = 0.82 - 0.04 * t;
+        } else if (p >= 0.22 && p < 0.44) {
+          // Act 1: CREATE (Settled Left)
+          const localP = (p - 0.22) / 0.22;
+          targetX = -3.1;
+          targetRotY = Math.PI * 2 + 0.22 + Math.sin(localP * Math.PI) * 0.08;
+          targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
+          targetRotZ = 0.04;
+          targetScale = 0.78;
+        } else if (p >= 0.44 && p < 0.51) {
+          // Transition 1 -> 2: Left -> Right sweep with full 360° roll
+          const t = smoothstep(0.44, 0.51, p);
+          targetX = -3.1 + 6.2 * t;
+          targetRotY = (Math.PI * 2 + 0.22) * (1 - t) + (Math.PI * 4 - 0.22) * t;
+          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
+          targetRotZ = 0.04 * (1 - 2 * t);
+          targetScale = 0.78;
+        } else if (p >= 0.51 && p < 0.73) {
+          // Act 2: BUILD (Settled Right)
+          const localP = (p - 0.51) / 0.22;
+          targetX = 3.1;
+          targetRotY = Math.PI * 4 - 0.22 - Math.sin(localP * Math.PI) * 0.08;
+          targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
+          targetRotZ = -0.04;
+          targetScale = 0.78;
+        } else if (p >= 0.73 && p < 0.80) {
+          // Transition 2 -> 3: Right -> Left sweep with full 360° roll
+          const t = smoothstep(0.73, 0.80, p);
+          targetX = 3.1 - 6.2 * t;
+          targetRotY = (Math.PI * 4 - 0.22) * (1 - t) + (Math.PI * 6 + 0.22) * t;
+          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
+          targetRotZ = -0.04 * (1 - 2 * t);
+          targetScale = 0.78;
+        } else if (p >= 0.80 && p < 0.94) {
+          // Act 3: GROW (Settled Left)
+          const localP = (p - 0.80) / 0.14;
+          targetX = -3.1;
+          targetRotY = Math.PI * 6 + 0.22 + Math.sin(localP * Math.PI) * 0.08;
+          targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
+          targetRotZ = 0.04;
+          targetScale = 0.78;
+        } else if (p >= 0.94 && p < 0.97) {
+          // Transition 3 -> 4: Left -> Center sweep
+          const t = smoothstep(0.94, 0.97, p);
+          targetX = -3.1 * (1 - t);
+          targetRotY = (Math.PI * 6 + 0.22) * (1 - t) + (Math.PI * 8) * t;
+          targetRotX = 0.08 - 0.02 * t;
+          targetRotZ = 0.04 * (1 - t);
+          targetScale = 0.78 + 0.04 * t;
         } else {
-          if (act === 0) {
-            // Genesis: Centered monumental
-            actTargetX = 0;
-            actTargetY = 0;
-          } else if (act === 1) {
-            // Triad of Creation: Offset to right, leaving left for editorial cards
-            actTargetX = 2.0;
-            actTargetY = 0.2;
-          } else if (act === 2) {
-            // Architectural Benchmarks: Offset to left, leaving right for metrics
-            actTargetX = -2.0;
-            actTargetY = -0.1;
-          } else {
-            // Initiation Finale: Centered
-            actTargetX = 0;
-            actTargetY = 0;
-          }
+          // Finale: Center
+          const localP = (p - 0.97) / 0.03;
+          targetX = 0;
+          targetRotY = Math.PI * 8 + localP * 0.15;
+          targetRotX = 0.06;
+          targetRotZ = 0;
+          targetScale = 0.82;
         }
 
-        const finalX = actTargetX + mouseRef.current.x * 0.3;
-        const finalY = actTargetY - mouseRef.current.y * 0.2 + Math.sin(elapsed * 0.8) * 0.03;
-        const finalZ = actTargetZ;
+        // Luxurious physics with high-inertia smooth damping for crafted cinematic motion
+        const dampFactor = 0.036;
 
-        emblemGroup.position.x += (finalX - emblemGroup.position.x) * 0.06;
-        emblemGroup.position.y += (finalY - emblemGroup.position.y) * 0.06;
-        emblemGroup.position.z += (finalZ - emblemGroup.position.z) * 0.06;
+        currentX += (targetX - currentX) * dampFactor;
+        currentY += (targetSlideY - currentY) * dampFactor;
+        currentScale += (targetScale - currentScale) * dampFactor;
+        currentRotX += (targetRotX - currentRotX) * dampFactor;
+        currentRotY += (targetRotY - currentRotY) * dampFactor;
+        currentRotZ += (targetRotZ - currentRotZ) * dampFactor;
+
+        emblemGroup.position.set(currentX, currentY, currentZ);
+        emblemGroup.scale.setScalar(currentScale);
+        emblemGroup.rotation.set(currentRotX, currentRotY, currentRotZ);
       }
 
       renderer.render(scene, camera);
@@ -293,7 +363,6 @@ export function Plus3DCanvas({
 
     return () => {
       cancelAnimationFrame(rafId);
-      window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", onResize);
       if (renderer.domElement) {
         renderer.domElement.remove();

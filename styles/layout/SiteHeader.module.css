@@ -1,54 +1,56 @@
 .header {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
   z-index: 50;
   background: transparent;
-  border-bottom: 1px solid transparent;
+  border-bottom: none;
   pointer-events: none;
   transition:
     background 0.4s ease,
-    border-color 0.4s ease,
-    backdrop-filter 0.4s ease,
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.4s ease;
 }
 
-.onHome:not(.scrolled) {
-  border-bottom-color: color-mix(in srgb, var(--color-gold) 12%, transparent);
+.onHome {
+  border-bottom: none;
 }
 
 .hidden {
-  transform: translateY(-120%) !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  visibility: hidden !important;
+  display: none;
 }
 
 .menuOpen {
-  transform: none;
+  position: fixed;
 }
 
 .scrolled {
-  background: rgba(5, 5, 5, 0.92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom-color: color-mix(in srgb, var(--color-gold) 18%, transparent);
+  background: transparent;
+  border-bottom: none;
 }
 
 .inner {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
+  justify-content: flex-end;
   height: 4.75rem;
-  max-width: 1720px;
+  max-width: 100vw;
   width: 100%;
-  margin-inline: auto;
-  padding-inline: clamp(1.75rem, 5.5vw, 6.5rem);
+  margin-inline: 0;
+  padding-inline: clamp(1rem, 2.5vw, 3rem);
+  padding-top: clamp(0.5rem, 1vh, 1.25rem);
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.headerRightGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.5vw, 1.5rem);
   pointer-events: auto;
+  z-index: 100;
 }
 
 .brand {
@@ -164,19 +166,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.6rem 1.15rem;
-  height: 2.75rem;
-  min-width: 3.6rem;
-  background: rgba(8, 7, 5, 0.88);
-  border: 1px solid color-mix(in srgb, var(--color-gold) 45%, transparent);
-  border-radius: 9999px; /* Fluid non-legacy luxury capsule */
+  padding: 0.75rem 1.45rem;
+  height: 3.25rem;
+  min-width: 4.35rem;
+  background: rgba(10, 10, 10, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 9999px;
   cursor: pointer;
-  color: #f3f1ea;
+  color: #ffffff;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--color-gold) 15%, transparent),
-    0 4px 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
   transition:
     border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
     background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
@@ -187,15 +187,15 @@
 
 .menuToggle:hover,
 .menuToggleActive {
-  border-color: var(--color-gold);
-  background: rgba(18, 14, 8, 0.98);
+  border-color: rgba(255, 255, 255, 0.85);
+  background: rgba(25, 25, 25, 0.95);
   box-shadow:
-    0 0 28px color-mix(in srgb, var(--color-gold) 35%, transparent),
+    0 0 20px rgba(255, 255, 255, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .menuToggle:focus-visible {
-  outline: 2px solid var(--color-gold);
+  outline: 2px solid #ffffff;
   outline-offset: 3px;
 }
 
@@ -203,18 +203,18 @@
 .easterEggIcon {
   display: flex;
   align-items: center;
-  gap: 7px;
-  height: 16px;
+  gap: 8.5px;
+  height: 19px;
 }
 
 /* The "1" — Vertical Monolith Pillar */
 .lineOne {
   display: block;
-  width: 2px;
-  height: 16px;
-  background: var(--color-gold);
+  width: 2.2px;
+  height: 19px;
+  background: #ffffff;
   border-radius: 2px;
-  box-shadow: 0 0 10px color-mix(in srgb, var(--color-gold) 50%, transparent);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
   transition:
     transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
     opacity 0.3s ease;
@@ -225,8 +225,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 15px;
-  height: 16px;
+  width: 17px;
+  height: 19px;
   position: relative;
 }
 
@@ -235,7 +235,7 @@
 .barBot {
   display: block;
   width: 100%;
-  height: 1.5px;
+  height: 1.8px;
   background: #ffffff;
   border-radius: 1px;
   transition:

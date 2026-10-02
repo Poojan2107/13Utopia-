@@ -1,0 +1,379 @@
+/* =========================================================
+   13 UTOPIA // SECTION 02: THE MANIFESTO & CAPABILITIES
+   Clean, Elegant, High-Contrast Light Viewport
+   ========================================================= */
+
+.section {
+  position: relative;
+  width: 100%;
+  background-color: #f7f5f0;
+  color: #0a0a0a;
+  box-sizing: border-box;
+  padding-bottom: clamp(5rem, 8vh, 8rem);
+  z-index: 3;
+}
+
+/* ── Section Eyebrow Strip ────────────────────────────────── */
+.eyebrowStrip {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.35rem clamp(2rem, 5vw, 6rem);
+  border-top: 1px solid rgba(10, 10, 10, 0.08);
+  border-bottom: 1px solid rgba(10, 10, 10, 0.08);
+  background: rgba(247, 245, 240, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.eyebrowLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.eyebrowNum {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #0a0a0a;
+}
+
+.eyebrowSep {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  color: rgba(10, 10, 10, 0.3);
+}
+
+.eyebrowLabel {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #333333;
+}
+
+.eyebrowRight {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #666666;
+}
+
+/* ── Main Container ───────────────────────────────────────── */
+.container {
+  max-width: 1650px;
+  margin: 0 auto;
+  padding: clamp(3rem, 6vh, 5.5rem) clamp(2rem, 5vw, 6rem) 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4rem, 7vh, 6rem);
+}
+
+/* ── Chapter Badge ────────────────────────────────────────── */
+.chapterBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #555555;
+  margin-bottom: 1.25rem;
+}
+
+.chapterDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #0a0a0a;
+}
+
+/* ── Top Locked Manifesto Header ──────────────────────────── */
+.manifestoHeader {
+  max-width: 1400px;
+  border-bottom: 1px solid rgba(10, 10, 10, 0.08);
+  padding-bottom: clamp(2.5rem, 5vh, 4rem);
+}
+
+.manifestoHeading {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, sans-serif);
+  font-size: clamp(2.4rem, 4.4vw, 4.8rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: #0a0a0a;
+  text-transform: uppercase;
+}
+
+.manifestoHeadingAlt {
+  color: rgba(10, 10, 10, 0.45);
+  font-weight: 500;
+}
+
+.manifestoText {
+  margin: 0;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, sans-serif);
+  font-size: clamp(1.2rem, 1.65vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: -0.015em;
+  color: #444444;
+  max-width: 980px;
+}
+
+/* ── Capabilities Stage & 3D Monolith Workspace ───────────── */
+.capabilitiesStage {
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: clamp(3rem, 5.5vw, 6rem);
+  align-items: center;
+}
+
+.stageLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.triadNavHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Triad Tabs */
+.triadTabs {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(10, 10, 10, 0.04);
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  border-radius: 9999px;
+  padding: 0.35rem;
+  width: fit-content;
+}
+
+.triadTab {
+  border: none;
+  background: transparent;
+  color: #666666;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.65rem 1.35rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.triadTab:hover {
+  color: #0a0a0a;
+}
+
+.triadTabActive {
+  background: #0a0a0a;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+/* Triad Card */
+.triadCard {
+  background: #ffffff;
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  border-radius: 16px;
+  padding: clamp(2rem, 3.5vw, 3rem);
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.triadCardTag {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #777777;
+}
+
+.triadCardTitle {
+  margin: 0;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: #0a0a0a;
+}
+
+.triadCardDesc {
+  margin: 0;
+  font-family: var(--font-neue-montreal, sans-serif);
+  font-size: clamp(1rem, 1.2vw, 1.12rem);
+  font-weight: 400;
+  line-height: 1.65;
+  color: #444444;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.serviceItem {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1rem;
+  background: #f7f5f0;
+  border: 1px solid rgba(10, 10, 10, 0.06);
+  border-radius: 8px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.servicePlus {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(10, 10, 10, 0.4);
+}
+
+.serviceName {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #111111;
+}
+
+/* ── Right Column: 3D Monolith Canvas Stage ───────────────── */
+.stageRight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.canvasFrame {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  height: clamp(420px, 46vw, 520px);
+  border: 1px solid rgba(10, 10, 10, 0.08);
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.canvasContainer {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+}
+
+.canvasContainer:active {
+  cursor: grabbing;
+}
+
+.canvasBadge {
+  position: absolute;
+  bottom: 1rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(10, 10, 10, 0.5);
+  background: rgba(247, 245, 240, 0.9);
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(10, 10, 10, 0.08);
+}
+
+/* ── Locked Impact Benchmarks Bar ─────────────────────────── */
+.statsSection {
+  border-top: 1px solid rgba(10, 10, 10, 0.1);
+  padding-top: clamp(2rem, 4vh, 3.5rem);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.statValue {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(2rem, 3.2vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #0a0a0a;
+}
+
+.statLabel {
+  font-family: var(--font-neue-montreal, sans-serif);
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #666666;
+}
+
+/* ── Responsive Mobile Styling ───────────────────────────── */
+@media (max-width: 1024px) {
+  .capabilitiesStage {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .canvasFrame {
+    height: 380px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .eyebrowRight {
+    display: none;
+  }
+
+  .servicesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}

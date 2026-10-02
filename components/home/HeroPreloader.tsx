@@ -266,6 +266,12 @@ export function HeroPreloader() {
       }
 
       // --- Beat 4: THE REVEAL — 50/50 Guillotine split reveals the hero ---
+      tl.call(() => {
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("hero-revealed"));
+        }
+      }, undefined, 3.5);
+
       tl.to(
         [preloader, splitOverlay],
         {

@@ -1,6 +1,12 @@
-import { HomeHero, HeroPreloader, HomeSectionWork } from "@/components/home";
-import { Continuous3DStory, Master3DEmblemCanvas } from "@/components/plus-ex";
-import { SiteHeader } from "@/components/layout";
+import {
+  HomeHero,
+  HomeVideoSection,
+  HomeSectionSolutions,
+  HomeSectionWork,
+  HomeCTASection,
+} from "@/components/home";
+import { Continuous3DStory } from "@/components/plus-ex";
+import { SiteHeader, SiteFooter } from "@/components/layout";
 import {
   AmbientField,
   MagneticCursor,
@@ -10,17 +16,13 @@ import {
 export default function HomePage() {
   return (
     <SmoothScrollProvider>
-      <HeroPreloader />
       <AmbientField />
       <MagneticCursor />
 
-      {/* Master Persistent 3D "13" Architectural Emblem Canvas */}
-      <Master3DEmblemCanvas />
-
-      {/* Site Header */}
+      {/* Site Header (Top Right Logo & Menu Toggle) */}
       <SiteHeader />
 
-      {/* Fluid Continuous 3D Architectural Experience */}
+      {/* Unified Continuous Architecture (Plus-X Footsteps Flow) */}
       <main
         id="main-content"
         style={{
@@ -29,19 +31,26 @@ export default function HomePage() {
           backgroundColor: "transparent",
         }}
       >
-        {/* 01 — HERO: 3D model + layered typography (DARK) */}
+        {/* 01 — HERO: Monumental BE UNREAL / BE UNREASONABLE + Centered Monolith */}
         <HomeHero />
-        {/* Flow spacer — hero is position:fixed */}
-        <div
-          aria-hidden="true"
-          style={{ height: "100dvh", width: "100%", pointerEvents: "none" }}
-        />
 
-        {/* 02 — THE WORK: 3D Jesper Landberg carousel (LIGHT / CREAMY BEIGE with onyx model) */}
+        {/* 02 — VIDEO SHOWCASE: Full-Bleed Spatial Cinematic Reel */}
+        <HomeVideoSection />
+
+        {/* 03 — 3D MONOLITH EDITORIAL STATEMENT & CREATE · BUILD · GROW CAPABILITIES TRIAD */}
+        <Continuous3DStory />
+
+        {/* 04 — WHAT WE SOLVE: Impact Domains & Capability Solutions Matrix */}
+        <HomeSectionSolutions />
+
+        {/* 05 — SELECTED COMMISSIONS: 3D Jesper Landberg Portfolio Carousel */}
         <HomeSectionWork />
 
-        {/* 03 — CONTINUOUS 3D MONOLITH STORY (Manifesto → Capabilities Triad → Impact Benchmarks → Initiation Finale) */}
-        <Continuous3DStory />
+        {/* 07 — INITIATION: Commission Call-To-Action */}
+        <HomeCTASection />
+
+        {/* 08 — FOOTER: Luxury Agency Footer with Live Telemetry & Directory */}
+        <SiteFooter />
       </main>
     </SmoothScrollProvider>
   );

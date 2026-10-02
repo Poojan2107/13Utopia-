@@ -1,0 +1,137 @@
+/* =========================================================
+   13 UTOPIA // PURE MONUMENTAL HERO TYPOGRAPHY
+   Solid architectural scale matching Plus-X 15th anniversary:
+   - Line 1 & 2: BE / UNREAL (Top-Left)
+   - Line 3: BE (Middle-Right, optically linked to UNREAL & UNREASONABLE)
+   - Line 4: UNREASONABLE (Bottom, solid monolithic word fitted edge-to-edge)
+   ========================================================= */
+
+.heroLayout {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #000000;
+  overflow: hidden;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ── 01. Top-Left Block (BE / UNREAL — Exactly 0 to 50vh) ──── */
+.topLeftBlock {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50vh;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
+  pointer-events: auto;
+  z-index: 2;
+  line-height: 0.77;
+}
+
+.word {
+  display: block;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: clamp(7rem, 23.5vw, 32.5vh);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.77;
+  letter-spacing: -0.05em;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  margin-top: -0.02em;
+  margin-left: -0.02em;
+  white-space: nowrap;
+}
+
+/* ── 02. Middle-Right Block (BE — Exactly 50vh to 75vh) ─────── */
+/* Starts right at 50vh split line and reaches down to 75vh */
+.middleRightBlock {
+  position: absolute;
+  top: 50vh;
+  right: 0;
+  height: 25vh;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  pointer-events: auto;
+  z-index: 2;
+  line-height: 0.77;
+}
+
+.middleRightBlock .word {
+  font-size: clamp(7rem, 23.5vw, 32.5vh);
+  margin-right: -0.02em;
+  margin-left: 0;
+  margin-top: -0.02em;
+}
+
+/* ── 03. Bottom Full-Width Block (UNREASONABLE — 75vh to 100vh) */
+/* Starts right at 75vh meeting BE's baseline, and kisses right screen edge */
+.bottomBlock {
+  position: absolute;
+  top: 75vh;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  width: 100%;
+  height: 25vh;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  pointer-events: auto;
+  z-index: 2;
+  line-height: 0.76;
+  overflow: hidden;
+}
+
+.wordUnreasonable {
+  display: block;
+  width: 100%;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: clamp(4.5rem, 13.76vw, 25vh);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.76;
+  letter-spacing: -0.024em;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  margin-top: -0.02em;
+  margin-left: -0.02em;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* ── Responsive Mobile Scaling ───────────────────────────── */
+@media (max-width: 900px) {
+  .word {
+    font-size: clamp(3.8rem, 20vw, 15vh);
+    line-height: 0.78;
+  }
+
+  .wordUnreasonable {
+    font-size: clamp(2.8rem, 13vw, 10vh);
+    line-height: 0.78;
+  }
+
+  .middleRightBlock {
+    top: 42vh;
+  }
+}

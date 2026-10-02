@@ -87,136 +87,258 @@
   pointer-events: auto;
 }
 
-/* Act 1: Manifesto */
+/* Act 0: Plus-X 1:1 Editorial Statement (1 Line Lead + 3 Lines Sub = 13) */
 .manifestoContent {
-  max-width: 780px;
+  width: 100%;
+  max-width: clamp(750px, 80vw, 1260px);
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-}
-
-.chapterBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-mono, monospace);
-  font-size: clamp(11px, 1vw, 13px);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #f4dfc8;
-}
-
-.chapterDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: #f4dfc8;
-  box-shadow: 0 0 10px #f4dfc8;
+  align-items: flex-start;
+  gap: clamp(1.8rem, 3.5vh, 2.8rem);
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+  box-sizing: border-box;
 }
 
 .manifestoHeading {
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: clamp(32px, 5.2vw, 68px);
-  font-weight: 400;
-  line-height: 1.04;
-  letter-spacing: -0.035em;
-  color: #faf6f0;
-  text-wrap: balance;
-}
-
-.manifestoHeading span {
-  color: #f4dfc8;
-}
-
-.manifestoText {
-  font-family: var(--font-body, "PP Neue Montreal", sans-serif);
-  font-size: clamp(15px, 1.4vw, 20px);
-  font-weight: 300;
-  line-height: 1.5;
-  color: rgba(250, 246, 240, 0.72);
-  max-width: 620px;
-}
-
-/* Act 2: Triad of Creation */
-.triadContent {
-  max-width: 580px;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
-.triadTabs {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.triadTab {
-  padding: 8px 18px;
-  border-radius: 999px;
-  background: rgba(244, 234, 224, 0.06);
-  border: 1px solid rgba(244, 234, 224, 0.12);
-  color: rgba(250, 246, 240, 0.6);
-  font-family: var(--font-mono, monospace);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.triadTabActive {
-  background: #f4eae0;
-  color: #000000;
-  border-color: #f4eae0;
-  box-shadow: 0 4px 20px rgba(244, 234, 224, 0.25);
+  font-family: var(--font-display, "PP Neue Montreal", "Inter", -apple-system, sans-serif);
+  font-size: clamp(1.4rem, 2.3vw, 2.75rem);
   font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0;
+  display: block;
 }
 
-.triadCard {
-  background: rgba(18, 18, 18, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(244, 234, 224, 0.15);
-  border-radius: 16px;
-  padding: clamp(24px, 3.5vw, 40px);
+.leadLine {
+  display: block;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.subLines {
+  display: block;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .leadLine,
+  .subLines {
+    white-space: normal;
+  }
+}
+
+.fromBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.38rem 1.15rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: transparent;
+}
+
+.fromBadge span {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.72rem, 0.85vw, 0.85rem);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.actHidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+.alignRight {
+  align-items: flex-start;
+  padding-left: clamp(35vw, 43vw, 48vw);
+  padding-right: clamp(1.5rem, 4vw, 4rem);
+}
+
+.alignLeft {
+  align-items: flex-start;
+  padding-right: clamp(35vw, 43vw, 48vw);
+  padding-left: clamp(1.5rem, 4vw, 4rem);
+}
+
+.worldContainer {
+  position: relative;
+  width: 100%;
+  max-width: clamp(520px, 50vw, 840px);
+  min-height: 480px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  overflow: visible;
 }
 
-.triadCardTitle {
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: clamp(26px, 3.2vw, 42px);
-  font-weight: 400;
-  line-height: 1.1;
-  color: #faf6f0;
+.modeVisible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
 }
 
-.triadCardDesc {
-  font-family: var(--font-body, "PP Neue Montreal", sans-serif);
-  font-size: clamp(14px, 1.2vw, 17px);
-  font-weight: 300;
-  line-height: 1.55;
-  color: rgba(250, 246, 240, 0.7);
+.modeHidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
 }
 
-.triadList {
+/* Plus-X Kinetic 3D Curved Drum Roll */
+.reelView {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px 12px;
-  margin-top: 8px;
+  flex-direction: column;
+  gap: clamp(1.2rem, 2.5vh, 2.2rem);
+  width: 100%;
+  overflow: visible;
 }
 
-.triadTag {
+.reelHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.headerTag {
   font-family: var(--font-mono, monospace);
-  font-size: 11px;
-  letter-spacing: 0.05em;
-  color: #f4dfc8;
-  background: rgba(244, 223, 200, 0.08);
-  padding: 4px 10px;
-  border-radius: 6px;
-  border: 1px solid rgba(244, 223, 200, 0.12);
+  font-size: clamp(0.72rem, 0.82vw, 0.85rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+}
+
+.headerTitle {
+  font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
+  font-size: clamp(2.4rem, 4.4vw, 4.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0;
+  text-shadow: 0 4px 24px rgba(255, 255, 255, 0.15);
+}
+
+.reelViewport {
+  position: relative;
+  height: clamp(300px, 44vh, 460px);
+  width: 100%;
+  overflow: visible;
+  perspective: 1200px;
+  -webkit-perspective: 1200px;
+  display: flex;
+  align-items: center;
+}
+
+.drumContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.drumItem {
+  position: absolute;
+  width: max-content;
+  max-width: 100%;
+  font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
+  text-transform: uppercase;
+  line-height: 1.05;
+  white-space: nowrap;
+  letter-spacing: -0.025em;
+  transform-origin: center center;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+.drumItemActive {
+  font-size: clamp(2.2rem, 3.8vw, 4.5rem);
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 0 35px rgba(255, 255, 255, 0.28);
+}
+
+.drumItemDimmed {
+  font-size: clamp(1.9rem, 3.3vw, 3.9rem);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+/* Plus-X Editorial Statement (Screenshot 3) */
+.statementView {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.2rem, 2.5vh, 2.2rem);
+  max-width: 680px;
+}
+
+.statementLead {
+  font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
+  font-size: clamp(1.65rem, 2.8vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.018em;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.statementSub {
+  font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
+  font-size: clamp(1.35rem, 2.2vw, 2.4rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.statementPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  padding: 0.38rem 1.15rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: transparent;
+  margin-top: 0.5rem;
+}
+
+.statementPill span {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.72rem, 0.85vw, 0.85rem);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .alignRight,
+  .alignLeft {
+    align-items: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 /* Act 3: Benchmarks / Stats */

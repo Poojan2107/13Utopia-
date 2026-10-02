@@ -5,44 +5,76 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "@/styles/plus-ex/Continuous3DStory.module.css";
 import Link from "next/link";
+import { Plus3DCanvas } from "./Plus3DCanvas";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TRIAD_ITEMS = [
+const WORLDS = [
   {
-    tag: "01 // CREATE",
-    title: "Visual Alchemy & Spatial Worlds",
-    desc: "We sculpt high-craft digital identities, bespoke 3D spatial environments, and visionary creative directions that demand immediate cultural reverence.",
-    services: ["Brand Strategy", "3D Art Direction", "Spatial UI", "Motion Systems"],
+    id: "create",
+    header: "CREATE",
+    index: "01",
+    tag: "01 // CREATE — BRAND & SPATIAL ALCHEMY",
+    keywords: [
+      "EXPERIENCE",
+      "CURIOSITY",
+      "VISUAL ALCHEMY",
+      "BRAND IDENTITY",
+      "SPATIAL WORLDS",
+      "CREATIVE DIRECTION",
+      "CGI & MOTION",
+    ],
+    leadTitle: "WE ALWAYS FOCUS ON DESIGNING EVERY MOMENT OF CONTACT, DIGITAL OR PHYSICAL.",
+    subTitle: "AS AN OPPORTUNITY TO EXPRESS THE BRAND'S ESSENCE IN A WAY THAT FEELS ANOMALOUS, MONUMENTAL AND CONSISTENT.",
+    pill: "13 UTOPIA // CREATE",
+    align: "right",
   },
   {
-    tag: "02 // BUILD",
-    title: "Zero-Latency WebGL Engineering",
-    desc: "Uncompromising full-stack architecture built with Three.js, React, and GPU-accelerated shaders. Every millisecond of interaction latency is engineered away.",
-    services: ["WebGL Shaders", "Next.js Architecture", "GSAP Physics", "Fluid Systems"],
+    id: "build",
+    header: "BUILD",
+    index: "02",
+    tag: "02 // BUILD — PRODUCTS & AI ENGINEERING",
+    keywords: [
+      "ENGINEERING",
+      "GPU SHADERS",
+      "WEBGL ARCHITECTURE",
+      "ZERO-LATENCY APPS",
+      "AI AGENTS",
+      "CLOUD SYSTEMS",
+      "PRODUCT ARCHITECTURE",
+    ],
+    leadTitle: "ENGINEERED WITH ZERO COMPROMISE. SUB-MILLISECOND LATENCY ACROSS EVERY INTERACTION.",
+    subTitle: "FULL-STACK COMPUTATIONAL ARCHITECTURE POWERED BY REAL-TIME SHADERS, REACT, AND SCALABLE CLOUD INFRASTRUCTURE.",
+    pill: "13 UTOPIA // BUILD",
+    align: "left",
   },
   {
-    tag: "03 // GROW",
-    title: "Market Momentum & Dominance",
-    desc: "We architect conversion gravity and category dominance. Our commissioned digital ecosystems turn passive visitors into lifelong brand evangelists.",
-    services: ["Category Design", "Growth Engineering", "SEO Architecture", "Venture Scale"],
+    id: "grow",
+    header: "GROW",
+    index: "03",
+    tag: "03 // GROW — MOMENTUM & MARKET DOMINANCE",
+    keywords: [
+      "DOMINANCE",
+      "CATEGORY DESIGN",
+      "SEO ARCHITECTURE",
+      "CONVERSION GRAVITY",
+      "GROWTH ENGINES",
+      "VENTURE SCALE",
+      "MARKET LEADERSHIP",
+    ],
+    leadTitle: "TURNING PASSIVE VISITORS INTO ENDURING BRAND EVANGELISTS AND HIGH-VALUE PIPELINE.",
+    subTitle: "WE COMBINE SEARCH DOMINANCE, ALGORITHMIC PRECISION, AND GROWTH STRATEGY TO COMMAND CATEGORY LEADERSHIP.",
+    pill: "13 UTOPIA // GROW",
+    align: "right",
   },
-];
-
-const STATS = [
-  { value: "$100M+", label: "Client Valuation Generated" },
-  { value: "0.00s", label: "Latency Benchmark Standard" },
-  { value: "100%", label: "Bespoke Handcrafted Code" },
-  { value: "13", label: "Global Design Accolades" },
 ];
 
 export function Continuous3DStory() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
 
+  const [entryProgress, setEntryProgress] = useState(1);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [activeAct, setActiveAct] = useState(0);
-  const [activeTriadIndex, setActiveTriadIndex] = useState(0);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -50,32 +82,29 @@ export function Continuous3DStory() {
     if (!section || !stage) return;
 
     const ctx = gsap.context(() => {
+      // 1. Smooth entry slide from behind the video section
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top bottom",
+        end: "top top",
+        scrub: true,
+        onUpdate: (self) => {
+          setEntryProgress(self.progress);
+        },
+      });
+
+      // 2. Continuous pinned 3D narrative rotation with motion-crafted momentum
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: "+=3800",
+        end: "+=8800",
         pin: stage,
         pinSpacing: true,
-        scrub: 0.8,
+        scrub: 1.4,
         anticipatePin: 1,
         onUpdate: (self) => {
           const p = Math.max(0, Math.min(1, self.progress));
           setScrollProgress(p);
-
-          // Determine current active act based on scroll progress
-          if (p < 0.28) {
-            setActiveAct(0);
-          } else if (p >= 0.28 && p < 0.62) {
-            setActiveAct(1);
-            // Cycle triad items within Act 1
-            const subP = (p - 0.28) / (0.62 - 0.28);
-            const triadIdx = Math.min(2, Math.floor(subP * 3));
-            setActiveTriadIndex(triadIdx);
-          } else if (p >= 0.62 && p < 0.85) {
-            setActiveAct(2);
-          } else {
-            setActiveAct(3);
-          }
         },
       });
     }, section);
@@ -98,197 +127,169 @@ export function Continuous3DStory() {
         <div className={styles.ambientGlow} />
         <div className={styles.architecturalGrid} />
 
-        {/* Dynamic Multi-Act Narrative Overlays */}
+        {/* 3D 13 Utopia Architectural Emblem Canvas */}
+        <div className={styles.canvasContainer}>
+          <Plus3DCanvas
+            progress={scrollProgress}
+            entryProgress={entryProgress}
+          />
+        </div>
+
+        {/* Dynamic Narrative Overlays */}
         <div className={styles.actsWrapper}>
-          {/* Act 0: Identity & Manifesto */}
+          {/* Act 0: Plus-X 1:1 Narrative Statement (1 Line Lead + 3 Lines Sub = 13) */}
           <div
-            className={`${styles.act} ${activeAct === 0 ? styles.actVisible : ""}`}
+            className={`${styles.act} ${scrollProgress < 0.15 ? styles.actVisible : styles.actHidden}`}
           >
             <div className={styles.manifestoContent}>
-              <div className={styles.chapterBadge}>
-                <span className={styles.chapterDot} />
-                <span>01 // ARCHITECTURAL IDENTITY</span>
-              </div>
               <h2 className={styles.manifestoHeading}>
-                WE DO NOT FIT INTO THE SYSTEM. <span>WE ARCHITECT THE ANOMALY.</span>
+                <span className={styles.leadLine}>
+                  13 UTOPIA® PIONEERED THE INTEGRATION
+                </span>
+                <span className={styles.subLines}>
+                  OF BRAND EXPERIENCE. WE HAVE BEEN INTRODUCING<br />
+                  A DESIGN SOLUTION, UNIFIES FRAGMENTED BRAND<br />
+                  ELEMENTS ACROSS VARIOUS TOUCH-POINTS.
+                </span>
               </h2>
-              <p className={styles.manifestoText}>
-                13 Utopia is an independent venture architecture and digital design
-                studio forging anomalous digital worlds, brand systems, and
-                category-defining web experiences.
-              </p>
+              <div className={styles.fromBadge}>
+                <span>FROM 2026</span>
+              </div>
             </div>
           </div>
 
-          {/* Act 1: The Triad of Creation (CREATE · BUILD · GROW) */}
-          <div
-            className={`${styles.act} ${activeAct === 1 ? styles.actVisible : ""}`}
-          >
-            <div className={styles.triadContent}>
-              <div className={styles.chapterBadge}>
-                <span className={styles.chapterDot} />
-                <span>02 // CAPABILITIES & CRAFT</span>
-              </div>
+          {/* Worlds Sequence: CREATE (Right), BUILD (Left), GROW (Right) */}
+          {WORLDS.map((world, idx) => {
+            // Synchronized timing matching 3D kinematics:
+            // Act 1 CREATE: [0.22, 0.44]
+            // Act 2 BUILD: [0.51, 0.73]
+            // Act 3 GROW: [0.80, 0.94]
+            const ranges = [
+              { start: 0.22, end: 0.44 },
+              { start: 0.51, end: 0.73 },
+              { start: 0.80, end: 0.94 },
+            ];
+            const { start: startP, end: endP } = ranges[idx];
+            const isWorldActive = scrollProgress >= startP && scrollProgress < endP;
+            const worldP = Math.max(0, Math.min(1, (scrollProgress - startP) / (endP - startP)));
+            
+            // Sub-phases: 0.0 -> 0.65 (Word Roll with high dwell time), 0.65 -> 1.0 (Editorial Statement)
+            const isReel = worldP < 0.65;
+            const reelP = Math.min(1, worldP / 0.65);
+            
+            const alignClass = world.align === "left" ? styles.alignLeft : styles.alignRight;
 
-              {/* Interactive Triad Tabs */}
-              <div className={styles.triadTabs}>
-                {["CREATE", "BUILD", "GROW"].map((name, idx) => (
-                  <button
-                    key={name}
-                    className={`${styles.triadTab} ${
-                      activeTriadIndex === idx ? styles.triadTabActive : ""
+            return (
+              <div
+                key={world.id}
+                className={`${styles.act} ${alignClass} ${
+                  isWorldActive ? styles.actVisible : styles.actHidden
+                }`}
+              >
+                <div className={styles.worldContainer}>
+                  {/* Mode 1: Plus-X Kinetic 3D Curved Drum Roll */}
+                  <div
+                    className={`${styles.reelView} ${
+                      isReel ? styles.modeVisible : styles.modeHidden
                     }`}
-                    onClick={() => setActiveTriadIndex(idx)}
-                    type="button"
                   >
-                    0{idx + 1} {name}
-                  </button>
-                ))}
-              </div>
-
-              {/* Active Triad Card */}
-              <div className={styles.triadCard}>
-                <div className={styles.chapterBadge}>
-                  {TRIAD_ITEMS[activeTriadIndex].tag}
-                </div>
-                <h3 className={styles.triadCardTitle}>
-                  {TRIAD_ITEMS[activeTriadIndex].title}
-                </h3>
-                <p className={styles.triadCardDesc}>
-                  {TRIAD_ITEMS[activeTriadIndex].desc}
-                </p>
-                <div className={styles.triadList}>
-                  {TRIAD_ITEMS[activeTriadIndex].services.map((srv) => (
-                    <span key={srv} className={styles.triadTag}>
-                      {srv}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Act 2: Architectural Benchmarks (Stats & Metrics) */}
-          <div
-            className={`${styles.act} ${activeAct === 2 ? styles.actVisible : ""}`}
-          >
-            <div className={styles.benchmarksContent}>
-              <div className={styles.benchmarksInner}>
-                <div className={styles.chapterBadge}>
-                  <span className={styles.chapterDot} />
-                  <span>03 // QUANTITATIVE IMPACT</span>
-                </div>
-                <div className={styles.statsGrid}>
-                  {STATS.map((stat) => (
-                    <div key={stat.label} className={styles.statCard}>
-                      <span className={styles.statValue}>{stat.value}</span>
-                      <span className={styles.statLabel}>{stat.label}</span>
+                    <div className={styles.reelHeader}>
+                      <span className={styles.headerTag}>{world.index} // ACT</span>
+                      <h3 className={styles.headerTitle}>{world.header}</h3>
                     </div>
-                  ))}
+
+                    <div className={styles.reelViewport}>
+                      <div className={styles.drumContainer}>
+                        {world.keywords.map((word, wIdx) => {
+                          const continuousFloat = reelP * (world.keywords.length - 1);
+                          const delta = wIdx - continuousFloat;
+                          
+                          // True 3D Cylindrical Drum physics
+                          const R = 240; // Cylinder radius in px
+                          const angleStep = 0.32; // Radian curvature per item (~18.3 deg)
+                          const theta = delta * angleStep;
+                          
+                          const translateY = R * Math.sin(theta);
+                          const translateZ = R * (Math.cos(theta) - 1);
+                          const rotateX = -(theta * (180 / Math.PI));
+                          
+                          const absDelta = Math.abs(delta);
+                          const isCenter = absDelta < 0.40;
+                          
+                          // Smooth cosine opacity curve
+                          const opacity = Math.max(
+                            0.10,
+                            Math.pow(Math.cos(Math.min(Math.PI / 2.05, absDelta * 0.44)), 2.0)
+                          );
+                          
+                          const scale = isCenter ? 1.03 : Math.max(0.93, 1 - absDelta * 0.035);
+
+                          return (
+                            <div
+                              key={word}
+                              className={`${styles.drumItem} ${
+                                isCenter ? styles.drumItemActive : styles.drumItemDimmed
+                              }`}
+                              style={{
+                                transform: `translate3d(0, ${translateY.toFixed(2)}px, ${translateZ.toFixed(2)}px) rotateX(${rotateX.toFixed(2)}deg) scale(${scale.toFixed(3)})`,
+                                opacity: opacity.toFixed(3),
+                              }}
+                            >
+                              {word}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Mode 2: Plus-X Editorial Statement (Screenshot 3) */}
+                  <div
+                    className={`${styles.statementView} ${
+                      !isReel ? styles.modeVisible : styles.modeHidden
+                    }`}
+                  >
+                    <h2 className={styles.statementLead}>
+                      {world.leadTitle}
+                    </h2>
+                    <p className={styles.statementSub}>
+                      {world.subTitle}
+                    </p>
+                    <div className={styles.statementPill}>
+                      <span>{world.pill}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            );
+          })}
 
-          {/* Act 3: Initiation & Finale */}
+          {/* Finale Call: Pinned Ending */}
           <div
-            className={`${styles.act} ${activeAct === 3 ? styles.actVisible : ""}`}
+            className={`${styles.act} ${scrollProgress >= 0.96 ? styles.actVisible : styles.actHidden}`}
           >
             <div className={styles.initiationContent}>
-              <div className={styles.chapterBadge}>
-                <span className={styles.chapterDot} />
-                <span>04 // INITIATION</span>
-              </div>
               <h2 className={styles.initiationHeading}>
-                ARCHITECT YOUR UTOPIA.
+                HAVE AN UNREASONABLE IDEA?
               </h2>
               <p className={styles.initiationSub}>
-                We select only 13 bespoke commissions annually. Let&apos;s build a
-                digital world that commands attention.
+                We select only 13 bespoke commissions annually. Let&apos;s build what conventional companies cannot.
               </p>
               <div className={styles.initiationActions}>
                 <a
                   href="mailto:hello@13utopia.com?subject=Project%20Commission%20Inquiry"
                   className={styles.primaryCta}
                 >
-                  Initiate Commission
+                  Start Something Unreasonable
                 </a>
                 <Link href="/work" className={styles.secondaryCta}>
-                  Explore All Work
+                  Explore Case Stories
                 </Link>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Live Progress Navigator */}
-        <div className={styles.progressNav}>
-          <div className={styles.progressBarTrack}>
-            <div
-              className={styles.progressBarFill}
-              style={{ width: `${Math.round(scrollProgress * 100)}%` }}
-            />
-          </div>
-          <span className={styles.progressLabel}>
-            0{activeAct + 1} / 04
-          </span>
-        </div>
       </div>
-
-      {/* Integrated Architectural Colophon & Footer */}
-      <footer className={styles.storyFooter}>
-        <div className={styles.footerTop}>
-          <div className={styles.footerBrand}>
-            <span className={styles.footerLogo}>13 UTOPIA</span>
-            <p className={styles.footerTagline}>
-              Independent Venture Architecture &amp; Digital Design Studio.
-            </p>
-          </div>
-
-          <div className={styles.footerCols}>
-            <div className={styles.footerCol}>
-              <span className={styles.footerColTitle}>Navigation</span>
-              <Link href="#hero" className={styles.footerLink}>Home</Link>
-              <Link href="/work" className={styles.footerLink}>Selected Work</Link>
-              <Link href="/services" className={styles.footerLink}>Capabilities</Link>
-            </div>
-
-            <div className={styles.footerCol}>
-              <span className={styles.footerColTitle}>Connect</span>
-              <a href="mailto:hello@13utopia.com" className={styles.footerLink}>
-                hello@13utopia.com
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noreferrer"
-                className={styles.footerLink}
-              >
-                X / Twitter
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                className={styles.footerLink}
-              >
-                Instagram
-              </a>
-            </div>
-
-            <div className={styles.footerCol}>
-              <span className={styles.footerColTitle}>Coordinates</span>
-              <span className={styles.footerLink}>Global / Remote</span>
-              <span className={styles.footerLink}>UTC+05:30 / Studio</span>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.footerBottom}>
-          <span>&copy; {new Date().getFullYear()} 13 UTOPIA. ALL RIGHTS RESERVED.</span>
-          <span>ANOMALOUS DIGITAL ARCHITECTURE</span>
-        </div>
-      </footer>
     </section>
   );
 }

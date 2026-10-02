@@ -4,6 +4,10 @@ import {
   IBM_Plex_Mono,
   IBM_Plex_Sans,
   M_PLUS_Rounded_1c,
+  Pinyon_Script,
+  Alex_Brush,
+  Playfair_Display,
+  Cormorant_Garamond,
 } from "next/font/google";
 import { buildMetadata, defaultHomeSeo } from "@/lib/seo";
 import { jsonLdScript, organizationSchema, websiteSchema } from "@/lib/schema";
@@ -21,6 +25,22 @@ const didone = Bodoni_Moda({
   variable: "--font-didone",
   display: "swap",
   axes: ["opsz"],
+  style: ["normal", "italic"],
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+  weight: ["400", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-cormorant",
+  display: "swap",
+  weight: ["400", "600", "700"],
   style: ["normal", "italic"],
 });
 
@@ -45,6 +65,20 @@ const mono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
+const pinyon = Pinyon_Script({
+  subsets: ["latin"],
+  variable: "--font-script",
+  display: "swap",
+  weight: "400",
+});
+
+const alexBrush = Alex_Brush({
+  subsets: ["latin"],
+  variable: "--font-cursive",
+  display: "swap",
+  weight: "400",
+});
+
 export const metadata: Metadata = buildMetadata({
   seo: defaultHomeSeo,
   path: "/",
@@ -58,7 +92,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${didone.variable} ${brand.variable} ${sans.variable} ${mono.variable}`}
+      className={`${didone.variable} ${playfair.variable} ${cormorant.variable} ${brand.variable} ${sans.variable} ${mono.variable} ${pinyon.variable} ${alexBrush.variable}`}
     >
       <body>
         <script

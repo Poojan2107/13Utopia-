@@ -23,13 +23,13 @@
 
 .officialImg {
   display: block;
-  height: 1.65rem;
+  height: 2.1rem;
   width: auto;
   mix-blend-mode: screen;
 }
 
 .mark .image {
-  height: 2.5rem;
+  height: 3rem;
   width: auto;
   object-fit: contain;
 }
@@ -47,6 +47,6 @@
 
 @media (min-width: 1024px) {
   .officialImg {
-    height: 1.9rem;
+    height: 2.55rem;
   }
 }

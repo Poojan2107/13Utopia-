@@ -1,0 +1,258 @@
+/* =========================================================
+   13 UTOPIA // HANDWRITTEN CURSIVE HERO TYPOGRAPHY
+   Monumental Editorial Didone "BE" (Height-Matched to Stacked Cursive)
+   + Animated Luxury Cursive "Unreal" / "Unreasonable"
+   ========================================================= */
+
+.heroLockup {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(1.8rem, 4vw, 5.5rem);
+  text-transform: none;
+  cursor: pointer;
+  user-select: none;
+  overflow: visible;
+  pointer-events: auto;
+  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0) perspective(1200px)
+    rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ── Enlarged Monumental Height-Matched "BE" ─────────────── */
+.beWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.beText {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  /* High-Contrast Luxury Editorial Didone Serif matching cursive calligraphic lineage */
+  font-family: var(--font-didone), var(--font-playfair), var(--font-cormorant), "Bodoni Moda", "Playfair Display", "Didot", serif;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 0.74;
+  white-space: nowrap;
+  text-align: left;
+  /* Monumental height spanning the full vertical bounds of both cursive lines combined */
+  font-size: clamp(13.5rem, min(46vh, 25vw), 30rem);
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  text-transform: uppercase;
+  text-shadow: 0 0 50px rgba(255, 255, 255, 0.28);
+  animation: beEnter 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes beEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(24px);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* ── Right Cursive Script Column ─────────────────────────── */
+.scriptWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-block: clamp(0.4rem, 1.2vh, 1.4rem);
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.wordRow {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: visible;
+}
+
+.handwrittenWord {
+  position: relative;
+  display: inline-block;
+  overflow: visible;
+}
+
+/* ── Luxury Cursive Word Container (Zero Clipping) ─────── */
+.cursiveWord {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  overflow: visible;
+  padding-block: 0.22em;
+  padding-inline: 0.12em;
+  margin-block: -0.22em;
+  font-family: var(--font-script), var(--font-cursive), "Pinyon Script", "Alex Brush", "Parisienne", cursive;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.25;
+  white-space: nowrap;
+  text-align: left;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.45);
+}
+
+/* Row 1: Unreal Scale */
+.animateUnreal,
+.wordRow:first-child .cursiveWord {
+  font-size: clamp(5.6rem, min(19vh, 11vw), 13.5rem);
+  letter-spacing: 0.02em;
+}
+
+/* Row 2: Unreasonable Scale */
+.animateUnreasonable,
+.wordRow:last-child .cursiveWord {
+  font-size: clamp(4.8rem, min(16vh, 9.2vw), 11.5rem);
+  letter-spacing: 0.01em;
+}
+
+/* ── Individual Letter Handwriting Reveal ───────────────── */
+.cursiveChar {
+  display: inline-block;
+  overflow: visible;
+  opacity: 0;
+  transform: translateY(12px) scale(0.85) rotate(-4deg);
+  filter: blur(4px);
+  transform-origin: center bottom;
+}
+
+/* Unreal Letter-by-Letter Handwriting Animation */
+.animateUnreal .cursiveChar {
+  animation: charWrite 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(0.1s + var(--char-idx) * 0.085s);
+}
+
+/* Unreasonable Letter-by-Letter Handwriting Animation */
+.animateUnreasonable .cursiveChar {
+  animation: charWrite 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(0.65s + var(--char-idx) * 0.07s);
+}
+
+/* Fallback: Completed state */
+.idle .cursiveChar {
+  opacity: 1;
+  transform: translateY(0) scale(1) rotate(0deg);
+  filter: blur(0);
+}
+
+@keyframes charWrite {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.8) rotate(-6deg);
+    filter: blur(5px);
+  }
+  50% {
+    opacity: 1;
+    filter: blur(1px);
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+    filter: blur(0);
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.45);
+  }
+}
+
+/* ── SVG Flourish Calligraphy Swash Underline ─────────────── */
+.swashSvg {
+  display: block;
+  width: 100%;
+  height: clamp(14px, 2.2vh, 26px);
+  margin-top: clamp(-8px, -1vh, -14px);
+  overflow: visible;
+  pointer-events: none;
+}
+
+.swashPath {
+  stroke-dasharray: 550;
+  stroke-dashoffset: 550;
+  opacity: 0;
+}
+
+.animateSwashUnreal {
+  animation: drawSwash 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.72s forwards;
+}
+
+.animateSwashUnreasonable {
+  animation: drawSwash 0.95s cubic-bezier(0.22, 1, 0.36, 1) 1.55s forwards;
+}
+
+@keyframes drawSwash {
+  0% {
+    stroke-dashoffset: 550;
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.85;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.75));
+  }
+}
+
+/* ── Interactive Hover Reactivity ────────────────────────── */
+.heroLockup:hover .beText {
+  transform: scale(1.02);
+  text-shadow: 0 0 65px rgba(255, 255, 255, 0.45);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.4s ease;
+}
+
+.heroLockup:hover .cursiveWord {
+  text-shadow: 0 0 55px rgba(255, 255, 255, 0.8);
+  transition: text-shadow 0.4s ease;
+}
+
+/* ── Responsive Mobile Adjustments ───────────────────────── */
+@media (max-width: 900px) {
+  .heroLockup {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    transform: none !important;
+  }
+
+  .beText {
+    font-size: clamp(6.5rem, 28vw, 12rem);
+  }
+
+  .scriptWrapper {
+    align-items: center;
+    text-align: center;
+    gap: 0.2rem;
+    padding-block: 0;
+  }
+
+  .animateUnreal,
+  .wordRow:first-child .cursiveWord {
+    font-size: clamp(3.8rem, 16vw, 6.5rem);
+    text-align: center;
+  }
+
+  .animateUnreasonable,
+  .wordRow:last-child .cursiveWord {
+    font-size: clamp(3.2rem, 13vw, 5.2rem);
+    text-align: center;
+  }
+}

@@ -1,5 +1,13 @@
 export { HomeHero } from "./HomeHero";
+export { PlusHeroTypography } from "./PlusHeroTypography";
+export { HomeVideoSection } from "./HomeVideoSection";
+export { HomeNarrativeSection } from "./HomeNarrativeSection";
+export { HomeManifesto } from "./HomeManifesto";
 export { HomeSectionWork } from "./HomeSectionWork";
-export { GoldSilkCurtain } from "./GoldSilkCurtain";
-export { TransparentBustVideo } from "./TransparentBustVideo";
+export { HomeSectionSolutions } from "./HomeSectionSolutions";
+export { HomeCTASection } from "./HomeCTASection";
+export { Hero3DCanvas } from "./Hero3DCanvas";
 export { HeroPreloader } from "./HeroPreloader";
+export { TransparentBustVideo } from "./TransparentBustVideo";
+
+
