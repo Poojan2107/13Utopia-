@@ -1,116 +1,191 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { BrandLogo } from "@/components/ui/BrandLogo";
 import styles from "@/styles/layout/SiteFooter.module.css";
 
-/**
- * SiteFooter — Section 08
- * Luxury architectural agency footer matching Plus-X design perfection:
- * Live time telemetry, coordinates, copyright, system status, and social index.
- */
+const FULL_WORDMARK = "13UTOPIA'";
+
 export function SiteFooter() {
-  const [time, setTime] = useState("");
+  const footerRef = useRef<HTMLElement>(null);
+  const [inView, setInView] = useState(false);
+  
+  // Animation stages: 'counting' -> 'settled_13' -> 'revealed_wordmark'
+  const [animStage, setAnimStage] = useState<"counting" | "settled_13" | "revealed_wordmark">("counting");
+  const [counterVal, setCounterVal] = useState("00");
 
   useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const utc = now.toUTCString().slice(17, 25);
-      setTime(`${utc} UTC`);
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
+    const el = footerRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    obs.observe(el);
+    return () => obs.disconnect();
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  useEffect(() => {
+    if (!inView) return;
+
+    // 1. Kinetic Counter starting from 00 and settling to 13
+    const numbers = ["00", "01", "03", "05", "08", "10", "12", "13"];
+    let step = 0;
+
+    const interval = setInterval(() => {
+      step++;
+      if (step < numbers.length) {
+        setCounterVal(numbers[step]);
+      } else {
+        clearInterval(interval);
+        setCounterVal("13");
+        setAnimStage("settled_13");
+
+        // 2. Pause on 1 3 for dramatic impact, then expand into 13UTOPIA'
+        setTimeout(() => {
+          setAnimStage("revealed_wordmark");
+        }, 750);
+      }
+    }, 90);
+
+    return () => clearInterval(interval);
+  }, [inView]);
 
   return (
-    <footer className={styles.footer} id="site-footer" aria-label="13 Utopia Footer">
+    <footer
+      ref={footerRef}
+      className={styles.footer}
+      id="site-footer"
+      aria-label="13 Utopia Footer"
+    >
       <div className={styles.container}>
-        {/* Top Header Row */}
-        <div className={styles.topRow}>
-          <div className={styles.brandGroup}>
-            <Link href="/" className={styles.brandLink} aria-label="13 Utopia Home">
-              <BrandLogo variant="official" />
-            </Link>
-            <p className={styles.brandDesc}>
-              Independent venture architecture &amp; high-craft spatial engineering studio.
-            </p>
-          </div>
+        {/* Top 2-Way Split: Conversational Lead (Left) + Socials (Right) */}
+        <div className={styles.topSection}>
+          {/* Left: Headline & Action Buttons */}
+          <div className={styles.leadBlock}>
+            <h2 className={styles.leadTitle}>
+              Let&apos;s start
+              <br />
+              from 13&apos;
+            </h2>
 
-          <button
-            type="button"
-            onClick={scrollToTop}
-            className={styles.backToTopBtn}
-            aria-label="Back to top"
-            data-magnetic
-          >
-            <span>BACK TO TOP</span>
-            <span className={styles.arrowUp}>↑</span>
-          </button>
-        </div>
+            <div className={styles.actionRow}>
+              <a
+                href="mailto:contact@13utopia.com?subject=Project%20Commission%20Inquiry"
+                className={styles.actionBtnPrimary}
+              >
+                <span>BOOK A CALL</span>
+                <span className={styles.btnArrow}>→</span>
+              </a>
 
-        {/* Middle Navigation & Directory Grid */}
-        <div className={styles.middleGrid}>
-          {/* Col 1: System Telemetry */}
-          <div className={styles.gridCol}>
-            <span className={styles.colHeader}>01 // SYSTEM TELEMETRY</span>
-            <div className={styles.telemetryList}>
-              <div className={styles.telemetryItem}>
-                <span className={styles.tKey}>STATUS</span>
-                <span className={styles.tVal}>
-                  <span className={styles.statusDot} />
-                  ALL PROTOCOLS ACTIVE
-                </span>
-              </div>
-              <div className={styles.telemetryItem}>
-                <span className={styles.tKey}>TIME</span>
-                <span className={styles.tVal}>{time || "SYNCHRONIZING..."}</span>
-              </div>
-              <div className={styles.telemetryItem}>
-                <span className={styles.tKey}>COORDINATES</span>
-                <span className={styles.tVal}>40.7128° N, 74.0060° W</span>
-              </div>
+              <a
+                href="mailto:contact@13utopia.com"
+                className={styles.actionBtnSecondary}
+              >
+                <span>DROP US AN EMAIL</span>
+                <span className={styles.btnAt}>@</span>
+              </a>
             </div>
           </div>
 
-          {/* Col 2: Navigation Directory */}
-          <div className={styles.gridCol}>
-            <span className={styles.colHeader}>02 // INDEX</span>
-            <ul className={styles.navList}>
-              <li><a href="#hero" className={styles.navLink}>HERO // IDENTITY</a></li>
-              <li><a href="#video-showcase" className={styles.navLink}>REEL // SPATIAL</a></li>
-              <li><a href="#philosophy" className={styles.navLink}>DOCTRINE // MANIFESTO</a></li>
-              <li><a href="#narrative" className={styles.navLink}>CAPABILITIES // TRIAD</a></li>
-              <li><a href="#work" className={styles.navLink}>COMMISSIONS // PORTFOLIO</a></li>
-              <li><Link href="/model" className={styles.navLink}>3D EMBLEM VIEWER</Link></li>
-            </ul>
-          </div>
-
-          {/* Col 3: Direct Transmissions */}
-          <div className={styles.gridCol}>
-            <span className={styles.colHeader}>03 // TRANSMISSIONS</span>
-            <ul className={styles.navList}>
-              <li><a href="mailto:contact@13utopia.com" className={styles.navLink}>contact@13utopia.com</a></li>
-              <li><a href="https://x.com" target="_blank" rel="noopener noreferrer" className={styles.navLink}>X (FORMERLY TWITTER) ↗</a></li>
-              <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={styles.navLink}>INSTAGRAM ↗</a></li>
-              <li><a href="https://github.com" target="_blank" rel="noopener noreferrer" className={styles.navLink}>GITHUB ↗</a></li>
-            </ul>
+          {/* Right: Vertical Transmission Channels */}
+          <div className={styles.socialCol}>
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.socialLink}
+            >
+              LinkedIn
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.socialLink}
+            >
+              Instagram
+            </a>
+            <a
+              href="https://behance.net"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.socialLink}
+            >
+              Behance
+            </a>
+            <a
+              href="https://x.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.socialLink}
+            >
+              X (Twitter)
+            </a>
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.socialLink}
+            >
+              GitHub
+            </a>
           </div>
         </div>
 
-        {/* Bottom Legal & Copyright Bar */}
-        <div className={styles.bottomBar}>
-          <span className={styles.copyright}>
-            &copy; {new Date().getFullYear()} 13 UTOPIA INC. ALL RIGHTS RESERVED.
+        {/* Monumental Kinetic Wordmark with 00 -> 13 -> 13UTOPIA' Loading Effect */}
+        <div className={styles.wordmarkSection}>
+          <div className={styles.wordmarkInner} role="banner" aria-label="13UTOPIA">
+            {animStage === "counting" && (
+              <span className={styles.counterDisplay}>
+                <span className={styles.counterDigit}>{counterVal[0]}</span>
+                <span className={styles.counterDigit}>{counterVal[1]}</span>
+              </span>
+            )}
+
+            {animStage === "settled_13" && (
+              <span className={`${styles.counterDisplay} ${styles.settledThirteen}`}>
+                <span className={styles.counterDigit}>1</span>
+                <span className={styles.counterDigit}>3</span>
+              </span>
+            )}
+
+            {animStage === "revealed_wordmark" && (
+              <div className={styles.unfoldedWordmark}>
+                {FULL_WORDMARK.split("").map((char, idx) => (
+                  <span
+                    key={idx}
+                    className={styles.wordmarkChar}
+                    style={{ animationDelay: `${idx * 45}ms` }}
+                  >
+                    {char}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Clean Micro Colophon Bottom Bar */}
+        <div className={styles.colophonBar}>
+          <span className={styles.colophonCopy}>
+            &copy; {new Date().getFullYear()} 13 UTOPIA INC.
           </span>
-          <span className={styles.tagline}>
-            BE UNREAL. BE UNREASONABLE.
-          </span>
+
+          <div className={styles.colophonRight}>
+            <span className={styles.colophonMotto}>BE UNREAL. BE UNREASONABLE.</span>
+            <span className={styles.langBadge}>EN</span>
+          </div>
         </div>
       </div>
     </footer>

@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { ServicesOverview } from "@/components/services";
-import { buildMetadata } from "@/lib/seo";
+import { ComingSoonScreen } from "@/components/ui/ComingSoonScreen";
 
-export const metadata: Metadata = buildMetadata({
-  seo: {
-    title: "Services — CREATE · BUILD · GROW",
-    description:
-      "Three worlds under one unreasonable standard: brand architecture, digital engineering, and growth systems from 13 UTOPIA.",
-  },
-  path: "/services",
-});
+export const metadata: Metadata = {
+  title: "Services & Capabilities — 13 UTOPIA",
+  description: "Bespoke venture architecture, spatial computing, and zero-latency systems.",
+};
 
 export default function ServicesPage() {
-  return <ServicesOverview />;
+  return (
+    <ComingSoonScreen
+      title="CAPABILITIES & SERVICES"
+      subtitle="The comprehensive service architecture and technical capability registry are currently being finalized. Experience our 3D Flagship and Work Archive."
+    />
+  );
 }

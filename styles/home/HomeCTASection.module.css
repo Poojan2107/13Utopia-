@@ -5,7 +5,7 @@
 .ctaSection {
   position: relative;
   width: 100%;
-  min-height: 75vh;
+  min-height: 85vh;
   padding: clamp(6rem, 14vh, 12rem) clamp(1.5rem, 5vw, 6rem);
   box-sizing: border-box;
   background-color: #000000;
@@ -14,10 +14,13 @@
   justify-content: center;
   text-align: center;
   z-index: 2;
+  overflow: hidden;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .ctaContainer {
+  position: relative;
+  z-index: 2;
   max-width: 1000px;
   width: 100%;
   margin: 0 auto;
@@ -25,6 +28,7 @@
   flex-direction: column;
   align-items: center;
   gap: clamp(1.5rem, 3.2vh, 2.5rem);
+  pointer-events: auto;
 }
 
 .title {
@@ -36,6 +40,7 @@
   color: #ffffff;
   margin: 0;
   text-transform: uppercase;
+  text-shadow: 0 4px 35px rgba(0, 0, 0, 0.95), 0 0 50px rgba(244, 223, 200, 0.18);
 }
 
 .titleHighlight {
@@ -46,9 +51,10 @@
   font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
   font-size: clamp(1.05rem, 1.4vw, 1.4rem);
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.78);
   max-width: 660px;
   margin: 0;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
 }
 
 .actions {

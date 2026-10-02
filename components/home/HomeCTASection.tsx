@@ -4,7 +4,7 @@ import Link from "next/link";
 import styles from "@/styles/home/HomeCTASection.module.css";
 
 /**
- * HomeCTASection — Section 07
+ * HomeCTASection — Section 05 (Initiation Finale)
  * Plus-X inspired monumental commission initiation section.
  */
 export function HomeCTASection() {

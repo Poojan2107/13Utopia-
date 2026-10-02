@@ -228,19 +228,37 @@ void main() {
 
     // Analytical normal calculation for silky champagne specular sheen
     vec3 n = calculateSheetNormal(vWorld.x, vUv, u_res);
-    vec3 lightDir = normalize(vec3(0.15, 0.75, 0.65));
+    vec3 lightDir = normalize(vec3(0.20, 0.80, 0.60));
     vec3 viewDir = normalize(vec3(0.0, 0.0, 1.0));
     vec3 halfVec = normalize(lightDir + viewDir);
 
-    // Subtle specular highlight on crests (no dark shadows in troughs!)
-    float spec = pow(max(dot(n, halfVec), 0.0), 32.0) * 0.16;
-    float rim = pow(1.0 - max(dot(n, viewDir), 0.0), 2.8) * 0.07;
-    vec3 sheen = vec3(1.0, 0.95, 0.85) * spec + vec3(0.9, 0.82, 0.7) * rim;
+    // 1. Physical Glass Specular Glint across curved S-sheet surface
+    float spec = pow(max(dot(n, halfVec), 0.0), 36.0) * (0.24 + 0.28 * u_hover);
+    vec3 specColor = vec3(1.0, 0.98, 0.92) * spec;
 
-    // Crisp, pure texture color with zero muddy trough darkening
-    vec3 col = tex + sheen;
+    // 2. Physical Glass Fresnel Sheen (Translucent crystal rim reflection)
+    float fresnel = pow(1.0 - max(dot(n, viewDir), 0.0), 2.5);
+    vec3 glassSheen = vec3(0.96, 0.92, 0.86) * fresnel * (0.22 + 0.32 * u_hover);
 
-    gl_FragColor = vec4(col, media.a * u_alpha * edgeAlpha);
+    // 3. Internal Frosted Glass Chamfer / Bevel Refraction Rim
+    float glassChamfer = smoothstep(0.0, 3.5 / max(u_res.y, 1.0), -d) * smoothstep(-14.0 / max(u_res.y, 1.0), -1.5 / max(u_res.y, 1.0), d);
+
+    // 4. Card border edge outline & bevel highlight (Crisp champagne crystal stroke)
+    float borderDist = abs(d);
+    float borderStroke = 1.0 - smoothstep(0.0, 2.2 / max(u_res.y, 1.0), borderDist);
+    vec3 borderColor = mix(vec3(0.95, 0.89, 0.82), vec3(1.0, 1.0, 1.0), u_hover);
+    
+    // 5. Inner vignette shadow to frame the video content and pop off dark background
+    float innerVignette = smoothstep(-16.0 / max(u_res.y, 1.0), 0.0, d);
+    vec3 surfaceColor = tex * (0.84 + 0.16 * (1.0 - innerVignette));
+
+    // Combine glass layers
+    vec3 finalColor = mix(surfaceColor, borderColor, borderStroke * (0.45 + 0.45 * u_hover)) 
+                    + glassSheen 
+                    + specColor 
+                    + (vec3(1.0, 0.96, 0.90) * glassChamfer * 0.14);
+
+    gl_FragColor = vec4(finalColor, media.a * u_alpha * edgeAlpha);
 }
 `;
 
@@ -321,12 +339,26 @@ const paintChrome = (
   ctx.clearRect(0, 0, w, h);
   const s = w / 1536;
 
-  const scrim = ctx.createLinearGradient(0, h * 0.58, 0, h);
+  // 1. Frosted Glass Chassis at bottom of card
+  const plateH = 200 * s;
+  const plateY = h - plateH;
+  const scrim = ctx.createLinearGradient(0, h * 0.45, 0, h);
   scrim.addColorStop(0, "rgba(0, 0, 0, 0)");
-  scrim.addColorStop(0.45, "rgba(0, 0, 0, 0.18)");
-  scrim.addColorStop(1, "rgba(0, 0, 0, 0.62)");
+  scrim.addColorStop(0.35, "rgba(10, 10, 14, 0.25)");
+  scrim.addColorStop(0.70, "rgba(8, 8, 12, 0.72)");
+  scrim.addColorStop(1, "rgba(5, 5, 8, 0.94)");
   ctx.fillStyle = scrim;
-  ctx.fillRect(0, h * 0.58, w, h * 0.42);
+  ctx.fillRect(0, h * 0.45, w, h * 0.55);
+
+  // Subtle frosted glass hairline rim
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(32 * s, plateY + 20 * s);
+  ctx.lineTo(w - 32 * s, plateY + 20 * s);
+  ctx.strokeStyle = isHovered ? "rgba(244, 223, 200, 0.35)" : "rgba(255, 255, 255, 0.12)";
+  ctx.lineWidth = 1.5 * s;
+  ctx.stroke();
+  ctx.restore();
 
   const padX = 72 * s;
   const titleSize = Math.round(56 * s);

@@ -7,11 +7,11 @@ import {
   useMemo,
   useCallback,
 } from "react";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import { PROJECTS, RepeatedProject } from "@/components/work-showcase/projects";
 import ProjectModal from "@/components/work-showcase/ProjectModal";
 import { CardMetric } from "@/components/work-showcase/ThreeCanvas";
-import { EchoTitle } from "@/components/framer/EchoTitle";
 import type { Project } from "@/components/work-showcase/projects";
 import styles from "@/styles/home/HomeSectionWork.module.css";
 
@@ -22,11 +22,10 @@ const ThreeCanvas = dynamic(
 );
 
 /**
- * HomeSectionWork — Section 06 on the homepage.
+ * HomeSectionWork — Section 04 on the homepage.
  *
- * The exact same Jesper Landberg 3D ribbon carousel (ThreeCanvas) and
- * physics engine as the standalone /work page — with a monumental title
- * introduction header, site-parity eyebrow, and minimal archive link.
+ * The 3D Jesper Landberg ribbon carousel (ThreeCanvas) with
+ * homepage-consistent monumental typography and dark aesthetic.
  */
 export function HomeSectionWork() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -64,15 +63,16 @@ export function HomeSectionWork() {
     pointerVelocity: 0,
   });
 
-  // Gate all input events — only active when section is in the viewport
   const isInViewRef = useRef(false);
 
   useEffect(() => {
     const el = sectionRef.current;
     if (!el || typeof IntersectionObserver === "undefined") return;
     const obs = new IntersectionObserver(
-      ([entry]) => { isInViewRef.current = entry.isIntersecting; },
-      { threshold: 0.1 }
+      ([entry]) => {
+        isInViewRef.current = entry.isIntersecting;
+      },
+      { threshold: 0.05 }
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -142,19 +142,21 @@ export function HomeSectionWork() {
 
     const onTouchStart = (e: TouchEvent) => {
       if (!isInViewRef.current) return;
+      if (e.touches.length !== 1) return;
       p.isDragging = true;
+      p.dragStartX = e.touches[0].clientX;
       p.lastX = e.touches[0].clientX;
       p.lastTime = performance.now();
       p.pointerVelocity = 0;
     };
 
     const onTouchMove = (e: TouchEvent) => {
-      if (!p.isDragging) return;
+      if (!p.isDragging || e.touches.length !== 1) return;
       const now = performance.now();
       const dt = Math.max(now - p.lastTime, 1);
-      const delta = (p.lastX - e.touches[0].clientX) * 1.25;
+      const delta = p.lastX - e.touches[0].clientX;
       p.pointerVelocity = (delta / dt) * 16.67;
-      p.target += delta;
+      p.target += delta * 1.1;
       p.current += (p.target - p.current) * 0.35;
       p.lastX = e.touches[0].clientX;
       p.lastTime = now;
@@ -164,17 +166,18 @@ export function HomeSectionWork() {
       if (!p.isDragging) return;
       p.isDragging = false;
       if (Math.abs(p.pointerVelocity) > 0.5) {
-        p.target += p.pointerVelocity * 10;
+        p.target += p.pointerVelocity * 8;
       }
     };
 
     const tick = () => {
       animId = requestAnimationFrame(tick);
-      const diff = p.target - p.current;
-      p.current += diff * 0.085;
-      p.velocity = diff * 0.085;
+      if (!p.isDragging) {
+        p.current += (p.target - p.current) * 0.085;
+      }
+      velocityRef.current = p.current - scrollCurrentRef.current;
       scrollCurrentRef.current = p.current;
-      velocityRef.current = p.velocity;
+
       const singleW = singleLoopWidthRef.current;
       if (singleW > 0) {
         const totalSpan = singleW * 3;
@@ -217,35 +220,37 @@ export function HomeSectionWork() {
     <section
       ref={sectionRef}
       id="work"
-      aria-label="06: The Work — 3D Portfolio Showcase"
+      aria-label="04: Selected Commissions — 3D Portfolio Showcase"
       className={styles.section}
     >
       {/* Editorial Chapter Eyebrow */}
       <div className={styles.eyebrow}>
-        <span className={styles.eyebrowNum}>06</span>
+        <span className={styles.eyebrowNum}>04</span>
         <span className={styles.eyebrowSep}>//</span>
-        <span className={styles.eyebrowLabel}>THE WORK · 3D PORTFOLIO SHOWCASE</span>
-        <a href="/work" className={styles.archiveLink}>
-          VIEW ARCHIVE [8] ↗
-        </a>
+        <span className={styles.eyebrowLabel}>SELECTED COMMISSIONS · 3D PORTFOLIO SHOWCASE</span>
+        <Link href="/work" className={styles.archiveLink}>
+          <span>VIEW ARCHIVE [8]</span>
+          <span className={styles.archiveArrow}>↗</span>
+        </Link>
       </div>
 
       {/* Monumental Work Section Title Header */}
       <div className={styles.headerBlock}>
         <div className={styles.titleWrap}>
-          <EchoTitle text="WORK." className={styles.workEchoTitle} />
+          <h2 className={styles.mainTitle}>SELECTED COMMISSIONS</h2>
           <p className={styles.workLead}>
-            Anomalies in production. Spatial architectures, bespoke SaaS platforms, and living brands.
+            Anomalies in production. Spatial architectures, bespoke computational platforms, and living brand moats.
           </p>
         </div>
         <div className={styles.interactionHint} aria-hidden="true">
           <span className={styles.hintDot} />
-          <span className={styles.hintText}>3D ORBIT · DRAG OR SCROLL TO EXPLORE</span>
+          <span className={styles.hintText}>3D ORBIT // DRAG OR SCROLL TO EXPLORE</span>
         </div>
       </div>
 
-      {/* The 3D canvas — full width ribbon carousel */}
+      {/* The 3D canvas — full width ribbon carousel with glass depth backdrop */}
       <div className={styles.canvasWrap}>
+        <div className={styles.canvasBackdrop} />
         <ThreeCanvas
           repeatedProjects={repeatedProjects}
           scrollCurrentRef={scrollCurrentRef}
