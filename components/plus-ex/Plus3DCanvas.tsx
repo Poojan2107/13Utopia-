@@ -227,6 +227,20 @@ export function Plus3DCanvas({
     beGroup.visible = false;
     emblemGroup.add(beGroup);
 
+    // ── 03. SUB-GROUP: "13 ✕ BE" UNIFIED X FUSION EMBLEM ────────
+    const xGroup = new THREE.Group();
+
+    const xLeftMesh = new THREE.Mesh(threeGeo, matTitaniumOne);
+    xLeftMesh.position.set(-1.70, 0, 0);
+    xGroup.add(xLeftMesh);
+
+    const xRightMesh = new THREE.Mesh(eGeo, matTitaniumThree);
+    xRightMesh.position.set(1.70, 0, 0);
+    xGroup.add(xRightMesh);
+
+    xGroup.visible = false;
+    emblemGroup.add(xGroup);
+
     // Center the entire 13 emblem group in the screen
     emblemGroup.scale.setScalar(0.80);
     emblemGroup.position.set(0, 0, -1.0);
@@ -400,9 +414,10 @@ export function Plus3DCanvas({
         emblemGroup.scale.setScalar(currentScale);
         emblemGroup.rotation.set(currentRotX, currentRotY, currentRotZ);
 
-        // Seamless solid edge-on flip (0 wireframe or depth clipping)
-        thirteenGroup.visible = currentMorph < 0.50;
-        beGroup.visible = currentMorph >= 0.50;
+        // Seamless solid edge-on morph: 13 -> 13 ✕ BE (Fusion X) -> BE
+        thirteenGroup.visible = currentMorph < 0.33;
+        xGroup.visible = currentMorph >= 0.33 && currentMorph <= 0.67;
+        beGroup.visible = currentMorph > 0.67;
       }
 
       renderer.render(scene, camera);

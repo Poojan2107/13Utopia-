@@ -7,7 +7,7 @@ import styles from "./ModelViewer.module.css";
 
 export function ModelViewer() {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [activeModel, setActiveModel] = useState<"BE" | "13">("BE");
+  const [activeModel, setActiveModel] = useState<"BE" | "13" | "X">("BE");
   const [colorMode, setColorMode] = useState<"titanium" | "chrome" | "clay" | "gold">("chrome");
   const [lightBoost, setLightBoost] = useState(true);
   const [wireframeMode, setWireframeMode] = useState(false);
@@ -19,6 +19,7 @@ export function ModelViewer() {
   const rootGroupRef = useRef<THREE.Group | null>(null);
   const thirteenGroupRef = useRef<THREE.Group | null>(null);
   const beGroupRef = useRef<THREE.Group | null>(null);
+  const xGroupRef = useRef<THREE.Group | null>(null);
   const matOneRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
   const matThreeRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
   const keyLightRef = useRef<THREE.DirectionalLight | null>(null);
@@ -106,11 +107,12 @@ export function ModelViewer() {
     }
   }, [lightBoost]);
 
-  // Switch visible model (13 vs BE)
+  // Switch visible model (13 vs BE vs X Fusion)
   useEffect(() => {
-    if (thirteenGroupRef.current && beGroupRef.current) {
+    if (thirteenGroupRef.current && beGroupRef.current && xGroupRef.current) {
       thirteenGroupRef.current.visible = activeModel === "13";
       beGroupRef.current.visible = activeModel === "BE";
+      xGroupRef.current.visible = activeModel === "X";
     }
   }, [activeModel]);
 
@@ -275,6 +277,18 @@ export function ModelViewer() {
     eMesh.position.set(2.12, 0, 0);
     beGroup.add(eMesh);
 
+    // ── 03. "13 ✕ BE" UNIFIED X FUSION GROUP ────────────────────
+    const xGroup = new THREE.Group();
+    xGroupRef.current = xGroup;
+
+    const xLeftMesh = new THREE.Mesh(threeGeo, matOne);
+    xLeftMesh.position.set(-1.70, 0, 0);
+    xGroup.add(xLeftMesh);
+
+    const xRightMesh = new THREE.Mesh(eGeo, matThree);
+    xRightMesh.position.set(1.70, 0, 0);
+    xGroup.add(xRightMesh);
+
     // ── ROOT ORBIT ANCHOR ──────────────────────────────────────
     const rootGroup = new THREE.Group();
     rootGroupRef.current = rootGroup;
@@ -283,9 +297,11 @@ export function ModelViewer() {
 
     thirteenGroup.visible = activeModel === "13";
     beGroup.visible = activeModel === "BE";
+    xGroup.visible = activeModel === "X";
 
     rootGroup.add(thirteenGroup);
     rootGroup.add(beGroup);
+    rootGroup.add(xGroup);
     scene.add(rootGroup);
 
     // 6. Studio Lighting Setup (Signature Luxury Reflections)
@@ -460,7 +476,7 @@ export function ModelViewer() {
           <span className={styles.hudBadge}>OFFICIAL 3D ARTIFACT</span>
         </div>
 
-        {/* Model Switcher Pill Deck: BE MONOLITH and 13 EMBLEM */}
+        {/* Model Switcher Pill Deck: BE MONOLITH, 13 ✕ BE FUSION, and 13 EMBLEM */}
         <div className={styles.modelSwitcher}>
           <button
             className={`${styles.modelSwitchBtn} ${activeModel === "BE" ? styles.modelSwitchBtnActive : ""}`}
@@ -468,6 +484,13 @@ export function ModelViewer() {
             type="button"
           >
             BE MONOLITH
+          </button>
+          <button
+            className={`${styles.modelSwitchBtn} ${activeModel === "X" ? styles.modelSwitchBtnActive : ""}`}
+            onClick={() => setActiveModel("X")}
+            type="button"
+          >
+            13 ✕ BE FUSION
           </button>
           <button
             className={`${styles.modelSwitchBtn} ${activeModel === "13" ? styles.modelSwitchBtnActive : ""}`}
@@ -493,7 +516,9 @@ export function ModelViewer() {
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>ARTIFACT</span>
           <span className={styles.telemetryVal}>
-            {activeModel === "BE" ? "BE MONUMENTAL MONOLITH (OFFICIAL)" : "13 MONOLITH EMBLEM (OFFICIAL)"}
+            {activeModel === "BE" && "BE MONUMENTAL MONOLITH (OFFICIAL)"}
+            {activeModel === "X" && "13 ✕ BE UNIFIED FUSION ARTIFACT (OFFICIAL)"}
+            {activeModel === "13" && "13 MONOLITH EMBLEM (OFFICIAL)"}
           </span>
         </div>
         <div className={styles.telemetryRow}>
