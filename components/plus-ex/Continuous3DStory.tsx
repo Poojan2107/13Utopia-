@@ -161,16 +161,16 @@ export function Continuous3DStory() {
           {/* Worlds Sequence: CREATE (Right), BUILD (Left), GROW (Right) */}
           {WORLDS.map((world, idx) => {
             // Synchronized timing matching 3D kinematics:
-            // Act 1 CREATE: [0.22, 0.44]
-            // Act 2 BUILD: [0.51, 0.73]
-            // Act 3 GROW: [0.80, 0.94]
+            // Act 1 CREATE: [0.22, 0.46]
+            // Act 2 BUILD: [0.50, 0.74]
+            // Act 3 GROW: [0.78, 1.00]
             const ranges = [
-              { start: 0.22, end: 0.44 },
-              { start: 0.51, end: 0.73 },
-              { start: 0.80, end: 0.94 },
+              { start: 0.22, end: 0.46 },
+              { start: 0.50, end: 0.74 },
+              { start: 0.78, end: 1.00 },
             ];
             const { start: startP, end: endP } = ranges[idx];
-            const isWorldActive = scrollProgress >= startP && scrollProgress < endP;
+            const isWorldActive = scrollProgress >= startP && scrollProgress <= endP;
             const worldP = Math.max(0, Math.min(1, (scrollProgress - startP) / (endP - startP)));
             
             // Sub-phases: 0.0 -> 0.65 (Word Roll with high dwell time), 0.65 -> 1.0 (Editorial Statement)
@@ -263,34 +263,6 @@ export function Continuous3DStory() {
               </div>
             );
           })}
-
-          {/* Finale Call: Pinned Ending */}
-          <div
-            className={`${styles.act} ${scrollProgress >= 0.95 ? styles.actVisible : styles.actHidden}`}
-          >
-            <div className={styles.initiationContent}>
-              <h2 className={styles.initiationHeading}>
-                <span className={styles.headingLine}>READY TO TRANSCEND</span>
-                <span className={styles.headingHighlight}>THE DEFAULT?</span>
-              </h2>
-
-              <p className={styles.initiationSub}>
-                We take on a strictly limited number of commissions per quarter to ensure obsessive craft, bespoke GPU engineering, and categorical market dominance.
-              </p>
-
-              <div className={styles.initiationActions}>
-                <a
-                  href="mailto:hello@13utopia.com?subject=Project%20Commission%20Inquiry"
-                  className={styles.primaryCta}
-                >
-                  Start a Commission →
-                </a>
-                <Link href="/model" className={styles.secondaryCta}>
-                  Inspect 3D Emblem
-                </Link>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

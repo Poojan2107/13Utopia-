@@ -267,78 +267,62 @@ export function Plus3DCanvas({
         let targetRotZ = 0;
         let targetScale = 0.88;
 
-        if (p < 0.15) {
+        if (p < 0.18) {
           // Act 0: Centered Manifesto
-          const localP = p / 0.15;
+          const localP = p / 0.18;
           targetX = 0;
           targetRotY = localP * 0.20;
           targetRotX = 0.06;
           targetRotZ = 0;
           targetScale = 0.88;
-        } else if (p >= 0.15 && p < 0.22) {
+        } else if (p >= 0.18 && p < 0.24) {
           // Transition 0 -> 1: Center -> Full Left Column sweep with 360° roll
-          const t = smoothstep(0.15, 0.22, p);
+          const t = smoothstep(0.18, 0.24, p);
           targetX = -3.9 * t;
           targetRotY = 0.20 * (1 - t) + (Math.PI * 2 + 0.22) * t;
           targetRotX = 0.06 + Math.sin(t * Math.PI) * 0.12;
           targetRotZ = 0.04 * t;
           targetScale = 0.88 + 0.08 * t;
-        } else if (p >= 0.22 && p < 0.44) {
+        } else if (p >= 0.24 && p < 0.46) {
           // Act 1: CREATE (Settled Full Left Column)
-          const localP = (p - 0.22) / 0.22;
+          const localP = (p - 0.24) / 0.22;
           targetX = -3.9;
           targetRotY = Math.PI * 2 + 0.22 + Math.sin(localP * Math.PI) * 0.08;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = 0.04;
           targetScale = 0.96;
-        } else if (p >= 0.44 && p < 0.51) {
+        } else if (p >= 0.46 && p < 0.52) {
           // Transition 1 -> 2: Left -> Right Column sweep with full 360° roll
-          const t = smoothstep(0.44, 0.51, p);
+          const t = smoothstep(0.46, 0.52, p);
           targetX = -3.9 + 7.8 * t;
           targetRotY = (Math.PI * 2 + 0.22) * (1 - t) + (Math.PI * 4 - 0.22) * t;
           targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
           targetRotZ = 0.04 * (1 - 2 * t);
           targetScale = 0.96;
-        } else if (p >= 0.51 && p < 0.73) {
+        } else if (p >= 0.52 && p < 0.74) {
           // Act 2: BUILD (Settled Full Right Column)
-          const localP = (p - 0.51) / 0.22;
+          const localP = (p - 0.52) / 0.22;
           targetX = 3.9;
           targetRotY = Math.PI * 4 - 0.22 - Math.sin(localP * Math.PI) * 0.08;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = -0.04;
           targetScale = 0.96;
-        } else if (p >= 0.73 && p < 0.80) {
+        } else if (p >= 0.74 && p < 0.80) {
           // Transition 2 -> 3: Right -> Left Column sweep with full 360° roll
-          const t = smoothstep(0.73, 0.80, p);
+          const t = smoothstep(0.74, 0.80, p);
           targetX = 3.9 - 7.8 * t;
           targetRotY = (Math.PI * 4 - 0.22) * (1 - t) + (Math.PI * 6 + 0.22) * t;
           targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
           targetRotZ = -0.04 * (1 - 2 * t);
           targetScale = 0.96;
-        } else if (p >= 0.80 && p < 0.94) {
-          // Act 3: GROW (Settled Full Left Column)
-          const localP = (p - 0.80) / 0.14;
+        } else {
+          // Act 3: GROW (Settled Full Left Column through conclusion)
+          const localP = Math.min(1, (p - 0.80) / 0.20);
           targetX = -3.9;
           targetRotY = Math.PI * 6 + 0.22 + Math.sin(localP * Math.PI) * 0.08;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = 0.04;
           targetScale = 0.96;
-        } else if (p >= 0.94 && p < 0.97) {
-          // Transition 3 -> 4: Left -> Center sweep
-          const t = smoothstep(0.94, 0.97, p);
-          targetX = -3.9 * (1 - t);
-          targetRotY = (Math.PI * 6 + 0.22) * (1 - t) + (Math.PI * 8) * t;
-          targetRotX = 0.08 - 0.02 * t;
-          targetRotZ = 0.04 * (1 - t);
-          targetScale = 0.96 - 0.08 * t;
-        } else {
-          // Finale: Center
-          const localP = (p - 0.97) / 0.03;
-          targetX = 0;
-          targetRotY = Math.PI * 8 + localP * 0.15;
-          targetRotX = 0.06;
-          targetRotZ = 0;
-          targetScale = 0.88;
         }
 
         // Luxurious physics with high-inertia smooth damping for crafted cinematic motion
