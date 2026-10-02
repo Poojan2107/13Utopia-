@@ -16,7 +16,6 @@ export function ComingSoonScreen({
     <main
       style={{
         position: "relative",
-        minHeight: "100vh",
         minHeight: "100dvh",
         backgroundColor: "#000000",
         color: "#ffffff",
