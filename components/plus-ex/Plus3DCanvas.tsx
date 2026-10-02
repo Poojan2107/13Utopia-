@@ -250,49 +250,50 @@ export function Plus3DCanvas({
       bevelSegments: 5,
     };
 
-    // 13 Utopia Signature Dark Titanium Body with Champagne Gold Bevel Rim Reflections
+    // 13 Utopia Signature Dark Titanium Body with Champagne Gold Bevel Reflections (100% OPAQUE - Zero Wireframe Glitches)
     const mat13_One = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(0x222428), // Dark architectural titanium
       roughness: 0.28,
       metalness: 0.82,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.20,
+      clearcoat: 0.40,
+      clearcoatRoughness: 0.18,
       reflectivity: 0.85,
-      transparent: true,
-      opacity: 1,
     });
 
     const mat13_Three = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(0x1e2024), // Deep obsidian graphite
       roughness: 0.30,
       metalness: 0.80,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.20,
+      clearcoat: 0.40,
+      clearcoatRoughness: 0.18,
       reflectivity: 0.85,
-      transparent: true,
-      opacity: 1,
     });
 
     const matBE_B = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(0x222428),
       roughness: 0.28,
       metalness: 0.82,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.20,
+      clearcoat: 0.40,
+      clearcoatRoughness: 0.18,
       reflectivity: 0.85,
-      transparent: true,
-      opacity: 0,
     });
 
     const matBE_E = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(0x1e2024),
       roughness: 0.30,
       metalness: 0.80,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.20,
+      clearcoat: 0.40,
+      clearcoatRoughness: 0.18,
       reflectivity: 0.85,
+    });
+
+    // ── SUBTLE ANIMATED GLOWING GOLDEN BORDER ACCENT MATERIAL ──────
+    const goldEdgeMaterial = new THREE.LineBasicMaterial({
+      color: new THREE.Color(0xf5d77f), // 18k Champagne Gold
       transparent: true,
-      opacity: 0,
+      opacity: 0.42,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
     });
 
     // ── SUB-GROUP A: "13" ──────────────────────────────────────
@@ -304,11 +305,19 @@ export function Plus3DCanvas({
     oneMesh.position.set(-1.35, 0, 0);
     thirteenGroup.add(oneMesh);
 
+    const oneEdgesGeo = new THREE.EdgesGeometry(oneGeo, 26);
+    const oneEdgeLine = new THREE.LineSegments(oneEdgesGeo, goldEdgeMaterial);
+    oneMesh.add(oneEdgeLine);
+
     const threeGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
     threeGeo.center();
     const threeMesh = new THREE.Mesh(threeGeo, mat13_Three);
     threeMesh.position.set(0.65, 0, 0);
     thirteenGroup.add(threeMesh);
+
+    const threeEdgesGeo = new THREE.EdgesGeometry(threeGeo, 26);
+    const threeEdgeLine = new THREE.LineSegments(threeEdgesGeo, goldEdgeMaterial);
+    threeMesh.add(threeEdgeLine);
 
     emblemGroup.add(thirteenGroup);
 
@@ -321,11 +330,19 @@ export function Plus3DCanvas({
     bMesh.position.set(-1.45, 0, 0);
     beGroup.add(bMesh);
 
+    const bEdgesGeo = new THREE.EdgesGeometry(bGeo, 26);
+    const bEdgeLine = new THREE.LineSegments(bEdgesGeo, goldEdgeMaterial);
+    bMesh.add(bEdgeLine);
+
     const eGeo = new THREE.ExtrudeGeometry(createEShape(), extrudeSettings);
     eGeo.center();
     const eMesh = new THREE.Mesh(eGeo, matBE_E);
     eMesh.position.set(1.25, 0, 0);
     beGroup.add(eMesh);
+
+    const eEdgesGeo = new THREE.EdgesGeometry(eGeo, 26);
+    const eEdgeLine = new THREE.LineSegments(eEdgesGeo, goldEdgeMaterial);
+    eMesh.add(eEdgeLine);
 
     beGroup.visible = false;
     emblemGroup.add(beGroup);
@@ -356,6 +373,11 @@ export function Plus3DCanvas({
     goldRimLight.position.set(4, -6, -3);
     scene.add(goldRimLight);
 
+    // Dynamic Orbital Gold Border Sweep Light (Animates smoothly around model perimeter)
+    const orbitGoldLight = new THREE.PointLight(0xffdf99, 4.5, 14);
+    orbitGoldLight.position.set(0, 0, 2.5);
+    scene.add(orbitGoldLight);
+
     // Left Rim Light (Edge Definition)
     const leftRimLight = new THREE.DirectionalLight(0xffffff, 3.2);
     leftRimLight.position.set(-8, 3, -4);
@@ -377,7 +399,7 @@ export function Plus3DCanvas({
     };
     window.addEventListener("resize", onResize);
 
-    // Render loop — continuous scroll-driven kinematics & smooth 13 <-> BE transformation
+    // Render loop — continuous scroll-driven kinematics & flawless solid 13 <-> BE transformation
     let rafId: number;
     let currentX = 0;
     let currentY = 0;
@@ -398,6 +420,15 @@ export function Plus3DCanvas({
       rafId = requestAnimationFrame(animate);
       const p = Math.max(0, Math.min(1, progressRef.current));
       const entryP = Math.max(0, Math.min(1, entryProgressRef.current));
+
+      // ── ANIMATED GOLDEN BORDER PATH HIGHLIGHT ──────────────────────
+      const time = performance.now() * 0.0018;
+      // Fluid orbital sweep around the letter contours (Lissajous path for organic depth)
+      orbitGoldLight.position.x = Math.sin(time * 1.2) * 4.2 + currentX;
+      orbitGoldLight.position.y = Math.cos(time * 1.5) * 3.4 + currentY;
+      orbitGoldLight.position.z = 2.2 + Math.sin(time * 2.1) * 0.8;
+      // Gentle breathing glow on edge lines
+      goldEdgeMaterial.opacity = 0.32 + 0.22 * Math.sin(time * 2.4);
 
       if (emblemGroup) {
         // Slide smoothly from behind video during entry (entryP: 0 -> 1)
@@ -489,7 +520,7 @@ export function Plus3DCanvas({
 
         // High-inertia smooth damping for cinematic motion & transformation
         const dampFactor = 0.036;
-        const morphDamp = 0.048;
+        const morphDamp = 0.060;
 
         currentX += (targetX - currentX) * dampFactor;
         currentY += (targetSlideY - currentY) * dampFactor;
@@ -503,20 +534,9 @@ export function Plus3DCanvas({
         emblemGroup.scale.setScalar(currentScale);
         emblemGroup.rotation.set(currentRotX, currentRotY, currentRotZ);
 
-        // Update Morph Visibility & Material Opacities
-        thirteenGroup.visible = currentMorph < 0.98;
-        beGroup.visible = currentMorph > 0.02;
-
-        const op13 = Math.max(0, Math.min(1, Math.cos(currentMorph * Math.PI * 0.5)));
-        const opBE = Math.max(0, Math.min(1, Math.sin(currentMorph * Math.PI * 0.5)));
-
-        mat13_One.opacity = op13;
-        mat13_Three.opacity = op13;
-        matBE_B.opacity = opBE;
-        matBE_E.opacity = opBE;
-
-        thirteenGroup.scale.set(1 - 0.08 * currentMorph, 1 - 0.04 * currentMorph, 1);
-        beGroup.scale.set(0.92 + 0.08 * currentMorph, 0.96 + 0.04 * currentMorph, 1);
+        // Solid Opaque Transition — flips seamlessly during the edge-on revolution without ANY wireframe or transparency sorting artifact
+        thirteenGroup.visible = currentMorph < 0.50;
+        beGroup.visible = currentMorph >= 0.50;
       }
 
       renderer.render(scene, camera);
@@ -532,8 +552,13 @@ export function Plus3DCanvas({
       }
       oneGeo.dispose();
       threeGeo.dispose();
+      oneEdgesGeo.dispose();
+      threeEdgesGeo.dispose();
       bGeo.dispose();
       eGeo.dispose();
+      bEdgesGeo.dispose();
+      eEdgesGeo.dispose();
+      goldEdgeMaterial.dispose();
       mat13_One.dispose();
       mat13_Three.dispose();
       matBE_B.dispose();

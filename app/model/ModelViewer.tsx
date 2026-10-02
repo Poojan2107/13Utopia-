@@ -176,6 +176,15 @@ export function ModelViewer() {
       bevelSegments: 5,
     };
 
+    // 4b. Glowing Golden Edge Lines
+    const goldEdgeMaterial = new THREE.LineBasicMaterial({
+      color: new THREE.Color(0xf5d77f),
+      transparent: true,
+      opacity: 0.42,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+
     // ── GEOMETRY A: "13" BRAND EMBLEM ─────────────────────────
     const createOneShape = () => {
       const shape = new THREE.Shape();
@@ -223,11 +232,19 @@ export function ModelViewer() {
     oneMesh.position.set(-1.35, 0, 0);
     thirteenGroup.add(oneMesh);
 
+    const oneEdgesGeo = new THREE.EdgesGeometry(oneGeo, 26);
+    const oneEdgeLine = new THREE.LineSegments(oneEdgesGeo, goldEdgeMaterial);
+    oneMesh.add(oneEdgeLine);
+
     const threeGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
     threeGeo.center();
     const threeMesh = new THREE.Mesh(threeGeo, matThree);
     threeMesh.position.set(0.65, 0, 0);
     thirteenGroup.add(threeMesh);
+
+    const threeEdgesGeo = new THREE.EdgesGeometry(threeGeo, 26);
+    const threeEdgeLine = new THREE.LineSegments(threeEdgesGeo, goldEdgeMaterial);
+    threeMesh.add(threeEdgeLine);
 
     // ── GEOMETRY B: "BE" MONUMENTAL EMBLEM (Exact 1:1 "13" Font & Ribbon Kinship) ────
     const createBShape = () => {
@@ -343,11 +360,19 @@ export function ModelViewer() {
     bMesh.position.set(-1.45, 0, 0);
     beGroup.add(bMesh);
 
+    const bEdgesGeo = new THREE.EdgesGeometry(bGeo, 26);
+    const bEdgeLine = new THREE.LineSegments(bEdgesGeo, goldEdgeMaterial);
+    bMesh.add(bEdgeLine);
+
     const eGeo = new THREE.ExtrudeGeometry(createEShape(), extrudeSettings);
     eGeo.center();
     const eMesh = new THREE.Mesh(eGeo, matThree);
     eMesh.position.set(1.25, 0, 0);
     beGroup.add(eMesh);
+
+    const eEdgesGeo = new THREE.EdgesGeometry(eGeo, 26);
+    const eEdgeLine = new THREE.LineSegments(eEdgesGeo, goldEdgeMaterial);
+    eMesh.add(eEdgeLine);
 
     // ── ROOT ORBIT ANCHOR ──────────────────────────────────────
     const rootGroup = new THREE.Group();
@@ -378,6 +403,12 @@ export function ModelViewer() {
 
     const goldRimLight = new THREE.DirectionalLight(0xf4dfc8, 4.5);
     goldRimLight.position.set(4, -6, -3);
+    scene.add(goldRimLight);
+
+    // Dynamic Orbital Gold Border Sweep Light (Animates smoothly around model perimeter)
+    const orbitGoldLight = new THREE.PointLight(0xffdf99, 4.5, 14);
+    orbitGoldLight.position.set(0, 0, 2.5);
+    scene.add(orbitGoldLight);
     scene.add(goldRimLight);
 
     const leftRimLight = new THREE.DirectionalLight(0xffffff, 3.2);
@@ -462,6 +493,13 @@ export function ModelViewer() {
     const animate = () => {
       rafId = requestAnimationFrame(animate);
 
+      const time = performance.now() * 0.0018;
+      // Fluid orbital sweep around the letter contours
+      orbitGoldLight.position.x = Math.sin(time * 1.2) * 4.2;
+      orbitGoldLight.position.y = Math.cos(time * 1.5) * 3.4;
+      orbitGoldLight.position.z = 2.2 + Math.sin(time * 2.1) * 0.8;
+      goldEdgeMaterial.opacity = 0.32 + 0.22 * Math.sin(time * 2.4);
+
       if (rootGroupRef.current) {
         if (autoRotateRef.current && !isDraggingRef.current) {
           rootGroupRef.current.rotation.y += 0.006;
@@ -495,8 +533,13 @@ export function ModelViewer() {
       renderer.dispose();
       oneGeo.dispose();
       threeGeo.dispose();
+      oneEdgesGeo.dispose();
+      threeEdgesGeo.dispose();
       bGeo.dispose();
       eGeo.dispose();
+      bEdgesGeo.dispose();
+      eEdgesGeo.dispose();
+      goldEdgeMaterial.dispose();
       matOne.dispose();
       matThree.dispose();
       if (container.contains(renderer.domElement)) {
