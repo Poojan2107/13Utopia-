@@ -227,17 +227,17 @@ export function Plus3DCanvas({
     beGroup.visible = false;
     emblemGroup.add(beGroup);
 
-    // ── 03. SUB-GROUP: "13 ✕ BE" UNIFIED X FUSION EMBLEM (Formed by Merging E from BE and 3 from 13) ────
+    // ── 03. SUB-GROUP: "13 ✕ BE" UNIFIED X FUSION EMBLEM (Formed by Merging 3 from 13 and E from BE) ────
     const xGroup = new THREE.Group();
 
-    // Left piece: Mirrored "3" / "E" from the BE model
-    const xLeftMesh = new THREE.Mesh(eGeo, matTitaniumOne);
-    xLeftMesh.position.set(-1.80, 0, 0);
+    // Left wing of X: "3" from the 13 model (branches open to top-left & bottom-left)
+    const xLeftMesh = new THREE.Mesh(threeGeo, matTitaniumOne);
+    xLeftMesh.position.set(-1.55, 0, 0);
     xGroup.add(xLeftMesh);
 
-    // Right piece: "3" from the 13 model
-    const xRightMesh = new THREE.Mesh(threeGeo, matTitaniumThree);
-    xRightMesh.position.set(1.80, 0, 0);
+    // Right wing of X: "E" (mirrored 3) from the BE model (branches open to top-right & bottom-right)
+    const xRightMesh = new THREE.Mesh(eGeo, matTitaniumThree);
+    xRightMesh.position.set(1.55, 0, 0);
     xGroup.add(xRightMesh);
 
     xGroup.visible = false;
