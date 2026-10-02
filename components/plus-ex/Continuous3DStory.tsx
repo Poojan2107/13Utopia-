@@ -266,15 +266,23 @@ export function Continuous3DStory() {
 
           {/* Finale Call: Pinned Ending */}
           <div
-            className={`${styles.act} ${scrollProgress >= 0.96 ? styles.actVisible : styles.actHidden}`}
+            className={`${styles.act} ${scrollProgress >= 0.95 ? styles.actVisible : styles.actHidden}`}
           >
             <div className={styles.initiationContent}>
+              <div className={styles.initiationEyebrow}>
+                <span className={styles.livePulse} />
+                <span className={styles.eyebrowTag}>2026 COMMISSIONS · 04 OF 13 SLOTS OPEN</span>
+              </div>
+
               <h2 className={styles.initiationHeading}>
-                HAVE AN UNREASONABLE IDEA?
+                <span className={styles.headingLine}>HAVE AN</span>
+                <span className={styles.headingHighlight}>UNREASONABLE IDEA?</span>
               </h2>
+
               <p className={styles.initiationSub}>
                 We select only 13 bespoke commissions annually. Let&apos;s build what conventional companies cannot.
               </p>
+
               <div className={styles.initiationActions}>
                 <a
                   href="mailto:hello@13utopia.com?subject=Project%20Commission%20Inquiry"
@@ -285,6 +293,11 @@ export function Continuous3DStory() {
                 <Link href="/work" className={styles.secondaryCta}>
                   Explore Case Stories
                 </Link>
+              </div>
+
+              <div className={styles.initiationFootnote}>
+                <span className={styles.footnoteDot} />
+                <span>EST. 2026 // TORONTO · BANGALORE · TOKYO · SAN FRANCISCO</span>
               </div>
             </div>
           </div>
