@@ -265,20 +265,20 @@ export function ModelViewer() {
     bBowls.position.set(0.40, 0, 0);
     bGroup.add(bSpine);
     bGroup.add(bBowls);
-    bGroup.position.set(-2.60, 0, 0);
+    bGroup.position.set(-2.28, 0, 0);
     beGroup.add(bGroup);
 
-    // "E": Organic "3" ribbon mirrored with visible gap separating B and E
+    // "E": Organic "3" ribbon mirrored with refined kerning gap
     const eGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
     eGeo.center();
     const eMesh = new THREE.Mesh(eGeo, matThree);
-    eMesh.position.set(2.40, 0, 0);
+    eMesh.position.set(2.12, 0, 0);
     beGroup.add(eMesh);
 
     // ── ROOT ORBIT ANCHOR ──────────────────────────────────────
     const rootGroup = new THREE.Group();
     rootGroupRef.current = rootGroup;
-    rootGroup.scale.setScalar(0.72);
+    rootGroup.scale.setScalar(0.78);
     rootGroup.position.set(0, 0, 0);
 
     thirteenGroup.visible = activeModel === "13";
