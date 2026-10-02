@@ -62,24 +62,24 @@ export function ModelViewer() {
     gridHelper.position.y = -3.2;
     scene.add(gridHelper);
 
-    // 4. Finalized 1:1 Website Materials (Signature Dark Architectural Monolith)
+    // 4. Finalized 1:1 Website Materials (Signature Champagne Gold Monolith)
     const matOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x28292d),
-      roughness: 0.26,
-      metalness: 0.86,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.22,
-      reflectivity: 0.85,
+      color: new THREE.Color(0xd4af37), // 13 Utopia Signature Champagne Gold
+      roughness: 0.22,
+      metalness: 0.88,
+      clearcoat: 0.45,
+      clearcoatRoughness: 0.18,
+      reflectivity: 0.90,
     });
     matOneRef.current = matOne;
 
     const matThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x222326),
-      roughness: 0.28,
-      metalness: 0.84,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.22,
-      reflectivity: 0.85,
+      color: new THREE.Color(0xc59e38), // Rich Warm Gold Accent
+      roughness: 0.24,
+      metalness: 0.85,
+      clearcoat: 0.45,
+      clearcoatRoughness: 0.18,
+      reflectivity: 0.90,
     });
     matThreeRef.current = matThree;
 
@@ -152,29 +152,29 @@ export function ModelViewer() {
     emblemGroup.position.set(0, 0, 0);
     scene.add(emblemGroup);
 
-    // 6. Exact 1:1 Studio Lighting Setup from Homepage
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
+    // 6. Luminous Studio Lighting Rig with Warm Gold Rims
+    const ambientLight = new THREE.AmbientLight(0xfff5e6, 2.0);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 4.2);
+    const keyLight = new THREE.DirectionalLight(0xffeedd, 4.6);
     keyLight.position.set(6, 8, 9);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xdde5f0, 2.4);
+    const fillLight = new THREE.DirectionalLight(0xf4dfc8, 2.8);
     fillLight.position.set(-7, 2, 6);
     scene.add(fillLight);
 
-    const leftRimLight = new THREE.DirectionalLight(0xffffff, 4.5);
+    const leftRimLight = new THREE.DirectionalLight(0xffe2a4, 5.0);
     leftRimLight.position.set(-9, 4, -4);
     scene.add(leftRimLight);
 
-    const rightRimLight = new THREE.DirectionalLight(0xf5ebe0, 3.8);
+    const rightRimLight = new THREE.DirectionalLight(0xf5d77f, 4.4);
     rightRimLight.position.set(9, -3, -4);
     scene.add(rightRimLight);
 
-    const overheadLight = new THREE.DirectionalLight(0xffffff, 2.2);
-    overheadLight.position.set(0, 10, 1);
-    scene.add(overheadLight);
+    const topLight = new THREE.DirectionalLight(0xffffff, 2.4);
+    topLight.position.set(0, 10, 1);
+    scene.add(topLight);
 
     // 7. Interactive Orbit & Drag Mechanics
     const onMouseDown = (e: MouseEvent) => {
@@ -339,7 +339,7 @@ export function ModelViewer() {
         </div>
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>MATERIAL</span>
-          <span className={styles.telemetryVal}>ARCHITECTURAL TITANIUM GRAPHITE</span>
+          <span className={styles.telemetryVal}>13 UTOPIA LIQUID CHAMPAGNE GOLD</span>
         </div>
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>COORDINATES</span>
