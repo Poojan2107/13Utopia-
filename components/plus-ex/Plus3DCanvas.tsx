@@ -135,38 +135,100 @@ export function Plus3DCanvas({
       return shape;
     };
 
-    // Helper: Mirrored Organic Ribbon for "E" (Exact 1:1 Kinship to "3", Mirrored)
-    const createMirroredThreeShape = () => {
+    // ── GEOMETRY B: "BE" MONUMENTAL EMBLEM (Exact 1:1 "13" Font & Ribbon Kinship) ────
+    const createBShape = () => {
       const shape = new THREE.Shape();
+      const topY = 2.62;
+      const botY = -2.42;
 
-      // Top outer cap & upper arch (mirrored x -> -x)
-      shape.moveTo(0.45, 2.82);
-      shape.bezierCurveTo(-0.30, 3.12, -1.30, 3.08, -1.88, 2.48);
-      shape.bezierCurveTo(-2.38, 1.95, -2.28, 1.12, -1.72, 0.52);
+      // Outer outline of 'B':
+      shape.moveTo(-1.05, botY);
+      shape.lineTo(-0.85, topY);
+      shape.bezierCurveTo(-0.85, topY + 0.35, -0.55, 2.95, -0.15, 2.95);
+      shape.lineTo(0.30, 2.95);
+      // Top outer bowl arch (matching '3' upper curve)
+      shape.bezierCurveTo(1.15, 2.95, 1.85, 2.45, 1.85, 1.55);
+      shape.bezierCurveTo(1.85, 0.85, 1.35, 0.25, 0.65, 0.08);
+      // Center waist pinch into bottom bowl
+      shape.bezierCurveTo(1.45, -0.08, 2.00, -0.65, 2.00, -1.55);
+      // Bottom outer bowl arch (matching '3' lower curve)
+      shape.bezierCurveTo(2.00, -2.45, 1.25, -2.95, 0.30, -2.95);
+      shape.lineTo(-0.15, -2.95);
+      shape.bezierCurveTo(-0.60, -2.95, -1.05, -2.75, -1.05, botY);
+      shape.closePath();
 
-      // Outer waist transition
-      shape.bezierCurveTo(-1.32, 0.12, -1.12, 0.02, -1.18, -0.02);
+      // Top Counter Hole
+      const topHole = new THREE.Path();
+      topHole.moveTo(-0.10, 0.75);
+      topHole.lineTo(-0.10, 2.15);
+      topHole.bezierCurveTo(-0.10, 2.40, 0.20, 2.40, 0.50, 2.30);
+      topHole.bezierCurveTo(1.05, 2.10, 1.05, 1.10, 0.50, 0.85);
+      topHole.bezierCurveTo(0.20, 0.75, -0.10, 0.75, -0.10, 0.75);
+      topHole.closePath();
+      shape.holes.push(topHole);
 
-      // Outer lower bowl & bottom crest
-      shape.bezierCurveTo(-1.38, -0.22, -2.18, -0.68, -2.32, -1.38);
-      shape.bezierCurveTo(-2.46, -2.18, -1.78, -3.12, -0.62, -3.12);
-      shape.bezierCurveTo(0.18, -3.12, 0.65, -2.82, 0.92, -2.32);
+      // Bottom Counter Hole
+      const botHole = new THREE.Path();
+      botHole.moveTo(-0.10, -2.25);
+      botHole.lineTo(-0.10, -0.65);
+      botHole.bezierCurveTo(-0.10, -0.40, 0.25, -0.40, 0.55, -0.52);
+      botHole.bezierCurveTo(1.15, -0.78, 1.15, -1.95, 0.55, -2.22);
+      botHole.bezierCurveTo(0.25, -2.35, -0.10, -2.35, -0.10, -2.25);
+      botHole.closePath();
+      shape.holes.push(botHole);
 
-      // Bottom terminal rounded bulb
-      shape.bezierCurveTo(1.18, -1.82, 1.02, -1.32, 0.52, -1.38);
+      return shape;
+    };
 
-      // Inner lower bowl returning to center waist
-      shape.bezierCurveTo(-0.18, -1.42, -0.88, -1.68, -1.28, -1.32);
-      shape.bezierCurveTo(-1.58, -1.02, -1.48, -0.42, -0.98, -0.12);
-      shape.bezierCurveTo(-0.58, 0.12, -0.22, 0.18, -0.18, 0.08);
+    const createEShape = () => {
+      const shape = new THREE.Shape();
+      const topY = 2.62;
+      const botY = -2.42;
 
-      // Inner upper bowl returning to top terminal
-      shape.bezierCurveTo(-0.12, -0.02, -0.38, 0.58, -0.78, 0.98);
-      shape.bezierCurveTo(-1.32, 1.48, -1.28, 1.98, -0.88, 2.18);
-      shape.bezierCurveTo(-0.38, 2.38, 0.12, 2.18, 0.48, 1.88);
+      // 1. Bottom-left spine anchor
+      shape.moveTo(-1.05, botY);
 
-      // Top terminal rounded cap closure
-      shape.bezierCurveTo(0.95, 1.92, 0.95, 2.78, 0.45, 2.82);
+      // 2. Left vertical spine ascending (tapered like '1')
+      shape.lineTo(-0.85, topY);
+
+      // 3. Top-left rounded shoulder
+      shape.bezierCurveTo(-0.85, topY + 0.35, -0.55, 2.95, -0.15, 2.95);
+
+      // 4. Top horizontal arm top edge
+      shape.lineTo(1.40, 2.95);
+
+      // 5. Top arm rounded terminal cap (matching '3' top bulb)
+      shape.bezierCurveTo(1.85, 2.95, 1.85, 2.05, 1.40, 2.05);
+
+      // 6. Top inner bay underside returning to left spine
+      shape.lineTo(0.00, 2.05);
+      // Smooth inner corner fillet into vertical spine wall
+      shape.bezierCurveTo(-0.25, 2.05, -0.25, 1.65, -0.25, 1.15);
+      shape.lineTo(-0.25, 0.80);
+      // Smooth fillet turning out into middle arm
+      shape.bezierCurveTo(-0.25, 0.40, 0.05, 0.40, 0.20, 0.40);
+
+      // 7. Middle horizontal arm
+      shape.lineTo(1.10, 0.40);
+      // Middle arm rounded terminal cap
+      shape.bezierCurveTo(1.50, 0.40, 1.50, -0.40, 1.10, -0.40);
+      // Middle arm underside returning to left spine
+      shape.lineTo(0.20, -0.40);
+      // Smooth fillet turning down into lower bay
+      shape.bezierCurveTo(0.05, -0.40, -0.25, -0.40, -0.25, -0.80);
+      shape.lineTo(-0.25, -1.15);
+      // Smooth fillet turning out into bottom arm
+      shape.bezierCurveTo(-0.25, -1.65, -0.25, -2.05, 0.00, -2.05);
+
+      // 8. Bottom horizontal arm top edge
+      shape.lineTo(1.45, -2.05);
+      // Bottom arm rounded terminal cap (matching '3' bottom bulb)
+      shape.bezierCurveTo(1.95, -2.05, 1.95, -2.95, 1.45, -2.95);
+
+      // 9. Bottom shelf returning to bottom-left corner
+      shape.lineTo(-0.15, -2.95);
+      // Bottom-left rounded shoulder
+      shape.bezierCurveTo(-0.60, -2.95, -1.05, -2.75, -1.05, botY);
 
       shape.closePath();
       return shape;
@@ -221,23 +283,16 @@ export function Plus3DCanvas({
     // ── 02. SUB-GROUP: "BE" MONOLITH EMBLEM ────────────────────
     const beGroup = new THREE.Group();
 
-    const eGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
+    const bGeo = new THREE.ExtrudeGeometry(createBShape(), extrudeSettings);
+    bGeo.center();
+    const bMesh = new THREE.Mesh(bGeo, matTitaniumOne);
+    bMesh.position.set(-1.70, 0, 0);
+    beGroup.add(bMesh);
+
+    const eGeo = new THREE.ExtrudeGeometry(createEShape(), extrudeSettings);
     eGeo.center();
-
-    // "B": Composed of 1-monolith spine + 3-ribbon dual bowl
-    const bGroup = new THREE.Group();
-    const bSpine = new THREE.Mesh(oneGeo, matTitaniumOne);
-    bSpine.position.set(-0.75, 0, 0);
-    const bBowls = new THREE.Mesh(threeGeo, matTitaniumThree);
-    bBowls.position.set(0.35, 0, 0);
-    bGroup.add(bSpine);
-    bGroup.add(bBowls);
-    bGroup.position.set(-1.45, 0, 0);
-    beGroup.add(bGroup);
-
-    // "E": Composed of the exact mirrored 3-ribbon
-    const eMesh = new THREE.Mesh(eGeo, matTitaniumOne);
-    eMesh.position.set(1.45, 0, 0);
+    const eMesh = new THREE.Mesh(eGeo, matTitaniumThree);
+    eMesh.position.set(1.70, 0, 0);
     beGroup.add(eMesh);
 
     beGroup.visible = false;
@@ -434,6 +489,7 @@ export function Plus3DCanvas({
       }
       oneGeo.dispose();
       threeGeo.dispose();
+      bGeo.dispose();
       eGeo.dispose();
       matTitaniumOne.dispose();
       matTitaniumThree.dispose();
