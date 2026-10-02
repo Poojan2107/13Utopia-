@@ -1,0 +1,140 @@
+.centerLayout {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000;
+  overflow: hidden;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 3;
+  padding: clamp(1.5rem, 4vw, 4rem);
+}
+
+/* ── Central Monumental Compound Lockup ────────────────────── */
+.monumentLockup {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.2rem, 3.2vw, 3.8rem);
+  max-width: 96vw;
+  pointer-events: auto;
+  user-select: none;
+}
+
+/* ── 01. Left Anchor: "BE" Common Enlarged ─────────────────── */
+.beCommonBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0.78;
+}
+
+.beWord {
+  display: block;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: clamp(7rem, 22vw, 32vh);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.76;
+  letter-spacing: -0.06em;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+}
+
+.beWord:hover {
+  color: #f4dfc8; /* Champagne accent on hover */
+}
+
+/* ── 02. Right Stacked Branch: "UNREAL" + "UNREASONABLE" ──── */
+.stackedBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(0.4rem, 1.2vw, 1.4rem);
+  line-height: 0.78;
+}
+
+.wordTop {
+  display: block;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: clamp(3.5rem, 10.8vw, 15vh);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.80;
+  letter-spacing: -0.05em;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.wordBottom {
+  display: block;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: clamp(3.5rem, 10.8vw, 15vh);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.80;
+  letter-spacing: -0.055em;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.wordTop:hover,
+.wordBottom:hover {
+  opacity: 0.85;
+  transform: translateX(4px);
+}
+
+/* ── Subtle Micro-Subline Below Center Tagline ────────────── */
+.subline {
+  position: absolute;
+  bottom: clamp(2rem, 5vh, 4rem);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.65rem, 1vw, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  pointer-events: auto;
+}
+
+.sublineDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f4dfc8;
+}
+
+@media (max-width: 768px) {
+  .monumentLockup {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .beWord {
+    font-size: clamp(5rem, 28vw, 18vh);
+  }
+  
+  .wordTop,
+  .wordBottom {
+    font-size: clamp(2.8rem, 13vw, 10vh);
+  }
+}
