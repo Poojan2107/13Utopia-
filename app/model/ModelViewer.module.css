@@ -1,5 +1,5 @@
 /* =========================================================
-   13 UTOPIA // 3D MODEL VIEWER HUD & SHOWCASE
+   13 UTOPIA // OFFICIAL 3D MODEL VIEWER HUD
    Ultra-clean dark studio with interactive control deck
    ========================================================= */
 
@@ -90,54 +90,6 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Shape Switcher */
-.shapeSelector {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.3rem 0.5rem;
-  background: rgba(20, 20, 20, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 9999px;
-}
-
-.shapeLabel {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  color: rgba(255, 255, 255, 0.4);
-  padding-left: 0.4rem;
-}
-
-.shapeBtn {
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.6);
-  padding: 0.38rem 0.85rem;
-  border-radius: 9999px;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.shapeBtn:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.shapeBtnActive {
-  background: #ffffff !important;
-  color: #000000 !important;
-  font-weight: 700;
-  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
-}
-
 .hudActions {
   display: flex;
   align-items: center;
@@ -198,7 +150,7 @@
   border-radius: 12px;
   z-index: 10;
   pointer-events: none;
-  min-width: 240px;
+  min-width: 260px;
 }
 
 .telemetryRow {
@@ -234,7 +186,7 @@
   letter-spacing: 0.06em;
 }
 
-/* ── Control & Material Deck (Bottom Center / Right) ──────── */
+/* ── Control Deck (Bottom Right) ──────────────────────────── */
 .controlDeck {
   position: absolute;
   bottom: 2rem;
@@ -245,43 +197,6 @@
   gap: 0.75rem;
   z-index: 10;
   pointer-events: auto;
-}
-
-.materialSelector {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.35rem;
-  background: rgba(15, 15, 15, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 9999px;
-}
-
-.materialBtn {
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.6);
-  padding: 0.45rem 0.95rem;
-  border-radius: 9999px;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.materialBtn:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.materialBtnActive {
-  background: #ffffff !important;
-  color: #000000 !important;
-  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.15);
 }
 
 .toggleRow {
@@ -296,10 +211,10 @@
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.65);
-  padding: 0.45rem 0.85rem;
-  border-radius: 8px;
+  padding: 0.55rem 1.05rem;
+  border-radius: 9999px;
   font-family: var(--font-mono, monospace);
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   cursor: pointer;
@@ -308,13 +223,14 @@
 
 .toggleBtn:hover {
   color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .toggleBtnActive {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* ── Responsive Styling ──────────────────────────────────── */
@@ -342,9 +258,8 @@
     bottom: 1.25rem;
   }
 
-  .materialSelector {
+  .toggleRow {
     flex-wrap: wrap;
     justify-content: center;
-    border-radius: 16px;
   }
 }
