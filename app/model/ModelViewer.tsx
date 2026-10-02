@@ -243,37 +243,41 @@ export function ModelViewer() {
     const createXShape = () => {
       const shape = new THREE.Shape();
 
-      // Outer boundary: continuous 4-lobed perimeter matching '3' and 'E' curve thickness
-      shape.moveTo(0, 2.82);
+      // 1. Outer boundary: 4 flared outer lobes with deep center clefts
+      shape.moveTo(0, 1.70);
       // Top-right lobe
-      shape.bezierCurveTo(0.75, 3.08, 1.85, 3.02, 2.38, 2.32);
-      shape.bezierCurveTo(2.80, 1.72, 2.55, 0.85, 1.68, 0.00);
+      shape.bezierCurveTo(0.60, 2.30, 1.25, 2.85, 1.85, 2.85);
+      shape.bezierCurveTo(2.45, 2.85, 2.80, 2.30, 2.75, 1.65);
+      shape.bezierCurveTo(2.70, 1.05, 2.05, 0.45, 1.35, 0.00);
       // Bottom-right lobe
-      shape.bezierCurveTo(2.55, -0.85, 2.80, -1.72, 2.38, -2.32);
-      shape.bezierCurveTo(1.85, -3.02, 0.75, -3.08, 0, -2.82);
+      shape.bezierCurveTo(2.05, -0.45, 2.70, -1.05, 2.75, -1.65);
+      shape.bezierCurveTo(2.80, -2.30, 2.45, -2.85, 1.85, -2.85);
+      shape.bezierCurveTo(1.25, -2.85, 0.60, -2.30, 0, -1.70);
       // Bottom-left lobe
-      shape.bezierCurveTo(-0.75, -3.08, -1.85, -3.02, -2.38, -2.32);
-      shape.bezierCurveTo(-2.80, -1.72, -2.55, -0.85, -1.68, 0.00);
+      shape.bezierCurveTo(-0.60, -2.30, -1.25, -2.85, -1.85, -2.85);
+      shape.bezierCurveTo(-2.45, -2.85, -2.80, -2.30, -2.75, -1.65);
+      shape.bezierCurveTo(-2.70, -1.05, -2.05, -0.45, -1.35, 0.00);
       // Top-left lobe
-      shape.bezierCurveTo(-2.55, 0.85, -2.80, 1.72, -2.38, 2.32);
-      shape.bezierCurveTo(-1.85, 3.02, -0.75, 3.08, 0, 2.82);
+      shape.bezierCurveTo(-2.05, 0.45, -2.70, 1.05, -2.75, 1.65);
+      shape.bezierCurveTo(-2.80, 2.30, -2.45, 2.85, -1.85, 2.85);
+      shape.bezierCurveTo(-1.25, 2.85, -0.60, 2.30, 0, 1.70);
       shape.closePath();
 
-      // Inner cut-out hole: perfectly matching the 4-pointed organic cross from reference
+      // 2. Inner cut-out hole: expansive 4-pointed cross negative space
       const hole = new THREE.Path();
-      hole.moveTo(0, 1.82);
-      // Top-right inner corner
-      hole.bezierCurveTo(0.62, 1.82, 1.05, 1.38, 0.75, 0.68);
-      hole.bezierCurveTo(0.55, 0.22, 0.85, 0.00, 1.62, 0.00);
-      // Bottom-right inner corner
-      hole.bezierCurveTo(0.85, 0.00, 0.55, -0.22, 0.75, -0.68);
-      hole.bezierCurveTo(1.05, -1.38, 0.62, -1.82, 0, -1.82);
-      // Bottom-left inner corner
-      hole.bezierCurveTo(-0.62, -1.82, -1.05, -1.38, -0.75, -0.68);
-      hole.bezierCurveTo(-0.55, -0.22, -0.85, 0.00, -1.62, 0.00);
-      // Top-left inner corner
-      hole.bezierCurveTo(-0.85, 0.00, -0.55, 0.22, -0.75, 0.68);
-      hole.bezierCurveTo(-1.05, 1.38, -0.62, 1.82, 0, 1.82);
+      hole.moveTo(0, 0.88);
+      // Top-right inner lobe
+      hole.bezierCurveTo(0.40, 0.95, 0.90, 1.35, 1.15, 1.10);
+      hole.bezierCurveTo(1.35, 0.85, 0.95, 0.35, 0.50, 0.00);
+      // Bottom-right inner lobe
+      hole.bezierCurveTo(0.95, -0.35, 1.35, -0.85, 1.15, -1.10);
+      hole.bezierCurveTo(0.90, -1.35, 0.40, -0.95, 0, -0.88);
+      // Bottom-left inner lobe
+      hole.bezierCurveTo(-0.40, -0.95, -0.90, -1.35, -1.15, -1.10);
+      hole.bezierCurveTo(-1.35, -0.85, -0.95, -0.35, -0.50, 0.00);
+      // Top-left inner lobe
+      hole.bezierCurveTo(-0.95, 0.35, -1.35, 0.85, -1.15, 1.10);
+      hole.bezierCurveTo(-0.90, 1.35, -0.40, 0.95, 0, 0.88);
       hole.closePath();
 
       shape.holes.push(hole);
