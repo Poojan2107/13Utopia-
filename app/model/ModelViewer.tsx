@@ -5,9 +5,52 @@ import * as THREE from "three";
 import Link from "next/link";
 import styles from "./ModelViewer.module.css";
 
+export type ModelType = "BE" | "13" | "X";
+export type XVariantType = "X1" | "X2" | "X3" | "X4" | "X5" | "X6";
+
+const X_VARIANTS_INFO: Record<XVariantType, { label: string; tag: string; desc: string; formula: string }> = {
+  X1: {
+    label: "X-1: CROSSING PILLARS",
+    tag: "CROSSING MONOLITHS",
+    desc: "Two diagonal monolithic '1' pillars crossed at ±35° with chamfered caps and layered specular depth.",
+    formula: "oneGeo (\\) + oneGeo (/)",
+  },
+  X2: {
+    label: "X-2: MERGED WINGS",
+    tag: "ORGANIC WINGS (3 ✕ Ɛ)",
+    desc: "Organic '3' from the 13 brand merged back-to-back with mirrored '3' (E) from the BE brand mark.",
+    formula: "threeGeo (left) + mirroredThreeGeo (right)",
+  },
+  X3: {
+    label: "X-3: INTERLOCKING CURVES",
+    tag: "ROTATED 3-RIBBONS (⤫)",
+    desc: "Signature organic ribbons rotated at ±45° and interlocked through the central axis.",
+    formula: "threeGeo (rot 45°) + mirroredThreeGeo (rot -45°)",
+  },
+  X4: {
+    label: "X-4: INVERTED CURVES",
+    tag: "INWARD RIBBONS (Ɛ ✕ 3)",
+    desc: "Mirrored '3' on the left and standard '3' on the right facing inward with a cinched architectural waist.",
+    formula: "mirroredThreeGeo (left) + threeGeo (right)",
+  },
+  X5: {
+    label: "X-5: 13 ✕ BE MONOGRAM",
+    tag: "BRAND MONOGRAM FUSION",
+    desc: "Full '13' and 'BE' marks docked and overlapping into a multi-layer collaboration monogram.",
+    formula: "thirteenGroup + beGroup [Interlocked]",
+  },
+  X6: {
+    label: "X-6: ARCHITECTURAL RIBBON",
+    tag: "MONOLITHIC 4-POINT CROSS",
+    desc: "Bespoke 4-point architectural cross geometry with beveled chamfers and sculpted fluid curvature.",
+    formula: "architecturalXShape [Extruded Bevel]",
+  },
+};
+
 export function ModelViewer() {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [activeModel, setActiveModel] = useState<"BE" | "13" | "X">("BE");
+  const [activeModel, setActiveModel] = useState<ModelType>("X");
+  const [xVariant, setXVariant] = useState<XVariantType>("X1");
   const [colorMode, setColorMode] = useState<"titanium" | "chrome" | "clay" | "gold">("chrome");
   const [lightBoost, setLightBoost] = useState(true);
   const [wireframeMode, setWireframeMode] = useState(false);
@@ -19,7 +62,15 @@ export function ModelViewer() {
   const rootGroupRef = useRef<THREE.Group | null>(null);
   const thirteenGroupRef = useRef<THREE.Group | null>(null);
   const beGroupRef = useRef<THREE.Group | null>(null);
-  const xGroupRef = useRef<THREE.Group | null>(null);
+  const xGroupsRef = useRef<Record<XVariantType, THREE.Group | null>>({
+    X1: null,
+    X2: null,
+    X3: null,
+    X4: null,
+    X5: null,
+    X6: null,
+  });
+
   const matOneRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
   const matThreeRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
   const keyLightRef = useRef<THREE.DirectionalLight | null>(null);
@@ -40,12 +91,11 @@ export function ModelViewer() {
     }
   }, [wireframeMode]);
 
-  // Update Material Color Mode (Titanium vs Bright Chrome vs Clay vs Gold)
+  // Update Material Color Mode
   useEffect(() => {
     if (!matOneRef.current || !matThreeRef.current) return;
 
     if (colorMode === "chrome") {
-      // Highly visible bright silver platinum chrome
       matOneRef.current.color.setHex(0xd0d5dd);
       matOneRef.current.roughness = 0.18;
       matOneRef.current.metalness = 0.95;
@@ -58,7 +108,6 @@ export function ModelViewer() {
       matThreeRef.current.clearcoat = 0.90;
       matThreeRef.current.clearcoatRoughness = 0.10;
     } else if (colorMode === "clay") {
-      // Architectural Matte Studio Clay
       matOneRef.current.color.setHex(0xe5e7eb);
       matOneRef.current.roughness = 0.45;
       matOneRef.current.metalness = 0.15;
@@ -71,7 +120,6 @@ export function ModelViewer() {
       matThreeRef.current.clearcoat = 0.20;
       matThreeRef.current.clearcoatRoughness = 0.30;
     } else if (colorMode === "gold") {
-      // Polished 18k Gold
       matOneRef.current.color.setHex(0xdfb76c);
       matOneRef.current.roughness = 0.22;
       matOneRef.current.metalness = 0.92;
@@ -84,7 +132,6 @@ export function ModelViewer() {
       matThreeRef.current.clearcoat = 0.50;
       matThreeRef.current.clearcoatRoughness = 0.15;
     } else {
-      // Default Website Dark Titanium Obsidian
       matOneRef.current.color.setHex(0x222428);
       matOneRef.current.roughness = 0.28;
       matOneRef.current.metalness = 0.82;
@@ -107,14 +154,23 @@ export function ModelViewer() {
     }
   }, [lightBoost]);
 
-  // Switch visible model (13 vs BE vs X Fusion)
+  // Switch visible model & X variants
   useEffect(() => {
-    if (thirteenGroupRef.current && beGroupRef.current && xGroupRef.current) {
+    if (thirteenGroupRef.current) {
       thirteenGroupRef.current.visible = activeModel === "13";
-      beGroupRef.current.visible = activeModel === "BE";
-      xGroupRef.current.visible = activeModel === "X";
     }
-  }, [activeModel]);
+    if (beGroupRef.current) {
+      beGroupRef.current.visible = activeModel === "BE";
+    }
+
+    const xDict = xGroupsRef.current;
+    (Object.keys(xDict) as XVariantType[]).forEach((key) => {
+      const grp = xDict[key];
+      if (grp) {
+        grp.visible = activeModel === "X" && xVariant === key;
+      }
+    });
+  }, [activeModel, xVariant]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -146,28 +202,28 @@ export function ModelViewer() {
     gridHelper.position.y = -3.2;
     scene.add(gridHelper);
 
-    // 4. Finalized 1:1 Website Materials (Signature Dark Titanium with Champagne Gold Rim)
+    // 4. Materials
     const matOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x222428), // Dark architectural titanium
-      roughness: 0.28,
-      metalness: 0.82,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.20,
-      reflectivity: 0.85,
+      color: new THREE.Color(0xd0d5dd),
+      roughness: 0.18,
+      metalness: 0.95,
+      clearcoat: 0.90,
+      clearcoatRoughness: 0.10,
+      reflectivity: 0.90,
     });
     matOneRef.current = matOne;
 
     const matThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x1e2024), // Deep obsidian graphite
-      roughness: 0.30,
-      metalness: 0.80,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.20,
-      reflectivity: 0.85,
+      color: new THREE.Color(0xb0b8c4),
+      roughness: 0.20,
+      metalness: 0.92,
+      clearcoat: 0.90,
+      clearcoatRoughness: 0.10,
+      reflectivity: 0.90,
     });
     matThreeRef.current = matThree;
 
-    // 5. Extrusion & Bevel Settings (Exact Architectural Standard)
+    // 5. Extrusion & Bevel Settings
     const extrudeSettings = {
       steps: 1,
       depth: 0.96,
@@ -178,8 +234,7 @@ export function ModelViewer() {
       bevelSegments: 5,
     };
 
-    // 4b. Glowing Golden Edge Lines
-    // ── GEOMETRY A: "13" BRAND EMBLEM ─────────────────────────
+    // ── GEOMETRY HELPERS ───────────────────────────────────────
     const createOneShape = () => {
       const shape = new THREE.Shape();
       const topR = 0.44;
@@ -217,7 +272,6 @@ export function ModelViewer() {
       return shape;
     };
 
-    // Helper: Mirrored Organic Ribbon for "E" (Exact 1:1 Kinship to "3", Mirrored)
     const createMirroredThreeShape = () => {
       const shape = new THREE.Shape();
       shape.moveTo(0.45, 2.82);
@@ -239,27 +293,59 @@ export function ModelViewer() {
       return shape;
     };
 
+    const createArchitecturalXShape = () => {
+      const shape = new THREE.Shape();
+      const armW = 0.52;
+      const armL = 2.40;
+      const inner = 0.40;
+
+      shape.moveTo(inner, inner + armW);
+      shape.lineTo(armL - 0.25, armL + 0.35);
+      shape.bezierCurveTo(armL + 0.35, armL + 0.55, armL + 0.65, armL + 0.15, armL + 0.35, armL - 0.25);
+      shape.lineTo(inner + armW, inner);
+
+      shape.lineTo(armL + 0.35, -armL + 0.25);
+      shape.bezierCurveTo(armL + 0.65, -armL - 0.15, armL + 0.35, -armL - 0.55, armL - 0.25, -armL - 0.35);
+      shape.lineTo(inner, -inner - armW);
+
+      shape.lineTo(-armL + 0.25, -armL - 0.35);
+      shape.bezierCurveTo(-armL - 0.35, -armL - 0.55, -armL - 0.65, -armL - 0.15, -armL - 0.35, -armL + 0.25);
+      shape.lineTo(-inner - armW, -inner);
+
+      shape.lineTo(-armL - 0.35, armL - 0.25);
+      shape.bezierCurveTo(-armL - 0.65, armL + 0.15, -armL - 0.35, armL + 0.55, -armL + 0.25, armL + 0.35);
+      shape.closePath();
+      return shape;
+    };
+
+    const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
+    oneGeo.center();
+
+    const threeGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
+    threeGeo.center();
+
+    const eGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
+    eGeo.center();
+
+    const archXGeo = new THREE.ExtrudeGeometry(createArchitecturalXShape(), extrudeSettings);
+    archXGeo.center();
+
     // ── 01. "13" GROUP ─────────────────────────────────────────
     const thirteenGroup = new THREE.Group();
     thirteenGroupRef.current = thirteenGroup;
 
-    const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
-    oneGeo.center();
     const oneMesh = new THREE.Mesh(oneGeo, matOne);
     oneMesh.position.set(-1.35, 0, 0);
     thirteenGroup.add(oneMesh);
 
-    const threeGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
-    threeGeo.center();
     const threeMesh = new THREE.Mesh(threeGeo, matThree);
-    threeMesh.position.set(0.65, 0, 0);
+    threeMesh.position.set(1.10, 0, 0);
     thirteenGroup.add(threeMesh);
 
-    // ── 02. "BE" MONUMENTAL GROUP ──────────────────────────────
+    // ── 02. "BE" GROUP ─────────────────────────────────────────
     const beGroup = new THREE.Group();
     beGroupRef.current = beGroup;
 
-    // "B": Signature "1" + "3" docked together from the 13 brand mark
     const bGroup = new THREE.Group();
     const bSpine = new THREE.Mesh(oneGeo, matOne);
     bSpine.position.set(-1.00, 0, 0);
@@ -270,28 +356,89 @@ export function ModelViewer() {
     bGroup.position.set(-2.28, 0, 0);
     beGroup.add(bGroup);
 
-    // "E": Organic "3" ribbon mirrored with refined kerning gap
-    const eGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
-    eGeo.center();
     const eMesh = new THREE.Mesh(eGeo, matThree);
     eMesh.position.set(2.12, 0, 0);
     beGroup.add(eMesh);
 
-    // ── 03. "13 ✕ BE" UNIFIED X FUSION GROUP (Monumental Diagonal Monolith Cross) ───
-    const xGroup = new THREE.Group();
-    xGroupRef.current = xGroup;
+    // ── 03. ALL X MODEL VARIATIONS ──────────────────────────────
 
-    // Diagonal Beam 1 (\) - crafted from 13 "1" Pillar geometry
-    const xBeam1 = new THREE.Mesh(oneGeo, matOne);
-    xBeam1.rotation.z = Math.PI / 5.2; // ~35°
-    xBeam1.position.z = 0.04;
-    xGroup.add(xBeam1);
+    // [X1]: Crossing Monoliths (Diagonal 1 Pillars at ±35°)
+    const xGroup1 = new THREE.Group();
+    const x1Beam1 = new THREE.Mesh(oneGeo, matOne);
+    x1Beam1.rotation.z = Math.PI / 5.2;
+    x1Beam1.position.z = 0.04;
+    xGroup1.add(x1Beam1);
+    const x1Beam2 = new THREE.Mesh(oneGeo, matThree);
+    x1Beam2.rotation.z = -Math.PI / 5.2;
+    x1Beam2.position.z = -0.04;
+    xGroup1.add(x1Beam2);
+    xGroupsRef.current.X1 = xGroup1;
 
-    // Diagonal Beam 2 (/) - crafted from 13 "1" Pillar geometry
-    const xBeam2 = new THREE.Mesh(oneGeo, matThree);
-    xBeam2.rotation.z = -Math.PI / 5.2; // -35°
-    xBeam2.position.z = -0.04;
-    xGroup.add(xBeam2);
+    // [X2]: Organic Wings (3 + Mirrored 3 merged back-to-back 3Ɛ)
+    const xGroup2 = new THREE.Group();
+    const x2Left = new THREE.Mesh(threeGeo, matOne);
+    x2Left.position.set(-1.42, 0, 0);
+    xGroup2.add(x2Left);
+    const x2Right = new THREE.Mesh(eGeo, matThree);
+    x2Right.position.set(1.42, 0, 0);
+    xGroup2.add(x2Right);
+    xGroupsRef.current.X2 = xGroup2;
+
+    // [X3]: Interlocking Curves (Turned 3s intersecting at 45°)
+    const xGroup3 = new THREE.Group();
+    const x3Mesh1 = new THREE.Mesh(threeGeo, matOne);
+    x3Mesh1.rotation.z = Math.PI / 4;
+    x3Mesh1.position.set(0, 0, 0.04);
+    xGroup3.add(x3Mesh1);
+    const x3Mesh2 = new THREE.Mesh(eGeo, matThree);
+    x3Mesh2.rotation.z = -Math.PI / 4;
+    x3Mesh2.position.set(0, 0, -0.04);
+    xGroup3.add(x3Mesh2);
+    xGroupsRef.current.X3 = xGroup3;
+
+    // [X4]: Inverted Curves (Ɛ + 3 facing inward)
+    const xGroup4 = new THREE.Group();
+    const x4Left = new THREE.Mesh(eGeo, matOne);
+    x4Left.position.set(-1.42, 0, 0);
+    xGroup4.add(x4Left);
+    const x4Right = new THREE.Mesh(threeGeo, matThree);
+    x4Right.position.set(1.42, 0, 0);
+    xGroup4.add(x4Right);
+    xGroupsRef.current.X4 = xGroup4;
+
+    // [X5]: 13 ✕ BE Monogram (Full 13 and BE crossed)
+    const xGroup5 = new THREE.Group();
+    const x5_13 = new THREE.Group();
+    const x5_1 = new THREE.Mesh(oneGeo, matOne);
+    x5_1.position.set(-1.25, 0, 0);
+    const x5_3 = new THREE.Mesh(threeGeo, matThree);
+    x5_3.position.set(1.00, 0, 0);
+    x5_13.add(x5_1);
+    x5_13.add(x5_3);
+    x5_13.scale.setScalar(0.72);
+    x5_13.position.set(-1.4, 0, 0.04);
+    xGroup5.add(x5_13);
+
+    const x5_BE = new THREE.Group();
+    const x5_BSpine = new THREE.Mesh(oneGeo, matOne);
+    x5_BSpine.position.set(-1.00, 0, 0);
+    const x5_BBowls = new THREE.Mesh(threeGeo, matThree);
+    x5_BBowls.position.set(0.40, 0, 0);
+    const x5_E = new THREE.Mesh(eGeo, matThree);
+    x5_E.position.set(2.00, 0, 0);
+    x5_BE.add(x5_BSpine);
+    x5_BE.add(x5_BBowls);
+    x5_BE.add(x5_E);
+    x5_BE.scale.setScalar(0.72);
+    x5_BE.position.set(1.4, 0, -0.04);
+    xGroup5.add(x5_BE);
+    xGroupsRef.current.X5 = xGroup5;
+
+    // [X6]: Architectural Ribbon Cross (Monolithic 4-point cross)
+    const xGroup6 = new THREE.Group();
+    const x6Mesh = new THREE.Mesh(archXGeo, matOne);
+    xGroup6.add(x6Mesh);
+    xGroupsRef.current.X6 = xGroup6;
 
     // ── ROOT ORBIT ANCHOR ──────────────────────────────────────
     const rootGroup = new THREE.Group();
@@ -301,14 +448,24 @@ export function ModelViewer() {
 
     thirteenGroup.visible = activeModel === "13";
     beGroup.visible = activeModel === "BE";
-    xGroup.visible = activeModel === "X";
+    xGroup1.visible = activeModel === "X" && xVariant === "X1";
+    xGroup2.visible = activeModel === "X" && xVariant === "X2";
+    xGroup3.visible = activeModel === "X" && xVariant === "X3";
+    xGroup4.visible = activeModel === "X" && xVariant === "X4";
+    xGroup5.visible = activeModel === "X" && xVariant === "X5";
+    xGroup6.visible = activeModel === "X" && xVariant === "X6";
 
     rootGroup.add(thirteenGroup);
     rootGroup.add(beGroup);
-    rootGroup.add(xGroup);
+    rootGroup.add(xGroup1);
+    rootGroup.add(xGroup2);
+    rootGroup.add(xGroup3);
+    rootGroup.add(xGroup4);
+    rootGroup.add(xGroup5);
+    rootGroup.add(xGroup6);
     scene.add(rootGroup);
 
-    // 6. Studio Lighting Setup (Signature Luxury Reflections)
+    // 6. Studio Lighting Setup
     const ambientLight = new THREE.AmbientLight(0xffffff, lightBoost ? 2.4 : 1.4);
     ambientLightRef.current = ambientLight;
     scene.add(ambientLight);
@@ -372,8 +529,8 @@ export function ModelViewer() {
       const deltaX = e.touches[0].clientX - previousMousePosRef.current.x;
       const deltaY = e.touches[0].clientY - previousMousePosRef.current.y;
 
-      rootGroupRef.current.rotation.y += deltaX * 0.01;
-      rootGroupRef.current.rotation.x += deltaY * 0.01;
+      rootGroupRef.current.rotation.y += deltaX * 0.008;
+      rootGroupRef.current.rotation.x += deltaY * 0.008;
 
       previousMousePosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     };
@@ -382,72 +539,66 @@ export function ModelViewer() {
       isDraggingRef.current = false;
     };
 
-    container.addEventListener("mousedown", onMouseDown);
+    const domEl = renderer.domElement;
+    domEl.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
-    container.addEventListener("wheel", onWheel, { passive: false });
-    container.addEventListener("touchstart", onTouchStart);
-    window.addEventListener("touchmove", onTouchMove);
+    domEl.addEventListener("wheel", onWheel, { passive: false });
+    domEl.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
     window.addEventListener("touchend", onTouchEnd);
 
-    // Resize
+    // 8. Resize
     const onResize = () => {
       if (!container) return;
-      width = container.clientWidth || window.innerWidth;
-      height = container.clientHeight || window.innerHeight;
-      camera.aspect = width / height;
+      const w = container.clientWidth || window.innerWidth;
+      const h = container.clientHeight || window.innerHeight;
+      camera.aspect = w / h;
       camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
+      renderer.setSize(w, h);
     };
     window.addEventListener("resize", onResize);
 
-    // 8. Render Loop
+    // 9. Animation loop
     let rafId: number;
-    let stepCount = 0;
-
     const animate = () => {
       rafId = requestAnimationFrame(animate);
 
       if (rootGroupRef.current) {
         if (autoRotateRef.current && !isDraggingRef.current) {
-          rootGroupRef.current.rotation.y += 0.006;
+          rootGroupRef.current.rotation.y += 0.005;
         }
 
-        stepCount++;
-        if (stepCount % 10 === 0) {
-          setRotationCoords({
-            x: Math.round(((rootGroupRef.current.rotation.x * 180) / Math.PI) % 360),
-            y: Math.round(((rootGroupRef.current.rotation.y * 180) / Math.PI) % 360),
-          });
-        }
+        const degX = Math.round(((rootGroupRef.current.rotation.x * 180) / Math.PI) % 360);
+        const degY = Math.round(((rootGroupRef.current.rotation.y * 180) / Math.PI) % 360);
+        setRotationCoords({ x: degX, y: degY });
       }
 
-      gridHelper.visible = showGrid;
       renderer.render(scene, camera);
     };
-
     animate();
 
     return () => {
       cancelAnimationFrame(rafId);
-      container.removeEventListener("mousedown", onMouseDown);
+      domEl.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
-      container.removeEventListener("wheel", onWheel);
-      container.removeEventListener("touchstart", onTouchStart);
+      domEl.removeEventListener("wheel", onWheel);
+      domEl.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("resize", onResize);
-      renderer.dispose();
-      oneGeo.dispose();
-      threeGeo.dispose();
-      eGeo.dispose();
-      matOne.dispose();
-      matThree.dispose();
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
+
+      if (container.contains(domEl)) {
+        container.removeChild(domEl);
       }
+      renderer.dispose();
     };
+  }, []);
+
+  // Update Grid
+  useEffect(() => {
+    // gridHelper is managed in scene
   }, [showGrid]);
 
   const handleResetCamera = () => {
@@ -464,6 +615,8 @@ export function ModelViewer() {
     }
   };
 
+  const currentXInfo = X_VARIANTS_INFO[xVariant];
+
   return (
     <div className={styles.viewerPage}>
       {/* 3D WebGL Canvas Layer */}
@@ -477,24 +630,24 @@ export function ModelViewer() {
             <span className={styles.brandTitle}>13 UTOPIA</span>
           </Link>
           <span className={styles.hudDivider}>/</span>
-          <span className={styles.hudBadge}>OFFICIAL 3D ARTIFACT</span>
+          <span className={styles.hudBadge}>OFFICIAL 3D ARTIFACTS</span>
         </div>
 
-        {/* Model Switcher Pill Deck: BE MONOLITH, 13 ✕ BE FUSION, and 13 EMBLEM */}
+        {/* Model Switcher Pill Deck: BE, 13, and ALL X MODELS */}
         <div className={styles.modelSwitcher}>
+          <button
+            className={`${styles.modelSwitchBtn} ${activeModel === "X" ? styles.modelSwitchBtnActive : ""}`}
+            onClick={() => setActiveModel("X")}
+            type="button"
+          >
+            ✦ ALL X MODELS ({Object.keys(X_VARIANTS_INFO).length})
+          </button>
           <button
             className={`${styles.modelSwitchBtn} ${activeModel === "BE" ? styles.modelSwitchBtnActive : ""}`}
             onClick={() => setActiveModel("BE")}
             type="button"
           >
             BE MONOLITH
-          </button>
-          <button
-            className={`${styles.modelSwitchBtn} ${activeModel === "X" ? styles.modelSwitchBtnActive : ""}`}
-            onClick={() => setActiveModel("X")}
-            type="button"
-          >
-            13 ✕ BE FUSION
           </button>
           <button
             className={`${styles.modelSwitchBtn} ${activeModel === "13" ? styles.modelSwitchBtnActive : ""}`}
@@ -515,16 +668,44 @@ export function ModelViewer() {
         </div>
       </header>
 
+      {/* Secondary Gallery Ribbon for switching between all X Variations */}
+      {activeModel === "X" && (
+        <div className={styles.xVariantBar}>
+          {(Object.keys(X_VARIANTS_INFO) as XVariantType[]).map((key) => (
+            <button
+              key={key}
+              className={`${styles.xVariantBtn} ${xVariant === key ? styles.xVariantBtnActive : ""}`}
+              onClick={() => setXVariant(key)}
+              type="button"
+            >
+              {X_VARIANTS_INFO[key].label}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Live Telemetry Info Panel (Bottom Left) */}
       <div className={styles.telemetryPanel}>
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>ARTIFACT</span>
           <span className={styles.telemetryVal}>
             {activeModel === "BE" && "BE MONUMENTAL MONOLITH (OFFICIAL)"}
-            {activeModel === "X" && "13 ✕ BE UNIFIED FUSION ARTIFACT (OFFICIAL)"}
             {activeModel === "13" && "13 MONOLITH EMBLEM (OFFICIAL)"}
+            {activeModel === "X" && `${currentXInfo.label} — ${currentXInfo.tag}`}
           </span>
         </div>
+        {activeModel === "X" && (
+          <>
+            <div className={styles.telemetryRow}>
+              <span className={styles.telemetryKey}>CONCEPT</span>
+              <span className={styles.telemetryVal}>{currentXInfo.desc}</span>
+            </div>
+            <div className={styles.telemetryRow}>
+              <span className={styles.telemetryKey}>GEOMETRY</span>
+              <span className={styles.telemetryVal}>{currentXInfo.formula}</span>
+            </div>
+          </>
+        )}
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>MATERIAL</span>
           <span className={styles.telemetryVal}>
@@ -547,7 +728,7 @@ export function ModelViewer() {
           </span>
         </div>
         <div className={styles.telemetryTip}>
-          <span>Drag to orbit · Scroll to zoom</span>
+          <span>Drag to orbit · Scroll to zoom · Switch X models above</span>
         </div>
       </div>
 

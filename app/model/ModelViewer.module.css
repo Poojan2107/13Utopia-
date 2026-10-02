@@ -133,6 +133,75 @@
   color: #000000;
 }
 
+/* Sub-bar for X Variations */
+.xVariantBar {
+  position: absolute;
+  top: 5.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  background: rgba(12, 12, 12, 0.90);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+  padding: 3px 5px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  gap: 3px;
+  z-index: 10;
+  max-width: 95vw;
+  overflow-x: auto;
+  scrollbar-width: none;
+  animation: fadeIn 0.2s ease;
+}
+
+.xVariantBar::-webkit-scrollbar {
+  display: none;
+}
+
+.xVariantBtn {
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.35rem 0.8rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.xVariantBtn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.xVariantBtnActive {
+  background: #ffffff;
+  color: #000000;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.25);
+}
+
+.xVariantBtnActive:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -6px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
 .hudActions {
   display: flex;
   align-items: center;
