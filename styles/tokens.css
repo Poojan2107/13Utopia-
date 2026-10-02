@@ -1,33 +1,33 @@
 :root {
   --color-black: #000000;
   --color-black-deep: #000000;
-  --color-warm-beige: #f4eae0;
-  --color-cream-almond: #f4eae0;
+  --color-warm-beige: #ffffff;
+  --color-cream-almond: #ffffff;
   --color-champagne-sand: #f4dfc8;
-  --color-warm-white: #f4eae0;
-  --color-white: #f4eae0;
+  --color-warm-white: #ffffff;
+  --color-white: #ffffff;
 
-  /* Creamy Beige & Champagne Palette */
-  --color-gold: #dfb76c;
-  --color-gold-light: #f4eae0;
-  --color-gold-deep: #a8844f;
-  --color-gold-muted: color-mix(in srgb, #dfb76c 72%, transparent);
-  --color-gold-line: color-mix(in srgb, #dfb76c 45%, transparent);
+  /* Architectural Monochrome & Champagne Rim Palette */
+  --color-gold: #ffffff;
+  --color-gold-light: #ffffff;
+  --color-gold-deep: #ffffff;
+  --color-gold-muted: color-mix(in srgb, #ffffff 72%, transparent);
+  --color-gold-line: color-mix(in srgb, #ffffff 45%, transparent);
 
   --color-neutral-900: #0a0a0a;
   --color-neutral-800: #141414;
   --color-neutral-700: #2a2826;
   --color-neutral-500: #a8a096;
-  --color-neutral-200: #f4eae0;
+  --color-neutral-200: #ffffff;
 
   --color-bg: #000000;
-  --color-fg: #f4eae0;
+  --color-fg: #ffffff;
   /* Readable muted floor ≈ 0.65 on black */
-  --color-fg-muted: color-mix(in srgb, #f4eae0 65%, transparent);
-  --color-fg-soft: color-mix(in srgb, #f4eae0 75%, transparent);
-  --color-fg-faint: color-mix(in srgb, #f4eae0 55%, transparent);
-  --color-accent: #dfb76c;
-  --color-border: color-mix(in srgb, #f4eae0 12%, transparent);
+  --color-fg-muted: color-mix(in srgb, #ffffff 65%, transparent);
+  --color-fg-soft: color-mix(in srgb, #ffffff 75%, transparent);
+  --color-fg-faint: color-mix(in srgb, #ffffff 55%, transparent);
+  --color-accent: #ffffff;
+  --color-border: color-mix(in srgb, #ffffff 12%, transparent);
   --color-surface: #0a0a0a;
 
   /* Light section overrides — creamy light beige */

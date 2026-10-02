@@ -402,18 +402,18 @@ const paintChrome = (
   ctx.beginPath();
   ctx.arc(pillX, pillY, pillRadius, 0, Math.PI * 2);
   if (isHovered) {
-    ctx.fillStyle = "#dfb76c";
+    ctx.fillStyle = "#ffffff";
     ctx.fill();
   } else {
-    ctx.fillStyle = "rgba(8, 7, 5, 0.78)";
+    ctx.fillStyle = "rgba(12, 12, 16, 0.78)";
     ctx.fill();
-    ctx.strokeStyle = "rgba(223, 183, 108, 0.65)";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.45)";
     ctx.lineWidth = 2.25 * s;
     ctx.stroke();
   }
 
   ctx.beginPath();
-  ctx.strokeStyle = isHovered ? "#0a0a0a" : "#dfb76c";
+  ctx.strokeStyle = isHovered ? "#000000" : "#ffffff";
   ctx.lineWidth = (isHovered ? 4.25 : 3.5) * s;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";

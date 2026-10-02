@@ -87,7 +87,7 @@
   background: linear-gradient(
     105deg,
     transparent 40%,
-    color-mix(in srgb, var(--color-gold) 45%, transparent) 50%,
+    rgba(255, 255, 255, 0.35) 50%,
     transparent 60%
   );
   transform: translateX(-130%);
@@ -111,19 +111,19 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: #ffffff;
   padding: 0.72rem 1.35rem;
-  border: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 0;
   background:
     linear-gradient(
       135deg,
-      color-mix(in srgb, var(--color-gold) 8%, transparent) 0%,
+      rgba(255, 255, 255, 0.08) 0%,
       transparent 48%
     ),
     rgba(5, 5, 5, 0.35);
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--color-gold) 18%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
     0 0 0 1px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(8px);
   transition:
@@ -145,10 +145,10 @@
 
 .cta:hover {
   color: #050505;
-  background: var(--color-gold);
-  border-color: var(--color-gold);
+  background: #ffffff;
+  border-color: #ffffff;
   box-shadow:
-    0 0 32px color-mix(in srgb, var(--color-gold) 28%, transparent),
+    0 0 32px rgba(255, 255, 255, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
@@ -157,7 +157,7 @@
 }
 
 .cta:focus-visible {
-  outline: 2px solid var(--color-gold);
+  outline: 2px solid #ffffff;
   outline-offset: 3px;
 }
 
@@ -247,7 +247,7 @@
 .menuToggle:hover .barTop,
 .menuToggle:hover .barMid,
 .menuToggle:hover .barBot {
-  background: var(--color-gold);
+  background: #ffffff;
 }
 
 /* Morph into Signature "1 ✕ 3" Easter Egg Close Monogram */
@@ -269,8 +269,8 @@
   margin-left: -1px;
   margin-top: -9px;
   transform: rotate(45deg);
-  background: var(--color-gold);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--color-gold) 60%, transparent);
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
 }
 
 .easterEggOpen .linesThree {
@@ -291,19 +291,19 @@
 .easterEggOpen .barTop {
   height: 1px;
   width: 14px;
-  background: rgba(255, 245, 220, 0.75);
+  background: rgba(255, 255, 255, 0.75);
 }
 
 .easterEggOpen .barMid {
   height: 1.5px;
   width: 18px;
-  background: var(--color-gold);
+  background: #ffffff;
 }
 
 .easterEggOpen .barBot {
   height: 1px;
   width: 14px;
-  background: rgba(255, 245, 220, 0.75);
+  background: rgba(255, 255, 255, 0.75);
 }
 
 /* ===============================================
@@ -387,10 +387,10 @@
 }
 
 .transHeadlineGold {
-  color: var(--color-gold);
+  color: #ffffff;
   font-style: italic;
   font-weight: 500;
-  text-shadow: 0 0 45px rgba(232, 197, 106, 0.4);
+  text-shadow: 0 0 35px rgba(255, 255, 255, 0.35);
 }
 
 .transManifesto {
