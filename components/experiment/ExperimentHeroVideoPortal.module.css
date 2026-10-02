@@ -1,0 +1,281 @@
+/* =========================================================
+   13 UTOPIA // EXPERIMENT: "O" APERTURE VIDEO PORTAL HERO
+   ========================================================= */
+
+.pinnedContainer {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #000000;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000;
+  overflow: hidden;
+}
+
+/* ── Typography Layer ─────────────────────────────────────── */
+.typeLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  pointer-events: none;
+  box-sizing: border-box;
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+  will-change: transform, opacity, filter;
+}
+
+.monumentLockup {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 2.8vw, 3.2rem);
+  width: auto;
+  max-width: 88vw;
+  margin: 0 auto;
+  pointer-events: auto;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.beCommonBlock {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0.76;
+}
+
+.beWord {
+  display: block;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: min(15.2vw, 32vh);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.76;
+  letter-spacing: -0.06em;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.stackedBlock {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(0.3rem, 0.9vw, 1.1rem);
+  line-height: 0.78;
+}
+
+.wordTop {
+  display: block;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: min(7.5vw, 15.6vh);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.78;
+  letter-spacing: -0.05em;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.wordBottom {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: min(7.5vw, 15.6vh);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.78;
+  letter-spacing: -0.055em;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+/* ── The Aperture Letter "O" ──────────────────────────────── */
+.letterOContainer {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+}
+
+.letterOText {
+  display: inline-block;
+  color: #ffffff;
+  position: relative;
+  z-index: 1;
+}
+
+/* Inner miniature preview window inside the O */
+.miniVideoWindow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 58%;
+  height: 62%;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.8), 0 0 16px rgba(244, 223, 200, 0.35);
+  border: 1px solid rgba(244, 223, 200, 0.4);
+}
+
+.miniVideoElement {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(100%) contrast(1.2);
+}
+
+/* ── Expanding Full-Bleed Video Portal Layer ─────────────── */
+.expandingPortal {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+  will-change: clip-path, opacity;
+}
+
+.portalVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(100%) contrast(1.15) brightness(0.96);
+}
+
+.videoScrim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 45%, rgba(244, 223, 200, 0.04) 0%, transparent 70%),
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.1) 35%,
+      rgba(0, 0, 0, 0.1) 65%,
+      rgba(0, 0, 0, 0.85) 100%
+    );
+  pointer-events: none;
+}
+
+/* ── Video HUD Caption ───────────────────────────────────── */
+.hudBottom {
+  position: absolute;
+  bottom: clamp(1.5rem, 3.5vh, 3.5rem);
+  left: clamp(1.5rem, 4vw, 4rem);
+  right: clamp(1.5rem, 4vw, 4rem);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: opacity, transform;
+}
+
+.captionBlock {
+  max-width: 680px;
+}
+
+.chapterNum {
+  display: block;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #dfb76c;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.chapterTitle {
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.4rem, 2.8vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: #ffffff;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+}
+
+.chapterSub {
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Subtle Top & Bottom Architectural Fades */
+.fadeTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(to bottom, #000000 0%, rgba(0, 0, 0, 0.6) 40%, transparent 100%);
+  pointer-events: none;
+  z-index: 7;
+}
+
+.fadeBottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0.6) 40%, transparent 100%);
+  pointer-events: none;
+  z-index: 7;
+}
+
+@media (max-width: 768px) {
+  .monumentLockup {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    max-width: 92vw;
+  }
+
+  .beWord {
+    font-size: min(24vw, 16vh);
+  }
+
+  .wordTop,
+  .wordBottom {
+    font-size: min(11.5vw, 7.8vh);
+  }
+}

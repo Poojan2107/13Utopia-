@@ -1,9 +1,8 @@
 import {
-  HomeVideoSection,
   HomeSectionWork,
   HomeCTASection,
 } from "@/components/home";
-import { ExperimentHero } from "@/components/experiment";
+import { ExperimentHeroVideoPortal } from "@/components/experiment";
 import { Continuous3DStory } from "@/components/plus-ex";
 import { SiteHeader, SiteFooter } from "@/components/layout";
 import {
@@ -81,11 +80,8 @@ export default function ExperimentHomePage() {
           backgroundColor: "transparent",
         }}
       >
-        {/* 01 — EXPERIMENT HERO (Full-Screen Enlarged Lockup) */}
-        <ExperimentHero />
-
-        {/* 02 — VIDEO SHOWCASE: Full-Bleed Spatial Cinematic Reel */}
-        <HomeVideoSection />
+        {/* 01 & 02 — HERO INTO VIDEO "O" APERTURE EXPANSION PORTAL */}
+        <ExperimentHeroVideoPortal />
 
         {/* 03 — 3D MONOLITH EDITORIAL STATEMENT & CREATE · BUILD · GROW CAPABILITIES TRIAD */}
         <Continuous3DStory />
