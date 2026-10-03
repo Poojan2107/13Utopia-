@@ -163,7 +163,28 @@ export function Plus3DCanvas({
       bevelSegments: 5,
     };
 
-    // ── MONOCHROMATIC STUDIO ENVIRONMENT MAP FOR REFLECTIONS ──
+    // ── PROCEDURAL MICRO-TEXTURE BUMP MAP ──
+    const bCanvas = document.createElement("canvas");
+    bCanvas.width = 256;
+    bCanvas.height = 256;
+    const bCtx = bCanvas.getContext("2d");
+    if (bCtx) {
+      const imgData = bCtx.createImageData(256, 256);
+      for (let i = 0; i < imgData.data.length; i += 4) {
+        const noise = Math.floor(Math.random() * 255);
+        imgData.data[i] = noise;
+        imgData.data[i + 1] = noise;
+        imgData.data[i + 2] = noise;
+        imgData.data[i + 3] = 255;
+      }
+      bCtx.putImageData(imgData, 0, 0);
+    }
+    const bumpTexture = new THREE.CanvasTexture(bCanvas);
+    bumpTexture.wrapS = THREE.RepeatWrapping;
+    bumpTexture.wrapT = THREE.RepeatWrapping;
+    bumpTexture.repeat.set(3.5, 3.5);
+
+    // ── DYNAMIC MULTI-SPECTRUM STUDIO ENVIRONMENT MAP ──
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     pmremGenerator.compileEquirectangularShader();
 
@@ -184,18 +205,20 @@ export function Plus3DCanvas({
         void main() {
           vec3 dir = normalize(vWorldPosition);
           float y = dir.y;
-          // High-contrast monochromatic studio gradient
-          vec3 darkVoid = vec3(0.01, 0.01, 0.01);
-          vec3 horizonGleam = vec3(0.60, 0.60, 0.60);
-          vec3 topLight = vec3(0.98, 0.98, 0.98);
+          // Rich multi-tonal studio gradient (Obsidian void -> Champagne horizon -> Icy platinum zenith)
+          vec3 darkVoid = vec3(0.012, 0.014, 0.018);
+          vec3 champagneHorizon = vec3(0.55, 0.48, 0.40);
+          vec3 iceZenith = vec3(0.78, 0.85, 0.95);
           
           vec3 col = darkVoid;
-          col = mix(col, horizonGleam, smoothstep(-0.35, 0.15, y));
-          col = mix(col, topLight, smoothstep(0.15, 0.85, y));
+          col = mix(col, champagneHorizon, smoothstep(-0.40, 0.12, y));
+          col = mix(col, iceZenith, smoothstep(0.12, 0.88, y));
           
-          // Grazing side softbox strips
-          float strip = pow(max(0.0, sin(atan(dir.z, dir.x) * 2.0)), 4.0);
-          col += vec3(strip * 0.40);
+          // Grazing dual softbox strips
+          float strip1 = pow(max(0.0, sin(atan(dir.z, dir.x) * 2.0)), 3.5);
+          float strip2 = pow(max(0.0, cos(atan(dir.z, dir.x) * 3.0 + 0.6)), 4.0);
+          col += vec3(0.85, 0.92, 1.00) * (strip1 * 0.45);
+          col += vec3(0.98, 0.88, 0.78) * (strip2 * 0.38);
           
           gl_FragColor = vec4(col, 1.0);
         }
@@ -206,32 +229,48 @@ export function Plus3DCanvas({
     const envRenderTarget = pmremGenerator.fromScene(envScene);
     scene.environment = envRenderTarget.texture;
 
-    // 13 Utopia Exact Plus-X & Tenbin Material Grading: Polished Titanium & Obsidian Monolith
+    // 13 Utopia Signature Iridescent Obsidian & Titanium Shading
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x323640),
-      roughness: 0.20,
-      metalness: 0.88,
-      clearcoat: 0.90,
-      clearcoatRoughness: 0.12,
+      color: new THREE.Color(0x2c303a),
+      roughness: 0.24,
+      metalness: 0.82,
+      clearcoat: 0.85,
+      clearcoatRoughness: 0.14,
       reflectivity: 0.95,
-      emissive: new THREE.Color(0x0a0c10),
-      emissiveIntensity: 0.18,
-      envMapIntensity: 1.8,
+      iridescence: 0.58,
+      iridescenceIOR: 1.38,
+      iridescenceThicknessRange: [120, 360],
+      sheen: 0.60,
+      sheenColor: new THREE.Color(0xdce6f8),
+      sheenRoughness: 0.22,
+      bumpMap: bumpTexture,
+      bumpScale: 0.016,
+      emissive: new THREE.Color(0x0a0d12),
+      emissiveIntensity: 0.16,
+      envMapIntensity: 1.7,
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x2a2e36),
-      roughness: 0.22,
-      metalness: 0.86,
-      clearcoat: 0.90,
-      clearcoatRoughness: 0.12,
+      color: new THREE.Color(0x262a34),
+      roughness: 0.26,
+      metalness: 0.80,
+      clearcoat: 0.85,
+      clearcoatRoughness: 0.14,
       reflectivity: 0.95,
-      emissive: new THREE.Color(0x080a0e),
-      emissiveIntensity: 0.18,
-      envMapIntensity: 1.8,
+      iridescence: 0.58,
+      iridescenceIOR: 1.38,
+      iridescenceThicknessRange: [120, 360],
+      sheen: 0.60,
+      sheenColor: new THREE.Color(0xdce6f8),
+      sheenRoughness: 0.22,
+      bumpMap: bumpTexture,
+      bumpScale: 0.016,
+      emissive: new THREE.Color(0x080b10),
+      emissiveIntensity: 0.16,
+      envMapIntensity: 1.7,
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
@@ -338,34 +377,43 @@ export function Plus3DCanvas({
     const auraParticleSystem = new THREE.Points(auraParticleGeo, auraParticleMat);
     scene.add(auraParticleSystem);
 
-    // Studio Lighting (Tenbin Exact Overhead Grazing & Neutral Chiaroscuro Pipeline)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.2);
+    // Studio Lighting (Dynamic multi-chromatic rim & front keying)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
     scene.add(ambientLight);
 
-    const frontKeyLight = new THREE.DirectionalLight(0xffffff, 6.5);
-    frontKeyLight.position.set(0, 4, 11);
+    // Direct front camera key light (illuminates front face with responsive glint)
+    const frontKeyLight = new THREE.DirectionalLight(0xffffff, 5.5);
+    frontKeyLight.position.set(0, 3, 12);
     scene.add(frontKeyLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 7.0);
-    keyLight.position.set(6, 14, 9);
+    // Primary studio key light (Crisp platinum)
+    const keyLight = new THREE.DirectionalLight(0xf0f5ff, 5.5);
+    keyLight.position.set(8, 14, 10);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xe0e0e0, 4.0);
-    fillLight.position.set(-10, -2, 8);
+    // Subtle fill light (Deep cool silver)
+    const fillLight = new THREE.DirectionalLight(0x8fa4c0, 3.2);
+    fillLight.position.set(-12, -3, 8);
     scene.add(fillLight);
 
-    // Overhead high-intensity grazing light for sharp top chamfer specular highlights
-    const topRimLight = new THREE.DirectionalLight(0xffffff, 14.0);
-    topRimLight.position.set(0, 20, 1);
+    // Top overhead razor chamfer light (Pure white specular)
+    const topRimLight = new THREE.DirectionalLight(0xffffff, 12.0);
+    topRimLight.position.set(0, 18, 2);
     scene.add(topRimLight);
 
-    // Back-kicker rim light for crisp edge separation from dark stardust void
-    const backRimLight = new THREE.DirectionalLight(0xffffff, 10.0);
-    backRimLight.position.set(0, -6, -10);
-    scene.add(backRimLight);
+    // Left back rim (Lunar cool ice kicker)
+    const backRimLeft = new THREE.DirectionalLight(0xb5cbe8, 6.5);
+    backRimLeft.position.set(-12, -5, -9);
+    scene.add(backRimLeft);
 
-    const sideGrazingLight = new THREE.DirectionalLight(0xffffff, 6.0);
-    sideGrazingLight.position.set(12, -2, -4);
+    // Right back rim (Champagne platinum gleam)
+    const backRimRight = new THREE.DirectionalLight(0xf5e6d3, 6.0);
+    backRimRight.position.set(12, -4, -9);
+    scene.add(backRimRight);
+
+    // Side grazing light (Warm architectural bronze accent)
+    const sideGrazingLight = new THREE.DirectionalLight(0xf2ddc2, 4.0);
+    sideGrazingLight.position.set(14, -2, -4);
     scene.add(sideGrazingLight);
 
     // Mouse Parallax Trackers
@@ -420,9 +468,12 @@ export function Plus3DCanvas({
       mouseX += (targetMouseX - mouseX) * 0.06;
       mouseY += (targetMouseY - mouseY) * 0.06;
 
-      // Soft studio key light parallax (Natural, diffused edge sheen — zero glare blobs)
-      keyLight.position.x = 10 + mouseX * 2.5;
-      keyLight.position.y = 16 + mouseY * 2.0;
+      // Soft studio key light parallax (Natural, diffused edge sheen & dynamic chamfer reflections)
+      frontKeyLight.position.x = mouseX * 4.0;
+      frontKeyLight.position.y = 3 + mouseY * 3.0;
+
+      keyLight.position.x = 8 + mouseX * 2.5;
+      keyLight.position.y = 14 + mouseY * 2.0;
 
       topRimLight.position.x = mouseX * 2.0;
 
