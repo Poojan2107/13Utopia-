@@ -293,54 +293,78 @@ export function Plus3DCanvas({
     const particleSystem = new THREE.Points(particleGeo, particleMat);
     scene.add(particleSystem);
 
-    // ── 04. HERO MONUMENTAL TEXT PARTICLE MATRIX ("BE UNREAL UNREASONABLE") ──
+    // ── 04. HERO MONUMENTAL TEXT PARTICLE MATRIX (Exact Screen Camera Projection) ──
     const generateTextParticles = () => {
+      const targetW = 1600;
+      const targetH = Math.max(700, Math.round(1600 / (width / height)));
       const tCanvas = document.createElement("canvas");
-      tCanvas.width = 1600;
-      tCanvas.height = 800;
+      tCanvas.width = targetW;
+      tCanvas.height = targetH;
       const tCtx = tCanvas.getContext("2d");
-      if (!tCtx) return { positions: new Float32Array(0), offsets: [] };
+      if (!tCtx) return { count: 0, basePos: new Float32Array(0), curPos: new Float32Array(0), offsets: [] };
 
       tCtx.fillStyle = "#000000";
-      tCtx.fillRect(0, 0, 1600, 800);
+      tCtx.fillRect(0, 0, targetW, targetH);
 
       tCtx.fillStyle = "#ffffff";
-      tCtx.textAlign = "left";
       tCtx.textBaseline = "alphabetic";
 
+      // Replicate exact CSS monumentLockup proportions
+      const wordSize = Math.min(targetW * 0.068, targetH * 0.135);
+      const gapStack = Math.max(4, wordSize * 0.08);
+      const beSize = wordSize * 2.18 + gapStack * 0.4;
+      const gapCol = Math.max(16, targetW * 0.022);
+
+      tCtx.font = `900 ${beSize}px "PP Neue Montreal", "Inter", sans-serif`;
+      const beWidth = tCtx.measureText("BE").width;
+
+      tCtx.font = `900 ${wordSize}px "PP Neue Montreal", "Inter", sans-serif`;
+      const topWidth = tCtx.measureText("UNREAL").width;
+      const botWidth = tCtx.measureText("UNREASONABLE").width;
+      const stackWidth = Math.max(topWidth, botWidth);
+
+      const totalWidth = beWidth + gapCol + stackWidth;
+      const startX = (targetW - totalWidth) / 2;
+      const centerY = targetH / 2 - 20;
+
       // Draw "BE" on left
-      tCtx.font = "900 320px 'PP Neue Montreal', 'Inter', 'Impact', sans-serif";
-      tCtx.fillText("BE", 60, 520);
+      tCtx.font = `900 ${beSize}px "PP Neue Montreal", "Inter", sans-serif`;
+      tCtx.fillText("BE", startX, centerY + beSize * 0.34);
 
-      // Draw stacked "UNREAL" and "UNREASONABLE" on right
-      tCtx.font = "900 155px 'PP Neue Montreal', 'Inter', 'Impact', sans-serif";
-      tCtx.fillText("UNREAL", 620, 360);
-      tCtx.fillText("UNREASONABLE", 620, 530);
+      // Draw "UNREAL" and "UNREASONABLE" on right
+      tCtx.font = `900 ${wordSize}px "PP Neue Montreal", "Inter", sans-serif`;
+      tCtx.fillText("UNREAL", startX + beWidth + gapCol, centerY - gapStack * 0.5);
+      tCtx.fillText("UNREASONABLE", startX + beWidth + gapCol, centerY + wordSize * 0.95);
 
-      const imgData = tCtx.getImageData(0, 0, 1600, 800);
+      const imgData = tCtx.getImageData(0, 0, targetW, targetH);
       const data = imgData.data;
       const pts: Array<{ x: number; y: number; z: number; ox: number; oy: number; oz: number; phase: number; speed: number }> = [];
 
-      // Sample every 5 pixels
-      const step = 5;
-      for (let y = 0; y < 800; y += step) {
-        for (let x = 0; x < 1600; x += step) {
-          const idx = (y * 1600 + x) * 4;
+      // Camera visible dimensions at target depth (z = 0.5)
+      const vFOV = (camera.fov * Math.PI) / 180;
+      const visibleHeight = 2 * Math.tan(vFOV / 2) * (camera.position.z - 0.5);
+      const visibleWidth = visibleHeight * (width / height);
+
+      // Sample every 4 pixels for dense, ultra-crisp typography
+      const step = 4;
+      for (let y = 0; y < targetH; y += step) {
+        for (let x = 0; x < targetW; x += step) {
+          const idx = (y * targetW + x) * 4;
           if (data[idx] > 120) {
-            // Map 2D pixel to 3D world space (centered in front of monolith)
-            const px = ((x - 800) / 800) * 5.4;
-            const py = -((y - 400) / 400) * 2.7 + 0.45;
-            const pz = 1.1 + (Math.random() - 0.5) * 0.15;
+            // Map 2D pixel to exact 3D camera world coordinates
+            const px = ((x - targetW / 2) / (targetW / 2)) * (visibleWidth / 2);
+            const py = -((y - targetH / 2) / (targetH / 2)) * (visibleHeight / 2);
+            const pz = 0.5 + (Math.random() - 0.5) * 0.08;
 
             pts.push({
               x: px,
               y: py,
               z: pz,
               ox: px + (Math.random() - 0.5) * 14.0,
-              oy: py + (Math.random() * 12.0 + 3.0),
-              oz: pz + (Math.random() - 0.5) * 12.0 - 2.5,
+              oy: py + (Math.random() * 10.0 + 4.0),
+              oz: pz + (Math.random() - 0.5) * 12.0 - 2.0,
               phase: Math.random() * Math.PI * 2,
-              speed: 0.7 + Math.random() * 1.5,
+              speed: 0.8 + Math.random() * 1.5,
             });
           }
         }
@@ -373,15 +397,16 @@ export function Plus3DCanvas({
     heroParticleGeo.setAttribute("position", new THREE.BufferAttribute(heroCurrentPositions, 3));
 
     const heroParticleMat = new THREE.PointsMaterial({
-      size: 0.085,
+      size: 0.09,
       map: particleTexture,
       transparent: true,
-      opacity: 0.95,
+      opacity: 0,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
 
     const heroParticleSystem = new THREE.Points(heroParticleGeo, heroParticleMat);
+    heroParticleSystem.visible = false;
     scene.add(heroParticleSystem);
 
     // Studio Lighting (Enhanced Tenbin High-Key Contrast & Precision Visibility)
@@ -493,55 +518,20 @@ export function Plus3DCanvas({
       const heroPosAttr = heroParticleGeo.attributes.position as THREE.BufferAttribute;
       const hArr = heroPosAttr.array as Float32Array;
 
-      let particleOpacity = 0;
-      let disperseP = 0;
-
-      if (p <= 0.008) {
-        particleOpacity = 0;
-        disperseP = 0;
-      } else if (p > 0.008 && p <= 0.035) {
-        particleOpacity = smoothstep(0.008, 0.030, p);
-        disperseP = smoothstep(0.015, 0.035, p) * 0.10;
-      } else if (p > 0.035 && p <= 0.14) {
-        particleOpacity = 1.0 - smoothstep(0.09, 0.14, p);
-        disperseP = 0.10 + smoothstep(0.035, 0.14, p) * 0.90;
-      } else {
-        particleOpacity = 0;
-        disperseP = 1.0;
-      }
-
-      heroParticleSystem.visible = particleOpacity > 0.005;
-      heroParticleMat.opacity = particleOpacity * 0.95;
-
-      if (heroParticleSystem.visible) {
-        const mouseWorldX = mouseX * 5.2;
-        const mouseWorldY = mouseY * 3.0;
+      if (p <= 0.002) {
+        heroParticleSystem.visible = false;
+        heroParticleMat.opacity = 0;
+      } else if (p > 0.002 && p <= 0.12) {
+        heroParticleSystem.visible = true;
+        const disperseP = smoothstep(0.002, 0.09, p);
+        const fadeOut = Math.max(0, 1.0 - smoothstep(0.05, 0.12, p));
+        heroParticleMat.opacity = fadeOut * 0.95;
 
         for (let i = 0; i < heroParticleCount; i++) {
           const off = heroParticleOffsets[i];
           const bx = heroBasePositions[i * 3];
           const by = heroBasePositions[i * 3 + 1];
           const bz = heroBasePositions[i * 3 + 2];
-
-          // Cursor kinetic repulsion force
-          const dx = bx - mouseWorldX;
-          const dy = by - mouseWorldY;
-          const distSq = dx * dx + dy * dy;
-          let repelX = 0;
-          let repelY = 0;
-          let repelZ = 0;
-
-          if (distSq < 1.8 && distSq > 0.0001) {
-            const dist = Math.sqrt(distSq);
-            const force = ((1.34 - dist) / 1.34) * (1 - disperseP);
-            repelX = (dx / dist) * force * 0.75;
-            repelY = (dy / dist) * force * 0.75;
-            repelZ = force * 0.6;
-          }
-
-          // Living breath micro-shimmer
-          const shimmerX = Math.sin(elapsedTime * 2.2 + off.phase) * 0.015 * (1 - disperseP);
-          const shimmerY = Math.cos(elapsedTime * 1.8 + off.phase) * 0.015 * (1 - disperseP);
 
           // 3D Curl Turbulence when dispersing on scroll
           const turbX = Math.sin(elapsedTime * 1.6 + off.phase) * 0.45 * disperseP;
@@ -551,11 +541,14 @@ export function Plus3DCanvas({
           const targetPy = by + (off.oy * disperseP + (elapsedTime * 0.55 * off.speed) % 12.0 - 6.0) * disperseP + turbY;
           const targetPz = bz + off.oz * disperseP;
 
-          hArr[i * 3] = (bx + repelX + shimmerX) * (1 - disperseP) + targetPx * disperseP;
-          hArr[i * 3 + 1] = (by + repelY + shimmerY) * (1 - disperseP) + targetPy * disperseP;
-          hArr[i * 3 + 2] = (bz + repelZ) * (1 - disperseP) + targetPz * disperseP;
+          hArr[i * 3] = bx * (1 - disperseP) + targetPx * disperseP;
+          hArr[i * 3 + 1] = by * (1 - disperseP) + targetPy * disperseP;
+          hArr[i * 3 + 2] = bz * (1 - disperseP) + targetPz * disperseP;
         }
         heroPosAttr.needsUpdate = true;
+      } else {
+        heroParticleSystem.visible = false;
+        heroParticleMat.opacity = 0;
       }
 
       if (emblemGroup) {

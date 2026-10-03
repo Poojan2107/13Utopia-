@@ -130,9 +130,8 @@ export function Continuous3DStory() {
               scrollProgress < 0.08 ? styles.actVisible : styles.actHidden
             }`}
             style={{
-              opacity: scrollProgress <= 0.008 ? 1 : Math.max(0, 1 - (scrollProgress - 0.008) / 0.022),
-              transform: `translateY(${scrollProgress * -30}px)`,
-              pointerEvents: scrollProgress < 0.02 ? "auto" : "none",
+              opacity: scrollProgress <= 0.002 ? 1 : 0,
+              pointerEvents: scrollProgress <= 0.002 ? "auto" : "none",
             }}
           >
             <div className={styles.heroLockup}>
