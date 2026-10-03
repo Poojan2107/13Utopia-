@@ -138,7 +138,7 @@ export function Continuous3DStory() {
               </div>
 
               <p className={styles.heroLeadText}>
-                We engineer living computational platforms, 3D worlds, and enduring brand moats for visionary enterprises.
+                13 Utopia architects anomalous digital realities, living computational platforms, and transcendent brand ecosystems.
               </p>
             </div>
           </div>
