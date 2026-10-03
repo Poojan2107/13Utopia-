@@ -163,30 +163,75 @@ export function Plus3DCanvas({
       bevelSegments: 5,
     };
 
-    // 13 Utopia Exact Plus-X & Tenbin Material Grading: Matte Obsidian Architectural Titanium
+    // ── MONOCHROMATIC STUDIO ENVIRONMENT MAP FOR REFLECTIONS ──
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    pmremGenerator.compileEquirectangularShader();
+
+    const envScene = new THREE.Scene();
+    const envGeo = new THREE.SphereGeometry(40, 32, 16);
+    const envMat = new THREE.ShaderMaterial({
+      side: THREE.BackSide,
+      vertexShader: `
+        varying vec3 vWorldPosition;
+        void main() {
+          vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+          vWorldPosition = worldPosition.xyz;
+          gl_Position = projectionMatrix * viewMatrix * worldPosition;
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vWorldPosition;
+        void main() {
+          vec3 dir = normalize(vWorldPosition);
+          float y = dir.y;
+          // High-contrast monochromatic studio gradient
+          vec3 darkVoid = vec3(0.01, 0.01, 0.01);
+          vec3 horizonGleam = vec3(0.60, 0.60, 0.60);
+          vec3 topLight = vec3(0.98, 0.98, 0.98);
+          
+          vec3 col = darkVoid;
+          col = mix(col, horizonGleam, smoothstep(-0.35, 0.15, y));
+          col = mix(col, topLight, smoothstep(0.15, 0.85, y));
+          
+          // Grazing side softbox strips
+          float strip = pow(max(0.0, sin(atan(dir.z, dir.x) * 2.0)), 4.0);
+          col += vec3(strip * 0.40);
+          
+          gl_FragColor = vec4(col, 1.0);
+        }
+      `,
+    });
+    const envMesh = new THREE.Mesh(envGeo, envMat);
+    envScene.add(envMesh);
+    const envRenderTarget = pmremGenerator.fromScene(envScene);
+    scene.environment = envRenderTarget.texture;
+
+    // 13 Utopia Exact Plus-X & Tenbin Material Grading: Polished Titanium & Obsidian Monolith
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x181c22),
-      roughness: 0.32,
-      metalness: 0.76,
-      clearcoat: 0.65,
-      clearcoatRoughness: 0.18,
-      reflectivity: 0.88,
-      emissive: new THREE.Color(0x060709),
-      emissiveIntensity: 0.12,
+      color: new THREE.Color(0x323640),
+      roughness: 0.20,
+      metalness: 0.88,
+      clearcoat: 0.90,
+      clearcoatRoughness: 0.12,
+      reflectivity: 0.95,
+      emissive: new THREE.Color(0x0a0c10),
+      emissiveIntensity: 0.18,
+      envMapIntensity: 1.8,
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x15181e),
-      roughness: 0.34,
-      metalness: 0.74,
-      clearcoat: 0.65,
-      clearcoatRoughness: 0.18,
-      reflectivity: 0.88,
-      emissive: new THREE.Color(0x050608),
-      emissiveIntensity: 0.12,
+      color: new THREE.Color(0x2a2e36),
+      roughness: 0.22,
+      metalness: 0.86,
+      clearcoat: 0.90,
+      clearcoatRoughness: 0.12,
+      reflectivity: 0.95,
+      emissive: new THREE.Color(0x080a0e),
+      emissiveIntensity: 0.18,
+      envMapIntensity: 1.8,
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
@@ -294,32 +339,32 @@ export function Plus3DCanvas({
     scene.add(auraParticleSystem);
 
     // Studio Lighting (Tenbin Exact Overhead Grazing & Neutral Chiaroscuro Pipeline)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 3.0);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.2);
     scene.add(ambientLight);
 
-    const frontKeyLight = new THREE.DirectionalLight(0xffffff, 5.0);
-    frontKeyLight.position.set(0, 3, 11);
+    const frontKeyLight = new THREE.DirectionalLight(0xffffff, 6.5);
+    frontKeyLight.position.set(0, 4, 11);
     scene.add(frontKeyLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 5.5);
-    keyLight.position.set(5, 12, 9);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 7.0);
+    keyLight.position.set(6, 14, 9);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xd8d8d8, 3.5);
+    const fillLight = new THREE.DirectionalLight(0xe0e0e0, 4.0);
     fillLight.position.set(-10, -2, 8);
     scene.add(fillLight);
 
     // Overhead high-intensity grazing light for sharp top chamfer specular highlights
-    const topRimLight = new THREE.DirectionalLight(0xffffff, 11.0);
-    topRimLight.position.set(0, 18, 1);
+    const topRimLight = new THREE.DirectionalLight(0xffffff, 14.0);
+    topRimLight.position.set(0, 20, 1);
     scene.add(topRimLight);
 
     // Back-kicker rim light for crisp edge separation from dark stardust void
-    const backRimLight = new THREE.DirectionalLight(0xffffff, 8.0);
+    const backRimLight = new THREE.DirectionalLight(0xffffff, 10.0);
     backRimLight.position.set(0, -6, -10);
     scene.add(backRimLight);
 
-    const sideGrazingLight = new THREE.DirectionalLight(0xe8e8e8, 4.5);
+    const sideGrazingLight = new THREE.DirectionalLight(0xffffff, 6.0);
     sideGrazingLight.position.set(12, -2, -4);
     scene.add(sideGrazingLight);
 
@@ -587,6 +632,8 @@ export function Plus3DCanvas({
       particleTexture.dispose();
       matTitaniumOne.dispose();
       matTitaniumThree.dispose();
+      envRenderTarget.dispose();
+      pmremGenerator.dispose();
       renderer.dispose();
     };
   }, [theme]);
