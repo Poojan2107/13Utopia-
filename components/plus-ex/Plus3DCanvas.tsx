@@ -527,9 +527,9 @@ export function Plus3DCanvas({
           targetRotZ = -Math.sin(t * Math.PI) * 0.14 + 0.04 * t;
           targetScale = 0.90 + 0.06 * t;
           targetMorph = t;
-        } else if (p >= 0.32 && p < 0.48) {
+        } else if (p >= 0.25 && p < 0.45) {
           // Act 1: CREATE (Settled Full Left Column as BE)
-          const localP = (p - 0.32) / 0.16;
+          const localP = (p - 0.25) / 0.20;
           targetX = -3.85;
           targetY = idleFloatY;
           targetZ = -1.0;
@@ -538,9 +538,9 @@ export function Plus3DCanvas({
           targetRotZ = 0.04 + idleRotZ;
           targetScale = 0.96;
           targetMorph = 1.0;
-        } else if (p >= 0.48 && p < 0.56) {
+        } else if (p >= 0.45 && p < 0.51) {
           // Transition 1 -> 2: Left -> Right Column deep 3D orbital sweep & 360° spin (BE => 13)
-          const t = smoothstep(0.48, 0.56, p);
+          const t = smoothstep(0.45, 0.51, p);
           const arcDepth = Math.sin(t * Math.PI) * -3.2;
           const arcY = Math.sin(t * Math.PI) * -0.55;
 
@@ -552,9 +552,9 @@ export function Plus3DCanvas({
           targetRotZ = 0.04 * (1 - 2 * t) + Math.sin(t * Math.PI) * 0.16;
           targetScale = 0.96;
           targetMorph = 1.0 - t;
-        } else if (p >= 0.56 && p < 0.74) {
+        } else if (p >= 0.51 && p < 0.68) {
           // Act 2: BUILD (Settled Full Right Column as 13)
-          const localP = (p - 0.56) / 0.18;
+          const localP = (p - 0.51) / 0.17;
           targetX = 3.85;
           targetY = idleFloatY;
           targetZ = -1.0;
@@ -563,9 +563,9 @@ export function Plus3DCanvas({
           targetRotZ = -0.04 + idleRotZ;
           targetScale = 0.96;
           targetMorph = 0.0;
-        } else if (p >= 0.74 && p < 0.82) {
+        } else if (p >= 0.68 && p < 0.74) {
           // Transition 2 -> 3: Right -> Left Column deep 3D orbital sweep & 360° spin (13 => BE)
-          const t = smoothstep(0.74, 0.82, p);
+          const t = smoothstep(0.68, 0.74, p);
           const arcDepth = Math.sin(t * Math.PI) * -3.2;
           const arcY = Math.sin(t * Math.PI) * -0.55;
 
@@ -577,9 +577,9 @@ export function Plus3DCanvas({
           targetRotZ = -0.04 * (1 - 2 * t) - Math.sin(t * Math.PI) * 0.16;
           targetScale = 0.96;
           targetMorph = t;
-        } else if (p >= 0.82 && p < 0.96) {
+        } else if (p >= 0.74 && p < 0.88) {
           // Act 3: GROW (Settled Full Left Column as BE)
-          const localP = (p - 0.82) / 0.14;
+          const localP = (p - 0.74) / 0.14;
           targetX = -3.85;
           targetY = idleFloatY;
           targetZ = -1.0;
@@ -588,17 +588,30 @@ export function Plus3DCanvas({
           targetRotZ = 0.04 + idleRotZ;
           targetScale = 0.96;
           targetMorph = 1.0;
-        } else {
-          // Continuous handover to Section 04: Sweeps Left -> Center, dives into depth
-          const t = smoothstep(0.96, 1.00, p);
+        } else if (p >= 0.88 && p < 0.94) {
+          // Transition 3 -> Finale: Left -> Center (BE => 13)
+          const t = smoothstep(0.88, 0.94, p);
+          const arcDepth = Math.sin(t * Math.PI) * -2.8;
+          const arcY = Math.sin(t * Math.PI) * -0.45;
+
           targetX = -3.85 * (1 - t);
-          targetY = idleFloatY;
-          targetZ = -1.0 - 1.5 * t;
+          targetY = idleFloatY + arcY;
+          targetZ = -1.0 + arcDepth;
           targetRotY = (Math.PI * 6 + 0.24) * (1 - t) + (Math.PI * 8.0) * t;
-          targetRotX = 0.08 - 0.08 * t + idleRotX;
+          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.24 + idleRotX;
           targetRotZ = 0.04 * (1 - t) + idleRotZ;
-          targetScale = 0.96 * (1 - 0.12 * t);
+          targetScale = 0.96 * (1 - 0.04 * t);
           targetMorph = 1.0 - t;
+        } else {
+          // Act Finale: Core CREATE · BUILD · GROW Trilogy (Settled Center as 13)
+          targetX = 0;
+          targetY = idleFloatY;
+          targetZ = -0.92;
+          targetRotY = Math.PI * 8.0;
+          targetRotX = 0.06 + idleRotX;
+          targetRotZ = idleRotZ;
+          targetScale = 0.92;
+          targetMorph = 0.0;
         }
 
         // Apply Mouse Parallax Offsets

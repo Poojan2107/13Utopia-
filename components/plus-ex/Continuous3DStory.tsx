@@ -169,9 +169,9 @@ export function Continuous3DStory() {
           {/* Worlds Sequence: CREATE (Right), BUILD (Left), GROW (Right) */}
           {WORLDS.map((world, idx) => {
             const ranges = [
-              { start: 0.26, end: 0.48 },
-              { start: 0.52, end: 0.74 },
-              { start: 0.78, end: 0.98 },
+              { start: 0.25, end: 0.45 },
+              { start: 0.48, end: 0.68 },
+              { start: 0.71, end: 0.88 },
             ];
             const { start: startP, end: endP } = ranges[idx];
             const isWorldActive = scrollProgress >= startP && scrollProgress <= endP;
@@ -267,6 +267,54 @@ export function Continuous3DStory() {
               </div>
             );
           })}
+
+          {/* Act Finale: Core Trilogy Architecture (CREATE · BUILD · GROW) */}
+          <div
+            className={`${styles.act} ${styles.finaleAct} ${
+              scrollProgress >= 0.90 ? styles.actVisible : styles.actHidden
+            }`}
+          >
+            <div className={styles.finaleContent}>
+              <div className={styles.finaleEyebrow}>
+                <span className={styles.finaleTag}>13 UTOPIA // THE CONTINUUM</span>
+                <span className={styles.finaleTag}>END-TO-END CAPABILITY</span>
+              </div>
+
+              <div className={styles.trilogyHeader}>
+                <h2 className={styles.trilogyTitle}>
+                  <span className={styles.trilogyWord}>CREATE</span>
+                  <span className={styles.trilogyDot}>·</span>
+                  <span className={styles.trilogyWord}>BUILD</span>
+                  <span className={styles.trilogyDot}>·</span>
+                  <span className={styles.trilogyWord}>GROW</span>
+                </h2>
+              </div>
+
+              <p className={styles.finaleThesis}>
+                From spatial brand identity and custom WebGL shaders to venture-scale computational architecture and category dominance.
+              </p>
+
+              <div className={styles.trilogyColumns}>
+                <div className={styles.trilogyCard}>
+                  <span className={styles.cardIndex}>01 / CREATE</span>
+                  <h4 className={styles.cardTitle}>Brand & Spatial Alchemy</h4>
+                  <p className={styles.cardDesc}>Anomalous 3D worlds, bespoke identity, and sensory immersion.</p>
+                </div>
+
+                <div className={styles.trilogyCard}>
+                  <span className={styles.cardIndex}>02 / BUILD</span>
+                  <h4 className={styles.cardTitle}>GPU & Code Architecture</h4>
+                  <p className={styles.cardDesc}>Sub-millisecond WebGL shaders, React platforms, and cloud scale.</p>
+                </div>
+
+                <div className={styles.trilogyCard}>
+                  <span className={styles.cardIndex}>03 / GROW</span>
+                  <h4 className={styles.cardTitle}>Category Dominance</h4>
+                  <p className={styles.cardDesc}>Algorithmic gravity, SEO supremacy, and enduring market reverence.</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
