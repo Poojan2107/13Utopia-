@@ -163,20 +163,18 @@ export function Plus3DCanvas({
       bevelSegments: 5,
     };
 
-    // ── TENBIN HIGH-FREQUENCY CHISELED MINERAL GRAIN BUMP MAP ──
+    // ── TENBIN HIGH-FREQUENCY MINERAL GRAIN BUMP MAP ──
     const bCanvas = document.createElement("canvas");
-    bCanvas.width = 512;
-    bCanvas.height = 512;
+    bCanvas.width = 256;
+    bCanvas.height = 256;
     const bCtx = bCanvas.getContext("2d");
     if (bCtx) {
-      const imgData = bCtx.createImageData(512, 512);
+      const imgData = bCtx.createImageData(256, 256);
       for (let i = 0; i < imgData.data.length; i += 4) {
-        const n1 = Math.random() * 200;
-        const n2 = Math.random() > 0.88 ? Math.random() * 255 : 0;
-        const grain = Math.floor(n1 * 0.7 + n2 * 0.3);
-        imgData.data[i] = grain;
-        imgData.data[i + 1] = grain;
-        imgData.data[i + 2] = grain;
+        const noise = Math.floor(Math.random() * 255);
+        imgData.data[i] = noise;
+        imgData.data[i + 1] = noise;
+        imgData.data[i + 2] = noise;
         imgData.data[i + 3] = 255;
       }
       bCtx.putImageData(imgData, 0, 0);
@@ -184,50 +182,7 @@ export function Plus3DCanvas({
     const bumpTexture = new THREE.CanvasTexture(bCanvas);
     bumpTexture.wrapS = THREE.RepeatWrapping;
     bumpTexture.wrapT = THREE.RepeatWrapping;
-    bumpTexture.repeat.set(4.0, 4.0);
-
-    // ── DYNAMIC MULTI-SPECTRUM STUDIO ENVIRONMENT MAP ──
-    const pmremGenerator = new THREE.PMREMGenerator(renderer);
-    pmremGenerator.compileEquirectangularShader();
-
-    const envScene = new THREE.Scene();
-    const envGeo = new THREE.SphereGeometry(40, 32, 16);
-    const envMat = new THREE.ShaderMaterial({
-      side: THREE.BackSide,
-      vertexShader: `
-        varying vec3 vWorldPosition;
-        void main() {
-          vec4 worldPosition = modelMatrix * vec4(position, 1.0);
-          vWorldPosition = worldPosition.xyz;
-          gl_Position = projectionMatrix * viewMatrix * worldPosition;
-        }
-      `,
-      fragmentShader: `
-        varying vec3 vWorldPosition;
-        void main() {
-          vec3 dir = normalize(vWorldPosition);
-          float y = dir.y;
-          // Tenbin Deep Cosmic Void & Overhead Grazing Zenith
-          vec3 darkVoid = vec3(0.008, 0.009, 0.012);
-          vec3 horizonGleam = vec3(0.35, 0.38, 0.44);
-          vec3 topLight = vec3(0.95, 0.98, 1.00);
-          
-          vec3 col = darkVoid;
-          col = mix(col, horizonGleam, smoothstep(-0.40, 0.15, y));
-          col = mix(col, topLight, smoothstep(0.15, 0.90, y));
-          
-          // Grazing studio softbox strips
-          float strip1 = pow(max(0.0, sin(atan(dir.z, dir.x) * 2.0)), 4.0);
-          col += vec3(0.90, 0.95, 1.00) * (strip1 * 0.40);
-          
-          gl_FragColor = vec4(col, 1.0);
-        }
-      `,
-    });
-    const envMesh = new THREE.Mesh(envGeo, envMat);
-    envScene.add(envMesh);
-    const envRenderTarget = pmremGenerator.fromScene(envScene);
-    scene.environment = envRenderTarget.texture;
+    bumpTexture.repeat.set(3.5, 3.5);
 
     // ── CUSTOM SHADER UNIFORMS & FX INJECTION ──
     const shaderUniforms = {
@@ -250,40 +205,32 @@ export function Plus3DCanvas({
           `
           #include <dithering_fragment>
           
-          // Tenbin Chiseled Obsidian Mineral Stardust FX
+          // Tenbin Exact Noir Razor Top Grazing & Dark Obsidian Shadows
           vec3 vNormalNorm = normalize(vNormal);
           vec3 vViewDir = normalize(vViewPosition);
           
-          // Razor top grazing illumination & edge fresnel
-          float topGlint = pow(max(0.0, vNormalNorm.y), 4.0) * 1.6;
-          float fresnel = pow(1.0 - max(0.0, dot(vNormalNorm, vViewDir)), 3.5);
+          // Razor top rim highlight (exactly matching reference images 2 & 3)
+          float topGlint = pow(max(0.0, vNormalNorm.y), 5.0) * 1.8;
+          float razorRim = pow(1.0 - max(0.0, dot(vNormalNorm, vViewDir)), 5.0) * 1.2;
           
-          // Sparkling stardust mineral flecks across chiseled stone facets
-          float noiseMote = sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453;
-          float glintMote = step(0.993, fract(noiseMote)) * (0.35 + 0.65 * max(0.0, dot(vNormalNorm, vec3(0.0, 1.0, 0.5))));
-          
-          // Pure platinum-white chiseled stone edge glint
-          vec3 stoneGlint = vec3(0.95, 0.98, 1.00);
-          gl_FragColor.rgb += stoneGlint * (fresnel * 0.95 + topGlint * 0.85);
-          gl_FragColor.rgb += stoneGlint * glintMote * 1.5;
+          vec3 specularWhite = vec3(1.0, 1.0, 1.0);
+          gl_FragColor.rgb += specularWhite * (topGlint + razorRim * 0.4);
           `
         );
       };
     };
 
-    // 13 Utopia Exact Tenbin Chiseled Obsidian Basalt Stone
+    // 13 Utopia Exact Tenbin Pitch-Black Obsidian Stone
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x0a0b0d),
-      roughness: 0.55,
-      metalness: 0.35,
-      clearcoat: 0.65,
-      clearcoatRoughness: 0.22,
-      reflectivity: 0.90,
+      color: new THREE.Color(0x020203),
+      roughness: 0.32,
+      metalness: 0.85,
+      clearcoat: 0.85,
+      clearcoatRoughness: 0.12,
+      reflectivity: 0.95,
       bumpMap: bumpTexture,
-      bumpScale: 0.038,
-      emissive: new THREE.Color(0x020304),
-      emissiveIntensity: 0.08,
-      envMapIntensity: 1.4,
+      bumpScale: 0.018,
+      emissive: new THREE.Color(0x000000),
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
@@ -291,17 +238,15 @@ export function Plus3DCanvas({
     attachCustomShaders(matTitaniumOne);
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x08090b),
-      roughness: 0.58,
-      metalness: 0.32,
-      clearcoat: 0.65,
-      clearcoatRoughness: 0.22,
-      reflectivity: 0.90,
+      color: new THREE.Color(0x010102),
+      roughness: 0.32,
+      metalness: 0.85,
+      clearcoat: 0.85,
+      clearcoatRoughness: 0.12,
+      reflectivity: 0.95,
       bumpMap: bumpTexture,
-      bumpScale: 0.038,
-      emissive: new THREE.Color(0x010203),
-      emissiveIntensity: 0.08,
-      envMapIntensity: 1.4,
+      bumpScale: 0.018,
+      emissive: new THREE.Color(0x000000),
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
@@ -409,43 +354,33 @@ export function Plus3DCanvas({
     const auraParticleSystem = new THREE.Points(auraParticleGeo, auraParticleMat);
     scene.add(auraParticleSystem);
 
-    // Studio Lighting (Dynamic multi-chromatic rim & front keying)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
+    // Studio Lighting (Tenbin Exact Noir Overhead Grazing & Dark Shadows)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.25);
     scene.add(ambientLight);
 
-    // Direct front camera key light (illuminates front face with responsive glint)
-    const frontKeyLight = new THREE.DirectionalLight(0xffffff, 5.5);
-    frontKeyLight.position.set(0, 3, 12);
+    // Overhead high-intensity grazing light for sharp top chamfer specular highlights
+    const topRimLight = new THREE.DirectionalLight(0xffffff, 16.0);
+    topRimLight.position.set(0, 20, 2);
+    scene.add(topRimLight);
+
+    // Gentle front camera key light
+    const frontKeyLight = new THREE.DirectionalLight(0xffffff, 0.6);
+    frontKeyLight.position.set(0, 2, 12);
     scene.add(frontKeyLight);
 
-    // Primary studio key light (Crisp platinum)
-    const keyLight = new THREE.DirectionalLight(0xf0f5ff, 5.5);
+    // Primary studio key light
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
     keyLight.position.set(8, 14, 10);
     scene.add(keyLight);
 
-    // Subtle fill light (Deep cool silver)
-    const fillLight = new THREE.DirectionalLight(0x8fa4c0, 3.2);
-    fillLight.position.set(-12, -3, 8);
-    scene.add(fillLight);
+    // Back-kicker rim light for crisp edge separation from dark stardust void
+    const backRimLight = new THREE.DirectionalLight(0xffffff, 6.0);
+    backRimLight.position.set(0, -6, -10);
+    scene.add(backRimLight);
 
-    // Top overhead razor chamfer light (Pure white specular)
-    const topRimLight = new THREE.DirectionalLight(0xffffff, 12.0);
-    topRimLight.position.set(0, 18, 2);
-    scene.add(topRimLight);
-
-    // Left back rim (Lunar cool ice kicker)
-    const backRimLeft = new THREE.DirectionalLight(0xb5cbe8, 6.5);
-    backRimLeft.position.set(-12, -5, -9);
-    scene.add(backRimLeft);
-
-    // Right back rim (Champagne platinum gleam)
-    const backRimRight = new THREE.DirectionalLight(0xf5e6d3, 6.0);
-    backRimRight.position.set(12, -4, -9);
-    scene.add(backRimRight);
-
-    // Side grazing light (Warm architectural bronze accent)
-    const sideGrazingLight = new THREE.DirectionalLight(0xf2ddc2, 4.0);
-    sideGrazingLight.position.set(14, -2, -4);
+    // Side grazing light for subtle razor edge glint
+    const sideGrazingLight = new THREE.DirectionalLight(0xffffff, 4.0);
+    sideGrazingLight.position.set(12, 6, -4);
     scene.add(sideGrazingLight);
 
     // Mouse Parallax Trackers
@@ -719,8 +654,6 @@ export function Plus3DCanvas({
       particleTexture.dispose();
       matTitaniumOne.dispose();
       matTitaniumThree.dispose();
-      envRenderTarget.dispose();
-      pmremGenerator.dispose();
       renderer.dispose();
     };
   }, [theme]);
