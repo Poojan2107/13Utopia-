@@ -1,0 +1,636 @@
+/* =========================================================
+   13 UTOPIA // BUTTER.VIDEO STYLE VENTURE ENGINE & TIMELINE DOCK
+   ========================================================= */
+
+.butterSection {
+  position: relative;
+  width: 100%;
+  background-color: #000000;
+  color: #ffffff;
+  padding: clamp(80px, 12vh, 160px) clamp(24px, 6vw, 100px);
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 6;
+}
+
+.ambientGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 70% 60% at 50% 30%,
+    rgba(244, 223, 200, 0.05) 0%,
+    rgba(15, 17, 22, 0.4) 50%,
+    rgba(0, 0, 0, 0.98) 85%
+  );
+}
+
+.dotMatrixGrid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  background-size: 36px 36px;
+  background-image: radial-gradient(
+    circle at center,
+    rgba(244, 234, 224, 0.24) 1px,
+    transparent 1px
+  );
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 20%, transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 20%, transparent 90%);
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(60px, 10vh, 120px);
+}
+
+/* ── PART 01: Butter.video Style Monumental Inline 3D Glass Badge Lockup ── */
+.inlineLeadBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(1.2rem, 2.5vh, 2rem);
+  width: 100%;
+  max-width: 1180px;
+}
+
+.eyebrowTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.7rem, 0.8vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+}
+
+.pulseDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+}
+
+.inlineHeadline {
+  font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
+  font-size: clamp(2.2rem, 4.4vw, 4.8rem);
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  margin: 0;
+  display: inline;
+}
+
+.inlinePillGroup {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  gap: 8px;
+  margin: 0 4px;
+}
+
+.glassBadge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(40px, 3.8vw, 56px);
+  height: clamp(40px, 3.8vw, 56px);
+  border-radius: clamp(12px, 1.2vw, 18px);
+  background: rgba(18, 18, 22, 0.75);
+  border: 1.5px solid var(--badge-color);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.6),
+    0 0 25px var(--badge-glow),
+    inset 0 0 14px var(--badge-glow);
+  cursor: pointer;
+  transform: translateY(-2px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.glassBadge:hover {
+  transform: translateY(-6px) scale(1.12);
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.8),
+    0 0 40px var(--badge-glow),
+    inset 0 0 20px var(--badge-glow);
+}
+
+.badgeReflection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.35) 0%, transparent 100%);
+  border-radius: clamp(10px, 1vw, 16px) clamp(10px, 1vw, 16px) 0 0;
+  pointer-events: none;
+}
+
+.badgeSvg {
+  width: 58%;
+  height: 58%;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+  transition: transform 0.3s ease;
+}
+
+.glassBadge:hover .badgeSvg {
+  transform: scale(1.12);
+}
+
+.verbText {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: filter 0.25s ease;
+}
+
+.verbText:hover {
+  filter: drop-shadow(0 0 12px var(--badge-color));
+}
+
+/* ── PART 02: Butter.video Interactive Timeline Console & Scrubber Dock ── */
+.dockContainer {
+  width: 100%;
+  background: rgba(14, 15, 18, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  padding: clamp(20px, 3vh, 32px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.5vh, 24px);
+}
+
+.dockHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.playPauseBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.playPauseBtn:hover {
+  background: #ffffff;
+  color: #000000;
+  transform: scale(1.05);
+}
+
+.timecode {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.timeVal {
+  color: #10b981;
+}
+
+.timeSep,
+.timeTotal {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.cadencePill {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+}
+
+.activePillLabel {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.activeDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* Timeline Ruler & Playhead */
+.timelineRulerWrap {
+  position: relative;
+  width: 100%;
+  height: 42px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.timelineTicks {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 6px 16px;
+}
+
+.tickCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.tickLine {
+  width: 1px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tickLabel {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: left 0.08s linear;
+  z-index: 3;
+}
+
+.playheadHandle {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.playheadLine {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* Squircle Capability Track (Horizontal 6-Block Bar) */
+.squircleTrack {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: clamp(10px, 1.5vw, 18px);
+}
+
+.dockItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.dockItem:hover {
+  transform: translateY(-4px);
+}
+
+.dockItemGlass {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: clamp(14px, 1.5vw, 22px);
+  background: rgba(22, 24, 30, 0.7);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dockItemActive .dockItemGlass {
+  border-color: var(--item-color);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.7),
+    0 0 30px var(--item-glow),
+    inset 0 0 16px var(--item-glow);
+  transform: scale(1.04);
+}
+
+.dockItemGloss {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.dockItemIconWrap {
+  width: 52%;
+  height: 52%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dockItemTitle {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.75rem, 0.85vw, 0.9rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.65);
+  transition: color 0.2s ease;
+}
+
+.dockItemActive .dockItemTitle {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* ── PART 03: Connected 3D Glass Capability Cards & Laser Circuit Line ── */
+.waveSection {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 5vh, 50px);
+}
+
+.waveHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.waveTag {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.7rem, 0.8vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+.waveTitle {
+  font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
+  font-size: clamp(2rem, 3.6vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.waveTitleDim {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Circuit SVG Wave */
+.circuitSvgWrap {
+  position: absolute;
+  top: 140px;
+  left: 0;
+  right: 0;
+  height: 180px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.circuitSvg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 6 Connected Cards Grid */
+.cardsGrid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2vw, 24px);
+}
+
+@media (max-width: 1024px) {
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .cardsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cardItem {
+  position: relative;
+  border-radius: 20px;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cardItem:hover {
+  transform: translateY(-8px);
+}
+
+.cardGlassBody {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: rgba(18, 19, 24, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: clamp(20px, 2.5vw, 28px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cardItem:hover .cardGlassBody {
+  border-color: var(--card-color);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.8),
+    0 0 35px var(--card-glow);
+}
+
+.cardRimGlow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--card-color), transparent);
+  opacity: 0.6;
+}
+
+.cardGlossHighlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.cardTopRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardNum {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--card-color);
+}
+
+.cardBadgeSmall {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--card-color);
+  box-shadow: 0 0 12px var(--card-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
+
+.cardHeading {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.3rem, 1.6vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.cardDesc {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.85rem, 0.95vw, 1.02rem);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+  flex: 1 0 auto;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: auto;
+}
+
+.cardFooterTag {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+}
+
+.cardArrow {
+  font-size: 14px;
+  color: var(--card-color);
+  transition: transform 0.25s ease;
+}
+
+.cardItem:hover .cardArrow {
+  transform: translate(3px, -3px);
+}
+
+/* ── Responsive Refinements ── */
+@media (max-width: 900px) {
+  .squircleTrack {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .squircleTrack {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .inlineHeadline {
+    font-size: 1.8rem;
+  }
+}
