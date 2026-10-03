@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Solutions3DCanvas } from "./Solutions3DCanvas";
 import styles from "@/styles/home/HomeSectionSolutions.module.css";
 
 interface CapabilityDomain {
@@ -21,106 +22,135 @@ interface CapabilityDomain {
 const SOLUTIONS: CapabilityDomain[] = [
   {
     index: "01",
-    title: "LAUNCH // CATEGORY GENESIS",
-    subhead: "Go-To-Market, MVP to Scale & Brand Moat Creation",
-    category: "BRANDING & CREATIVE // DIGITAL PRODUCTS",
-    industryVs: "Generic corporate rebranding and passive PDF guidelines that collect dust while prototypes stall in development.",
-    utopiaStandard: "Living typographic moats, custom WebGL flagships, and rapid MVP engineering designed to command 10x valuation multiples.",
+    title: "BRAND & CREATIVE",
+    subhead: "Identity, Art Direction, Motion & Spatial Design",
+    category: "BRANDING & CREATIVE",
+    industryVs: "Generic brand refresh decks, stock templates, and visual systems that look like every other startup.",
+    utopiaStandard: "Original brand strategy, custom identity systems, 3D art direction, and motion design built to own a category.",
     deliverables: [
-      "Brand Strategy & Monolithic Identity",
-      "MVP Development & Product Engineering",
-      "UI/UX Design & Spatial Micro-Interactions",
+      "Brand Strategy & Identity",
+      "Creative Direction & Art Direction",
+      "Brand Experience & Spatial Design",
+      "UI/UX Design & Interaction Design",
       "CGI, Motion Graphics & Visual Content",
-      "Go-To-Market & Lead Generation Funnels",
     ],
-    techStack: ["Next.js 15", "WebGL / Three.js", "Figma Design Tokens", "TypeScript", "Tailored Kernels"],
-    metricValue: "10X",
-    metricLabel: "VALUATION MULTIPLIER",
-    slug: "launch",
+    techStack: [
+      "Figma", "After Effects", "Blender", "Cinema 4D",
+      "Spline", "Rive", "Adobe Creative Suite", "Midjourney",
+      "Three.js", "GSAP", "Lottie", "WebGL",
+    ],
+    metricValue: "100%",
+    metricLabel: "BESPOKE. ZERO TEMPLATES.",
+    slug: "brand",
   },
   {
     index: "02",
-    title: "SCALE // HYPERGROWTH ENGINES",
-    subhead: "Algorithmic Acquisition, SEO Supremacy & Global Infrastructure",
-    category: "GROWTH & MARKETING // CLOUD ARCHITECTURE",
-    industryVs: "Intrusive popups, declining ad ROAS, and brittle server architectures that crash during traffic surges.",
-    utopiaStandard: "Psychological conversion mechanics, programmatic SEO dominance, and distributed edge infrastructure with 99.99% uptime.",
+    title: "DIGITAL PRODUCTS",
+    subhead: "Web, Mobile, SaaS & Custom Software",
+    category: "DIGITAL PRODUCTS",
+    industryVs: "Offshore dev shops delivering disposable prototypes with no long-term architecture or product thinking.",
+    utopiaStandard: "Full-stack product engineering from concept to launch. Web apps, mobile, SaaS, and custom software built to scale.",
     deliverables: [
-      "Search Engine Optimization (SEO) Domination",
-      "Performance Marketing & Paid Acquisition",
-      "Social Media Marketing & Content Strategy",
-      "Cloud Architecture & Global Edge Caching",
-      "Online Reputation Management (ORM)",
+      "Website & Web App Development",
+      "Mobile App Development (iOS & Android)",
+      "SaaS Development & Custom Software",
+      "Product Engineering & MVP Development",
+      "E-Commerce Solutions",
     ],
-    techStack: ["Edge SEO Engine", "Distributed Cloud", "PostHog Analytics", "Redis Edge", "Vercel Enterprise"],
-    metricValue: "4.8X",
-    metricLabel: "PIPELINE ACCELERATION",
-    slug: "scale",
+    techStack: [
+      "Next.js", "React", "React Native", "TypeScript",
+      "Node.js", "PostgreSQL", "Prisma", "Supabase",
+      "Vercel", "Stripe", "Redis", "REST & GraphQL",
+      "iOS / Swift", "Android / Kotlin", "Tailwind CSS",
+    ],
+    metricValue: "FULL-STACK",
+    metricLabel: "FRONT TO BACK",
+    slug: "products",
   },
   {
     index: "03",
-    title: "AUTOMATE // AI & AUTONOMOUS SYSTEMS",
-    subhead: "Intelligent Workflows, AI Agent Pipelines & Custom LLMs",
-    category: "AI & AUTOMATION // INTELLIGENT OPS",
-    industryVs: "Manual operational bottlenecks, disconnected SaaS tools, and shallow ChatGPT wrapper toys.",
-    utopiaStandard: "Autonomous multi-agent pipelines, custom enterprise LLM orchestration, and self-healing business process automation.",
+    title: "AI & AUTOMATION",
+    subhead: "AI Agents, Workflow Automation & Machine Learning",
+    category: "AI & AUTOMATION",
+    industryVs: "Shallow ChatGPT wrappers and disconnected SaaS tools that create more process debt than they solve.",
+    utopiaStandard: "Custom AI agents, automated workflows, and machine learning solutions that reduce manual overhead and scale operations.",
     deliverables: [
-      "AI Strategy & Enterprise Consulting",
-      "Autonomous AI Agent Development",
-      "Generative AI & Bespoke Model Fine-Tuning",
-      "End-to-End Workflow & Process Automation",
-      "Intelligent Conversational Systems & Chatbots",
+      "AI Strategy & Consulting",
+      "AI Agent Development",
+      "Workflow & Business Process Automation",
+      "Generative AI & Custom Model Integration",
+      "AI Chatbots & Conversational Systems",
+      "Machine Learning Solutions",
     ],
-    techStack: ["LangChain", "Python / FastAPI", "OpenAI / Claude SDK", "Vector DB (Pinecone)", "Temporal.io"],
-    metricValue: "70%",
-    metricLabel: "OPEX REDUCTION",
-    slug: "automate",
+    techStack: [
+      "OpenAI", "Anthropic Claude", "Google Gemini", "LangChain",
+      "LangGraph", "LlamaIndex", "Python", "FastAPI",
+      "Pinecone", "Weaviate", "Temporal.io", "n8n", "Make",
+    ],
+    metricValue: "OPERATIONAL",
+    metricLabel: "NOT EXPERIMENTAL",
+    slug: "ai",
   },
   {
     index: "04",
-    title: "MODERNIZE // SPATIAL & PLATFORM RE-ENGINEERING",
-    subhead: "60FPS WebGL Flagships, Legacy Modernization & Zero Latency",
-    category: "CLOUD & ENGINEERING // SPATIAL WORLDS",
-    industryVs: "Outdated monolithic legacy stacks, sluggish 2D templates, and heavy page weights causing high bounce rates.",
-    utopiaStandard: "Sub-millisecond frame-times, custom fragment shaders, and modern full-stack engineering that turn visitors into category converts.",
+    title: "CLOUD & ENGINEERING",
+    subhead: "Full-Stack Engineering, DevOps & Infrastructure",
+    category: "CLOUD & ENGINEERING",
+    industryVs: "Outdated monolithic stacks, brittle deployment pipelines, and infrastructure that can't handle real traffic.",
+    utopiaStandard: "Modern full-stack engineering, cloud architecture, and DevOps pipelines designed for performance, reliability, and scale.",
     deliverables: [
-      "Frontend & Backend Full-Stack Engineering",
-      "Legacy Codebase Modernization & Migration",
-      "API Development & Microservice Mesh",
-      "DevOps, CI/CD & Automated Deployment",
-      "Infrastructure Security & Compliance",
+      "Frontend & Backend Engineering",
+      "Full Stack Engineering",
+      "Cloud Architecture & Infrastructure",
+      "DevOps, CI/CD & Automated Pipelines",
+      "API Development & Microservices",
+      "Legacy Modernization & Migration",
+      "Infrastructure & Security",
     ],
-    techStack: ["WebGPU / GLSL", "Rust / Wasm", "Docker / Kubernetes", "Next.js App Router", "PostgreSQL"],
-    metricValue: "< 16MS",
-    metricLabel: "RENDER FRAME-TIME",
-    slug: "modernize",
+    techStack: [
+      "AWS", "Google Cloud (GCP)", "Azure", "Docker",
+      "Kubernetes", "Terraform", "GitHub Actions", "Next.js",
+      "Node.js", "Go", "TypeScript", "PostgreSQL", "MongoDB",
+    ],
+    metricValue: "BUILT TO SCALE",
+    metricLabel: "NOT JUST LAUNCH",
+    slug: "cloud",
   },
   {
     index: "05",
-    title: "TRANSFORM // STRATEGY & CTO ADVISORY",
-    subhead: "Enterprise Digital Transformation & Bespoke Co-Founding IP",
-    category: "STRATEGY & CONSULTING // IP CREATION",
-    industryVs: "Offshore dev shops that build disposable prototypes with zero strategic alignment or long-term equity moat.",
-    utopiaStandard: "Hands-on engineering and architectural leadership from zero to Series A, co-building proprietary IP and technical moats.",
+    title: "GROWTH & MARKETING",
+    subhead: "SEO, Performance Marketing & Lead Generation",
+    category: "GROWTH & MARKETING",
+    industryVs: "Spray-and-pray ad spend, declining ROAS, and marketing that doesn't compound or build long-term brand equity.",
+    utopiaStandard: "SEO architecture, paid acquisition, content strategy, and lead generation systems engineered to drive measurable pipeline.",
     deliverables: [
-      "Digital Transformation & Tech Strategy",
-      "Product Strategy & Innovation Consulting",
-      "Interim CTO & Technical Leadership",
-      "Core IP Prototyping & Due Diligence Prep",
-      "Business Architecture & Venture Acceleration",
+      "Search Engine Optimization (SEO)",
+      "Performance Marketing & Paid Acquisition",
+      "Social Media Marketing & Content Strategy",
+      "Lead Generation & Pipeline Strategy",
+      "Online Reputation Management",
+      "Conversion Rate Optimization (CRO)",
     ],
-    techStack: ["System Architecture", "Security Auditing", "Scale Governance", "Cap Table Advisory"],
-    metricValue: "13",
-    metricLabel: "ANNUAL COMMISSIONS",
-    slug: "transform",
+    techStack: [
+      "Google Ads", "Meta Ads", "LinkedIn Ads", "TikTok Ads",
+      "Ahrefs", "SEMrush", "Screaming Frog", "Search Console",
+      "PostHog", "Mixpanel", "GA4", "HubSpot", "Klaviyo",
+    ],
+    metricValue: "PIPELINE",
+    metricLabel: "NOT JUST TRAFFIC",
+    slug: "growth",
   },
 ];
 
 export function HomeSectionSolutions() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
+  const handleMouseEnter = (idx: number) => {
+    setActiveIndex(idx);
+  };
+
   const toggleAccordion = (idx: number) => {
-    setActiveIndex(activeIndex === idx ? -1 : idx);
+    setActiveIndex((prev) => (prev === idx ? -1 : idx));
   };
 
   return (
@@ -129,29 +159,29 @@ export function HomeSectionSolutions() {
       className={styles.solutionsSection}
       aria-label="03: Capability Architecture & What We Solve"
     >
-      <div className={styles.ambientGlow} />
-      <div className={styles.gridOverlay} />
+      {/* 3D 13 Monolith Background Canvas */}
+      <Solutions3DCanvas activeIndex={activeIndex} />
 
       <div className={styles.container}>
         {/* Section Header */}
         <div className={styles.headerBlock}>
           <div className={styles.eyebrow}>
-            <span className={styles.eyebrowNum}>CHAPTER 03</span>
+            <span className={styles.eyebrowNum}>CAPABILITIES</span>
             <span className={styles.eyebrowDot} />
-            <span>CAPABILITY ARCHITECTURE // WHAT WE SOLVE</span>
+            <span>WHAT WE DO</span>
           </div>
 
           <div className={styles.titleRow}>
             <h2 className={styles.mainTitle}>
-              WHAT WE SOLVE.
+              WHAT WE DO.
               <br />
               <span className={styles.titleHighlight}>
-                FROM BLANK CANVAS TO CATEGORY DOMINANCE.
+                BRAND, PRODUCT, GROWTH. FULLY INTEGRATED.
               </span>
             </h2>
 
             <p className={styles.leadText}>
-              We do not provide piecemeal design or disjointed development. 13 Utopia architects end-to-end anomalies — integrating bespoke brand identity, real-time spatial computing, autonomous AI pipelines, and zero-latency infrastructure.
+              13 Utopia covers every layer of building a digital business: brand identity, digital products, AI systems, cloud infrastructure, and growth. Delivered as a unified engagement, not a patchwork of vendors.
             </p>
           </div>
         </div>
@@ -165,6 +195,7 @@ export function HomeSectionSolutions() {
               <div
                 key={solution.index}
                 className={`${styles.accordionItem} ${isOpen ? styles.itemActive : ""}`}
+                onMouseEnter={() => handleMouseEnter(idx)}
               >
                 {/* Accordion Trigger Header */}
                 <button
@@ -206,13 +237,13 @@ export function HomeSectionSolutions() {
                     {/* Antithesis Comparison: The Industry vs. 13 Utopia */}
                     <div className={styles.comparisonGrid}>
                       <div className={styles.industryBox}>
-                        <div className={styles.boxTag}>THE INDUSTRY CONVENTION</div>
+                        <div className={styles.boxTag}>THE COMMON APPROACH</div>
                         <p className={styles.boxText}>{solution.industryVs}</p>
                       </div>
 
                       <div className={styles.utopiaBox}>
                         <div className={styles.boxTagUtopia}>
-                          THE 13 UTOPIA STANDARD
+                          WHAT WE DELIVER
                         </div>
                         <p className={styles.boxTextUtopia}>{solution.utopiaStandard}</p>
                       </div>
@@ -221,7 +252,7 @@ export function HomeSectionSolutions() {
                     {/* Deliverables & Stack Row */}
                     <div className={styles.detailsRow}>
                       <div className={styles.deliverablesCol}>
-                        <h4 className={styles.detailsHeading}>CORE DELIVERABLES</h4>
+                        <h4 className={styles.detailsHeading}>DELIVERABLES</h4>
                         <ul className={styles.deliverablesList}>
                           {solution.deliverables.map((item, dIdx) => (
                             <li key={dIdx} className={styles.deliverableItem}>
@@ -233,7 +264,7 @@ export function HomeSectionSolutions() {
                       </div>
 
                       <div className={styles.techCol}>
-                        <h4 className={styles.detailsHeading}>SIGNATURE STACK</h4>
+                        <h4 className={styles.detailsHeading}>TECH STACK</h4>
                         <div className={styles.techPills}>
                           {solution.techStack.map((tech) => (
                             <span key={tech} className={styles.techBadge}>
@@ -247,7 +278,7 @@ export function HomeSectionSolutions() {
                             href="mailto:contact@13utopia.com?subject=Commission%20Inquiry"
                             className={styles.deepDiveLink}
                           >
-                            <span>Initiate Commission</span>
+                            <span>Start a Project</span>
                             <span className={styles.linkArrow}>↗</span>
                           </a>
                         </div>
@@ -265,23 +296,23 @@ export function HomeSectionSolutions() {
           <div className={styles.footerTelemetry}>
             <div className={styles.telemetryCard}>
               <span className={styles.telemetryVal}>13</span>
-              <span className={styles.telemetryLbl}>ANNUAL COMMISSIONS WORLDWIDE</span>
+              <span className={styles.telemetryLbl}>COMMISSIONS ACCEPTED ANNUALLY</span>
             </div>
             <div className={styles.telemetryDivider} />
             <div className={styles.telemetryCard}>
               <span className={styles.telemetryVal}>100%</span>
-              <span className={styles.telemetryLbl}>BESPOKE CODEBASES // ZERO TEMPLATES</span>
+              <span className={styles.telemetryLbl}>CUSTOM CODE. ZERO TEMPLATES</span>
             </div>
             <div className={styles.telemetryDivider} />
             <div className={styles.telemetryCard}>
               <span className={styles.telemetryVal}>&lt; 48H</span>
-              <span className={styles.telemetryLbl}>FOUNDER COMMISSION PROTOCOL</span>
+              <span className={styles.telemetryLbl}>RESPONSE TO PROJECT INQUIRY</span>
             </div>
           </div>
 
           <div className={styles.footerActions}>
             <a href="mailto:contact@13utopia.com" className={styles.fullStackCta}>
-              <span>Discuss Your Vision With Our Architects</span>
+              <span>Start a Project</span>
               <span className={styles.btnArrow}>→</span>
             </a>
           </div>

@@ -11,59 +11,59 @@ gsap.registerPlugin(ScrollTrigger);
 const WORLDS = [
   {
     id: "create",
-    header: "BE ANOMALOUS",
+    header: "CREATE",
     index: "01",
-    tag: "01 // CREATE — BE ANOMALOUS",
+    tag: "01 // CREATE",
     keywords: [
-      "BE UNREAL",
-      "BE ANOMALOUS",
-      "BE IMMERSIVE",
-      "BE MONUMENTAL",
-      "BE VISIONARY",
-      "BE TRANSCENDENT",
-      "BE BESPOKE",
+      "BRAND IDENTITY",
+      "VISUAL SYSTEMS",
+      "ART DIRECTION",
+      "CREATIVE DIRECTION",
+      "BRAND EXPERIENCE",
+      "UI/UX DESIGN",
+      "CGI & MOTION",
     ],
-    leadTitle: "BE ANOMALOUS. 13 UTOPIA SCULPTS DIGITAL REALITIES THAT TRANSCEND TEMPLATES.",
-    subTitle: "WE ARCHITECT LIVING 3D EXPERIENCES, BESPOKE SHADERS, AND ELEVATED BRAND REALITIES CRAFTED WITH ZERO CONFORMITY.",
-    pill: "13 UTOPIA // BE ANOMALOUS",
+    leadTitle: "BRAND BUILT TO OWN A CATEGORY.",
+    subTitle: "WE DEVELOP BRAND STRATEGY, VISUAL IDENTITY, AND CREATIVE SYSTEMS FROM THE GROUND UP. EVERY ENGAGEMENT IS ORIGINAL.",
+    pill: "13 UTOPIA // CREATE",
     align: "right",
   },
   {
     id: "build",
-    header: "13 ARCHITECTURE",
+    header: "BUILD",
     index: "02",
-    tag: "02 // BUILD — 13 COMPUTATION",
+    tag: "02 // BUILD",
     keywords: [
-      "13 ZERO-LATENCY",
-      "13 GPU SHADERS",
-      "13 WEBGL SPACES",
-      "13 CLOUD ENGINES",
-      "13 AI AGENTS",
-      "13 COMPUTATIONAL CORE",
-      "13 MAXIMUM SCALE",
+      "WEB & APP DEVELOPMENT",
+      "SAAS & PRODUCTS",
+      "AI AGENTS",
+      "WORKFLOW AUTOMATION",
+      "CLOUD INFRASTRUCTURE",
+      "API DEVELOPMENT",
+      "FULL-STACK ENGINEERING",
     ],
-    leadTitle: "THE 13 PLATFORM. ENGINEERED WITH ZERO COMPROMISE AND SUB-MILLISECOND LATENCY.",
-    subTitle: "13 UTOPIA BUILDS HIGH-PERFORMANCE COMPUTATIONAL INFRASTRUCTURE, CUSTOM WEBGL ENGINES, AND SCALABLE CLOUD PLATFORMS.",
-    pill: "13 UTOPIA // 13 COMPUTATION",
+    leadTitle: "PRODUCTS BUILT FOR PERFORMANCE AND SCALE.",
+    subTitle: "WE ENGINEER WEBSITES, APPS, SAAS PLATFORMS, AI SYSTEMS, AND CLOUD INFRASTRUCTURE. BUILT TO WORK UNDER REAL CONDITIONS.",
+    pill: "13 UTOPIA // BUILD",
     align: "left",
   },
   {
     id: "grow",
-    header: "BE CATEGORICAL",
+    header: "GROW",
     index: "03",
-    tag: "03 // GROW — BE CATEGORICAL",
+    tag: "03 // GROW",
     keywords: [
-      "BE CATEGORICAL",
-      "BE UNTOUCHABLE",
-      "BE REVERED",
-      "BE MONOPOLISTIC",
-      "BE UNREASONABLE",
-      "BE ENDURING",
-      "BE MONUMENTAL",
+      "SEO & PERFORMANCE",
+      "PAID ACQUISITION",
+      "CONTENT STRATEGY",
+      "LEAD GENERATION",
+      "GROWTH SYSTEMS",
+      "MARKET POSITIONING",
+      "BRAND AUTHORITY",
     ],
-    leadTitle: "BE UNTOUCHABLE. TURNING DIGITAL IMMERSION INTO ENDURING MARKET DOMINANCE.",
-    subTitle: "WE MERGE ALGORITHMIC GRAVITY, SEARCH SUPREMACY, AND 13 UTOPIA BRAND EQUITY TO COMMAND CATEGORY LEADERSHIP.",
-    pill: "13 UTOPIA // BE CATEGORICAL",
+    leadTitle: "SYSTEMATIC GROWTH THAT COMPOUNDS INTO MARKET AUTHORITY.",
+    subTitle: "SEO, PERFORMANCE MARKETING, AND BRAND STRATEGY ENGINEERED TO DRIVE PIPELINE AND HOLD CATEGORY POSITION.",
+    pill: "13 UTOPIA // GROW",
     align: "right",
   },
 ];
@@ -138,7 +138,7 @@ export function Continuous3DStory() {
               </div>
 
               <p className={styles.heroLeadText}>
-                13 Utopia architects anomalous digital realities, living computational platforms, and transcendent brand ecosystems.
+                13 Utopia is a creative technology and growth company building brands, products, and systems for ambitious organisations.
               </p>
             </div>
           </div>
@@ -152,17 +152,14 @@ export function Continuous3DStory() {
             <div className={styles.manifestoContent}>
               <h2 className={styles.manifestoHeading}>
                 <span className={styles.leadLine}>
-                  13 UTOPIA® PIONEERED THE INTEGRATION
+                  13 UTOPIA BRINGS CREATIVE,
                 </span>
                 <span className={styles.subLines}>
-                  OF BRAND EXPERIENCE. WE HAVE BEEN INTRODUCING<br />
-                  A DESIGN SOLUTION, UNIFIES FRAGMENTED BRAND<br />
-                  ELEMENTS ACROSS VARIOUS TOUCH-POINTS.
+                  TECHNOLOGY AND GROWTH<br />
+                  TOGETHER UNDER ONE ROOF.<br />
+                  SO NOTHING GETS LOST IN TRANSLATION.
                 </span>
               </h2>
-              <div className={styles.fromBadge}>
-                <span>FROM 2026</span>
-              </div>
             </div>
           </div>
 
@@ -276,8 +273,8 @@ export function Continuous3DStory() {
           >
             <div className={styles.finaleContent}>
               <div className={styles.finaleEyebrow}>
-                <span className={styles.finaleTag}>13 UTOPIA // THE CONTINUUM</span>
-                <span className={styles.finaleTag}>END-TO-END CAPABILITY</span>
+                <span className={styles.finaleTag}>13 UTOPIA</span>
+                <span className={styles.finaleTag}>FULL-SPECTRUM CAPABILITY</span>
               </div>
 
               <div className={styles.trilogyHeader}>
@@ -291,26 +288,26 @@ export function Continuous3DStory() {
               </div>
 
               <p className={styles.finaleThesis}>
-                From spatial brand identity and custom WebGL shaders to venture-scale computational architecture and category dominance.
+                Brand. Product. Growth. One company, end to end.
               </p>
 
               <div className={styles.trilogyColumns}>
                 <div className={styles.trilogyCard}>
                   <span className={styles.cardIndex}>01 / CREATE</span>
-                  <h4 className={styles.cardTitle}>Brand & Spatial Alchemy</h4>
-                  <p className={styles.cardDesc}>Anomalous 3D worlds, bespoke identity, and sensory immersion.</p>
+                  <h4 className={styles.cardTitle}>Brand &amp; Design</h4>
+                  <p className={styles.cardDesc}>Identity systems, art direction, UI/UX, and motion.</p>
                 </div>
 
                 <div className={styles.trilogyCard}>
                   <span className={styles.cardIndex}>02 / BUILD</span>
-                  <h4 className={styles.cardTitle}>GPU & Code Architecture</h4>
-                  <p className={styles.cardDesc}>Sub-millisecond WebGL shaders, React platforms, and cloud scale.</p>
+                  <h4 className={styles.cardTitle}>Engineering &amp; Product</h4>
+                  <p className={styles.cardDesc}>Websites, apps, SaaS, AI agents, and cloud infrastructure.</p>
                 </div>
 
                 <div className={styles.trilogyCard}>
                   <span className={styles.cardIndex}>03 / GROW</span>
-                  <h4 className={styles.cardTitle}>Category Dominance</h4>
-                  <p className={styles.cardDesc}>Algorithmic gravity, SEO supremacy, and enduring market reverence.</p>
+                  <h4 className={styles.cardTitle}>Marketing &amp; Growth</h4>
+                  <p className={styles.cardDesc}>SEO, paid acquisition, content strategy, and lead generation.</p>
                 </div>
               </div>
             </div>

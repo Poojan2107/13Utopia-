@@ -7,7 +7,6 @@ import {
   useMemo,
   useCallback,
 } from "react";
-import Link from "next/link";
 import dynamic from "next/dynamic";
 import { PROJECTS, RepeatedProject } from "@/components/work-showcase/projects";
 import ProjectModal from "@/components/work-showcase/ProjectModal";
@@ -246,26 +245,26 @@ export function HomeSectionWork() {
     >
       {/* Editorial Chapter Eyebrow */}
       <div className={styles.eyebrow}>
-        <span className={styles.eyebrowNum}>04</span>
+        <span className={styles.eyebrowNum}>WORK</span>
         <span className={styles.eyebrowSep}>//</span>
-        <span className={styles.eyebrowLabel}>SELECTED COMMISSIONS · 3D PORTFOLIO SHOWCASE</span>
-        <Link href="/work" className={styles.archiveLink}>
-          <span>VIEW ARCHIVE [8]</span>
+        <span className={styles.eyebrowLabel}>SELECTED PROJECTS</span>
+        <a href="/work" className={styles.archiveLink}>
+          <span>VIEW ALL WORK</span>
           <span className={styles.archiveArrow}>↗</span>
-        </Link>
+        </a>
       </div>
 
       {/* Monumental Work Section Title Header */}
       <div className={styles.headerBlock}>
         <div className={styles.titleWrap}>
-          <h2 className={styles.mainTitle}>SELECTED COMMISSIONS</h2>
+          <h2 className={styles.mainTitle}>SELECTED WORK</h2>
           <p className={styles.workLead}>
-            Anomalies in production. Spatial architectures, bespoke computational platforms, and living brand moats.
+            A selection of recent commissions across brand, product, and digital experiences.
           </p>
         </div>
         <div className={styles.interactionHint} aria-hidden="true">
           <span className={styles.hintDot} />
-          <span className={styles.hintText}>3D ORBIT // DRAG OR SCROLL TO EXPLORE</span>
+          <span className={styles.hintText}>DRAG OR SCROLL TO EXPLORE</span>
         </div>
       </div>
 
@@ -293,7 +292,7 @@ export function HomeSectionWork() {
             key={project.slug}
             onClick={() => setSelectedProject(project)}
           >
-            {project.title} — {project.role} ({project.year})
+            {project.title} · {project.role} ({project.year})
           </button>
         ))}
       </div>

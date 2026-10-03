@@ -18,8 +18,8 @@ export function HomeNarrativeSection() {
     >
       {/* Top Section Header */}
       <div className={styles.topBar}>
-        <span className={styles.indexNum}>CHAPTER 02 // IDENTITY & PHILOSOPHY</span>
-        <span className={styles.categoryLabel}>ANOMALOUS DIGITAL REALITIES</span>
+        <span className={styles.indexNum}>CHAPTER 02 // WHO WE ARE</span>
+        <span className={styles.categoryLabel}>13 UTOPIA</span>
       </div>
 
       {/* Monumental Centered Digital Human Bust Stage */}
@@ -32,19 +32,19 @@ export function HomeNarrativeSection() {
       <div className={styles.bottomBar}>
         <div className={styles.bottomItem}>
           <span className={styles.itemValue}>100%</span>
-          <span className={styles.itemLabel}>Bespoke Craft</span>
+          <span className={styles.itemLabel}>Custom-Built</span>
         </div>
         <div className={styles.bottomItem}>
-          <span className={styles.itemValue}>$100M+</span>
-          <span className={styles.itemLabel}>Enterprise Value</span>
+          <span className={styles.itemValue}>6</span>
+          <span className={styles.itemLabel}>Capability Areas</span>
         </div>
         <div className={styles.bottomItem}>
-          <span className={styles.itemValue}>13</span>
-          <span className={styles.itemLabel}>Design Honors</span>
+          <span className={styles.itemValue}>2</span>
+          <span className={styles.itemLabel}>Global Offices</span>
         </div>
         <div className={styles.bottomItem}>
-          <span className={styles.itemValue}>0.00s</span>
-          <span className={styles.itemLabel}>Shader Latency</span>
+          <span className={styles.itemValueSmall}>CREATE · BUILD · GROW</span>
+          <span className={styles.itemLabel}>How We Work</span>
         </div>
       </div>
     </section>

@@ -131,28 +131,6 @@ export function Plus3DCanvas({
       return shape;
     };
 
-    // Helper: Mirrored Organic Ribbon for "E" (Exact 1:1 Kinship to "3", Mirrored)
-    const createMirroredThreeShape = () => {
-      const shape = new THREE.Shape();
-      shape.moveTo(0.45, 2.82);
-      shape.bezierCurveTo(-0.30, 3.12, -1.30, 3.08, -1.88, 2.48);
-      shape.bezierCurveTo(-2.38, 1.95, -2.28, 1.12, -1.72, 0.52);
-      shape.bezierCurveTo(-1.32, 0.12, -1.12, 0.02, -1.18, -0.02);
-      shape.bezierCurveTo(-1.38, -0.22, -2.18, -0.68, -2.32, -1.38);
-      shape.bezierCurveTo(-2.46, -2.18, -1.78, -3.12, -0.62, -3.12);
-      shape.bezierCurveTo(0.18, -3.12, 0.65, -2.82, 0.92, -2.32);
-      shape.bezierCurveTo(1.18, -1.82, 1.02, -1.32, 0.52, -1.38);
-      shape.bezierCurveTo(-0.18, -1.42, -0.88, -1.68, -1.28, -1.32);
-      shape.bezierCurveTo(-1.58, -1.02, -1.48, -0.42, -0.98, -0.12);
-      shape.bezierCurveTo(-0.58, 0.12, -0.22, 0.18, -0.18, 0.08);
-      shape.bezierCurveTo(-0.12, -0.02, -0.38, 0.58, -0.78, 0.98);
-      shape.bezierCurveTo(-1.32, 1.48, -1.28, 1.98, -0.88, 2.18);
-      shape.bezierCurveTo(-0.38, 2.38, 0.12, 2.18, 0.48, 1.88);
-      shape.bezierCurveTo(0.95, 1.92, 0.95, 2.78, 0.45, 2.82);
-      shape.closePath();
-      return shape;
-    };
-
     const extrudeSettings = {
       steps: 1,
       depth: 0.96,
@@ -253,7 +231,7 @@ export function Plus3DCanvas({
     });
     attachCustomShaders(matTitaniumThree);
 
-    // ── 01. SUB-GROUP: "13" EMBLEM ─────────────────────────────
+    // ── 01. "13" ARCHITECTURAL EMBLEM ─────────────────────────────
     const thirteenGroup = new THREE.Group();
 
     const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
@@ -269,28 +247,6 @@ export function Plus3DCanvas({
     thirteenGroup.add(threeMesh);
 
     emblemGroup.add(thirteenGroup);
-
-    // ── 02. SUB-GROUP: "BE" MONOLITH EMBLEM ────────────────────
-    const beGroup = new THREE.Group();
-
-    const bGroup = new THREE.Group();
-    const bSpine = new THREE.Mesh(oneGeo, matTitaniumOne);
-    bSpine.position.set(-1.00, 0, 0.003);
-    const bBowls = new THREE.Mesh(threeGeo, matTitaniumThree);
-    bBowls.position.set(0.40, 0, -0.003);
-    bGroup.add(bSpine);
-    bGroup.add(bBowls);
-    bGroup.position.set(-2.28, 0, 0);
-    beGroup.add(bGroup);
-
-    const eGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
-    eGeo.center();
-    const eMesh = new THREE.Mesh(eGeo, matTitaniumThree);
-    eMesh.position.set(2.12, 0, 0);
-    beGroup.add(eMesh);
-
-    beGroup.visible = false;
-    emblemGroup.add(beGroup);
 
     // Center the entire 13 emblem group
     emblemGroup.scale.setScalar(0.88);
@@ -315,7 +271,7 @@ export function Plus3DCanvas({
     }
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
-    // ── 03. TENBIN EXACT ORBITING MODEL PARTICLES (Surrounding 3D Crystalline Stardust Halo) ──
+    // ── 02. TENBIN EXACT ORBITING MODEL PARTICLES (Surrounding 3D Crystalline Stardust Halo) ──
     const auraParticleCount = 140;
     const auraParticleGeo = new THREE.BufferGeometry();
     const auraPositions = new Float32Array(auraParticleCount * 3);
@@ -417,7 +373,6 @@ export function Plus3DCanvas({
     let currentRotY = 0;
     let currentRotZ = 0;
     let currentScale = 0.88;
-    let currentMorph = 0; // 0 = "13", 1.0 = "BE"
     let clock = new THREE.Clock();
 
     const smoothstep = (min: number, max: number, value: number) => {
@@ -470,10 +425,6 @@ export function Plus3DCanvas({
       auraAttr.needsUpdate = true;
       auraParticleSystem.rotation.y = elapsedTime * 0.04 + mouseX * 0.05;
 
-
-
-
-
       if (emblemGroup) {
         const entryFade = smoothstep(0.05, 0.65, entryP);
 
@@ -489,129 +440,118 @@ export function Plus3DCanvas({
         let targetRotX = 0.08 + idleRotX;
         let targetRotZ = idleRotZ;
         let targetScale = 0.88;
-        let targetMorph = 0; // 0 = 13, 1.0 = BE
 
         if (p < 0.08) {
-          // Act Hero: 3D Titanium Monolith centered majestically behind BE UNREAL UNREASONABLE
+          // Act Hero: 3D Titanium 13 centered majestically behind BE UNREAL UNREASONABLE
           const localP = p / 0.08;
           targetX = 0;
           targetY = 0.28 + idleFloatY;
           targetZ = -1.15;
-          targetRotY = localP * 0.20;
+          targetRotY = localP * 0.25;
           targetRotX = 0.05 + idleRotX;
           targetRotZ = idleRotZ;
           targetScale = 0.78;
-          targetMorph = 0;
         } else if (p >= 0.08 && p < 0.24) {
-          // Act 0: Manifesto Editorial Statement
+          // Act 0: Manifesto Editorial Statement (13 stays center with subtle elegant tilt)
           const localP = (p - 0.08) / 0.16;
           targetX = 0;
           targetY = idleFloatY;
           targetZ = -0.85 - localP * 0.15;
-          targetRotY = 0.22 + localP * 0.22;
+          targetRotY = 0.25 + localP * 0.20;
           targetRotX = 0.06 + idleRotX;
           targetRotZ = idleRotZ;
           targetScale = 0.90;
-          targetMorph = 0;
         } else if (p >= 0.24 && p < 0.32) {
-          // Transition 0 -> 1: Center -> Left Column deep 3D arc swoop & 360° spin (13 => BE)
+          // Transition 0 -> 1: Center -> Left Column 3D arc swoop as 13
           const t = smoothstep(0.24, 0.32, p);
-          const arcDepth = Math.sin(t * Math.PI) * -2.8;
-          const arcY = Math.sin(t * Math.PI) * -0.45;
+          const arcDepth = Math.sin(t * Math.PI) * -2.4;
+          const arcY = Math.sin(t * Math.PI) * -0.35;
 
           targetX = -3.85 * t;
           targetY = idleFloatY + arcY;
           targetZ = -1.0 + arcDepth;
-          targetRotY = 0.44 * (1 - t) + (Math.PI * 2 + 0.24) * t;
-          targetRotX = 0.06 + Math.sin(t * Math.PI) * 0.28 + idleRotX;
-          targetRotZ = -Math.sin(t * Math.PI) * 0.14 + 0.04 * t;
+          targetRotY = 0.45 * (1 - t) + 0.32 * t;
+          targetRotX = 0.06 + Math.sin(t * Math.PI) * 0.15 + idleRotX;
+          targetRotZ = -Math.sin(t * Math.PI) * 0.08 + 0.03 * t;
           targetScale = 0.90 + 0.06 * t;
-          targetMorph = t;
         } else if (p >= 0.25 && p < 0.45) {
-          // Act 1: CREATE (Settled Full Left Column as BE)
+          // Act 1: CREATE (Settled Left Column as 13 with gentle continuous spatial presence)
           const localP = (p - 0.25) / 0.20;
           targetX = -3.85;
           targetY = idleFloatY;
           targetZ = -1.0;
-          targetRotY = Math.PI * 2 + 0.24 + Math.sin(localP * Math.PI) * 0.10;
+          targetRotY = 0.32 + Math.sin(localP * Math.PI) * 0.18;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.035 + idleRotX;
-          targetRotZ = 0.04 + idleRotZ;
+          targetRotZ = 0.03 + idleRotZ;
           targetScale = 0.96;
-          targetMorph = 1.0;
         } else if (p >= 0.45 && p < 0.50) {
-          // Transition 1 -> 2: Left -> Right Column deep 3D orbital sweep & 360° spin (BE => 13)
+          // Transition 1 -> 2: Left -> Right Column 3D orbital sweep as 13
           const t = smoothstep(0.45, 0.50, p);
-          const arcDepth = Math.sin(t * Math.PI) * -3.2;
-          const arcY = Math.sin(t * Math.PI) * -0.55;
+          const arcDepth = Math.sin(t * Math.PI) * -2.8;
+          const arcY = Math.sin(t * Math.PI) * -0.45;
 
           targetX = -3.85 + 7.7 * t;
           targetY = idleFloatY + arcY;
           targetZ = -1.0 + arcDepth;
-          targetRotY = (Math.PI * 2 + 0.24) * (1 - t) + (Math.PI * 4 - 0.24) * t;
-          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.30 + idleRotX;
-          targetRotZ = 0.04 * (1 - 2 * t) + Math.sin(t * Math.PI) * 0.16;
+          targetRotY = 0.32 * (1 - t) + (-0.32) * t;
+          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.20 + idleRotX;
+          targetRotZ = 0.03 * (1 - 2 * t) + Math.sin(t * Math.PI) * 0.10;
           targetScale = 0.96;
-          targetMorph = 1.0 - t;
         } else if (p >= 0.50 && p < 0.67) {
-          // Act 2: BUILD (Settled Full Right Column as 13)
+          // Act 2: BUILD (Settled Right Column as 13)
           const localP = (p - 0.50) / 0.17;
           targetX = 3.85;
           targetY = idleFloatY;
           targetZ = -1.0;
-          targetRotY = Math.PI * 4 - 0.24 - Math.sin(localP * Math.PI) * 0.10;
+          targetRotY = -0.32 - Math.sin(localP * Math.PI) * 0.18;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.035 + idleRotX;
-          targetRotZ = -0.04 + idleRotZ;
+          targetRotZ = -0.03 + idleRotZ;
           targetScale = 0.96;
-          targetMorph = 0.0;
         } else if (p >= 0.67 && p < 0.72) {
-          // Transition 2 -> 3: Right -> Left Column deep 3D orbital sweep & 360° spin (13 => BE)
+          // Transition 2 -> 3: Right -> Left Column 3D orbital sweep as 13
           const t = smoothstep(0.67, 0.72, p);
-          const arcDepth = Math.sin(t * Math.PI) * -3.2;
-          const arcY = Math.sin(t * Math.PI) * -0.55;
+          const arcDepth = Math.sin(t * Math.PI) * -2.8;
+          const arcY = Math.sin(t * Math.PI) * -0.45;
 
           targetX = 3.85 - 7.7 * t;
           targetY = idleFloatY + arcY;
           targetZ = -1.0 + arcDepth;
-          targetRotY = (Math.PI * 4 - 0.24) * (1 - t) + (Math.PI * 6 + 0.24) * t;
-          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.30 + idleRotX;
-          targetRotZ = -0.04 * (1 - 2 * t) - Math.sin(t * Math.PI) * 0.16;
+          targetRotY = (-0.32) * (1 - t) + 0.32 * t;
+          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.20 + idleRotX;
+          targetRotZ = -0.03 * (1 - 2 * t) - Math.sin(t * Math.PI) * 0.10;
           targetScale = 0.96;
-          targetMorph = t;
         } else if (p >= 0.72 && p < 0.88) {
-          // Act 3: GROW (Settled Full Left Column as BE)
+          // Act 3: GROW (Settled Left Column as 13)
           const localP = (p - 0.72) / 0.16;
           targetX = -3.85;
           targetY = idleFloatY;
           targetZ = -1.0;
-          targetRotY = Math.PI * 6 + 0.24 + Math.sin(localP * Math.PI) * 0.10;
+          targetRotY = 0.32 + Math.sin(localP * Math.PI) * 0.18;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.035 + idleRotX;
-          targetRotZ = 0.04 + idleRotZ;
+          targetRotZ = 0.03 + idleRotZ;
           targetScale = 0.96;
-          targetMorph = 1.0;
         } else if (p >= 0.88 && p < 0.92) {
-          // Transition 3 -> Finale: Left -> Center (BE => 13)
+          // Transition 3 -> Finale: Left -> Center as 13
           const t = smoothstep(0.88, 0.92, p);
-          const arcDepth = Math.sin(t * Math.PI) * -2.8;
-          const arcY = Math.sin(t * Math.PI) * -0.45;
+          const arcDepth = Math.sin(t * Math.PI) * -2.2;
+          const arcY = Math.sin(t * Math.PI) * -0.35;
 
           targetX = -3.85 * (1 - t);
           targetY = idleFloatY + arcY;
           targetZ = -1.0 + arcDepth;
-          targetRotY = (Math.PI * 6 + 0.24) * (1 - t) + (Math.PI * 8.0) * t;
-          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.24 + idleRotX;
-          targetRotZ = 0.04 * (1 - t) + idleRotZ;
+          targetRotY = 0.32 * (1 - t);
+          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.15 + idleRotX;
+          targetRotZ = 0.03 * (1 - t) + idleRotZ;
           targetScale = 0.96 * (1 - 0.04 * t);
-          targetMorph = 1.0 - t;
         } else {
           // Act Finale: Core CREATE · BUILD · GROW Trilogy (Settled Center as 13)
           targetX = 0;
           targetY = idleFloatY;
           targetZ = -0.92;
-          targetRotY = Math.PI * 8.0;
+          targetRotY = 0;
           targetRotX = 0.06 + idleRotX;
           targetRotZ = idleRotZ;
           targetScale = 0.92;
-          targetMorph = 0.0;
         }
 
         // Apply Mouse Parallax Offsets
@@ -622,7 +562,6 @@ export function Plus3DCanvas({
 
         // Precision physics damping
         const dampFactor = 0.095;
-        const morphDamp = 0.14;
 
         currentX += (targetX - currentX) * dampFactor;
         currentY += (targetY - currentY) * dampFactor;
@@ -631,7 +570,6 @@ export function Plus3DCanvas({
         currentRotX += (targetRotX - currentRotX) * dampFactor;
         currentRotY += (targetRotY - currentRotY) * dampFactor;
         currentRotZ += (targetRotZ - currentRotZ) * dampFactor;
-        currentMorph += (targetMorph - currentMorph) * morphDamp;
 
         renderer.domElement.style.opacity = `${entryFade}`;
         emblemGroup.visible = entryP > 0.02;
@@ -640,9 +578,6 @@ export function Plus3DCanvas({
           emblemGroup.position.set(currentX, currentY, currentZ);
           emblemGroup.scale.setScalar(currentScale);
           emblemGroup.rotation.set(currentRotX, currentRotY, currentRotZ);
-
-          thirteenGroup.visible = currentMorph < 0.50;
-          beGroup.visible = currentMorph >= 0.50;
         }
       }
 

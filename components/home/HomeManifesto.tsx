@@ -9,33 +9,33 @@ const TRIAD = [
     num: "01",
     name: "CREATE",
     tag: "01 // CREATE",
-    title: "Visual Alchemy & Spatial Worlds",
-    desc: "We sculpt high-craft digital identities, bespoke 3D spatial environments, and visionary creative directions that demand immediate cultural reverence.",
-    deliverables: ["Brand Strategy", "3D Art Direction", "Spatial UI", "Motion Systems"],
+    title: "Brand Identity & Visual Design",
+    desc: "We build brand strategy, visual identity, and creative systems from first principles. Every deliverable is custom: strategy, identity, motion, and spatial design.",
+    deliverables: ["Brand Strategy", "3D Art Direction", "UI/UX Design", "Motion Systems"],
   },
   {
     num: "02",
     name: "BUILD",
     tag: "02 // BUILD",
-    title: "Zero-Latency WebGL Engineering",
-    desc: "Uncompromising full-stack architecture built with Three.js, React, and GPU-accelerated shaders. Every millisecond of interaction latency is engineered away.",
-    deliverables: ["WebGL Shaders", "Next.js Architecture", "GSAP Physics", "Fluid Systems"],
+    title: "Product Engineering & Infrastructure",
+    desc: "Full-stack engineering across web, mobile, and cloud. We build the product from architecture through deployment: performant, scalable, and maintainable.",
+    deliverables: ["Web & Mobile Apps", "Cloud Infrastructure", "AI & Automation", "DevOps & CI/CD"],
   },
   {
     num: "03",
     name: "GROW",
     tag: "03 // GROW",
-    title: "Market Momentum & Dominance",
-    desc: "We architect conversion gravity and category dominance. Our commissioned digital ecosystems turn passive visitors into lifelong brand evangelists.",
-    deliverables: ["Category Design", "Growth Engineering", "SEO Architecture", "Venture Scale"],
+    title: "Marketing, SEO & Growth Systems",
+    desc: "SEO, performance marketing, and content strategy built to compound. We design growth systems that generate qualified pipeline and build long-term brand authority.",
+    deliverables: ["SEO Architecture", "Paid Acquisition", "Content Strategy", "Lead Generation"],
   },
 ];
 
 const METRICS = [
-  { val: "$100M+", lbl: "Client Valuation Generated" },
-  { val: "0.00s", lbl: "Latency Benchmark Standard" },
-  { val: "100%", lbl: "Bespoke Handcrafted Code" },
-  { val: "13", lbl: "Global Design Accolades" },
+  { val: "100%", lbl: "Custom-Built. No Templates." },
+  { val: "6", lbl: "Core Capability Areas" },
+  { val: "2", lbl: "Global Offices" },
+  { val: "1", lbl: "Integrated Team" },
 ];
 
 /**
@@ -256,14 +256,12 @@ export function HomeManifesto() {
           </div>
 
           <h2 className={styles.manifestoHeading}>
-            WE DO NOT FIT INTO THE SYSTEM.{" "}
-            <span className={styles.manifestoHeadingAlt}>WE ARCHITECT THE ANOMALY.</span>
+            WE BUILD WHAT MATTERS.{" "}
+            <span className={styles.manifestoHeadingAlt}>CREATIVE, TECHNOLOGY AND GROWTH. FULLY INTEGRATED.</span>
           </h2>
 
           <p className={styles.manifestoText}>
-            13 Utopia is an independent venture architecture and digital design
-            studio forging anomalous digital worlds, brand systems, and
-            category-defining web experiences.
+            13 Utopia is a creative technology and growth company for organisations that want more than a vendor. We bring brand, product, and growth strategy into a single engagement, with one team that thinks across all three.
           </p>
         </div>
 

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { CTA3DCanvas } from "./CTA3DCanvas";
 import styles from "@/styles/home/HomeCTASection.module.css";
 
@@ -23,13 +22,12 @@ export function HomeCTASection() {
 
       <div className={styles.ctaContainer}>
         <h2 className={styles.title}>
-          HAVE AN<br />
-          <span className={styles.titleHighlight}>UNREASONABLE IDEA?</span>
+          READY TO<br />
+          <span className={styles.titleHighlight}>START BUILDING?</span>
         </h2>
 
         <p className={styles.subtitle}>
-          We select only 13 bespoke commissions annually. Let&apos;s build what
-          conventional companies cannot.
+          Tell us what you&apos;re working on. We&apos;ll tell you how we can help.
         </p>
 
         <div className={styles.actions}>
@@ -38,12 +36,12 @@ export function HomeCTASection() {
             className={styles.primaryBtn}
             data-magnetic
           >
-            <span>Start Something Unreasonable</span>
+            <span>Start a Project</span>
           </a>
 
-          <Link href="/work" className={styles.secondaryBtn} data-magnetic>
-            <span>Explore Portfolio</span>
-          </Link>
+          <a href="/work" className={styles.secondaryBtn} data-magnetic>
+            <span>View Portfolio</span>
+          </a>
         </div>
       </div>
     </section>

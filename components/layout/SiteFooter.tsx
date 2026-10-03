@@ -122,7 +122,7 @@ export function SiteFooter() {
               </p>
               <div className={styles.hubContact}>
                 <a href="tel:+14376039004" className={styles.hubLink}>+1 437-603-9004</a>
-                <a href="mailto:info@13utopia.ca" className={styles.hubLink}>info@13utopia.ca</a>
+                <a href="mailto:info@13utopia.com" className={styles.hubLink}>info@13utopia.com</a>
               </div>
             </div>
           </div>

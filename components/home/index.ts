@@ -10,4 +10,5 @@ export { Hero3DCanvas } from "./Hero3DCanvas";
 export { HeroPreloader } from "./HeroPreloader";
 export { TransparentBustVideo } from "./TransparentBustVideo";
 export { CTA3DCanvas } from "./CTA3DCanvas";
+export { Solutions3DCanvas } from "./Solutions3DCanvas";
 
