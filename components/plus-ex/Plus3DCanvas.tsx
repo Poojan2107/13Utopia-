@@ -165,28 +165,28 @@ export function Plus3DCanvas({
 
     // 13 Utopia Exact Plus-X & Tenbin Material Grading: Matte Obsidian Architectural Titanium
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x181a1e),
-      roughness: 0.40,
-      metalness: 0.70,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.25,
-      reflectivity: 0.75,
+      color: new THREE.Color(0x1a1d22),
+      roughness: 0.36,
+      metalness: 0.72,
+      clearcoat: 0.55,
+      clearcoatRoughness: 0.20,
+      reflectivity: 0.80,
       emissive: new THREE.Color(0x060709),
-      emissiveIntensity: 0.2,
+      emissiveIntensity: 0.15,
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x15171a),
-      roughness: 0.42,
-      metalness: 0.68,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.25,
-      reflectivity: 0.75,
-      emissive: new THREE.Color(0x040507),
-      emissiveIntensity: 0.2,
+      color: new THREE.Color(0x17191e),
+      roughness: 0.38,
+      metalness: 0.70,
+      clearcoat: 0.55,
+      clearcoatRoughness: 0.20,
+      reflectivity: 0.80,
+      emissive: new THREE.Color(0x050608),
+      emissiveIntensity: 0.15,
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
@@ -246,24 +246,24 @@ export function Plus3DCanvas({
     if (pCtx) {
       const grad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
       grad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
-      grad.addColorStop(0.3, "rgba(244, 223, 200, 0.65)");
-      grad.addColorStop(0.7, "rgba(255, 255, 255, 0.15)");
+      grad.addColorStop(0.25, "rgba(225, 238, 255, 0.85)");
+      grad.addColorStop(0.60, "rgba(180, 205, 235, 0.25)");
       grad.addColorStop(1, "rgba(0, 0, 0, 0)");
       pCtx.fillStyle = grad;
       pCtx.fillRect(0, 0, 64, 64);
     }
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
-    // ── 03. BEHIND-MODEL SUBTLE ATMOSPHERIC AURA (Ultra-Delicate Micro-Sparks) ──
-    const auraParticleCount = 28;
+    // ── 03. TENBIN EXACT ORBITING MODEL PARTICLES (Surrounding 3D Crystalline Stardust Halo) ──
+    const auraParticleCount = 110;
     const auraParticleGeo = new THREE.BufferGeometry();
     const auraPositions = new Float32Array(auraParticleCount * 3);
     const auraData: Array<{ radius: number; theta: number; vr: number; vtheta: number; z: number; phase: number }> = [];
 
     for (let i = 0; i < auraParticleCount; i++) {
-      const radius = 1.0 + Math.random() * 5.5;
+      const radius = 1.1 + Math.random() * 3.6;
       const theta = Math.random() * Math.PI * 2;
-      const z = -0.9 - Math.random() * 2.0;
+      const z = (Math.random() - 0.5) * 3.6;
 
       auraPositions[i * 3] = radius * Math.cos(theta);
       auraPositions[i * 3 + 1] = radius * Math.sin(theta);
@@ -272,8 +272,8 @@ export function Plus3DCanvas({
       auraData.push({
         radius,
         theta,
-        vr: 0.003 + Math.random() * 0.007,
-        vtheta: (Math.random() > 0.5 ? 1 : -1) * (0.001 + Math.random() * 0.002),
+        vr: 0.002 + Math.random() * 0.005,
+        vtheta: (Math.random() > 0.5 ? 1 : -1) * (0.002 + Math.random() * 0.004),
         z,
         phase: Math.random() * Math.PI * 2,
       });
@@ -282,10 +282,10 @@ export function Plus3DCanvas({
     auraParticleGeo.setAttribute("position", new THREE.BufferAttribute(auraPositions, 3));
 
     const auraParticleMat = new THREE.PointsMaterial({
-      size: 0.08,
+      size: 0.09,
       map: particleTexture,
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.65,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -293,28 +293,30 @@ export function Plus3DCanvas({
     const auraParticleSystem = new THREE.Points(auraParticleGeo, auraParticleMat);
     scene.add(auraParticleSystem);
 
-    // Studio Lighting (Tenbin & Plus-X Softbox & Top-Down Rim Architecture)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
+    // Studio Lighting (Tenbin Exact Overhead Grazing & Dual Rim Pipeline)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 4.0);
-    keyLight.position.set(10, 16, 12);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 4.5);
+    keyLight.position.set(8, 14, 12);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x8ca0b8, 2.2);
-    fillLight.position.set(-14, -4, 10);
+    const fillLight = new THREE.DirectionalLight(0x9cb0c8, 2.5);
+    fillLight.position.set(-12, -4, 10);
     scene.add(fillLight);
 
-    const topRimLight = new THREE.DirectionalLight(0xffffff, 4.5);
-    topRimLight.position.set(0, 20, 1);
+    // Overhead high-intensity grazing light for sharp top chamfer specular highlights
+    const topRimLight = new THREE.DirectionalLight(0xffffff, 7.5);
+    topRimLight.position.set(0, 18, 1);
     scene.add(topRimLight);
 
-    const backRimLight = new THREE.DirectionalLight(0xdde8f5, 5.0);
-    backRimLight.position.set(0, -8, -12);
+    // Back-kicker rim light for crisp edge separation from dark stardust void
+    const backRimLight = new THREE.DirectionalLight(0xdde8f5, 6.0);
+    backRimLight.position.set(0, -6, -10);
     scene.add(backRimLight);
 
-    const sideGrazingLight = new THREE.DirectionalLight(0xf4dfc8, 3.2);
-    sideGrazingLight.position.set(12, -4, -6);
+    const sideGrazingLight = new THREE.DirectionalLight(0xcfdbe8, 3.5);
+    sideGrazingLight.position.set(12, -2, -4);
     scene.add(sideGrazingLight);
 
     // Mouse Parallax Trackers
@@ -375,7 +377,7 @@ export function Plus3DCanvas({
 
       topRimLight.position.x = mouseX * 2.0;
 
-      // Update Behind-Model Atmospheric Aura Particles
+      // Update Tenbin Orbiting Stardust Halo Particles
       const auraAttr = auraParticleGeo.attributes.position as THREE.BufferAttribute;
       const aArr = auraAttr.array as Float32Array;
 
@@ -384,18 +386,18 @@ export function Plus3DCanvas({
         item.radius += item.vr;
         item.theta += item.vtheta;
 
-        if (item.radius > 8.5) {
-          item.radius = 0.5 + Math.random() * 0.8;
+        if (item.radius > 4.8) {
+          item.radius = 1.0 + Math.random() * 0.8;
           item.theta = Math.random() * Math.PI * 2;
         }
 
-        const harmonicZ = item.z + Math.sin(elapsedTime * 1.5 + item.phase) * 0.25;
-        aArr[i * 3] = item.radius * Math.cos(item.theta) + currentX * 0.5;
-        aArr[i * 3 + 1] = item.radius * Math.sin(item.theta) * 0.85 + currentY * 0.5;
-        aArr[i * 3 + 2] = harmonicZ;
+        const harmonicZ = item.z + Math.sin(elapsedTime * 1.8 + item.phase) * 0.35;
+        aArr[i * 3] = currentX + item.radius * Math.cos(item.theta);
+        aArr[i * 3 + 1] = currentY + item.radius * Math.sin(item.theta) * 0.95;
+        aArr[i * 3 + 2] = currentZ + harmonicZ;
       }
       auraAttr.needsUpdate = true;
-      auraParticleSystem.rotation.z = elapsedTime * 0.012;
+      auraParticleSystem.rotation.y = elapsedTime * 0.04 + mouseX * 0.05;
 
 
 
