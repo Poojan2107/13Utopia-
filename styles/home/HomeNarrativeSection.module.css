@@ -56,14 +56,17 @@
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
   gap: clamp(2.5rem, 4vw, 5rem);
-  align-items: center;
+  align-items: flex-end;
+  position: relative;
 }
 
 .textColumn {
   display: flex;
   flex-direction: column;
   gap: clamp(2.25rem, 4vh, 3.5rem);
-  justify-content: center;
+  padding-bottom: 1rem;
+  position: relative;
+  z-index: 2;
 }
 
 .headlineBlock {
@@ -164,19 +167,21 @@
 .bustColumn {
   position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-end;
+  justify-content: flex-end;
   width: 100%;
   height: 100%;
-  align-self: center;
+  align-self: flex-end;
+  min-height: clamp(540px, 72vh, 840px);
 }
 
 .bustFrame {
   position: relative;
   width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 .bustCanvas {
