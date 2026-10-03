@@ -214,8 +214,18 @@ export function MagneticCursor() {
     });
     mo.observe(document.body, { childList: true, subtree: true });
 
+    const onMouseDown = () => {
+      gsap.to([dot, ring], { scale: 0.82, duration: 0.12, ease: "power2.out" });
+    };
+    const onMouseUp = () => {
+      gsap.to(dot, { scale: mode === "default" ? 1 : 0.35, duration: 0.2, ease: "back.out(2)" });
+      gsap.to(ring, { scale: mode === "default" ? 1 : 1.9, duration: 0.25, ease: "back.out(2)" });
+    };
+
     window.addEventListener("mousemove", onMove, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mouseup", onMouseUp);
     document.addEventListener("mouseover", onOver);
     document.addEventListener("mouseout", onOut);
     bindMagnets();
@@ -229,6 +239,8 @@ export function MagneticCursor() {
       window.clearTimeout(moTimer);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mouseup", onMouseUp);
       document.removeEventListener("mouseover", onOver);
       document.removeEventListener("mouseout", onOut);
       mo.disconnect();

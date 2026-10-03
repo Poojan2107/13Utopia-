@@ -1,46 +1,86 @@
+.cursorWrap,
 .dot,
 .ring,
 .label {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 190;
+  z-index: 9999;
   pointer-events: none;
   will-change: transform;
 }
 
+/* Precision Inner Reticle Point */
 .dot {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: #ffffff;
   mix-blend-mode: difference;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
 }
 
+/* Architectural Outer Reticle with Corner Chamfers & Diffusion Lens */
 .ring {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  mix-blend-mode: difference;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s ease, background 0.3s ease;
 }
 
+/* Precision Crosshair Micro-Notches */
+.ring::before,
+.ring::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.ring::before {
+  width: 1px;
+  height: 6px;
+  top: -3px;
+  left: calc(50% - 0.5px);
+  box-shadow: 0 31px 0 rgba(255, 255, 255, 0.6);
+}
+
+.ring::after {
+  height: 1px;
+  width: 6px;
+  left: -3px;
+  top: calc(50% - 0.5px);
+  box-shadow: 31px 0 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Micro-Label on Interactive Focus */
 .label {
-  z-index: 191;
+  z-index: 10000;
   font-family: var(--font-mono, monospace);
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #000000;
   background: #ffffff;
-  padding: 0.35rem 0.55rem;
+  padding: 0.25rem 0.5rem;
   white-space: nowrap;
+  border-radius: 2px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 
 :global(html.has-custom-cursor),
 :global(html.has-custom-cursor body),
 :global(html.has-custom-cursor a),
-:global(html.has-custom-cursor button) {
-  cursor: none;
+:global(html.has-custom-cursor button),
+:global(html.has-custom-cursor [role="button"]) {
+  cursor: none !important;
 }
