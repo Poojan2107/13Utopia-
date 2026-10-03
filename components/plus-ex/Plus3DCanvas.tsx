@@ -450,53 +450,105 @@ export function Plus3DCanvas({
           targetRotY = localP * 0.25;
           targetRotX = 0.05 + idleRotX;
           targetRotZ = idleRotZ;
-          targetScale = 0.82;
+          targetScale = 0.78;
         } else if (p >= 0.08 && p < 0.24) {
           // Act 0: Manifesto Editorial Statement (13 stays center with subtle elegant tilt)
           const localP = (p - 0.08) / 0.16;
           targetX = 0;
           targetY = idleFloatY;
-          targetZ = -0.95 - localP * 0.12;
-          targetRotY = 0.25 + localP * 0.35;
+          targetZ = -0.85 - localP * 0.15;
+          targetRotY = 0.25 + localP * 0.20;
           targetRotX = 0.06 + idleRotX;
           targetRotZ = idleRotZ;
-          targetScale = 0.88;
-        } else if (p >= 0.24 && p < 0.48) {
-          // Act 1: CREATE — Centered 13 in continuous dynamic spatial spin & depth breathing
-          const localP = (p - 0.24) / 0.24;
-          targetX = 0;
-          targetY = idleFloatY;
-          targetZ = -1.10 - Math.sin(localP * Math.PI) * 0.25;
-          targetRotY = 0.60 + localP * 1.25;
-          targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.04 + idleRotX;
-          targetRotZ = Math.sin(localP * Math.PI) * 0.03 + idleRotZ;
           targetScale = 0.90;
-        } else if (p >= 0.48 && p < 0.70) {
-          // Act 2: BUILD — Centered 13 continuing multi-axis rotation through product engineering
-          const localP = (p - 0.48) / 0.22;
-          targetX = 0;
+        } else if (p >= 0.24 && p < 0.32) {
+          // Transition 0 -> 1: Center -> Left Column 3D arc swoop as 13
+          const t = smoothstep(0.24, 0.32, p);
+          const arcDepth = Math.sin(t * Math.PI) * -2.4;
+          const arcY = Math.sin(t * Math.PI) * -0.35;
+
+          targetX = -3.85 * t;
+          targetY = idleFloatY + arcY;
+          targetZ = -1.0 + arcDepth;
+          targetRotY = 0.45 * (1 - t) + 0.32 * t;
+          targetRotX = 0.06 + Math.sin(t * Math.PI) * 0.15 + idleRotX;
+          targetRotZ = -Math.sin(t * Math.PI) * 0.08 + 0.03 * t;
+          targetScale = 0.90 + 0.06 * t;
+        } else if (p >= 0.25 && p < 0.45) {
+          // Act 1: CREATE (Settled Left Column as 13 with gentle continuous spatial presence)
+          const localP = (p - 0.25) / 0.20;
+          targetX = -3.85;
           targetY = idleFloatY;
-          targetZ = -1.10 - Math.sin(localP * Math.PI) * 0.25;
-          targetRotY = 1.85 + localP * 1.25;
-          targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.04 + idleRotX;
-          targetRotZ = -Math.sin(localP * Math.PI) * 0.03 + idleRotZ;
-          targetScale = 0.90;
-        } else if (p >= 0.70 && p < 0.90) {
-          // Act 3: GROW — Centered 13 compounding momentum with crisp specular highlights
-          const localP = (p - 0.70) / 0.20;
-          targetX = 0;
-          targetY = idleFloatY;
-          targetZ = -1.10 - Math.sin(localP * Math.PI) * 0.20;
-          targetRotY = 3.10 + localP * 1.20;
+          targetZ = -1.0;
+          targetRotY = 0.32 + Math.sin(localP * Math.PI) * 0.18;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.035 + idleRotX;
-          targetRotZ = idleRotZ;
-          targetScale = 0.90;
+          targetRotZ = 0.03 + idleRotZ;
+          targetScale = 0.96;
+        } else if (p >= 0.45 && p < 0.50) {
+          // Transition 1 -> 2: Left -> Right Column 3D orbital sweep as 13
+          const t = smoothstep(0.45, 0.50, p);
+          const arcDepth = Math.sin(t * Math.PI) * -2.8;
+          const arcY = Math.sin(t * Math.PI) * -0.45;
+
+          targetX = -3.85 + 7.7 * t;
+          targetY = idleFloatY + arcY;
+          targetZ = -1.0 + arcDepth;
+          targetRotY = 0.32 * (1 - t) + (-0.32) * t;
+          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.20 + idleRotX;
+          targetRotZ = 0.03 * (1 - 2 * t) + Math.sin(t * Math.PI) * 0.10;
+          targetScale = 0.96;
+        } else if (p >= 0.50 && p < 0.67) {
+          // Act 2: BUILD (Settled Right Column as 13)
+          const localP = (p - 0.50) / 0.17;
+          targetX = 3.85;
+          targetY = idleFloatY;
+          targetZ = -1.0;
+          targetRotY = -0.32 - Math.sin(localP * Math.PI) * 0.18;
+          targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.035 + idleRotX;
+          targetRotZ = -0.03 + idleRotZ;
+          targetScale = 0.96;
+        } else if (p >= 0.67 && p < 0.72) {
+          // Transition 2 -> 3: Right -> Left Column 3D orbital sweep as 13
+          const t = smoothstep(0.67, 0.72, p);
+          const arcDepth = Math.sin(t * Math.PI) * -2.8;
+          const arcY = Math.sin(t * Math.PI) * -0.45;
+
+          targetX = 3.85 - 7.7 * t;
+          targetY = idleFloatY + arcY;
+          targetZ = -1.0 + arcDepth;
+          targetRotY = (-0.32) * (1 - t) + 0.32 * t;
+          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.20 + idleRotX;
+          targetRotZ = -0.03 * (1 - 2 * t) - Math.sin(t * Math.PI) * 0.10;
+          targetScale = 0.96;
+        } else if (p >= 0.72 && p < 0.88) {
+          // Act 3: GROW (Settled Left Column as 13)
+          const localP = (p - 0.72) / 0.16;
+          targetX = -3.85;
+          targetY = idleFloatY;
+          targetZ = -1.0;
+          targetRotY = 0.32 + Math.sin(localP * Math.PI) * 0.18;
+          targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.035 + idleRotX;
+          targetRotZ = 0.03 + idleRotZ;
+          targetScale = 0.96;
+        } else if (p >= 0.88 && p < 0.92) {
+          // Transition 3 -> Finale: Left -> Center as 13
+          const t = smoothstep(0.88, 0.92, p);
+          const arcDepth = Math.sin(t * Math.PI) * -2.2;
+          const arcY = Math.sin(t * Math.PI) * -0.35;
+
+          targetX = -3.85 * (1 - t);
+          targetY = idleFloatY + arcY;
+          targetZ = -1.0 + arcDepth;
+          targetRotY = 0.32 * (1 - t);
+          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.15 + idleRotX;
+          targetRotZ = 0.03 * (1 - t) + idleRotZ;
+          targetScale = 0.96 * (1 - 0.04 * t);
         } else {
           // Act Finale: Core CREATE · BUILD · GROW Trilogy (Settled Center as 13)
           targetX = 0;
           targetY = idleFloatY;
           targetZ = -0.92;
-          targetRotY = 4.30;
+          targetRotY = 0;
           targetRotX = 0.06 + idleRotX;
           targetRotZ = idleRotZ;
           targetScale = 0.92;

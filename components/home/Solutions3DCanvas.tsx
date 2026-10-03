@@ -127,19 +127,19 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
     const thirteenGroup = new THREE.Group();
     thirteenGroup.add(oneMesh);
     thirteenGroup.add(threeMesh);
-    thirteenGroup.scale.setScalar(0.70);
+    thirteenGroup.scale.setScalar(0.46);
     scene.add(thirteenGroup);
 
     // Stardust ambient particles
-    const particleCount = 80;
+    const particleCount = 70;
     const particleGeo = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
     const particleData: Array<{ radius: number; theta: number; vr: number; vtheta: number; z: number }> = [];
 
     for (let i = 0; i < particleCount; i++) {
-      const radius = 1.2 + Math.random() * 4.0;
+      const radius = 1.0 + Math.random() * 3.2;
       const theta = Math.random() * Math.PI * 2;
-      const z = (Math.random() - 0.5) * 4.0;
+      const z = (Math.random() - 0.5) * 3.2;
 
       particlePositions[i * 3] = radius * Math.cos(theta);
       particlePositions[i * 3 + 1] = radius * Math.sin(theta);
@@ -148,8 +148,8 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
       particleData.push({
         radius,
         theta,
-        vr: 0.001 + Math.random() * 0.003,
-        vtheta: (Math.random() > 0.5 ? 1 : -1) * (0.002 + Math.random() * 0.004),
+        vr: 0.001 + Math.random() * 0.0025,
+        vtheta: (Math.random() > 0.5 ? 1 : -1) * (0.002 + Math.random() * 0.0035),
         z,
       });
     }
@@ -171,7 +171,7 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
     const pTexture = new THREE.CanvasTexture(pCanvas);
 
     const particleMat = new THREE.PointsMaterial({
-      size: 0.08,
+      size: 0.07,
       map: pTexture,
       transparent: true,
       opacity: 0.50,
@@ -226,27 +226,12 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
     // Kinematics Loop
     let rafId: number;
     let currentX = 0;
-    let currentY = 0;
+    let currentY = 1.5;
     let currentZ = -1.6;
     let currentRotX = 0.06;
     let currentRotY = 0;
     let currentRotZ = 0;
-    let scrollY = typeof window !== "undefined" ? window.scrollY : 0;
     const clock = new THREE.Clock();
-
-    const onScroll = () => {
-      scrollY = window.scrollY;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    // Capability hover tilt configs (all centered at x = 0)
-    const activeOffsets = [
-      { y: 0.15, rotY: -0.15, rotX: 0.08 },  // 01 Brand & Creative
-      { y: 0.00, rotY: 0.15, rotX: 0.06 },   // 02 Digital Products
-      { y: -0.15, rotY: -0.12, rotX: 0.09 }, // 03 AI & Automation
-      { y: -0.30, rotY: 0.12, rotX: 0.07 },  // 04 Cloud & Engineering
-      { y: -0.45, rotY: -0.08, rotX: 0.08 }, // 05 Growth & Marketing
-    ];
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);
@@ -255,18 +240,25 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;
 
-      const idleFloatY = Math.sin(elapsedTime * 1.2) * 0.08;
-      const scrollRotation = (scrollY * 0.0018) % (Math.PI * 2);
+      const idleFloatY = Math.sin(elapsedTime * 1.2) * 0.06;
 
-      const activeIdx = Math.max(0, Math.min(activeOffsets.length - 1, activeIndexRef.current));
-      const targetConfig = activeOffsets[activeIdx] || activeOffsets[0];
+      // Calculate scroll progress through the Solutions section
+      const rect = container.getBoundingClientRect();
+      const windowH = typeof window !== "undefined" ? window.innerHeight : 800;
+      const totalTravel = rect.height + windowH;
+      const currentTravel = windowH - rect.top;
+      const sectionProgress = Math.max(0, Math.min(1, currentTravel / totalTravel));
 
-      // Centered 13 only with scroll-driven continuous spin and mouse parallax
-      const targetX = mouseX * 0.25;
-      const targetY = targetConfig.y + idleFloatY + mouseY * 0.20;
+      // Model travels smoothly down through the viewport as you scroll down
+      const scrollYOffset = 2.2 - sectionProgress * 4.4;
+      const scrollRotY = sectionProgress * Math.PI * 1.6;
+
+      // Centered 13 only, moving with scroll
+      const targetX = mouseX * 0.30;
+      const targetY = scrollYOffset + idleFloatY + mouseY * 0.20;
       const targetZ = -1.6;
-      const targetRotY = scrollRotation + targetConfig.rotY + mouseX * 0.15;
-      const targetRotX = targetConfig.rotX + Math.sin(elapsedTime * 0.8) * 0.04 - mouseY * 0.12;
+      const targetRotY = scrollRotY + mouseX * 0.15;
+      const targetRotX = 0.08 + Math.sin(elapsedTime * 0.8) * 0.03 - mouseY * 0.12;
       const targetRotZ = mouseX * 0.02;
 
       const damp = 0.06;
@@ -303,7 +295,6 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
       cancelAnimationFrame(rafId);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("mousemove", onPointerMove);
-      window.removeEventListener("scroll", onScroll);
       if (renderer.domElement) {
         renderer.domElement.remove();
       }
