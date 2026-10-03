@@ -163,18 +163,20 @@ export function Plus3DCanvas({
       bevelSegments: 5,
     };
 
-    // ── PROCEDURAL MICRO-TEXTURE BUMP MAP ──
+    // ── TENBIN HIGH-FREQUENCY CHISELED MINERAL GRAIN BUMP MAP ──
     const bCanvas = document.createElement("canvas");
-    bCanvas.width = 256;
-    bCanvas.height = 256;
+    bCanvas.width = 512;
+    bCanvas.height = 512;
     const bCtx = bCanvas.getContext("2d");
     if (bCtx) {
-      const imgData = bCtx.createImageData(256, 256);
+      const imgData = bCtx.createImageData(512, 512);
       for (let i = 0; i < imgData.data.length; i += 4) {
-        const noise = Math.floor(Math.random() * 255);
-        imgData.data[i] = noise;
-        imgData.data[i + 1] = noise;
-        imgData.data[i + 2] = noise;
+        const n1 = Math.random() * 200;
+        const n2 = Math.random() > 0.88 ? Math.random() * 255 : 0;
+        const grain = Math.floor(n1 * 0.7 + n2 * 0.3);
+        imgData.data[i] = grain;
+        imgData.data[i + 1] = grain;
+        imgData.data[i + 2] = grain;
         imgData.data[i + 3] = 255;
       }
       bCtx.putImageData(imgData, 0, 0);
@@ -182,7 +184,7 @@ export function Plus3DCanvas({
     const bumpTexture = new THREE.CanvasTexture(bCanvas);
     bumpTexture.wrapS = THREE.RepeatWrapping;
     bumpTexture.wrapT = THREE.RepeatWrapping;
-    bumpTexture.repeat.set(3.5, 3.5);
+    bumpTexture.repeat.set(4.0, 4.0);
 
     // ── DYNAMIC MULTI-SPECTRUM STUDIO ENVIRONMENT MAP ──
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
@@ -205,20 +207,18 @@ export function Plus3DCanvas({
         void main() {
           vec3 dir = normalize(vWorldPosition);
           float y = dir.y;
-          // Rich multi-tonal studio gradient (Obsidian void -> Champagne horizon -> Icy platinum zenith)
-          vec3 darkVoid = vec3(0.012, 0.014, 0.018);
-          vec3 champagneHorizon = vec3(0.55, 0.48, 0.40);
-          vec3 iceZenith = vec3(0.78, 0.85, 0.95);
+          // Tenbin Deep Cosmic Void & Overhead Grazing Zenith
+          vec3 darkVoid = vec3(0.008, 0.009, 0.012);
+          vec3 horizonGleam = vec3(0.35, 0.38, 0.44);
+          vec3 topLight = vec3(0.95, 0.98, 1.00);
           
           vec3 col = darkVoid;
-          col = mix(col, champagneHorizon, smoothstep(-0.40, 0.12, y));
-          col = mix(col, iceZenith, smoothstep(0.12, 0.88, y));
+          col = mix(col, horizonGleam, smoothstep(-0.40, 0.15, y));
+          col = mix(col, topLight, smoothstep(0.15, 0.90, y));
           
-          // Grazing dual softbox strips
-          float strip1 = pow(max(0.0, sin(atan(dir.z, dir.x) * 2.0)), 3.5);
-          float strip2 = pow(max(0.0, cos(atan(dir.z, dir.x) * 3.0 + 0.6)), 4.0);
-          col += vec3(0.85, 0.92, 1.00) * (strip1 * 0.45);
-          col += vec3(0.98, 0.88, 0.78) * (strip2 * 0.38);
+          // Grazing studio softbox strips
+          float strip1 = pow(max(0.0, sin(atan(dir.z, dir.x) * 2.0)), 4.0);
+          col += vec3(0.90, 0.95, 1.00) * (strip1 * 0.40);
           
           gl_FragColor = vec4(col, 1.0);
         }
@@ -250,46 +250,40 @@ export function Plus3DCanvas({
           `
           #include <dithering_fragment>
           
-          // 13 Utopia Signature Dynamic Obsidian-Titanium Shader Effects
+          // Tenbin Chiseled Obsidian Mineral Stardust FX
           vec3 vNormalNorm = normalize(vNormal);
           vec3 vViewDir = normalize(vViewPosition);
-          float fresnel = pow(1.0 - max(0.0, dot(vNormalNorm, vViewDir)), 3.0);
           
-          // Flowing liquid titanium wave across the chiseled geometry
-          float wave = sin(dot(vViewPosition.xy, vec2(0.65, 0.45)) * 1.1 - uTime * 1.5 + uMouse.x * 1.2);
-          float wavePulse = smoothstep(0.72, 1.0, wave) * 0.35;
+          // Razor top grazing illumination & edge fresnel
+          float topGlint = pow(max(0.0, vNormalNorm.y), 4.0) * 1.6;
+          float fresnel = pow(1.0 - max(0.0, dot(vNormalNorm, vViewDir)), 3.5);
           
-          // Dual chromatic razor rim highlights (lunar ice & champagne platinum)
-          vec3 rimIce = vec3(0.85, 0.92, 1.00);
-          vec3 rimChampagne = vec3(1.00, 0.90, 0.78);
-          vec3 rimColor = mix(rimIce, rimChampagne, smoothstep(-0.4, 0.4, vNormalNorm.x + uMouse.x * 0.4));
+          // Sparkling stardust mineral flecks across chiseled stone facets
+          float noiseMote = sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453;
+          float glintMote = step(0.993, fract(noiseMote)) * (0.35 + 0.65 * max(0.0, dot(vNormalNorm, vec3(0.0, 1.0, 0.5))));
           
-          gl_FragColor.rgb += rimColor * fresnel * 1.55;
-          gl_FragColor.rgb += rimColor * wavePulse * (1.0 - fresnel * 0.5);
+          // Pure platinum-white chiseled stone edge glint
+          vec3 stoneGlint = vec3(0.95, 0.98, 1.00);
+          gl_FragColor.rgb += stoneGlint * (fresnel * 0.95 + topGlint * 0.85);
+          gl_FragColor.rgb += stoneGlint * glintMote * 1.5;
           `
         );
       };
     };
 
-    // 13 Utopia Signature Dark Obsidian & Titanium Shading
+    // 13 Utopia Exact Tenbin Chiseled Obsidian Basalt Stone
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x0a0c10),
-      roughness: 0.16,
-      metalness: 0.92,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.08,
-      reflectivity: 0.98,
-      iridescence: 0.70,
-      iridescenceIOR: 1.45,
-      iridescenceThicknessRange: [100, 360],
-      sheen: 0.75,
-      sheenColor: new THREE.Color(0xd0e2f8),
-      sheenRoughness: 0.18,
+      color: new THREE.Color(0x0a0b0d),
+      roughness: 0.55,
+      metalness: 0.35,
+      clearcoat: 0.65,
+      clearcoatRoughness: 0.22,
+      reflectivity: 0.90,
       bumpMap: bumpTexture,
-      bumpScale: 0.012,
-      emissive: new THREE.Color(0x020305),
-      emissiveIntensity: 0.10,
-      envMapIntensity: 2.0,
+      bumpScale: 0.038,
+      emissive: new THREE.Color(0x020304),
+      emissiveIntensity: 0.08,
+      envMapIntensity: 1.4,
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
@@ -297,23 +291,17 @@ export function Plus3DCanvas({
     attachCustomShaders(matTitaniumOne);
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x080a0d),
-      roughness: 0.18,
-      metalness: 0.90,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.08,
-      reflectivity: 0.98,
-      iridescence: 0.70,
-      iridescenceIOR: 1.45,
-      iridescenceThicknessRange: [100, 360],
-      sheen: 0.75,
-      sheenColor: new THREE.Color(0xd0e2f8),
-      sheenRoughness: 0.18,
+      color: new THREE.Color(0x08090b),
+      roughness: 0.58,
+      metalness: 0.32,
+      clearcoat: 0.65,
+      clearcoatRoughness: 0.22,
+      reflectivity: 0.90,
       bumpMap: bumpTexture,
-      bumpScale: 0.012,
-      emissive: new THREE.Color(0x020204),
-      emissiveIntensity: 0.10,
-      envMapIntensity: 2.0,
+      bumpScale: 0.038,
+      emissive: new THREE.Color(0x010203),
+      emissiveIntensity: 0.08,
+      envMapIntensity: 1.4,
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
