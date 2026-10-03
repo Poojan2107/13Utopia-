@@ -6,7 +6,7 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-  padding: clamp(6rem, 11vh, 9rem) clamp(2rem, 5vw, 6rem) clamp(4rem, 8vh, 6rem);
+  padding: clamp(4.5rem, 8vh, 7rem) clamp(2rem, 5vw, 6rem) clamp(3.5rem, 6vh, 5rem);
   box-sizing: border-box;
   background-color: transparent;
   color: #ffffff;
@@ -23,14 +23,14 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: clamp(3.5rem, 5vh, 4.5rem);
+  gap: clamp(2.5rem, 4vh, 3.75rem);
 }
 
 .sectionEyebrow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 1.25rem;
+  padding-bottom: 1.0rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -55,33 +55,32 @@
 .heroGrid {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: clamp(2.5rem, 4vw, 5rem);
-  align-items: flex-end;
+  gap: clamp(2rem, 3.5vw, 4.5rem);
+  align-items: center;
   position: relative;
 }
 
 .textColumn {
   display: flex;
   flex-direction: column;
-  gap: clamp(2.25rem, 4vh, 3.5rem);
-  padding-bottom: 1rem;
+  gap: clamp(1.75rem, 3vh, 2.5rem);
   position: relative;
   z-index: 2;
 }
 
 .headlineBlock {
-  max-width: 880px;
+  max-width: 860px;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
   align-items: flex-start;
 }
 
 .headline {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
-  font-size: clamp(2.3rem, 3.8vw, 4.25rem);
+  font-size: clamp(2.0rem, 3.2vw, 3.6rem);
   font-weight: 800;
-  line-height: 1.05;
+  line-height: 1.06;
   letter-spacing: -0.035em;
   color: #ffffff;
   margin: 0;
@@ -91,7 +90,7 @@
 .manifestoPill {
   display: inline-flex;
   align-items: center;
-  padding: 0.45rem 1.35rem;
+  padding: 0.40rem 1.2rem;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 9999px;
   background: rgba(255, 255, 255, 0.03);
@@ -111,13 +110,13 @@
 .pillarsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: clamp(1.75rem, 3vw, 2.75rem);
+  gap: clamp(1.5rem, 2.5vw, 2.5rem);
 }
 
 .pillarItem {
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 0.85rem;
   padding: 0;
   background: transparent;
   border: none;
@@ -135,18 +134,18 @@
 
 .colTitle {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1.2rem, 1.55vw, 1.5rem);
+  font-size: clamp(1.15rem, 1.45vw, 1.4rem);
   font-weight: 700;
   color: #ffffff;
   margin: 0;
-  line-height: 1.25;
+  line-height: 1.22;
   letter-spacing: -0.02em;
 }
 
 .colBody {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
-  font-size: clamp(0.875rem, 1.0vw, 0.975rem);
-  line-height: 1.65;
+  font-size: clamp(0.85rem, 0.95vw, 0.925rem);
+  line-height: 1.6;
   color: rgba(255, 255, 255, 0.65);
   margin: 0;
 }
@@ -160,28 +159,26 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   color: rgba(255, 255, 255, 0.45);
-  margin-top: 0.25rem;
+  margin-top: 0.15rem;
 }
 
 /* Bust Column & WebGL Transparent Sculpture Frame */
 .bustColumn {
   position: relative;
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
-  align-self: flex-end;
-  min-height: clamp(540px, 72vh, 840px);
+  align-self: center;
 }
 
 .bustFrame {
   position: relative;
   width: 100%;
-  height: 100%;
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
 }
 
 .bustCanvas {
@@ -207,19 +204,19 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
-  padding-top: 2.5rem;
+  padding-top: 2.0rem;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .tickerItem {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
 .tValue {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1.85rem, 3.0vw, 2.75rem);
+  font-size: clamp(1.75rem, 2.6vw, 2.5rem);
   font-weight: 800;
   letter-spacing: -0.03em;
   color: #ffffff;
@@ -236,7 +233,7 @@
 @media (max-width: 1100px) {
   .heroGrid {
     grid-template-columns: 1fr;
-    gap: 4.5rem;
+    gap: 3.5rem;
     align-items: center;
   }
   .bustColumn,
@@ -255,4 +252,5 @@
     gap: 2rem;
   }
 }
+
 
