@@ -83,44 +83,38 @@ export function AmbientField() {
 
         float t = uTime * 0.015;
 
-        // ── 1. TENBIN FULL-WIDTH PANORAMIC STARDUST CANOPY ──
-        // Broad, majestic stardust veil spanning the full width of the upper 75% of the viewport
-        float vertLight = smoothstep(0.15, 0.75, uv.y);
-        float horizSpan = smoothstep(1.35, 0.05, abs(centeredUv.x * 0.55));
-        float broadCanopy = vertLight * horizSpan;
+        // ── 1. SILKY-SMOOTH CONTINUOUS STARDUST CANOPY (ZERO PIXEL BLOCKS) ──
+        // Smooth overhead Gaussian gradient from top (uv.y = 1.0) fading into void at bottom (uv.y < 0.25)
+        float vertLight = smoothstep(0.18, 0.85, uv.y);
+        float horizSpan = smoothstep(1.30, 0.10, abs(centeredUv.x * 0.65));
+        float macroHaze = pow(vertLight * horizSpan, 1.35);
 
-        // Organic stardust density variations across the upper field
-        float n1 = hash21(floor(p * 24.0) + fract(t * 0.05));
-        float n2 = hash21(floor(p * 48.0) + fract(t * 0.08));
-        float macroHaze = pow(broadCanopy, 1.1) * (0.85 + 0.15 * (n1 * 0.6 + n2 * 0.4));
-
-        // ── 2. HIGH-DENSITY FULL-SPAN STARDUST SAND SPRAY ──
-        // Multi-octave micro-stardust grains spanning edge-to-edge
-        float d1 = stardust(p + vec2(t * 0.003, -t * 0.008), 160.0, 0.50, uTime);
-        float d2 = stardust(p * 1.35 + vec2(-t * 0.005, -t * 0.010) + vec2(0.3, 0.7), 320.0, 0.45, uTime * 1.25);
-        float d3 = stardust(p * 2.10 + vec2(t * 0.008, -t * 0.012) + vec2(0.8, 0.2), 580.0, 0.40, uTime * 0.90);
-        float d4 = stardust(p * 3.40 + vec2(0.15, 0.45), 1050.0, 0.32, uTime * 1.15);
-        float stardustSpray = d1 * 1.0 + d2 * 0.85 + d3 * 0.65 + d4 * 0.45;
+        // ── 2. SUB-PIXEL MICRO-STARDUST SAND SPRAY ──
+        float d1 = stardust(p + vec2(t * 0.003, -t * 0.008), 160.0, 0.45, uTime);
+        float d2 = stardust(p * 1.45 + vec2(-t * 0.005, -t * 0.010) + vec2(0.3, 0.7), 340.0, 0.40, uTime * 1.25);
+        float d3 = stardust(p * 2.30 + vec2(t * 0.008, -t * 0.012) + vec2(0.8, 0.2), 620.0, 0.35, uTime * 0.90);
+        float d4 = stardust(p * 3.80 + vec2(0.15, 0.45), 1150.0, 0.28, uTime * 1.15);
+        float stardustSpray = d1 * 1.0 + d2 * 0.80 + d3 * 0.60 + d4 * 0.40;
 
         // ── 3. TENBIN EXACT MONOCHROME COLOR PALETTE ──
-        // Pure Obsidian Void -> Neutral Charcoal Mist -> Radiant Silver Sand Spray -> Pure White Star Crystals
+        // Silky obsidian space void -> graphite mist -> soft silver haze -> bright stardust crystals
         vec3 cSpace = vec3(0.002, 0.002, 0.003);        // Deep void
-        vec3 cMist = vec3(0.10, 0.10, 0.11);            // Ambient graphite mist
-        vec3 cSilverGlow = vec3(0.40, 0.40, 0.43);      // Silver canopy mist
-        vec3 cCoreLight = vec3(0.78, 0.78, 0.82);       // Overhead luminous crest
+        vec3 cMist = vec3(0.08, 0.08, 0.09);            // Ambient graphite mist
+        vec3 cSilverGlow = vec3(0.35, 0.35, 0.38);      // Soft silver canopy
+        vec3 cCoreLight = vec3(0.70, 0.70, 0.74);       // Overhead luminous crest
         vec3 cStarWhite = vec3(1.0, 1.0, 1.0);          // Pure white stardust points
 
         vec3 col = cSpace;
-        col = mix(col, cMist, smoothstep(0.02, 0.30, macroHaze));
-        col = mix(col, cSilverGlow, smoothstep(0.25, 0.65, macroHaze));
-        col = mix(col, cCoreLight, smoothstep(0.60, 0.95, macroHaze) * 0.80);
+        col = mix(col, cMist, smoothstep(0.02, 0.35, macroHaze));
+        col = mix(col, cSilverGlow, smoothstep(0.30, 0.72, macroHaze));
+        col = mix(col, cCoreLight, smoothstep(0.65, 0.98, macroHaze) * 0.75);
 
-        // Modulate fine stardust grains across the canopy
-        float grainIntensity = (0.25 + 0.75 * macroHaze) * stardustSpray;
-        col += cStarWhite * grainIntensity * 2.2;
+        // Illuminate the fine stardust grains across the canopy
+        float grainIntensity = (0.20 + 0.80 * macroHaze) * stardustSpray;
+        col += cStarWhite * grainIntensity * 2.0;
 
-        // Filmic camera grain
-        float filmNoise = (hash21(gl_FragCoord.xy + fract(uTime * 9.21)) - 0.5) * 0.030;
+        // Subtle filmic analogue grain (per-pixel smooth noise)
+        float filmNoise = (hash21(gl_FragCoord.xy + fract(uTime * 9.21)) - 0.5) * 0.025;
         col += vec3(filmNoise);
 
         // Soft peripheral vignette keeping lower corners deep obsidian
