@@ -170,8 +170,27 @@ export function HomeSectionWork() {
       }
     };
 
+    let lastWindowScrollY = typeof window !== "undefined" ? window.scrollY : 0;
+    const onWindowScroll = () => {
+      if (!isInViewRef.current) {
+        lastWindowScrollY = window.scrollY;
+        return;
+      }
+      const dy = window.scrollY - lastWindowScrollY;
+      lastWindowScrollY = window.scrollY;
+      if (Math.abs(dy) > 0) {
+        p.target += dy * 1.2;
+      }
+    };
+
     const tick = () => {
       animId = requestAnimationFrame(tick);
+      
+      // When in view and not dragging, continuously drift with endless momentum
+      if (isInViewRef.current && !p.isDragging) {
+        p.target += 0.85;
+      }
+
       if (!p.isDragging) {
         p.current += (p.target - p.current) * 0.085;
       }
@@ -192,6 +211,7 @@ export function HomeSectionWork() {
     };
 
     window.addEventListener("wheel", onWheel, { passive: true });
+    window.addEventListener("scroll", onWindowScroll, { passive: true });
     window.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerup", onPointerUp);
@@ -205,6 +225,7 @@ export function HomeSectionWork() {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("scroll", onWindowScroll);
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);

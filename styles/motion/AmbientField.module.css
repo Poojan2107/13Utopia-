@@ -1,13 +1,12 @@
-/* Static atmosphere — neutral pure soft ambient depth, zero gold tint */
-
 .root {
   position: fixed;
   inset: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  opacity: 0.18;
-  contain: strict;
+  opacity: 0.9;
 }
 
 .orb {
