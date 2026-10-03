@@ -21,12 +21,11 @@
 .fallbackImage {
   position: relative;
   width: 100%;
-  max-width: 880px;
-  height: min(78vh, 720px);
-  aspect-ratio: 16 / 9;
-  object-fit: contain;
-  object-position: center center;
-  transform: translateX(-4%);
+  max-width: 680px;
+  height: min(76vh, 680px);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center top;
   margin: 0 auto;
   pointer-events: none;
   opacity: 0.96;
@@ -44,14 +43,13 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 880px;
-  height: min(78vh, 720px);
-  aspect-ratio: 16 / 9;
+  max-width: 680px;
+  height: min(76vh, 680px);
+  aspect-ratio: 1 / 1;
   display: block;
   pointer-events: none;
   object-fit: contain;
   object-position: center center;
-  transform: translateX(-4%);
   margin: 0 auto;
 }
 

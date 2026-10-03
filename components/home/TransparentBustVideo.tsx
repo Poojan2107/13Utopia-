@@ -18,7 +18,14 @@ uniform sampler2D u_video;
 varying vec2 v_uv;
 
 void main() {
-  vec4 tex = texture2D(u_video, v_uv);
+  // Tight framing directly onto digital human bust (removes dead space above head & sides)
+  vec2 uv = vec2(v_uv.x * 0.72 + 0.14, v_uv.y * 0.70 + 0.30);
+  
+  if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {
+    discard;
+  }
+  
+  vec4 tex = texture2D(u_video, uv);
   
   // Calculate luminance from source
   float luma = dot(tex.rgb, vec3(0.299, 0.587, 0.114));
