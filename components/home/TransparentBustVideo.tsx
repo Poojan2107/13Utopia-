@@ -15,10 +15,31 @@ void main() {
 const FS = `
 precision highp float;
 uniform sampler2D u_video;
+uniform vec2 u_resolution;
 varying vec2 v_uv;
 
 void main() {
-  vec4 tex = texture2D(u_video, v_uv);
+  float canvasAspect = u_resolution.x / max(u_resolution.y, 1.0);
+  float videoAspect = 2400.0 / 1792.0; // Exact source aspect ratio (1.339286)
+  
+  // Height coverage: spans 0.78 of the 1792px video height, with center at y=0.64
+  // Head crown is at y=0.328, chest base is at y=0.998
+  float scaleY = 0.78;
+  float centerY = 0.64;
+  
+  // Exact width scale to center bust with zero shoulder clipping
+  float scaleX = scaleY * (canvasAspect / videoAspect);
+  float centerX = 0.486;
+  
+  vec2 uv;
+  uv.x = (v_uv.x - 0.5) * scaleX + centerX;
+  uv.y = (v_uv.y - 0.5) * scaleY + centerY;
+  
+  if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {
+    discard;
+  }
+  
+  vec4 tex = texture2D(u_video, uv);
   
   // Calculate luminance from source
   float luma = dot(tex.rgb, vec3(0.299, 0.587, 0.114));
@@ -122,6 +143,8 @@ export function TransparentBustVideo({
     gl.enableVertexAttribArray(aPos);
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
+    const uRes = gl.getUniformLocation(prog, "u_resolution");
+
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -166,6 +189,10 @@ export function TransparentBustVideo({
         updateSize();
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
+
+        if (uRes) {
+          gl.uniform2f(uRes, canvas.width, canvas.height);
+        }
 
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(
