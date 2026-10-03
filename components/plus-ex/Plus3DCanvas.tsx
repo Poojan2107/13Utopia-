@@ -163,26 +163,30 @@ export function Plus3DCanvas({
       bevelSegments: 5,
     };
 
-    // 13 Utopia Signature Dark Titanium Obsidian Physical Material (Tenbin-Level PBR Finish)
+    // 13 Utopia Signature Refined Titanium Obsidian Physical Material (Tenbin-Level PBR Finish & Visible Chamfers)
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x18191c),
-      roughness: 0.20,
-      metalness: 0.88,
-      clearcoat: 0.85,
-      clearcoatRoughness: 0.08,
-      reflectivity: 0.95,
+      color: new THREE.Color(0x323640),
+      roughness: 0.16,
+      metalness: 0.84,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.04,
+      reflectivity: 1.0,
+      emissive: new THREE.Color(0x0e1014),
+      emissiveIntensity: 0.4,
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x141518),
-      roughness: 0.22,
-      metalness: 0.86,
-      clearcoat: 0.85,
-      clearcoatRoughness: 0.08,
-      reflectivity: 0.95,
+      color: new THREE.Color(0x2a2e36),
+      roughness: 0.18,
+      metalness: 0.82,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.04,
+      reflectivity: 1.0,
+      emissive: new THREE.Color(0x0a0c10),
+      emissiveIntensity: 0.4,
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
@@ -289,29 +293,79 @@ export function Plus3DCanvas({
     const particleSystem = new THREE.Points(particleGeo, particleMat);
     scene.add(particleSystem);
 
-    // Studio Lighting (Tenbin High-Key Contrast)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    // ── 04. HERO TEXT DISPERSION PARTICLES (Scroll-activated Text-to-Cosmos mixing) ──
+    const heroParticleCount = 420;
+    const heroParticleGeo = new THREE.BufferGeometry();
+    const heroBasePositions = new Float32Array(heroParticleCount * 3);
+    const heroCurrentPositions = new Float32Array(heroParticleCount * 3);
+    const heroParticleOffsets: Array<{ x: number; y: number; z: number; speed: number; phase: number }> = [];
+
+    for (let i = 0; i < heroParticleCount; i++) {
+      const u = Math.random();
+      const v = Math.random();
+      const bx = (u - 0.5) * 7.5;
+      const by = (v - 0.5) * 3.0;
+      const bz = (Math.random() - 0.5) * 0.6 + 0.4;
+
+      heroBasePositions[i * 3] = bx;
+      heroBasePositions[i * 3 + 1] = by;
+      heroBasePositions[i * 3 + 2] = bz;
+
+      heroCurrentPositions[i * 3] = bx;
+      heroCurrentPositions[i * 3 + 1] = by;
+      heroCurrentPositions[i * 3 + 2] = bz;
+
+      heroParticleOffsets.push({
+        x: (Math.random() - 0.5) * 7.5,
+        y: 2.5 + Math.random() * 7.0,
+        z: (Math.random() - 0.5) * 8.0 - 1.5,
+        speed: 0.6 + Math.random() * 1.4,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
+
+    heroParticleGeo.setAttribute("position", new THREE.BufferAttribute(heroCurrentPositions, 3));
+
+    const heroParticleMat = new THREE.PointsMaterial({
+      size: 0.15,
+      map: particleTexture,
+      transparent: true,
+      opacity: 0.7,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+
+    const heroParticleSystem = new THREE.Points(heroParticleGeo, heroParticleMat);
+    scene.add(heroParticleSystem);
+
+    // Studio Lighting (Enhanced Tenbin High-Key Contrast & Precision Visibility)
+    const ambientLight = new THREE.AmbientLight(0xdde6f0, 2.4);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 4.2);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 5.2);
     keyLight.position.set(6, 8, 7);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x8899aa, 2.0);
+    const fillLight = new THREE.DirectionalLight(0x9cb4cc, 3.2);
     fillLight.position.set(-8, 3, 5);
     scene.add(fillLight);
 
-    const goldRimLight = new THREE.DirectionalLight(0xf4dfc8, 5.5);
+    const goldRimLight = new THREE.DirectionalLight(0xf6edd8, 6.2);
     goldRimLight.position.set(5, -5, -4);
     scene.add(goldRimLight);
 
-    const cyanRimLight = new THREE.DirectionalLight(0xd0e8ff, 4.2);
+    const cyanRimLight = new THREE.DirectionalLight(0xd8eeff, 5.4);
     cyanRimLight.position.set(-7, 4, -4);
     scene.add(cyanRimLight);
 
-    const topSpecularLight = new THREE.DirectionalLight(0xffffff, 2.8);
+    const topSpecularLight = new THREE.DirectionalLight(0xffffff, 3.8);
     topSpecularLight.position.set(0, 12, 1);
     scene.add(topSpecularLight);
+
+    // Interactive Dynamic Cursor Follow Point Light
+    const cursorGlintLight = new THREE.PointLight(0xffffff, 9.0, 32);
+    cursorGlintLight.position.set(0, 0, 6.0);
+    scene.add(cursorGlintLight);
 
     // Mouse Parallax Trackers
     let mouseX = 0;
@@ -365,7 +419,17 @@ export function Plus3DCanvas({
       mouseX += (targetMouseX - mouseX) * 0.06;
       mouseY += (targetMouseY - mouseY) * 0.06;
 
-      // Update 3D Floating Particle Field
+      // Update cursor follow point light and key lighting tracking
+      cursorGlintLight.position.x = mouseX * 8.5;
+      cursorGlintLight.position.y = mouseY * 6.5;
+      cursorGlintLight.position.z = 5.5 + Math.sin(elapsedTime * 1.8) * 0.4;
+
+      keyLight.position.x = 6 + mouseX * 3.5;
+      keyLight.position.y = 8 + mouseY * 2.5;
+
+      topSpecularLight.position.x = mouseX * 4.0;
+
+      // Update 3D Floating Cosmic Particle Field
       const posAttr = particleGeo.attributes.position as THREE.BufferAttribute;
       const arr = posAttr.array as Float32Array;
       for (let i = 0; i < particleCount; i++) {
@@ -378,6 +442,31 @@ export function Plus3DCanvas({
       posAttr.needsUpdate = true;
       particleSystem.rotation.y = elapsedTime * 0.03 + mouseX * 0.15;
       particleSystem.rotation.x = mouseY * 0.08;
+
+      // Hero text particle dissolution & background cosmos mixing on scroll
+      const heroPosAttr = heroParticleGeo.attributes.position as THREE.BufferAttribute;
+      const hArr = heroPosAttr.array as Float32Array;
+      const disperseP = smoothstep(0.0, 0.16, p);
+
+      for (let i = 0; i < heroParticleCount; i++) {
+        const off = heroParticleOffsets[i];
+        const bx = heroBasePositions[i * 3];
+        const by = heroBasePositions[i * 3 + 1];
+        const bz = heroBasePositions[i * 3 + 2];
+
+        const turbX = Math.sin(elapsedTime * 1.5 + off.phase) * 0.35 * disperseP;
+        const turbY = Math.cos(elapsedTime * 1.2 + off.phase) * 0.35 * disperseP;
+
+        const targetPx = bx + off.x * disperseP + turbX;
+        const targetPy = by + (off.y * disperseP + (elapsedTime * 0.45 * off.speed) % 10.0 - 5.0) * disperseP + turbY;
+        const targetPz = bz + off.z * disperseP;
+
+        hArr[i * 3] = bx * (1 - disperseP) + targetPx * disperseP;
+        hArr[i * 3 + 1] = by * (1 - disperseP) + targetPy * disperseP;
+        hArr[i * 3 + 2] = bz * (1 - disperseP) + targetPz * disperseP;
+      }
+      heroPosAttr.needsUpdate = true;
+      heroParticleMat.opacity = Math.max(0.25, 0.85 - p * 0.65);
 
       if (emblemGroup) {
         const entryFade = smoothstep(0.05, 0.65, entryP);
@@ -555,6 +644,8 @@ export function Plus3DCanvas({
       eGeo.dispose();
       particleGeo.dispose();
       particleMat.dispose();
+      heroParticleGeo.dispose();
+      heroParticleMat.dispose();
       particleTexture.dispose();
       matTitaniumOne.dispose();
       matTitaniumThree.dispose();

@@ -12,82 +12,92 @@ interface CapabilityItem {
   num: string;
   title: string;
   verb: string;
+  highlightPhrase: string;
   desc: string;
-  color: string;
-  glowColor: string;
-  iconType: "chart" | "rocket" | "scale" | "cube" | "vortex" | "core";
+  iconType: "monolith" | "spatial" | "shader" | "speed" | "neural" | "crown";
 }
 
 const CAPABILITIES: CapabilityItem[] = [
   {
     id: "growth",
     num: "01",
-    title: "Growth",
+    title: "Brand Alchemy",
     verb: "GROW",
-    desc: "Command market dominance, capture organic category gravity, and scale pipeline.",
-    color: "#10b981",
-    glowColor: "rgba(16, 185, 129, 0.45)",
-    iconType: "chart",
+    highlightPhrase: "enduring brand moats",
+    desc: "Sculpting monumental brand identity, spatial design systems, and category authority.",
+    iconType: "monolith",
   },
   {
-    id: "launch",
+    id: "spatial",
     num: "02",
-    title: "Launch",
-    verb: "LAUNCH",
-    desc: "Turn your visionary idea into a living, zero-latency digital flagship product.",
-    color: "#f97316",
-    glowColor: "rgba(249, 115, 22, 0.45)",
-    iconType: "rocket",
+    title: "3D Spatial Worlds",
+    verb: "CREATE",
+    highlightPhrase: "immersive WebGL worlds",
+    desc: "Architecting interactive 3D WebGL experiences with cinematic perspective and organic physics.",
+    iconType: "spatial",
+  },
+  {
+    id: "shaders",
+    num: "03",
+    title: "GPU Shaders & WebGL",
+    verb: "ENGINEER",
+    highlightPhrase: "real-time GPU shaders",
+    desc: "Deploying custom GLSL fragment shaders, raymarching, and hardware-accelerated graphics.",
+    iconType: "shader",
+  },
+  {
+    id: "speed",
+    num: "04",
+    title: "Zero-Latency Architecture",
+    verb: "BUILD",
+    highlightPhrase: "sub-millisecond latency",
+    desc: "Zero-compromise full-stack infrastructure delivering instant response and hyper-fluid feel.",
+    iconType: "speed",
+  },
+  {
+    id: "neural",
+    num: "05",
+    title: "Autonomous AI Orchestration",
+    verb: "AUTOMATE",
+    highlightPhrase: "autonomous AI agents",
+    desc: "Integrating intelligent LLM pipelines, generative spatial assets, and computational autonomy.",
+    iconType: "neural",
   },
   {
     id: "scale",
-    num: "03",
-    title: "Scale",
-    verb: "SCALE",
-    desc: "Multiply computation and user capacity with WebGL architecture and cloud systems.",
-    color: "#3b82f6",
-    glowColor: "rgba(59, 130, 246, 0.45)",
-    iconType: "scale",
-  },
-  {
-    id: "modernize",
-    num: "04",
-    title: "Modernize",
-    verb: "MODERNIZE",
-    desc: "Upgrade legacy infrastructure into unified, anomalous multi-touchpoint brand worlds.",
-    color: "#a855f7",
-    glowColor: "rgba(168, 85, 247, 0.45)",
-    iconType: "cube",
-  },
-  {
-    id: "automate",
-    num: "05",
-    title: "Automate",
-    verb: "AUTOMATE",
-    desc: "Work smarter with autonomous AI orchestration and real-time computational workflows.",
-    color: "#e2e8f0",
-    glowColor: "rgba(226, 232, 240, 0.5)",
-    iconType: "vortex",
-  },
-  {
-    id: "transform",
     num: "06",
-    title: "Transform",
+    title: "Market Dominance",
     verb: "TRANSFORM",
-    desc: "Reimagine enterprise reality, command category authority, and lead what comes next.",
-    color: "#ef4444",
-    glowColor: "rgba(239, 68, 68, 0.5)",
-    iconType: "core",
+    highlightPhrase: "category dominance",
+    desc: "Turning bold digital anomalies into enduring market leadership and venture momentum.",
+    iconType: "crown",
   },
 ];
 
 export function ButterVentureEngine() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const badgeRef = useRef<HTMLSpanElement | null>(null);
   const [activeIdx, setActiveIdx] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [timelineSec, setTimelineSec] = useState(1.25);
 
-  // Auto-playing timeline console ticker
+  // Trigger elastic pop animation on headline badge whenever active capability changes
+  useEffect(() => {
+    if (!badgeRef.current) return;
+    gsap.fromTo(
+      badgeRef.current,
+      { scale: 0.78, rotate: -6, opacity: 0.4 },
+      {
+        scale: 1,
+        rotate: 0,
+        opacity: 1,
+        duration: 0.45,
+        ease: "back.out(2.0)",
+      }
+    );
+  }, [activeIdx]);
+
+  // Auto-playing timeline console ticker (loops smoothly from 0.00s to 6.00s)
   useEffect(() => {
     if (!isPlaying) return;
     const interval = setInterval(() => {
@@ -144,7 +154,7 @@ export function ButterVentureEngine() {
 
       gsap.fromTo(
         `.${styles.cardItem}`,
-        { opacity: 0, y: 50, rotateX: 12 },
+        { opacity: 0, y: 50, rotateX: 10 },
         {
           opacity: 1,
           y: 0,
@@ -165,131 +175,124 @@ export function ButterVentureEngine() {
     return () => ctx.revert();
   }, []);
 
-  const renderBadgeIcon = (type: CapabilityItem["iconType"], color: string) => {
+  const handleSeek = (index: number) => {
+    setActiveIdx(index);
+    setTimelineSec(index + 0.25);
+  };
+
+  const renderBadgeIcon = (type: CapabilityItem["iconType"]) => {
     switch (type) {
-      case "chart":
-        return (
-          <svg viewBox="0 0 24 24" fill="none" className={styles.badgeSvg}>
-            <path d="M4 19L20 19" stroke={color} strokeWidth="2" strokeLinecap="round" />
-            <path d="M7 16V12" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M12 16V8" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M17 16V4" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
-          </svg>
-        );
-      case "rocket":
+      case "monolith":
         return (
           <svg viewBox="0 0 24 24" fill="none" className={styles.badgeSvg}>
             <path
-              d="M12 2C12 2 17 4 17 11C17 14 15 17 12 19C9 17 7 14 7 11C7 4 12 2 12 2Z"
-              stroke={color}
+              d="M7 3H17V21H7V3Z"
+              stroke="#ffffff"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path d="M11 7H13" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1.5" />
+            <path d="M11 11H13" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1.5" />
+          </svg>
+        );
+      case "spatial":
+        return (
+          <svg viewBox="0 0 24 24" fill="none" className={styles.badgeSvg}>
+            <circle cx="12" cy="12" r="9" stroke="#ffffff" strokeWidth="1.8" />
+            <ellipse cx="12" cy="12" rx="9" ry="4" stroke="rgba(255, 255, 255, 0.7)" strokeWidth="1.4" />
+            <ellipse cx="12" cy="12" rx="4" ry="9" stroke="rgba(255, 255, 255, 0.5)" strokeWidth="1.4" />
+          </svg>
+        );
+      case "shader":
+        return (
+          <svg viewBox="0 0 24 24" fill="none" className={styles.badgeSvg}>
+            <path d="M12 2L21 7V17L12 22L3 17V7L12 2Z" stroke="#ffffff" strokeWidth="2" />
+            <path d="M12 12L21 7" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1.4" />
+            <path d="M12 12V22" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1.4" />
+            <path d="M12 12L3 7" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1.4" />
+          </svg>
+        );
+      case "speed":
+        return (
+          <svg viewBox="0 0 24 24" fill="none" className={styles.badgeSvg}>
+            <path
+              d="M13 2L3 14H12L11 22L21 10H12L13 2Z"
+              stroke="#ffffff"
               strokeWidth="2"
               strokeLinejoin="round"
             />
-            <circle cx="12" cy="9" r="2" fill={color} />
-            <path d="M7 14L4 17V20L7 19" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M17 14L20 17V20L17 19" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
           </svg>
         );
-      case "scale":
+      case "neural":
         return (
           <svg viewBox="0 0 24 24" fill="none" className={styles.badgeSvg}>
-            <path d="M3 21L21 21" stroke={color} strokeWidth="2" strokeLinecap="round" />
-            <rect x="5" y="14" width="3" height="7" rx="1" fill={color} fillOpacity="0.5" stroke={color} />
-            <rect x="10.5" y="9" width="3" height="12" rx="1" fill={color} fillOpacity="0.7" stroke={color} />
-            <rect x="16" y="4" width="3" height="17" rx="1" fill={color} stroke={color} />
+            <circle cx="12" cy="12" r="9" stroke="#ffffff" strokeWidth="1.6" strokeDasharray="3 2" />
+            <circle cx="12" cy="12" r="5" stroke="rgba(255, 255, 255, 0.8)" strokeWidth="1.8" />
+            <circle cx="12" cy="12" r="2" fill="#ffffff" />
           </svg>
         );
-      case "cube":
+      case "crown":
         return (
           <svg viewBox="0 0 24 24" fill="none" className={styles.badgeSvg}>
-            <path d="M12 3L20 7.5V16.5L12 21L4 16.5V7.5L12 3Z" stroke={color} strokeWidth="2" />
-            <path d="M12 12L20 7.5" stroke={color} strokeWidth="1.5" />
-            <path d="M12 12V21" stroke={color} strokeWidth="1.5" />
-            <path d="M12 12L4 7.5" stroke={color} strokeWidth="1.5" />
-          </svg>
-        );
-      case "vortex":
-        return (
-          <svg viewBox="0 0 24 24" fill="none" className={styles.badgeSvg}>
-            <circle cx="12" cy="12" r="9" stroke={color} strokeWidth="1.5" strokeDasharray="4 2" />
-            <circle cx="12" cy="12" r="5" stroke={color} strokeWidth="2" />
-            <circle cx="12" cy="12" r="2" fill={color} />
-          </svg>
-        );
-      case "core":
-        return (
-          <svg viewBox="0 0 24 24" fill="none" className={styles.badgeSvg}>
-            <circle cx="12" cy="12" r="8" stroke={color} strokeWidth="2" />
-            <path d="M12 4C8 8 8 16 12 20" stroke={color} strokeWidth="1.5" />
-            <path d="M12 4C16 8 16 16 12 20" stroke={color} strokeWidth="1.5" />
-            <circle cx="12" cy="12" r="3" fill={color} />
+            <circle cx="12" cy="12" r="8.5" stroke="#ffffff" strokeWidth="2" />
+            <path
+              d="M8 12L10.5 15L16 9.5"
+              stroke="#ffffff"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         );
     }
   };
+
+  const activeItem = CAPABILITIES[activeIdx];
 
   return (
     <section
       ref={sectionRef}
       className={styles.butterSection}
       id="engine"
-      aria-label="13 Utopia Venture & Computational Engine"
+      aria-label="13 Utopia Computational & Digital Venture Engine"
     >
-      {/* Ambient Atmospheric Backdrop */}
+      {/* Ambient Monochrome Titanium Backdrop */}
       <div className={styles.ambientGlow} />
       <div className={styles.dotMatrixGrid} />
 
       <div className={styles.container}>
-        {/* ── PART 01: Butter.video Style Monumental Inline 3D Glass Badge Lockup ── */}
+        {/* ── PART 01: Butter.video Monumental Headline with Elastic Dynamic 3D Badge ── */}
         <div className={styles.inlineLeadBlock}>
           <div className={styles.eyebrowTag}>
             <span className={styles.pulseDot} />
-            <span>03.5 // CONTINUUM ENGINE</span>
+            <span>03.5 // COMPUTATIONAL ENGINE</span>
           </div>
 
           <h2 className={styles.inlineHeadline}>
-            We help ambitious enterprises{" "}
-            {CAPABILITIES.map((cap, i) => (
-              <span key={cap.id} className={styles.inlinePillGroup}>
-                <span
-                  className={styles.glassBadge}
-                  style={
-                    {
-                      "--badge-color": cap.color,
-                      "--badge-glow": cap.glowColor,
-                    } as React.CSSProperties
-                  }
-                  onMouseEnter={() => {
-                    setIsPlaying(false);
-                    setActiveIdx(i);
-                    setTimelineSec(i);
-                  }}
-                  onMouseLeave={() => setIsPlaying(true)}
-                >
-                  <span className={styles.badgeReflection} />
-                  {renderBadgeIcon(cap.iconType, cap.color)}
-                </span>
-                <span
-                  className={styles.verbText}
-                  style={{ color: cap.color }}
-                  onMouseEnter={() => {
-                    setIsPlaying(false);
-                    setActiveIdx(i);
-                    setTimelineSec(i);
-                  }}
-                  onMouseLeave={() => setIsPlaying(true)}
-                >
-                  {cap.verb}
-                </span>
-                {i < CAPABILITIES.length - 1 ? (i === CAPABILITIES.length - 2 ? ", and " : ", ") : " "}
+            13 Utopia{" "}
+            <span
+              ref={badgeRef}
+              className={styles.heroGlassBadge}
+              onClick={() => handleSeek((activeIdx + 1) % CAPABILITIES.length)}
+              title="Click to advance capability"
+            >
+              <span className={styles.badgeReflection} />
+              <span className={styles.badgeInnerIcon}>
+                {renderBadgeIcon(activeItem.iconType)}
               </span>
-            ))}
-            — turning bold anomalies into enduring digital category dominance.
+            </span>{" "}
+            is where visionary enterprises build and remix custom{" "}
+            <span className={styles.highlightWord}>
+              {activeItem.highlightPhrase}
+            </span>{" "}
+            right on timeline.
           </h2>
         </div>
 
-        {/* ── PART 02: Butter.video Interactive Timeline Console & Scrubber Dock ── */}
+        {/* ── PART 02: Butter.video Interactive Floating Timeline Console & Scrubber Deck ── */}
         <div className={styles.dockContainer}>
+          {/* Header Controls Bar */}
           <div className={styles.dockHeader}>
             <button
               type="button"
@@ -310,9 +313,16 @@ export function ButterVentureEngine() {
             </button>
 
             <div className={styles.timecode}>
-              <span className={styles.timeVal}>00:0{Math.floor(timelineSec)}.{(timelineSec % 1).toFixed(2).slice(2)}</span>
+              <span className={styles.timeVal}>
+                00:0{Math.floor(timelineSec)}.
+                {(timelineSec % 1).toFixed(2).slice(2)}
+              </span>
               <span className={styles.timeSep}>/</span>
               <span className={styles.timeTotal}>00:06.00</span>
+            </div>
+
+            <div className={styles.durationPill}>
+              <span>Dur 1.0s sec</span>
             </div>
 
             <div className={styles.cadencePill}>
@@ -320,13 +330,33 @@ export function ButterVentureEngine() {
             </div>
 
             <div className={styles.activePillLabel}>
-              <span className={styles.activeDot} style={{ background: CAPABILITIES[activeIdx].color }} />
-              <span>{CAPABILITIES[activeIdx].title.toUpperCase()}</span>
+              <span className={styles.activeDot} />
+              <span>{activeItem.title.toUpperCase()}</span>
             </div>
           </div>
 
-          {/* Timeline Ruler & Playhead */}
-          <div className={styles.timelineRulerWrap}>
+          {/* Timeline Ruler & Interactive Scrubber Playhead */}
+          <div
+            className={styles.timelineRulerWrap}
+            onClick={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              const clickX = e.clientX - rect.left;
+              const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+              const sec = ratio * 6.0;
+              setTimelineSec(parseFloat(sec.toFixed(2)));
+              setActiveIdx(Math.min(5, Math.floor(sec)));
+            }}
+          >
+            {/* Active Highlight Region Block (Butter Style) */}
+            <div
+              className={styles.activeRegionBlock}
+              style={{
+                left: `${(activeIdx / 6.0) * 100}%`,
+                width: `${(1 / 6.0) * 100}%`,
+              }}
+            />
+
+            {/* Ruler Ticks */}
             <div className={styles.timelineTicks}>
               {["0s", "1s", "2s", "3s", "4s", "5s", "6s"].map((tick, i) => (
                 <div key={i} className={styles.tickCol}>
@@ -336,59 +366,59 @@ export function ButterVentureEngine() {
               ))}
             </div>
 
-            {/* Glowing Scrubber Playhead */}
+            {/* Glowing Scrubber Playhead Needle */}
             <div
               className={styles.playhead}
               style={{ left: `${(timelineSec / 6.0) * 100}%` }}
             >
-              <div className={styles.playheadHandle} style={{ background: CAPABILITIES[activeIdx].color }} />
-              <div className={styles.playheadLine} style={{ background: CAPABILITIES[activeIdx].color }} />
+              <div className={styles.playheadHandle} />
+              <div className={styles.playheadLine} />
             </div>
           </div>
 
-          {/* Horizontal Squircle Capability Track */}
+          {/* Horizontal Tactile Squircle Capability Track */}
           <div className={styles.squircleTrack}>
             {CAPABILITIES.map((cap, i) => {
               const isActive = activeIdx === i;
               return (
                 <div
                   key={cap.id}
-                  className={`${styles.dockItem} ${isActive ? styles.dockItemActive : ""}`}
-                  style={
-                    {
-                      "--item-color": cap.color,
-                      "--item-glow": cap.glowColor,
-                    } as React.CSSProperties
-                  }
-                  onClick={() => {
-                    setActiveIdx(i);
-                    setTimelineSec(i);
-                  }}
+                  className={`${styles.dockItem} ${
+                    isActive ? styles.dockItemActive : ""
+                  }`}
+                  onClick={() => handleSeek(i)}
                 >
                   <div className={styles.dockItemGlass}>
                     <span className={styles.dockItemGloss} />
                     <div className={styles.dockItemIconWrap}>
-                      {renderBadgeIcon(cap.iconType, cap.color)}
+                      {renderBadgeIcon(cap.iconType)}
                     </div>
                   </div>
-                  <span className={styles.dockItemTitle}>{cap.title}</span>
+                  <div className={styles.dockItemTextCol}>
+                    <span className={styles.dockItemNum}>{cap.num}</span>
+                    <span className={styles.dockItemTitle}>{cap.title}</span>
+                  </div>
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* ── PART 03: Connected 3D Glass Capability Cards & Laser Circuit Line ── */}
+        {/* ── PART 03: Connected 3D Glass Capability Cards & Laser Wave Line ── */}
         <div className={styles.waveSection}>
           <div className={styles.waveHeader}>
-            <span className={styles.waveTag}>WHAT WE SOLVE // VALUE CREATION ARCHITECTURE</span>
+            <span className={styles.waveTag}>
+              WHAT WE SOLVE // VALUE CREATION ARCHITECTURE
+            </span>
             <h3 className={styles.waveTitle}>
               From ideas to monumental impact —<br />
-              <span className={styles.waveTitleDim}>we engineer what comes next.</span>
+              <span className={styles.waveTitleDim}>
+                we engineer what comes next.
+              </span>
             </h3>
           </div>
 
-          {/* Glowing Laser Circuit Wave Line Background */}
+          {/* Monochrome Titanium Laser Circuit Wave Line */}
           <div className={styles.circuitSvgWrap} aria-hidden="true">
             <svg
               className={styles.circuitSvg}
@@ -398,23 +428,27 @@ export function ButterVentureEngine() {
             >
               <path
                 d="M 20 120 C 180 30, 240 210, 400 120 C 560 30, 620 210, 780 120 C 940 30, 1020 190, 1180 120"
-                stroke="rgba(255, 255, 255, 0.12)"
+                stroke="rgba(255, 255, 255, 0.08)"
                 strokeWidth="2"
                 strokeDasharray="6 6"
               />
               <path
                 d="M 20 120 C 180 30, 240 210, 400 120 C 560 30, 620 210, 780 120 C 940 30, 1020 190, 1180 120"
-                stroke="url(#laserGrad)"
+                stroke="url(#monochromeLaserGrad)"
                 strokeWidth="2.5"
               />
               <defs>
-                <linearGradient id="laserGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#10b981" stopOpacity="0.8" />
-                  <stop offset="20%" stopColor="#f97316" stopOpacity="0.8" />
-                  <stop offset="40%" stopColor="#3b82f6" stopOpacity="0.8" />
-                  <stop offset="60%" stopColor="#a855f7" stopOpacity="0.8" />
-                  <stop offset="80%" stopColor="#e2e8f0" stopOpacity="0.8" />
-                  <stop offset="100%" stopColor="#ef4444" stopOpacity="0.8" />
+                <linearGradient
+                  id="monochromeLaserGrad"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="0%"
+                >
+                  <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
+                  <stop offset="30%" stopColor="#94a3b8" stopOpacity="0.4" />
+                  <stop offset="70%" stopColor="#ffffff" stopOpacity="0.9" />
+                  <stop offset="100%" stopColor="#64748b" stopOpacity="0.5" />
                 </linearGradient>
               </defs>
             </svg>
@@ -422,26 +456,17 @@ export function ButterVentureEngine() {
 
           {/* 6 Undulating Glass Squircle Cards */}
           <div className={styles.cardsGrid}>
-            {CAPABILITIES.map((cap, i) => (
-              <div
-                key={cap.id}
-                className={styles.cardItem}
-                style={
-                  {
-                    "--card-color": cap.color,
-                    "--card-glow": cap.glowColor,
-                  } as React.CSSProperties
-                }
-              >
+            {CAPABILITIES.map((cap) => (
+              <div key={cap.id} className={styles.cardItem}>
                 <div className={styles.cardGlassBody}>
-                  {/* Glowing Rim Light */}
+                  {/* Subtle Titanium Rim Highlight */}
                   <div className={styles.cardRimGlow} />
                   <div className={styles.cardGlossHighlight} />
 
                   <div className={styles.cardTopRow}>
                     <span className={styles.cardNum}>{cap.num}</span>
                     <div className={styles.cardBadgeSmall}>
-                      {renderBadgeIcon(cap.iconType, cap.color)}
+                      {renderBadgeIcon(cap.iconType)}
                     </div>
                   </div>
 
@@ -449,7 +474,9 @@ export function ButterVentureEngine() {
                   <p className={styles.cardDesc}>{cap.desc}</p>
 
                   <div className={styles.cardFooter}>
-                    <span className={styles.cardFooterTag}>CAPABILITY // {cap.verb}</span>
+                    <span className={styles.cardFooterTag}>
+                      CAPABILITY // {cap.verb}
+                    </span>
                     <span className={styles.cardArrow}>↗</span>
                   </div>
                 </div>

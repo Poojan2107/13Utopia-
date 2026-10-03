@@ -130,12 +130,6 @@ export function Continuous3DStory() {
               scrollProgress < 0.08 ? styles.actVisible : styles.actHidden
             }`}
           >
-            <div className={styles.heroLockup}>
-              <div className={styles.heroTopTag}>
-                <span className={styles.heroPulse} />
-                <span className={styles.heroTagText}>ANOMALOUS SPATIAL PRODUCTION</span>
-              </div>
-
               <div className={styles.monumentLockup}>
                 <div className={styles.beCommonBlock}>
                   <span className={styles.beWord}>BE</span>
@@ -149,25 +143,6 @@ export function Continuous3DStory() {
               <p className={styles.heroLeadText}>
                 We engineer living computational platforms, 3D worlds, and enduring brand moats for visionary enterprises.
               </p>
-
-              <div className={styles.heroActions}>
-                <a
-                  href="mailto:contact@13utopia.com?subject=Project%20Commission%20Inquiry"
-                  className={styles.heroPrimaryBtn}
-                  data-magnetic
-                >
-                  <span>ENTER INTAKE</span>
-                  <span className={styles.btnArrow}>→</span>
-                </a>
-
-                <a
-                  href="#work"
-                  className={styles.heroSecondaryBtn}
-                  data-magnetic
-                >
-                  <span>EXPLORE COMMISSIONS</span>
-                </a>
-              </div>
             </div>
           </div>
 
