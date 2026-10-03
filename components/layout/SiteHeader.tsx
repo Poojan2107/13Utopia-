@@ -97,40 +97,39 @@ export function SiteHeader() {
       } ${open ? styles.menuOpen : ""} ${pathname === "/" ? styles.onHome : ""}`}
     >
       <div className={styles.inner}>
-        {/* Top-Right Control Group: Brand Mark + Capsule Menu Trigger */}
-        <div className={styles.headerRightGroup}>
-          <Link
-            href="/"
-            className={styles.brand}
-            onClick={closeMenu}
-            aria-label="13 UTOPIA home"
+        {/* Top-Left Corner: Brand Mark */}
+        <Link
+          href="/"
+          className={styles.brand}
+          onClick={closeMenu}
+          aria-label="13 UTOPIA home"
+        >
+          <BrandLogo variant="official" priority />
+        </Link>
+
+        {/* Top-Right Corner: Capsule Menu Trigger */}
+        <div className={styles.actions}>
+          <button
+            type="button"
+            className={`${styles.menuToggle} ${open ? styles.menuToggleActive : ""}`}
+            aria-expanded={open}
+            aria-controls="awwwards-primary-menu"
+            aria-label={open ? "Close navigation menu" : "Open navigation menu (13 UTOPIA)"}
+            onClick={() => setOpen((v) => !v)}
+            data-magnetic
           >
-            <BrandLogo variant="official" priority />
-          </Link>
+            <div className={`${styles.easterEggIcon} ${open ? styles.easterEggOpen : ""}`} aria-hidden="true">
+              {/* The "1" Vertical Monolith Line */}
+              <span className={styles.lineOne} />
 
-          <div className={styles.actions}>
-            <button
-              type="button"
-              className={`${styles.menuToggle} ${open ? styles.menuToggleActive : ""}`}
-              aria-expanded={open}
-              aria-controls="awwwards-primary-menu"
-              aria-label={open ? "Close navigation menu" : "Open navigation menu (13 UTOPIA)"}
-              onClick={() => setOpen((v) => !v)}
-              data-magnetic
-            >
-              <div className={`${styles.easterEggIcon} ${open ? styles.easterEggOpen : ""}`} aria-hidden="true">
-                {/* The "1" Vertical Monolith Line */}
-                <span className={styles.lineOne} />
-
-                {/* The "3" Horizontal Hamburger Lines */}
-                <span className={styles.linesThree}>
-                  <span className={styles.barTop} />
-                  <span className={styles.barMid} />
-                  <span className={styles.barBot} />
-                </span>
-              </div>
-            </button>
-          </div>
+              {/* The "3" Horizontal Hamburger Lines */}
+              <span className={styles.linesThree}>
+                <span className={styles.barTop} />
+                <span className={styles.barMid} />
+                <span className={styles.barBot} />
+              </span>
+            </div>
+          </button>
         </div>
       </div>
 
