@@ -293,122 +293,6 @@ export function Plus3DCanvas({
     const particleSystem = new THREE.Points(particleGeo, particleMat);
     scene.add(particleSystem);
 
-    // ── 04. HERO MONUMENTAL TEXT PARTICLE MATRIX (Exact Screen Camera Projection) ──
-    const generateTextParticles = () => {
-      const targetW = 1600;
-      const targetH = Math.max(700, Math.round(1600 / (width / height)));
-      const tCanvas = document.createElement("canvas");
-      tCanvas.width = targetW;
-      tCanvas.height = targetH;
-      const tCtx = tCanvas.getContext("2d");
-      if (!tCtx) return { count: 0, basePos: new Float32Array(0), curPos: new Float32Array(0), offsets: [] };
-
-      tCtx.fillStyle = "#000000";
-      tCtx.fillRect(0, 0, targetW, targetH);
-
-      tCtx.fillStyle = "#ffffff";
-      tCtx.textBaseline = "alphabetic";
-
-      // Replicate exact CSS monumentLockup proportions
-      const wordSize = Math.min(targetW * 0.068, targetH * 0.135);
-      const gapStack = Math.max(4, wordSize * 0.08);
-      const beSize = wordSize * 2.18 + gapStack * 0.4;
-      const gapCol = Math.max(16, targetW * 0.022);
-
-      tCtx.font = `900 ${beSize}px "PP Neue Montreal", "Inter", sans-serif`;
-      const beWidth = tCtx.measureText("BE").width;
-
-      tCtx.font = `900 ${wordSize}px "PP Neue Montreal", "Inter", sans-serif`;
-      const topWidth = tCtx.measureText("UNREAL").width;
-      const botWidth = tCtx.measureText("UNREASONABLE").width;
-      const stackWidth = Math.max(topWidth, botWidth);
-
-      const totalWidth = beWidth + gapCol + stackWidth;
-      const startX = (targetW - totalWidth) / 2;
-      const centerY = targetH / 2 - 20;
-
-      // Draw "BE" on left
-      tCtx.font = `900 ${beSize}px "PP Neue Montreal", "Inter", sans-serif`;
-      tCtx.fillText("BE", startX, centerY + beSize * 0.34);
-
-      // Draw "UNREAL" and "UNREASONABLE" on right
-      tCtx.font = `900 ${wordSize}px "PP Neue Montreal", "Inter", sans-serif`;
-      tCtx.fillText("UNREAL", startX + beWidth + gapCol, centerY - gapStack * 0.5);
-      tCtx.fillText("UNREASONABLE", startX + beWidth + gapCol, centerY + wordSize * 0.95);
-
-      const imgData = tCtx.getImageData(0, 0, targetW, targetH);
-      const data = imgData.data;
-      const pts: Array<{ x: number; y: number; z: number; ox: number; oy: number; oz: number; phase: number; speed: number }> = [];
-
-      // Camera visible dimensions at target depth (z = 0.5)
-      const vFOV = (camera.fov * Math.PI) / 180;
-      const visibleHeight = 2 * Math.tan(vFOV / 2) * (camera.position.z - 0.5);
-      const visibleWidth = visibleHeight * (width / height);
-
-      // Sample every 4 pixels for dense, ultra-crisp typography
-      const step = 4;
-      for (let y = 0; y < targetH; y += step) {
-        for (let x = 0; x < targetW; x += step) {
-          const idx = (y * targetW + x) * 4;
-          if (data[idx] > 120) {
-            // Map 2D pixel to exact 3D camera world coordinates
-            const px = ((x - targetW / 2) / (targetW / 2)) * (visibleWidth / 2);
-            const py = -((y - targetH / 2) / (targetH / 2)) * (visibleHeight / 2);
-            const pz = 0.5 + (Math.random() - 0.5) * 0.08;
-
-            pts.push({
-              x: px,
-              y: py,
-              z: pz,
-              ox: px + (Math.random() - 0.5) * 14.0,
-              oy: py + (Math.random() * 10.0 + 4.0),
-              oz: pz + (Math.random() - 0.5) * 12.0 - 2.0,
-              phase: Math.random() * Math.PI * 2,
-              speed: 0.8 + Math.random() * 1.5,
-            });
-          }
-        }
-      }
-
-      const count = pts.length;
-      const basePos = new Float32Array(count * 3);
-      const curPos = new Float32Array(count * 3);
-
-      for (let i = 0; i < count; i++) {
-        basePos[i * 3] = pts[i].x;
-        basePos[i * 3 + 1] = pts[i].y;
-        basePos[i * 3 + 2] = pts[i].z;
-
-        curPos[i * 3] = pts[i].x;
-        curPos[i * 3 + 1] = pts[i].y;
-        curPos[i * 3 + 2] = pts[i].z;
-      }
-
-      return { count, basePos, curPos, offsets: pts };
-    };
-
-    const textParticleData = generateTextParticles();
-    const heroParticleCount = textParticleData.count || 1;
-    const heroBasePositions = textParticleData.basePos;
-    const heroCurrentPositions = textParticleData.curPos;
-    const heroParticleOffsets = textParticleData.offsets;
-
-    const heroParticleGeo = new THREE.BufferGeometry();
-    heroParticleGeo.setAttribute("position", new THREE.BufferAttribute(heroCurrentPositions, 3));
-
-    const heroParticleMat = new THREE.PointsMaterial({
-      size: 0.09,
-      map: particleTexture,
-      transparent: true,
-      opacity: 0,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-
-    const heroParticleSystem = new THREE.Points(heroParticleGeo, heroParticleMat);
-    heroParticleSystem.visible = false;
-    scene.add(heroParticleSystem);
-
     // Studio Lighting (Enhanced Tenbin High-Key Contrast & Precision Visibility)
     const ambientLight = new THREE.AmbientLight(0xdde6f0, 2.4);
     scene.add(ambientLight);
@@ -514,42 +398,7 @@ export function Plus3DCanvas({
       particleSystem.rotation.y = elapsedTime * 0.03 + mouseX * 0.15;
       particleSystem.rotation.x = mouseY * 0.08;
 
-      // ── HERO TEXT PARTICLE MATRIX ANIMATION (Solid at top, transforms to particle matrix on scroll, and disperses into cosmos) ──
-      const heroPosAttr = heroParticleGeo.attributes.position as THREE.BufferAttribute;
-      const hArr = heroPosAttr.array as Float32Array;
 
-      if (p <= 0.002) {
-        heroParticleSystem.visible = false;
-        heroParticleMat.opacity = 0;
-      } else if (p > 0.002 && p <= 0.12) {
-        heroParticleSystem.visible = true;
-        const disperseP = smoothstep(0.002, 0.09, p);
-        const fadeOut = Math.max(0, 1.0 - smoothstep(0.05, 0.12, p));
-        heroParticleMat.opacity = fadeOut * 0.95;
-
-        for (let i = 0; i < heroParticleCount; i++) {
-          const off = heroParticleOffsets[i];
-          const bx = heroBasePositions[i * 3];
-          const by = heroBasePositions[i * 3 + 1];
-          const bz = heroBasePositions[i * 3 + 2];
-
-          // 3D Curl Turbulence when dispersing on scroll
-          const turbX = Math.sin(elapsedTime * 1.6 + off.phase) * 0.45 * disperseP;
-          const turbY = Math.cos(elapsedTime * 1.3 + off.phase) * 0.45 * disperseP;
-
-          const targetPx = bx + off.ox * disperseP + turbX;
-          const targetPy = by + (off.oy * disperseP + (elapsedTime * 0.55 * off.speed) % 12.0 - 6.0) * disperseP + turbY;
-          const targetPz = bz + off.oz * disperseP;
-
-          hArr[i * 3] = bx * (1 - disperseP) + targetPx * disperseP;
-          hArr[i * 3 + 1] = by * (1 - disperseP) + targetPy * disperseP;
-          hArr[i * 3 + 2] = bz * (1 - disperseP) + targetPz * disperseP;
-        }
-        heroPosAttr.needsUpdate = true;
-      } else {
-        heroParticleSystem.visible = false;
-        heroParticleMat.opacity = 0;
-      }
 
       if (emblemGroup) {
         const entryFade = smoothstep(0.05, 0.65, entryP);
@@ -727,8 +576,6 @@ export function Plus3DCanvas({
       eGeo.dispose();
       particleGeo.dispose();
       particleMat.dispose();
-      heroParticleGeo.dispose();
-      heroParticleMat.dispose();
       particleTexture.dispose();
       matTitaniumOne.dispose();
       matTitaniumThree.dispose();

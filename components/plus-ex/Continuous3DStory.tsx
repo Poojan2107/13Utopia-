@@ -129,10 +129,6 @@ export function Continuous3DStory() {
             className={`${styles.act} ${styles.heroAct} ${
               scrollProgress < 0.08 ? styles.actVisible : styles.actHidden
             }`}
-            style={{
-              opacity: scrollProgress <= 0.002 ? 1 : 0,
-              pointerEvents: scrollProgress <= 0.002 ? "auto" : "none",
-            }}
           >
             <div className={styles.heroLockup}>
               <div className={styles.monumentLockup}>
