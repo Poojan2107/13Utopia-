@@ -165,28 +165,28 @@ export function Plus3DCanvas({
 
     // 13 Utopia Exact Plus-X & Tenbin Material Grading: Matte Obsidian Architectural Titanium
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x1a1d22),
-      roughness: 0.36,
-      metalness: 0.72,
-      clearcoat: 0.55,
-      clearcoatRoughness: 0.20,
-      reflectivity: 0.80,
+      color: new THREE.Color(0x181c22),
+      roughness: 0.32,
+      metalness: 0.76,
+      clearcoat: 0.65,
+      clearcoatRoughness: 0.18,
+      reflectivity: 0.88,
       emissive: new THREE.Color(0x060709),
-      emissiveIntensity: 0.15,
+      emissiveIntensity: 0.12,
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x17191e),
-      roughness: 0.38,
-      metalness: 0.70,
-      clearcoat: 0.55,
-      clearcoatRoughness: 0.20,
-      reflectivity: 0.80,
+      color: new THREE.Color(0x15181e),
+      roughness: 0.34,
+      metalness: 0.74,
+      clearcoat: 0.65,
+      clearcoatRoughness: 0.18,
+      reflectivity: 0.88,
       emissive: new THREE.Color(0x050608),
-      emissiveIntensity: 0.15,
+      emissiveIntensity: 0.12,
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
@@ -246,8 +246,8 @@ export function Plus3DCanvas({
     if (pCtx) {
       const grad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
       grad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
-      grad.addColorStop(0.25, "rgba(225, 238, 255, 0.85)");
-      grad.addColorStop(0.60, "rgba(180, 205, 235, 0.25)");
+      grad.addColorStop(0.25, "rgba(230, 242, 255, 0.90)");
+      grad.addColorStop(0.60, "rgba(180, 208, 240, 0.30)");
       grad.addColorStop(1, "rgba(0, 0, 0, 0)");
       pCtx.fillStyle = grad;
       pCtx.fillRect(0, 0, 64, 64);
@@ -255,15 +255,15 @@ export function Plus3DCanvas({
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
     // ── 03. TENBIN EXACT ORBITING MODEL PARTICLES (Surrounding 3D Crystalline Stardust Halo) ──
-    const auraParticleCount = 110;
+    const auraParticleCount = 140;
     const auraParticleGeo = new THREE.BufferGeometry();
     const auraPositions = new Float32Array(auraParticleCount * 3);
     const auraData: Array<{ radius: number; theta: number; vr: number; vtheta: number; z: number; phase: number }> = [];
 
     for (let i = 0; i < auraParticleCount; i++) {
-      const radius = 1.1 + Math.random() * 3.6;
+      const radius = 0.9 + Math.random() * 3.8;
       const theta = Math.random() * Math.PI * 2;
-      const z = (Math.random() - 0.5) * 3.6;
+      const z = (Math.random() - 0.5) * 3.8;
 
       auraPositions[i * 3] = radius * Math.cos(theta);
       auraPositions[i * 3 + 1] = radius * Math.sin(theta);
@@ -272,8 +272,8 @@ export function Plus3DCanvas({
       auraData.push({
         radius,
         theta,
-        vr: 0.002 + Math.random() * 0.005,
-        vtheta: (Math.random() > 0.5 ? 1 : -1) * (0.002 + Math.random() * 0.004),
+        vr: 0.002 + Math.random() * 0.006,
+        vtheta: (Math.random() > 0.5 ? 1 : -1) * (0.0025 + Math.random() * 0.005),
         z,
         phase: Math.random() * Math.PI * 2,
       });
@@ -282,10 +282,10 @@ export function Plus3DCanvas({
     auraParticleGeo.setAttribute("position", new THREE.BufferAttribute(auraPositions, 3));
 
     const auraParticleMat = new THREE.PointsMaterial({
-      size: 0.09,
+      size: 0.10,
       map: particleTexture,
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.75,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -293,29 +293,29 @@ export function Plus3DCanvas({
     const auraParticleSystem = new THREE.Points(auraParticleGeo, auraParticleMat);
     scene.add(auraParticleSystem);
 
-    // Studio Lighting (Tenbin Exact Overhead Grazing & Dual Rim Pipeline)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
+    // Studio Lighting (Tenbin Exact Overhead Grazing & Chiaroscuro Rim Pipeline)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.2);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 4.5);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 5.0);
     keyLight.position.set(8, 14, 12);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x9cb0c8, 2.5);
+    const fillLight = new THREE.DirectionalLight(0x9cb0c8, 2.8);
     fillLight.position.set(-12, -4, 10);
     scene.add(fillLight);
 
     // Overhead high-intensity grazing light for sharp top chamfer specular highlights
-    const topRimLight = new THREE.DirectionalLight(0xffffff, 7.5);
+    const topRimLight = new THREE.DirectionalLight(0xffffff, 9.5);
     topRimLight.position.set(0, 18, 1);
     scene.add(topRimLight);
 
     // Back-kicker rim light for crisp edge separation from dark stardust void
-    const backRimLight = new THREE.DirectionalLight(0xdde8f5, 6.0);
+    const backRimLight = new THREE.DirectionalLight(0xdde8f5, 6.8);
     backRimLight.position.set(0, -6, -10);
     scene.add(backRimLight);
 
-    const sideGrazingLight = new THREE.DirectionalLight(0xcfdbe8, 3.5);
+    const sideGrazingLight = new THREE.DirectionalLight(0xd4e2f2, 4.0);
     sideGrazingLight.position.set(12, -2, -4);
     scene.add(sideGrazingLight);
 
