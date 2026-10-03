@@ -225,21 +225,27 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
 
     // Kinematics Loop
     let rafId: number;
-    let currentX = 2.4;
+    let currentX = 0;
     let currentY = 0;
     let currentZ = -1.6;
     let currentRotX = 0.06;
-    let currentRotY = -0.22;
+    let currentRotY = 0;
     let currentRotZ = 0;
+    let scrollY = typeof window !== "undefined" ? window.scrollY : 0;
     const clock = new THREE.Clock();
 
-    // Mapping of capability index to 3D position/rotation offsets
+    const onScroll = () => {
+      scrollY = window.scrollY;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // Capability hover tilt configs (all centered at x = 0)
     const activeOffsets = [
-      { x: 3.2, y: 0.4, rotY: -0.28, rotX: 0.08 },   // 01 Brand & Creative
-      { x: -3.2, y: 0.0, rotY: 0.28, rotX: 0.06 },   // 02 Digital Products
-      { x: 3.0, y: -0.3, rotY: -0.24, rotX: 0.09 },  // 03 AI & Automation
-      { x: -3.0, y: -0.6, rotY: 0.24, rotX: 0.07 },  // 04 Cloud & Engineering
-      { x: 2.8, y: -0.9, rotY: -0.20, rotX: 0.08 },  // 05 Growth & Marketing
+      { y: 0.15, rotY: -0.15, rotX: 0.08 },  // 01 Brand & Creative
+      { y: 0.00, rotY: 0.15, rotX: 0.06 },   // 02 Digital Products
+      { y: -0.15, rotY: -0.12, rotX: 0.09 }, // 03 AI & Automation
+      { y: -0.30, rotY: 0.12, rotX: 0.07 },  // 04 Cloud & Engineering
+      { y: -0.45, rotY: -0.08, rotX: 0.08 }, // 05 Growth & Marketing
     ];
 
     const animate = () => {
@@ -250,18 +256,18 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
       mouseY += (targetMouseY - mouseY) * 0.05;
 
       const idleFloatY = Math.sin(elapsedTime * 1.2) * 0.08;
-      const idleRotY = Math.sin(elapsedTime * 0.8) * 0.06;
-      const idleRotX = Math.cos(elapsedTime * 1.0) * 0.03;
+      const scrollRotation = (scrollY * 0.0018) % (Math.PI * 2);
 
       const activeIdx = Math.max(0, Math.min(activeOffsets.length - 1, activeIndexRef.current));
       const targetConfig = activeOffsets[activeIdx] || activeOffsets[0];
 
-      const targetX = targetConfig.x + mouseX * 0.35;
-      const targetY = targetConfig.y + idleFloatY + mouseY * 0.25;
+      // Centered 13 only with scroll-driven continuous spin and mouse parallax
+      const targetX = mouseX * 0.25;
+      const targetY = targetConfig.y + idleFloatY + mouseY * 0.20;
       const targetZ = -1.6;
-      const targetRotY = targetConfig.rotY + idleRotY + mouseX * 0.18;
-      const targetRotX = targetConfig.rotX + idleRotX - mouseY * 0.14;
-      const targetRotZ = (targetConfig.x < 0 ? -0.02 : 0.02);
+      const targetRotY = scrollRotation + targetConfig.rotY + mouseX * 0.15;
+      const targetRotX = targetConfig.rotX + Math.sin(elapsedTime * 0.8) * 0.04 - mouseY * 0.12;
+      const targetRotZ = mouseX * 0.02;
 
       const damp = 0.06;
       currentX += (targetX - currentX) * damp;
@@ -297,6 +303,7 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
       cancelAnimationFrame(rafId);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("mousemove", onPointerMove);
+      window.removeEventListener("scroll", onScroll);
       if (renderer.domElement) {
         renderer.domElement.remove();
       }
