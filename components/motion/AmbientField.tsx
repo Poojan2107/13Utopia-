@@ -5,10 +5,11 @@ import * as THREE from "three";
 import styles from "@/styles/motion/AmbientField.module.css";
 
 /**
- * Continuous Global Atmospheric Cosmos (Tenbin Exact):
- * - Hero has the overhead volumetric downlight cone and luminous stardust haze
- * - Background continuously flows into deep cosmic stardust and velvety space across Portfolio, CTA, and Footer
- * - Zero seams, zero borders, 100% unified global canvas
+ * Tenbin Exact 1:1 Atmosphere:
+ * 1. Wide-Angle Interstellar Stardust Cloud & Silvery Cosmic Haze
+ * 2. High-Density Micro-Grain Sand / Cosmic Dust Particulates
+ * 3. Overhead Volumetric Illumination with Natural Horizontal Spread
+ * 4. 3D Floating Dust Motes with Cursor Parallax
  */
 export function AmbientField() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -35,7 +36,7 @@ export function AmbientField() {
     renderer.setClearColor(0x000000, 1);
     container.appendChild(renderer.domElement);
 
-    // ── 01. UNIFIED CONTINUOUS ATMOSPHERE SHADER ───────────────────────────
+    // ── 01. TENBIN 1:1 WIDE COSMIC STARDUST & HAZE SHADER ──────────────────
     const nebulaVertexShader = `
       varying vec2 vUv;
       void main() {
@@ -69,13 +70,13 @@ export function AmbientField() {
         return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
       }
 
-      float fbm2D(vec2 p) {
+      float fbm(vec2 p) {
         float v = 0.0;
         float a = 0.5;
         mat2 rot = mat2(0.8, 0.6, -0.6, 0.8);
         for (int i = 0; i < 5; ++i) {
           v += a * vnoise(p);
-          p = rot * p * 2.02 + vec2(8.5, 12.3);
+          p = rot * p * 2.05 + vec2(12.3, 7.5);
           a *= 0.5;
         }
         return v;
@@ -84,65 +85,68 @@ export function AmbientField() {
       void main() {
         vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution.xy) / min(uResolution.x, uResolution.y);
 
-        // Calculate continuous scroll translation
         float scrollFraction = uScroll / max(uResolution.y, 1.0);
         float scrollOffset = scrollFraction * 0.75;
 
-        // Cursor parallax
+        // Subtle mouse parallax
         vec2 m = uMouse * 0.06;
-        vec2 p = vec2(uv.x + m.x, uv.y - scrollOffset * 0.5);
+        vec2 p = vec2(uv.x * 1.1 + m.x, uv.y - scrollOffset * 0.5);
 
-        float t = uTime * 0.035;
+        float t = uTime * 0.03;
 
-        // 1. HERO OVERHEAD VOLUMETRIC DOWNLIGHT (Scrolls naturally off-screen as user explores)
-        vec2 heroLightOrigin = vec2(m.x * 0.35, 0.92 - scrollOffset);
-        float distToHeroLight = length(vec2((uv.x - heroLightOrigin.x) * 1.25, (uv.y - heroLightOrigin.y) * 0.85));
-        float heroDownwash = exp(-distToHeroLight * 1.55);
+        // 1. WIDE HORIZONTAL OVERHEAD STARDUST CLOUD (Tenbin 1:1 exact broad envelope)
+        // High density across top center, extending broadly to top-left and top-right
+        float vertGrad = smoothstep(-0.65, 0.75, uv.y + 0.15 - scrollOffset);
+        float horizSpread = 1.0 - smoothstep(0.4, 2.2, abs(uv.x - m.x * 0.3));
+        float cloudBase = vertGrad * horizSpread;
 
-        // Volumetric light shafts that anchor to the Hero
-        float rayX = (uv.x + m.x * 0.25) * 6.5 + sin((uv.y - scrollOffset * 0.3) * 1.6 + t) * 0.3;
-        float rays = vnoise(vec2(rayX, t * 0.2)) * 0.22 + vnoise(vec2(rayX * 2.0, t * 0.35)) * 0.10;
-        float rayFalloff = exp(-abs(uv.y - heroLightOrigin.y) * 1.35);
-        heroDownwash += rays * rayFalloff * 0.38;
+        // Organic wispy stardust filaments & cosmic clouds
+        float n1 = fbm(p * 1.35 + vec2(t * 0.05, -t * 0.08));
+        float n2 = fbm(p * 2.8 + vec2(-t * 0.06, t * 0.04) + n1 * 0.65);
+        float n3 = fbm(p * 5.2 + n2 * 0.5);
 
-        // 2. UNIFIED CONTINUOUS INTERSTELLAR DUST HAZE
-        float broadHaze = fbm2D(p * 1.05 + vec2(0.0, -t * 0.07));
-        float fineHaze = fbm2D(p * 2.6 + vec2(t * 0.06, -t * 0.12));
-        float dustHaze = mix(broadHaze, fineHaze, 0.32);
+        float nebulaWisps = mix(n1, n2, 0.5) * 0.75 + n3 * 0.25;
 
-        // Unified atmosphere across all sections
-        float atmosphere = heroDownwash * 0.78 + dustHaze * (0.10 + heroDownwash * 0.42);
+        // Combine broad cloud envelope with organic cosmic filaments
+        float atmosphere = cloudBase * 0.70 + nebulaWisps * cloudBase * 0.65;
 
-        // 3. SEAMLESS MICRO-STARDUST & TACTILE SAND GRAIN
+        // Central luminous halo behind the monolith
+        float centerDist = length(vec2(uv.x * 1.15 - m.x * 0.2, (uv.y - 0.15 + scrollOffset) * 1.3));
+        float centralAura = exp(-centerDist * 1.6) * 0.45;
+        atmosphere += centralAura * vertGrad;
+
+        // 2. ULTRA-DENSE TACTILE MICRO-STARDUST & SAND GRAIN (Tenbin signature texture)
         vec2 grainCoord = gl_FragCoord.xy;
-        float grain1 = hash12(grainCoord + fract(uTime * 0.025) * 100.0);
-        float grain2 = hash12(grainCoord * 0.5 + vec2(17.4, 53.2));
-        float grain3 = hash12(grainCoord * 1.4 + vec2(91.1, 33.7));
+        float g1 = hash12(grainCoord + fract(uTime * 0.02) * 100.0);
+        float g2 = hash12(grainCoord * 0.5 + vec2(23.4, 67.8));
+        float g3 = hash12(grainCoord * 1.6 + vec2(89.2, 14.1));
 
-        float stardustSpeck = step(0.968, grain1) * (0.35 + 0.65 * grain2);
-        float sandTexture = (grain1 * 0.5 + grain2 * 0.3 + grain3 * 0.2);
+        // Micro-speckles caught in light
+        float stardustSpecks = step(0.965, g1) * (0.4 + 0.6 * g2);
+        float fineSand = (g1 * 0.5 + g2 * 0.3 + g3 * 0.2);
 
-        float dustIllumination = clamp(heroDownwash * 1.35 + dustHaze * 0.35, 0.16, 1.0);
+        // Stardust illumination follows the atmosphere
+        float dustGlow = clamp(atmosphere * 1.45, 0.10, 1.0);
 
-        // 4. TENBIN COLOR GRADING
-        vec3 deepVoid = vec3(0.009, 0.011, 0.014);       // Deep space
-        vec3 graphiteDust = vec3(0.10, 0.11, 0.14);     // Ambient dust
-        vec3 silverHaze = vec3(0.44, 0.48, 0.54);       // Illuminated silver haze
-        vec3 topGlowWhite = vec3(0.88, 0.91, 0.96);     // Top-down hero glow
+        // 3. TENBIN MONOCHROMATIC COLOR COMPOSITION
+        vec3 deepVoid = vec3(0.008, 0.009, 0.012);       // Deep space background
+        vec3 graphiteDust = vec3(0.11, 0.12, 0.15);     // Ambient dust haze
+        vec3 silverNebula = vec3(0.48, 0.52, 0.58);     // Illuminated silver stardust
+        vec3 brightWhite = vec3(0.92, 0.94, 0.98);      // Peak cloud highlights
 
         vec3 col = deepVoid;
-        col = mix(col, graphiteDust, smoothstep(0.04, 0.36, atmosphere));
-        col = mix(col, silverHaze, smoothstep(0.32, 0.70, atmosphere));
-        col = mix(col, topGlowWhite, smoothstep(0.65, 1.02, atmosphere));
+        col = mix(col, graphiteDust, smoothstep(0.05, 0.38, atmosphere));
+        col = mix(col, silverNebula, smoothstep(0.35, 0.72, atmosphere));
+        col = mix(col, brightWhite, smoothstep(0.68, 1.05, atmosphere));
 
-        // Tactile sand grain
-        col += (sandTexture - 0.5) * 0.075 * (0.45 + 0.65 * heroDownwash);
+        // Apply tactile photographic sand grain
+        col += (fineSand - 0.5) * 0.085 * (0.4 + 0.8 * cloudBase);
 
-        // Stardust micro-points
-        col += vec3(stardustSpeck * 0.70 * dustIllumination);
+        // Apply glistening stardust points
+        col += vec3(stardustSpecks * 0.75 * dustGlow);
 
-        // Smooth subtle vignette
-        float vignette = 1.0 - smoothstep(0.6, 1.8, length(uv * vec2(1.05, 1.25)));
+        // Smooth bottom and side vignette for cinematic framing
+        float vignette = 1.0 - smoothstep(0.6, 1.8, length(uv * vec2(0.95, 1.2)));
         col *= vignette;
 
         gl_FragColor = vec4(col, 1.0);
@@ -186,7 +190,7 @@ export function AmbientField() {
     }
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
-    const particleCount = 750;
+    const particleCount = 850;
     const particleGeo = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
     const particleVelocities: Array<{ vx: number; vy: number; vz: number }> = [];
@@ -275,7 +279,7 @@ export function AmbientField() {
       }
       posAttr.needsUpdate = true;
 
-      // Continuous deep space orbital parallax
+      // Deep space orbital parallax
       particleSystem.rotation.y = elapsedTime * 0.012 + mouseX * 0.06;
       particleSystem.rotation.x = mouseY * 0.04;
       particleSystem.position.y = -(scrollY * 0.001);

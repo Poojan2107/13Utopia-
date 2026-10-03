@@ -163,30 +163,60 @@ export function Plus3DCanvas({
       bevelSegments: 5,
     };
 
-    // 13 Utopia Exact Plus-X & Tenbin Material Grading: Matte Obsidian Architectural Titanium
+    // Procedural Micro-Chiseled Stone / Meteorite Bump Texture (Tenbin 1:1)
+    const bumpCanvas = document.createElement("canvas");
+    bumpCanvas.width = 256;
+    bumpCanvas.height = 256;
+    const bumpCtx = bumpCanvas.getContext("2d");
+    if (bumpCtx) {
+      const imgData = bumpCtx.createImageData(256, 256);
+      for (let y = 0; y < 256; y++) {
+        for (let x = 0; x < 256; x++) {
+          const idx = (y * 256 + x) * 4;
+          const n1 = Math.random() * 200;
+          const n2 = (Math.sin(x * 0.1) * Math.cos(y * 0.1)) * 40;
+          const val = Math.min(255, Math.max(0, n1 + n2 + 25));
+          imgData.data[idx] = val;
+          imgData.data[idx + 1] = val;
+          imgData.data[idx + 2] = val;
+          imgData.data[idx + 3] = 255;
+        }
+      }
+      bumpCtx.putImageData(imgData, 0, 0);
+    }
+    const bumpTexture = new THREE.CanvasTexture(bumpCanvas);
+    bumpTexture.wrapS = THREE.RepeatWrapping;
+    bumpTexture.wrapT = THREE.RepeatWrapping;
+    bumpTexture.repeat.set(3.5, 3.5);
+
+    // 13 Utopia Exact Tenbin Material Grading: Chiseled Obsidian Architectural Titanium
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x181a1e),
-      roughness: 0.40,
-      metalness: 0.70,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.25,
-      reflectivity: 0.75,
-      emissive: new THREE.Color(0x060709),
-      emissiveIntensity: 0.2,
+      color: new THREE.Color(0x0e1014),
+      roughness: 0.35,
+      metalness: 0.85,
+      clearcoat: 0.75,
+      clearcoatRoughness: 0.18,
+      reflectivity: 0.90,
+      bumpMap: bumpTexture,
+      bumpScale: 0.018,
+      emissive: new THREE.Color(0x030406),
+      emissiveIntensity: 0.15,
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x15171a),
-      roughness: 0.42,
-      metalness: 0.68,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.25,
-      reflectivity: 0.75,
-      emissive: new THREE.Color(0x040507),
-      emissiveIntensity: 0.2,
+      color: new THREE.Color(0x0c0e12),
+      roughness: 0.36,
+      metalness: 0.84,
+      clearcoat: 0.75,
+      clearcoatRoughness: 0.18,
+      reflectivity: 0.90,
+      bumpMap: bumpTexture,
+      bumpScale: 0.018,
+      emissive: new THREE.Color(0x020305),
+      emissiveIntensity: 0.15,
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
@@ -293,27 +323,31 @@ export function Plus3DCanvas({
     const auraParticleSystem = new THREE.Points(auraParticleGeo, auraParticleMat);
     scene.add(auraParticleSystem);
 
-    // Studio Lighting (Tenbin & Plus-X Softbox & Top-Down Rim Architecture)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
+    // Studio Lighting (Tenbin High-Impact Top Rim & Kicker Specular Architecture)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.2);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 4.0);
-    keyLight.position.set(10, 16, 12);
+    const topRimLight = new THREE.DirectionalLight(0xffffff, 7.5);
+    topRimLight.position.set(0, 18, 4);
+    scene.add(topRimLight);
+
+    const keyLight = new THREE.DirectionalLight(0xdfe8f5, 5.5);
+    keyLight.position.set(10, 14, 12);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x8ca0b8, 2.2);
+    const fillLight = new THREE.DirectionalLight(0x8fa0b8, 3.5);
     fillLight.position.set(-14, -4, 10);
     scene.add(fillLight);
 
-    const topRimLight = new THREE.DirectionalLight(0xffffff, 4.5);
-    topRimLight.position.set(0, 20, 1);
-    scene.add(topRimLight);
+    const backRimLeft = new THREE.DirectionalLight(0xcfdbe8, 6.0);
+    backRimLeft.position.set(-12, -6, -10);
+    scene.add(backRimLeft);
 
-    const backRimLight = new THREE.DirectionalLight(0xdde8f5, 5.0);
-    backRimLight.position.set(0, -8, -12);
-    scene.add(backRimLight);
+    const backRimRight = new THREE.DirectionalLight(0xe5effa, 6.0);
+    backRimRight.position.set(12, -6, -10);
+    scene.add(backRimRight);
 
-    const sideGrazingLight = new THREE.DirectionalLight(0xf4dfc8, 3.2);
+    const sideGrazingLight = new THREE.DirectionalLight(0xf4dfc8, 3.8);
     sideGrazingLight.position.set(12, -4, -6);
     scene.add(sideGrazingLight);
 
@@ -579,6 +613,7 @@ export function Plus3DCanvas({
       auraParticleGeo.dispose();
       auraParticleMat.dispose();
       particleTexture.dispose();
+      bumpTexture.dispose();
       matTitaniumOne.dispose();
       matTitaniumThree.dispose();
       renderer.dispose();
