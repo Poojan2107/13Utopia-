@@ -185,12 +185,13 @@
   text-transform: uppercase;
   margin: 0;
   line-height: 1.15;
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease;
   text-shadow: 0 4px 25px rgba(0, 0, 0, 0.98), 0 0 35px rgba(0, 0, 0, 0.9);
 }
 
-.accordionItem:hover .domainTitle {
-  transform: translateX(6px);
+.accordionItem:hover .domainTitle,
+.itemActive .domainTitle {
+  transform: translateX(8px);
   color: #ffffff;
 }
 
@@ -200,6 +201,7 @@
   color: rgba(255, 255, 255, 0.80);
   font-weight: 400;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+  transition: color 0.4s ease;
 }
 
 .metricCol {
@@ -217,6 +219,11 @@
   line-height: 1;
   letter-spacing: -0.02em;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.itemActive .metricVal {
+  transform: scale(1.04);
 }
 
 .metricLbl {
@@ -244,7 +251,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .itemActive .toggleIcon {
@@ -255,7 +262,7 @@
 .iconLineVertical {
   position: absolute;
   background: #ffffff;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
 }
 
@@ -274,31 +281,49 @@
   transform: scaleY(0);
 }
 
-/* Expandable Body — Transparent & Pure */
+/* Expandable Body — Silky Smooth 60fps Grid Transition */
 .itemBody {
   display: grid;
-  transition: grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition: grid-template-rows 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: grid-template-rows, opacity;
 }
 
 .bodyClosed {
   grid-template-rows: 0fr;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
 
 .bodyOpen {
   grid-template-rows: 1fr;
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
 }
 
 .bodyInner {
+  min-height: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 32px;
   padding: 16px 0 32px;
   border: none;
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bodyClosed .bodyInner {
+  transform: translateY(-14px);
+  opacity: 0;
 }
 
 /* Comparison Grid: Antithesis — Transparent & Clean */
