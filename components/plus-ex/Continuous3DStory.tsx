@@ -130,6 +130,7 @@ export function Continuous3DStory() {
               scrollProgress < 0.08 ? styles.actVisible : styles.actHidden
             }`}
           >
+            <div className={styles.heroLockup}>
               <div className={styles.monumentLockup}>
                 <div className={styles.beCommonBlock}>
                   <span className={styles.beWord}>BE</span>
