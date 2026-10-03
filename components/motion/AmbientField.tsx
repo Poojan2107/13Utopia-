@@ -34,30 +34,30 @@ export function AmbientField() {
     renderer.setSize(width, height);
     container.appendChild(renderer.domElement);
 
-    // Procedural glowing circular point texture
+    // Procedural glowing circular point texture - soft subtle falloff
     const pCanvas = document.createElement("canvas");
     pCanvas.width = 64;
     pCanvas.height = 64;
     const pCtx = pCanvas.getContext("2d");
     if (pCtx) {
       const grad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
-      grad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
-      grad.addColorStop(0.25, "rgba(240, 245, 255, 0.75)");
-      grad.addColorStop(0.65, "rgba(200, 220, 255, 0.2)");
+      grad.addColorStop(0, "rgba(255, 255, 255, 0.85)");
+      grad.addColorStop(0.25, "rgba(230, 240, 255, 0.40)");
+      grad.addColorStop(0.65, "rgba(200, 220, 255, 0.06)");
       grad.addColorStop(1, "rgba(0, 0, 0, 0)");
       pCtx.fillStyle = grad;
       pCtx.fillRect(0, 0, 64, 64);
     }
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
-    // 400 Continuous Global Cosmic Particles
-    const particleCount = 420;
+    // Subtle, sparse cosmic micro-sparks (ultra-refined ambient depth)
+    const particleCount = 48;
     const particleGeo = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
     const particleVelocities: Array<{ vx: number; vy: number; vz: number; rotSpeed: number }> = [];
 
     for (let i = 0; i < particleCount; i++) {
-      const radius = 3.0 + Math.random() * 18.0;
+      const radius = 4.0 + Math.random() * 16.0;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
 
@@ -66,20 +66,20 @@ export function AmbientField() {
       particlePositions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta) - 3.0;
 
       particleVelocities.push({
-        vx: (Math.random() - 0.5) * 0.003,
-        vy: 0.004 + Math.random() * 0.007,
-        vz: (Math.random() - 0.5) * 0.003,
-        rotSpeed: (Math.random() - 0.5) * 0.006,
+        vx: (Math.random() - 0.5) * 0.002,
+        vy: 0.003 + Math.random() * 0.005,
+        vz: (Math.random() - 0.5) * 0.002,
+        rotSpeed: (Math.random() - 0.5) * 0.004,
       });
     }
 
     particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
 
     const particleMat = new THREE.PointsMaterial({
-      size: 0.16,
+      size: 0.08,
       map: particleTexture,
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.30,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });

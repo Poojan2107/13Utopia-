@@ -254,16 +254,16 @@ export function Plus3DCanvas({
     }
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
-    // ── 03. BEHIND-MODEL ATMOSPHERIC AURA PARTICLE HALO ──
-    const auraParticleCount = 450;
+    // ── 03. BEHIND-MODEL SUBTLE ATMOSPHERIC AURA (Ultra-Delicate Micro-Sparks) ──
+    const auraParticleCount = 28;
     const auraParticleGeo = new THREE.BufferGeometry();
     const auraPositions = new Float32Array(auraParticleCount * 3);
     const auraData: Array<{ radius: number; theta: number; vr: number; vtheta: number; z: number; phase: number }> = [];
 
     for (let i = 0; i < auraParticleCount; i++) {
-      const radius = 0.5 + Math.random() * 7.5;
+      const radius = 1.0 + Math.random() * 5.5;
       const theta = Math.random() * Math.PI * 2;
-      const z = -0.6 - Math.random() * 2.5;
+      const z = -0.9 - Math.random() * 2.0;
 
       auraPositions[i * 3] = radius * Math.cos(theta);
       auraPositions[i * 3 + 1] = radius * Math.sin(theta);
@@ -272,8 +272,8 @@ export function Plus3DCanvas({
       auraData.push({
         radius,
         theta,
-        vr: 0.008 + Math.random() * 0.016,
-        vtheta: (Math.random() > 0.5 ? 1 : -1) * (0.002 + Math.random() * 0.004),
+        vr: 0.003 + Math.random() * 0.007,
+        vtheta: (Math.random() > 0.5 ? 1 : -1) * (0.001 + Math.random() * 0.002),
         z,
         phase: Math.random() * Math.PI * 2,
       });
@@ -282,53 +282,16 @@ export function Plus3DCanvas({
     auraParticleGeo.setAttribute("position", new THREE.BufferAttribute(auraPositions, 3));
 
     const auraParticleMat = new THREE.PointsMaterial({
-      size: 0.18,
+      size: 0.08,
       map: particleTexture,
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.22,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
 
     const auraParticleSystem = new THREE.Points(auraParticleGeo, auraParticleMat);
     scene.add(auraParticleSystem);
-
-    // ── 04. TENBIN-STYLE 3D FLOATING PARTICLES & ORBITAL SPARKS ──
-    const particleCount = 280;
-    const particleGeo = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
-    const particleVelocities: Array<{ vx: number; vy: number; vz: number; rotSpeed: number }> = [];
-
-    for (let i = 0; i < particleCount; i++) {
-      const radius = 3.5 + Math.random() * 8.5;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(Math.random() * 2 - 1);
-
-      particlePositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 8.0;
-      particlePositions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta) - 2.0;
-
-      particleVelocities.push({
-        vx: (Math.random() - 0.5) * 0.004,
-        vy: 0.003 + Math.random() * 0.006,
-        vz: (Math.random() - 0.5) * 0.004,
-        rotSpeed: (Math.random() - 0.5) * 0.008,
-      });
-    }
-
-    particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
-
-    const particleMat = new THREE.PointsMaterial({
-      size: 0.14,
-      map: particleTexture,
-      transparent: true,
-      opacity: 0.55,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-
-    const particleSystem = new THREE.Points(particleGeo, particleMat);
-    scene.add(particleSystem);
 
     // Studio Lighting (Tenbin & Plus-X Softbox & Top-Down Rim Architecture)
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
@@ -434,19 +397,7 @@ export function Plus3DCanvas({
       auraAttr.needsUpdate = true;
       auraParticleSystem.rotation.z = elapsedTime * 0.012;
 
-      // Update 3D Floating Cosmic Particle Field
-      const posAttr = particleGeo.attributes.position as THREE.BufferAttribute;
-      const arr = posAttr.array as Float32Array;
-      for (let i = 0; i < particleCount; i++) {
-        const vel = particleVelocities[i];
-        arr[i * 3 + 1] += vel.vy;
-        if (arr[i * 3 + 1] > 6.0) {
-          arr[i * 3 + 1] = -6.0;
-        }
-      }
-      posAttr.needsUpdate = true;
-      particleSystem.rotation.y = elapsedTime * 0.03 + mouseX * 0.15;
-      particleSystem.rotation.x = mouseY * 0.08;
+
 
 
 
@@ -624,8 +575,7 @@ export function Plus3DCanvas({
       oneGeo.dispose();
       threeGeo.dispose();
       eGeo.dispose();
-      particleGeo.dispose();
-      particleMat.dispose();
+
       auraParticleGeo.dispose();
       auraParticleMat.dispose();
       particleTexture.dispose();
