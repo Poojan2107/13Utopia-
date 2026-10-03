@@ -216,12 +216,21 @@ export function Continuous3DStory() {
                     <div className={styles.reelViewport}>
                       <div className={styles.drumContainer}>
                         {world.keywords.map((word, wIdx) => {
-                          const continuousFloat = reelP * (world.keywords.length - 1);
+                          const numItems = world.keywords.length;
+                          const rawFloat = reelP * (numItems - 1);
+                          
+                          // Smooth plateau easing for high dwell time on each keyword
+                          const floorIdx = Math.floor(rawFloat);
+                          const frac = rawFloat - floorIdx;
+                          // Smooth S-curve transition between words (lingers at integer points)
+                          const smoothFrac = frac * frac * (3 - 2 * frac);
+                          const continuousFloat = floorIdx + smoothFrac;
+                          
                           const delta = wIdx - continuousFloat;
                           
-                          // True 3D Cylindrical Drum physics
-                          const R = 240; // Cylinder radius in px
-                          const angleStep = 0.32; // Radian curvature per item (~18.3 deg)
+                          // 3D Cylindrical Drum Physics
+                          const R = 320; // Refined cylinder radius in px
+                          const angleStep = 0.38; // Radian curvature per item
                           const theta = delta * angleStep;
                           
                           const translateY = R * Math.sin(theta);
@@ -229,15 +238,16 @@ export function Continuous3DStory() {
                           const rotateX = -(theta * (180 / Math.PI));
                           
                           const absDelta = Math.abs(delta);
-                          const isCenter = absDelta < 0.40;
+                          const isCenter = absDelta < 0.42;
                           
-                          // Smooth cosine opacity curve
+                          // Smooth optical cosine opacity curve
                           const opacity = Math.max(
-                            0.10,
-                            Math.pow(Math.cos(Math.min(Math.PI / 2.05, absDelta * 0.44)), 2.0)
+                            0.08,
+                            Math.pow(Math.cos(Math.min(Math.PI / 2.05, absDelta * 0.42)), 2.2)
                           );
                           
-                          const scale = isCenter ? 1.03 : Math.max(0.93, 1 - absDelta * 0.035);
+                          const scale = isCenter ? 1.05 : Math.max(0.88, 1 - absDelta * 0.045);
+                          const blurAmount = Math.min(4.5, absDelta * 1.8);
 
                           return (
                             <div
@@ -248,6 +258,7 @@ export function Continuous3DStory() {
                               style={{
                                 transform: `translate3d(0, ${translateY.toFixed(2)}px, ${translateZ.toFixed(2)}px) rotateX(${rotateX.toFixed(2)}deg) scale(${scale.toFixed(3)})`,
                                 opacity: opacity.toFixed(3),
+                                filter: blurAmount > 0.3 ? `blur(${blurAmount.toFixed(1)}px)` : "none",
                               }}
                             >
                               <div className={styles.drumItemContent}>
