@@ -15,11 +15,21 @@ void main() {
 const FS = `
 precision highp float;
 uniform sampler2D u_video;
+uniform vec2 u_resolution;
 varying vec2 v_uv;
 
 void main() {
-  // Tight framing directly onto digital human bust (removes dead space above head & sides)
-  vec2 uv = vec2(v_uv.x * 0.72 + 0.14, v_uv.y * 0.70 + 0.30);
+  float aspect = u_resolution.x / max(u_resolution.y, 1.0);
+  
+  // Natural un-distorted framing: Head aligned cleanly at top (y=0.27), chest base at y=1.00
+  float scaleY = 0.74;
+  float centerY = 0.64;
+  float scaleX = scaleY * aspect * (1080.0 / 1920.0);
+  float centerX = 0.50;
+  
+  vec2 uv;
+  uv.x = (v_uv.x - 0.5) * scaleX + centerX;
+  uv.y = (v_uv.y - 0.5) * scaleY + centerY;
   
   if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {
     discard;
@@ -129,6 +139,8 @@ export function TransparentBustVideo({
     gl.enableVertexAttribArray(aPos);
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
+    const uRes = gl.getUniformLocation(prog, "u_resolution");
+
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -173,6 +185,10 @@ export function TransparentBustVideo({
         updateSize();
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
+
+        if (uRes) {
+          gl.uniform2f(uRes, canvas.width, canvas.height);
+        }
 
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(
