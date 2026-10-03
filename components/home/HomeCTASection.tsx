@@ -42,7 +42,7 @@ export function HomeCTASection() {
           </a>
 
           <Link href="/work" className={styles.secondaryBtn} data-magnetic>
-            <span>Explore Case Stories</span>
+            <span>Explore Portfolio</span>
           </Link>
         </div>
       </div>

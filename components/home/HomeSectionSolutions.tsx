@@ -18,101 +18,101 @@ interface CapabilityDomain {
   slug: string;
 }
 
-const DOMAINS: CapabilityDomain[] = [
+const SOLUTIONS: CapabilityDomain[] = [
   {
     index: "01",
-    title: "CATEGORY DESIGN & BRAND ALCHEMY",
-    subhead: "Monolithic Identity & Uncontested Market Positioning",
-    category: "BRAND ARCHITECTURE // POSITIONING",
-    industryVs: "Generic corporate rebranding and passive PDF guidelines that collect dust.",
-    utopiaStandard: "Living typographic moats, custom type foundries, and defiant spatial aesthetics engineered to command 10x valuation multiples.",
+    title: "LAUNCH // CATEGORY GENESIS",
+    subhead: "Go-To-Market, MVP to Scale & Brand Moat Creation",
+    category: "BRANDING & CREATIVE // DIGITAL PRODUCTS",
+    industryVs: "Generic corporate rebranding and passive PDF guidelines that collect dust while prototypes stall in development.",
+    utopiaStandard: "Living typographic moats, custom WebGL flagships, and rapid MVP engineering designed to command 10x valuation multiples.",
     deliverables: [
-      "Bespoke Typography & Foundry",
-      "Living Design System Tokens",
-      "Spatial Brand Architecture",
-      "Sonic & Haptic Identity",
-      "Executive Category Thesis",
+      "Brand Strategy & Monolithic Identity",
+      "MVP Development & Product Engineering",
+      "UI/UX Design & Spatial Micro-Interactions",
+      "CGI, Motion Graphics & Visual Content",
+      "Go-To-Market & Lead Generation Funnels",
     ],
-    techStack: ["Glyphs 3", "Figma Tokens", "WebGL Kernels", "Motion Engine"],
+    techStack: ["Next.js 15", "WebGL / Three.js", "Figma Design Tokens", "TypeScript", "Tailored Kernels"],
     metricValue: "10X",
     metricLabel: "VALUATION MULTIPLIER",
-    slug: "category-design",
+    slug: "launch",
   },
   {
     index: "02",
-    title: "SPATIAL WORLDS & REAL-TIME WEBGL",
-    subhead: "60FPS GPU-Rendered Digital Flagships",
-    category: "CREATIVE COMPUTING // SHADERS",
-    industryVs: "Flat 2D templates, heavy page weights, and 65% mobile bounce rates.",
-    utopiaStandard: "Sub-millisecond frame-times, custom fragment shaders, and tactile 3D kinematics that turn passive visitors into loyal category converts.",
+    title: "SCALE // HYPERGROWTH ENGINES",
+    subhead: "Algorithmic Acquisition, SEO Supremacy & Global Infrastructure",
+    category: "GROWTH & MARKETING // CLOUD ARCHITECTURE",
+    industryVs: "Intrusive popups, declining ad ROAS, and brittle server architectures that crash during traffic surges.",
+    utopiaStandard: "Psychological conversion mechanics, programmatic SEO dominance, and distributed edge infrastructure with 99.99% uptime.",
     deliverables: [
-      "Real-Time WebGL & WebGPU Flagships",
-      "Custom GLSL Fragment Shaders",
-      "Kinematic Monolith Rigging",
-      "GPU Physics & Particle Fields",
-      "Interactive 3D Product Demos",
+      "Search Engine Optimization (SEO) Domination",
+      "Performance Marketing & Paid Acquisition",
+      "Social Media Marketing & Content Strategy",
+      "Cloud Architecture & Global Edge Caching",
+      "Online Reputation Management (ORM)",
     ],
-    techStack: ["Three.js", "WebGPU", "GLSL Shaders", "WebAssembly", "Lenis Scroll"],
-    metricValue: "< 16MS",
-    metricLabel: "RENDER FRAME-TIME",
-    slug: "spatial-worlds",
+    techStack: ["Edge SEO Engine", "Distributed Cloud", "PostHog Analytics", "Redis Edge", "Vercel Enterprise"],
+    metricValue: "4.8X",
+    metricLabel: "PIPELINE ACCELERATION",
+    slug: "scale",
   },
   {
     index: "03",
-    title: "ZERO-LATENCY SYSTEMS & CLOUD APPS",
-    subhead: "Autonomous AI Infrastructure & Distributed Platforms",
-    category: "FULL-STACK // DISTRIBUTED COMPUTE",
-    industryVs: "Fragile agency codebases laden with technical debt and brittle third-party plugins.",
-    utopiaStandard: "Enterprise-grade distributed architectures with sub-50ms edge execution, autonomous agent pipelines, and 99.99% uptime guarantees.",
+    title: "AUTOMATE // AI & AUTONOMOUS SYSTEMS",
+    subhead: "Intelligent Workflows, AI Agent Pipelines & Custom LLMs",
+    category: "AI & AUTOMATION // INTELLIGENT OPS",
+    industryVs: "Manual operational bottlenecks, disconnected SaaS tools, and shallow ChatGPT wrapper toys.",
+    utopiaStandard: "Autonomous multi-agent pipelines, custom enterprise LLM orchestration, and self-healing business process automation.",
     deliverables: [
-      "Full-Stack Next.js 15 Architectures",
-      "Autonomous Agent & LLM Pipelines",
-      "Sub-50ms Edge Cache & Compute",
-      "Zero-Trust Security Microservices",
-      "Real-Time Multiplayer State Sync",
+      "AI Strategy & Enterprise Consulting",
+      "Autonomous AI Agent Development",
+      "Generative AI & Bespoke Model Fine-Tuning",
+      "End-to-End Workflow & Process Automation",
+      "Intelligent Conversational Systems & Chatbots",
     ],
-    techStack: ["Next.js 15", "TypeScript", "Rust / Wasm", "Redis Edge", "Postgres"],
-    metricValue: "99.99%",
-    metricLabel: "ENTERPRISE UPTIME",
-    slug: "zero-latency-apps",
+    techStack: ["LangChain", "Python / FastAPI", "OpenAI / Claude SDK", "Vector DB (Pinecone)", "Temporal.io"],
+    metricValue: "70%",
+    metricLabel: "OPEX REDUCTION",
+    slug: "automate",
   },
   {
     index: "04",
-    title: "CONVERSION GRAVITY & GROWTH ENGINES",
-    subhead: "Algorithmic Funnels & Defiant Market Expansion",
-    category: "GROWTH ARCHITECTURE // SEO",
-    industryVs: "Intrusive popups, declining ad ROAS, and zero organic search authority.",
-    utopiaStandard: "Psychological conversion mechanics, programmatic SEO dominance, and high-retention onboarding loops that turn traffic into high-value pipeline.",
+    title: "MODERNIZE // SPATIAL & PLATFORM RE-ENGINEERING",
+    subhead: "60FPS WebGL Flagships, Legacy Modernization & Zero Latency",
+    category: "CLOUD & ENGINEERING // SPATIAL WORLDS",
+    industryVs: "Outdated monolithic legacy stacks, sluggish 2D templates, and heavy page weights causing high bounce rates.",
+    utopiaStandard: "Sub-millisecond frame-times, custom fragment shaders, and modern full-stack engineering that turn visitors into category converts.",
     deliverables: [
-      "Algorithmic Funnel Architecture",
-      "Programmatic SEO Graph Networks",
-      "Sub-Second Checkout Workflows",
-      "Behavioral Conversion Tracking",
-      "Dynamic Content Personalization",
+      "Frontend & Backend Full-Stack Engineering",
+      "Legacy Codebase Modernization & Migration",
+      "API Development & Microservice Mesh",
+      "DevOps, CI/CD & Automated Deployment",
+      "Infrastructure Security & Compliance",
     ],
-    techStack: ["Edge SEO", "Next.js ISR", "PostHog", "Vercel Analytics", "A/B Kernel"],
-    metricValue: "4.8X",
-    metricLabel: "PIPELINE ACCELERATION",
-    slug: "conversion-gravity",
+    techStack: ["WebGPU / GLSL", "Rust / Wasm", "Docker / Kubernetes", "Next.js App Router", "PostgreSQL"],
+    metricValue: "< 16MS",
+    metricLabel: "RENDER FRAME-TIME",
+    slug: "modernize",
   },
   {
     index: "05",
-    title: "VENTURE INCUBATION & CTO ADVISORY",
-    subhead: "Bespoke Co-Founding & Technical Moat Construction",
-    category: "CTO ADVISORY // IP CREATION",
-    industryVs: "Offshore dev shops that build throwaway prototypes with zero equity alignment.",
-    utopiaStandard: "Hands-on engineering leadership from seed to Series A, co-building proprietary IP, recruiting elite talent, and navigating technical due diligence.",
+    title: "TRANSFORM // STRATEGY & CTO ADVISORY",
+    subhead: "Enterprise Digital Transformation & Bespoke Co-Founding IP",
+    category: "STRATEGY & CONSULTING // IP CREATION",
+    industryVs: "Offshore dev shops that build disposable prototypes with zero strategic alignment or long-term equity moat.",
+    utopiaStandard: "Hands-on engineering and architectural leadership from zero to Series A, co-building proprietary IP and technical moats.",
     deliverables: [
+      "Digital Transformation & Tech Strategy",
+      "Product Strategy & Innovation Consulting",
       "Interim CTO & Technical Leadership",
-      "Core IP & Patent Prototyping",
-      "Venture Capital Due Diligence Prep",
-      "Architecture Roadmapping",
-      "Founding Engineering Team Hiring",
+      "Core IP Prototyping & Due Diligence Prep",
+      "Business Architecture & Venture Acceleration",
     ],
     techStack: ["System Architecture", "Security Auditing", "Scale Governance", "Cap Table Advisory"],
     metricValue: "13",
     metricLabel: "ANNUAL COMMISSIONS",
-    slug: "venture-incubation",
+    slug: "transform",
   },
 ];
 
@@ -127,7 +127,7 @@ export function HomeSectionSolutions() {
     <section
       id="solutions"
       className={styles.solutionsSection}
-      aria-label="04: Capability Architecture & Impact Domains"
+      aria-label="03: Capability Architecture & What We Solve"
     >
       <div className={styles.ambientGlow} />
       <div className={styles.gridOverlay} />
@@ -135,9 +135,15 @@ export function HomeSectionSolutions() {
       <div className={styles.container}>
         {/* Section Header */}
         <div className={styles.headerBlock}>
+          <div className={styles.eyebrow}>
+            <span className={styles.eyebrowNum}>CHAPTER 03</span>
+            <span className={styles.eyebrowDot} />
+            <span>CAPABILITY ARCHITECTURE // WHAT WE SOLVE</span>
+          </div>
+
           <div className={styles.titleRow}>
             <h2 className={styles.mainTitle}>
-              WHERE WE INTERVENE.
+              WHAT WE SOLVE.
               <br />
               <span className={styles.titleHighlight}>
                 FROM BLANK CANVAS TO CATEGORY DOMINANCE.
@@ -145,19 +151,19 @@ export function HomeSectionSolutions() {
             </h2>
 
             <p className={styles.leadText}>
-              We do not provide piecemeal design or disjointed engineering. We architect end-to-end anomalies — integrating bespoke brand identity, real-time spatial computing, and zero-latency infrastructure.
+              We do not provide piecemeal design or disjointed development. 13 Utopia architects end-to-end anomalies — integrating bespoke brand identity, real-time spatial computing, autonomous AI pipelines, and zero-latency infrastructure.
             </p>
           </div>
         </div>
 
         {/* Interactive Architectural Accordion */}
-        <div className={styles.accordionContainer} role="region" aria-label="Capabilities Matrix">
-          {DOMAINS.map((domain, idx) => {
+        <div className={styles.accordionContainer} role="region" aria-label="Solutions Matrix">
+          {SOLUTIONS.map((solution, idx) => {
             const isOpen = activeIndex === idx;
 
             return (
               <div
-                key={domain.index}
+                key={solution.index}
                 className={`${styles.accordionItem} ${isOpen ? styles.itemActive : ""}`}
               >
                 {/* Accordion Trigger Header */}
@@ -166,21 +172,21 @@ export function HomeSectionSolutions() {
                   onClick={() => toggleAccordion(idx)}
                   className={styles.itemHeader}
                   aria-expanded={isOpen}
-                  aria-controls={`domain-body-${domain.index}`}
+                  aria-controls={`solution-body-${solution.index}`}
                 >
                   <div className={styles.indexCol}>
-                    <span className={styles.indexNumber}>{domain.index}</span>
-                    <span className={styles.indexCategory}>{domain.category}</span>
+                    <span className={styles.indexNumber}>{solution.index}</span>
+                    <span className={styles.indexCategory}>{solution.category}</span>
                   </div>
 
                   <div className={styles.titleCol}>
-                    <h3 className={styles.domainTitle}>{domain.title}</h3>
-                    <span className={styles.domainSubhead}>{domain.subhead}</span>
+                    <h3 className={styles.domainTitle}>{solution.title}</h3>
+                    <span className={styles.domainSubhead}>{solution.subhead}</span>
                   </div>
 
                   <div className={styles.metricCol}>
-                    <span className={styles.metricVal}>{domain.metricValue}</span>
-                    <span className={styles.metricLbl}>{domain.metricLabel}</span>
+                    <span className={styles.metricVal}>{solution.metricValue}</span>
+                    <span className={styles.metricLbl}>{solution.metricLabel}</span>
                   </div>
 
                   <div className={styles.toggleCol}>
@@ -193,7 +199,7 @@ export function HomeSectionSolutions() {
 
                 {/* Accordion Expandable Body */}
                 <div
-                  id={`domain-body-${domain.index}`}
+                  id={`solution-body-${solution.index}`}
                   className={`${styles.itemBody} ${isOpen ? styles.bodyOpen : styles.bodyClosed}`}
                 >
                   <div className={styles.bodyInner}>
@@ -201,7 +207,7 @@ export function HomeSectionSolutions() {
                     <div className={styles.comparisonGrid}>
                       <div className={styles.industryBox}>
                         <div className={styles.boxTag}>THE INDUSTRY CONVENTION</div>
-                        <p className={styles.boxText}>{domain.industryVs}</p>
+                        <p className={styles.boxText}>{solution.industryVs}</p>
                       </div>
 
                       <div className={styles.utopiaBox}>
@@ -209,7 +215,7 @@ export function HomeSectionSolutions() {
                           <span className={styles.utopiaDot} />
                           THE 13 UTOPIA STANDARD
                         </div>
-                        <p className={styles.boxTextUtopia}>{domain.utopiaStandard}</p>
+                        <p className={styles.boxTextUtopia}>{solution.utopiaStandard}</p>
                       </div>
                     </div>
 
@@ -218,7 +224,7 @@ export function HomeSectionSolutions() {
                       <div className={styles.deliverablesCol}>
                         <h4 className={styles.detailsHeading}>CORE DELIVERABLES</h4>
                         <ul className={styles.deliverablesList}>
-                          {domain.deliverables.map((item, dIdx) => (
+                          {solution.deliverables.map((item, dIdx) => (
                             <li key={dIdx} className={styles.deliverableItem}>
                               <span className={styles.bulletSymbol}>✦</span>
                               <span>{item}</span>
@@ -230,7 +236,7 @@ export function HomeSectionSolutions() {
                       <div className={styles.techCol}>
                         <h4 className={styles.detailsHeading}>SIGNATURE STACK</h4>
                         <div className={styles.techPills}>
-                          {domain.techStack.map((tech) => (
+                          {solution.techStack.map((tech) => (
                             <span key={tech} className={styles.techBadge}>
                               {tech}
                             </span>
@@ -238,13 +244,13 @@ export function HomeSectionSolutions() {
                         </div>
 
                         <div className={styles.actionWrap}>
-                          <Link
-                            href={`/services#${domain.slug}`}
+                          <a
+                            href="mailto:contact@13utopia.com?subject=Commission%20Inquiry"
                             className={styles.deepDiveLink}
                           >
-                            <span>Explore Capability Specifications</span>
+                            <span>Initiate Commission</span>
                             <span className={styles.linkArrow}>↗</span>
-                          </Link>
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -275,10 +281,10 @@ export function HomeSectionSolutions() {
           </div>
 
           <div className={styles.footerActions}>
-            <Link href="/services" className={styles.fullStackCta}>
-              <span>View Full Technical Stack & Capabilities</span>
+            <a href="mailto:contact@13utopia.com" className={styles.fullStackCta}>
+              <span>Discuss Your Vision With Our Architects</span>
               <span className={styles.btnArrow}>→</span>
-            </Link>
+            </a>
           </div>
         </div>
       </div>

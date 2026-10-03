@@ -1,5 +1,6 @@
 import {
   HomeNarrativeSection,
+  HomeSectionSolutions,
   HomeSectionWork,
   HomeCTASection,
 } from "@/components/home";
@@ -20,7 +21,7 @@ export default function HomePage() {
       {/* Site Header (Top Right Logo & Menu Toggle) */}
       <SiteHeader />
 
-      {/* Unified Continuous Architecture (Hero -> 3D Story -> Narrative Bust -> Portfolio Carousel -> CTA Ascent) */}
+      {/* Unified Continuous Architecture (Hero -> 3D Story -> Narrative Bust -> Solutions Matrix -> Portfolio Carousel -> CTA Ascent) */}
       <main
         id="main-content"
         style={{
@@ -35,13 +36,16 @@ export default function HomePage() {
         {/* 02 — IDENTITY & PHILOSOPHY: Transparent WebGL Metallic Digital Bust & Architectural Thesis */}
         <HomeNarrativeSection />
 
-        {/* 03 — SELECTED COMMISSIONS: 3D Jesper Landberg Portfolio Carousel with 3D Monolith Descent */}
+        {/* 03 — CAPABILITY ARCHITECTURE: What We Solve (Launch · Scale · Automate · Modernize · Transform) */}
+        <HomeSectionSolutions />
+
+        {/* 04 — SELECTED COMMISSIONS: 3D Jesper Landberg Portfolio Carousel */}
         <HomeSectionWork />
 
-        {/* 04 — INITIATION: Commission Call-To-Action with 3D Monolith Ascent */}
+        {/* 05 — INITIATION: Commission Call-To-Action with 3D Monolith Ascent */}
         <HomeCTASection />
 
-        {/* 05 — FOOTER: Luxury Agency Footer with Live Telemetry & Directory */}
+        {/* 06 — FOOTER: Global Studio Hubs (India & Canada) & Kinetic Wordmark */}
         <SiteFooter />
       </main>
     </SmoothScrollProvider>

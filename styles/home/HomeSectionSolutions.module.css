@@ -1,12 +1,11 @@
 .solutionsSection {
   position: relative;
   width: 100%;
-  background-color: #000000;
+  background-color: transparent;
   color: #faf6f0;
-  padding: clamp(100px, 14vh, 180px) clamp(24px, 5vw, 90px);
+  padding: clamp(80px, 12vh, 160px) clamp(24px, 5vw, 90px);
   overflow: hidden;
   z-index: 5;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .ambientGlow {
@@ -15,7 +14,7 @@
   pointer-events: none;
   background: radial-gradient(
     circle at 50% 15%,
-    rgba(244, 223, 200, 0.04) 0%,
+    rgba(244, 223, 200, 0.03) 0%,
     transparent 65%
   );
 }
@@ -26,9 +25,9 @@
   pointer-events: none;
   background-size: 80px 80px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  opacity: 0.8;
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  opacity: 0.6;
 }
 
 .container {
