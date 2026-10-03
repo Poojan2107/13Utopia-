@@ -113,17 +113,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.15rem;
-  padding: 2rem 2.25rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
-  backdrop-filter: blur(8px);
-  transition: border-color 0.3s ease, background 0.3s ease;
-}
-
-.pillarItem:hover {
-  border-color: rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.04);
+  padding: 0;
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
 }
 
 .colIndex {
