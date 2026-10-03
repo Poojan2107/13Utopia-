@@ -170,8 +170,8 @@ export function Continuous3DStory() {
           {WORLDS.map((world, idx) => {
             const ranges = [
               { start: 0.25, end: 0.45 },
-              { start: 0.48, end: 0.68 },
-              { start: 0.71, end: 0.88 },
+              { start: 0.50, end: 0.67 },
+              { start: 0.72, end: 0.88 },
             ];
             const { start: startP, end: endP } = ranges[idx];
             const isWorldActive = scrollProgress >= startP && scrollProgress <= endP;
@@ -271,7 +271,7 @@ export function Continuous3DStory() {
           {/* Act Finale: Core Trilogy Architecture (CREATE · BUILD · GROW) */}
           <div
             className={`${styles.act} ${styles.finaleAct} ${
-              scrollProgress >= 0.90 ? styles.actVisible : styles.actHidden
+              scrollProgress >= 0.92 ? styles.actVisible : styles.actHidden
             }`}
           >
             <div className={styles.finaleContent}>

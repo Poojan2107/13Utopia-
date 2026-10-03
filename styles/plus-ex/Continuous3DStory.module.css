@@ -939,8 +939,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 0.6rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding-bottom: 0.5rem;
+  border: none;
 }
 
 .finaleTag {
@@ -994,9 +994,9 @@
 .trilogyColumns {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(1.0rem, 2vw, 2.2rem);
+  gap: clamp(1.5rem, 3vw, 3.5rem);
   width: 100%;
-  margin-top: 0.4rem;
+  margin-top: 0.8rem;
 }
 
 .trilogyCard {
@@ -1004,14 +1004,14 @@
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
-  gap: 0.4rem;
-  padding: clamp(1rem, 2vh, 1.4rem) clamp(1.2rem, 1.8vw, 1.6rem);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  gap: 0.45rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
 }
 
 .cardIndex {
@@ -1025,7 +1025,7 @@
 
 .cardTitle {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
-  font-size: clamp(0.95rem, 1.15vw, 1.2rem);
+  font-size: clamp(1.05rem, 1.25vw, 1.3rem);
   font-weight: 700;
   color: #ffffff;
   margin: 0;
@@ -1034,9 +1034,9 @@
 
 .cardDesc {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
-  font-size: clamp(0.76rem, 0.85vw, 0.88rem);
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(0.8rem, 0.9vw, 0.92rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.65);
   margin: 0;
 }
 

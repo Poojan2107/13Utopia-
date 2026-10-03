@@ -538,9 +538,9 @@ export function Plus3DCanvas({
           targetRotZ = 0.04 + idleRotZ;
           targetScale = 0.96;
           targetMorph = 1.0;
-        } else if (p >= 0.45 && p < 0.51) {
+        } else if (p >= 0.45 && p < 0.50) {
           // Transition 1 -> 2: Left -> Right Column deep 3D orbital sweep & 360° spin (BE => 13)
-          const t = smoothstep(0.45, 0.51, p);
+          const t = smoothstep(0.45, 0.50, p);
           const arcDepth = Math.sin(t * Math.PI) * -3.2;
           const arcY = Math.sin(t * Math.PI) * -0.55;
 
@@ -552,9 +552,9 @@ export function Plus3DCanvas({
           targetRotZ = 0.04 * (1 - 2 * t) + Math.sin(t * Math.PI) * 0.16;
           targetScale = 0.96;
           targetMorph = 1.0 - t;
-        } else if (p >= 0.51 && p < 0.68) {
+        } else if (p >= 0.50 && p < 0.67) {
           // Act 2: BUILD (Settled Full Right Column as 13)
-          const localP = (p - 0.51) / 0.17;
+          const localP = (p - 0.50) / 0.17;
           targetX = 3.85;
           targetY = idleFloatY;
           targetZ = -1.0;
@@ -563,9 +563,9 @@ export function Plus3DCanvas({
           targetRotZ = -0.04 + idleRotZ;
           targetScale = 0.96;
           targetMorph = 0.0;
-        } else if (p >= 0.68 && p < 0.74) {
+        } else if (p >= 0.67 && p < 0.72) {
           // Transition 2 -> 3: Right -> Left Column deep 3D orbital sweep & 360° spin (13 => BE)
-          const t = smoothstep(0.68, 0.74, p);
+          const t = smoothstep(0.67, 0.72, p);
           const arcDepth = Math.sin(t * Math.PI) * -3.2;
           const arcY = Math.sin(t * Math.PI) * -0.55;
 
@@ -577,9 +577,9 @@ export function Plus3DCanvas({
           targetRotZ = -0.04 * (1 - 2 * t) - Math.sin(t * Math.PI) * 0.16;
           targetScale = 0.96;
           targetMorph = t;
-        } else if (p >= 0.74 && p < 0.88) {
+        } else if (p >= 0.72 && p < 0.88) {
           // Act 3: GROW (Settled Full Left Column as BE)
-          const localP = (p - 0.74) / 0.14;
+          const localP = (p - 0.72) / 0.16;
           targetX = -3.85;
           targetY = idleFloatY;
           targetZ = -1.0;
@@ -588,9 +588,9 @@ export function Plus3DCanvas({
           targetRotZ = 0.04 + idleRotZ;
           targetScale = 0.96;
           targetMorph = 1.0;
-        } else if (p >= 0.88 && p < 0.94) {
+        } else if (p >= 0.88 && p < 0.92) {
           // Transition 3 -> Finale: Left -> Center (BE => 13)
-          const t = smoothstep(0.88, 0.94, p);
+          const t = smoothstep(0.88, 0.92, p);
           const arcDepth = Math.sin(t * Math.PI) * -2.8;
           const arcY = Math.sin(t * Math.PI) * -0.45;
 
