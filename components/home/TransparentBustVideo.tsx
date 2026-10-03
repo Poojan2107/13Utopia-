@@ -15,27 +15,10 @@ void main() {
 const FS = `
 precision highp float;
 uniform sampler2D u_video;
-uniform vec2 u_resolution;
 varying vec2 v_uv;
 
 void main() {
-  float aspect = u_resolution.x / max(u_resolution.y, 1.0);
-  
-  // Natural un-distorted framing: Perfectly centered bust with head and chest framing
-  float scaleY = 0.78;
-  float centerY = 0.62;
-  float scaleX = scaleY * aspect * (1080.0 / 1920.0);
-  float centerX = 0.50;
-  
-  vec2 uv;
-  uv.x = (v_uv.x - 0.5) * scaleX + centerX;
-  uv.y = (v_uv.y - 0.5) * scaleY + centerY;
-  
-  if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {
-    discard;
-  }
-  
-  vec4 tex = texture2D(u_video, uv);
+  vec4 tex = texture2D(u_video, v_uv);
   
   // Calculate luminance from source
   float luma = dot(tex.rgb, vec3(0.299, 0.587, 0.114));
@@ -139,8 +122,6 @@ export function TransparentBustVideo({
     gl.enableVertexAttribArray(aPos);
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
-    const uRes = gl.getUniformLocation(prog, "u_resolution");
-
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -150,8 +131,8 @@ export function TransparentBustVideo({
 
     const updateSize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2.0);
-      const w = Math.floor((canvas.clientWidth || window.innerWidth * 0.8) * dpr);
-      const h = Math.floor((canvas.clientHeight || window.innerHeight * 0.9) * dpr);
+      const w = Math.floor((canvas.clientWidth || window.innerWidth) * dpr);
+      const h = Math.floor((canvas.clientHeight || window.innerHeight) * dpr);
       if (w > 0 && h > 0 && (canvas.width !== w || canvas.height !== h)) {
         canvas.width = w;
         canvas.height = h;
@@ -185,10 +166,6 @@ export function TransparentBustVideo({
         updateSize();
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
-
-        if (uRes) {
-          gl.uniform2f(uRes, canvas.width, canvas.height);
-        }
 
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(
