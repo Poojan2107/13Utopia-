@@ -321,6 +321,10 @@ export function ExperimentHeroVideoPortal() {
       aria-label="13 Utopia Hero Experience"
     >
       <div className={styles.stage}>
+        {/* ── 00. TENBIN-STYLE ATMOSPHERIC BACKDROP ── */}
+        <div className={styles.heroAmbientGlow} />
+        <div className={styles.heroDotMatrix} />
+
         {/* ── 01. FULL BLEED VIDEO SURFACE ── */}
         <div
           ref={videoCardRef}

@@ -87,21 +87,21 @@ export function CTA3DCanvas() {
     };
 
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x222428),
-      roughness: 0.28,
-      metalness: 0.82,
-      clearcoat: 0.45,
-      clearcoatRoughness: 0.16,
-      reflectivity: 0.90,
+      color: new THREE.Color(0x18191c),
+      roughness: 0.20,
+      metalness: 0.88,
+      clearcoat: 0.85,
+      clearcoatRoughness: 0.08,
+      reflectivity: 0.95,
     });
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x1e2024),
-      roughness: 0.30,
-      metalness: 0.80,
-      clearcoat: 0.45,
-      clearcoatRoughness: 0.16,
-      reflectivity: 0.90,
+      color: new THREE.Color(0x141518),
+      roughness: 0.22,
+      metalness: 0.86,
+      clearcoat: 0.85,
+      clearcoatRoughness: 0.08,
+      reflectivity: 0.95,
     });
 
     const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
@@ -119,25 +119,78 @@ export function CTA3DCanvas() {
     emblemGroup.add(threeMesh);
     scene.add(emblemGroup);
 
+    // ── Floating Particle Field ──
+    const particleCount = 180;
+    const particleGeo = new THREE.BufferGeometry();
+    const particlePositions = new Float32Array(particleCount * 3);
+    const particleVelocities: Array<{ vy: number }> = [];
+
+    for (let i = 0; i < particleCount; i++) {
+      const radius = 3.2 + Math.random() * 6.5;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(Math.random() * 2 - 1);
+
+      particlePositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 7.0;
+      particlePositions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta) - 2.0;
+
+      particleVelocities.push({
+        vy: 0.003 + Math.random() * 0.005,
+      });
+    }
+
+    particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
+
+    const pCanvas = document.createElement("canvas");
+    pCanvas.width = 64;
+    pCanvas.height = 64;
+    const pCtx = pCanvas.getContext("2d");
+    if (pCtx) {
+      const grad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
+      grad.addColorStop(0.3, "rgba(244, 223, 200, 0.65)");
+      grad.addColorStop(0.7, "rgba(255, 255, 255, 0.15)");
+      grad.addColorStop(1, "rgba(0, 0, 0, 0)");
+      pCtx.fillStyle = grad;
+      pCtx.fillRect(0, 0, 64, 64);
+    }
+    const particleTexture = new THREE.CanvasTexture(pCanvas);
+
+    const particleMat = new THREE.PointsMaterial({
+      size: 0.13,
+      map: particleTexture,
+      transparent: true,
+      opacity: 0.50,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+
+    const particleSystem = new THREE.Points(particleGeo, particleMat);
+    scene.add(particleSystem);
+
     // Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.8);
-    keyLight.position.set(7, 9, 8);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 4.2);
+    keyLight.position.set(6, 8, 7);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xcccccc, 1.8);
-    fillLight.position.set(-7, 2, 5);
+    const fillLight = new THREE.DirectionalLight(0x8899aa, 2.0);
+    fillLight.position.set(-8, 3, 5);
     scene.add(fillLight);
 
-    const goldRimLight = new THREE.DirectionalLight(0xf4dfc8, 4.5);
-    goldRimLight.position.set(4, -6, -3);
+    const goldRimLight = new THREE.DirectionalLight(0xf4dfc8, 5.5);
+    goldRimLight.position.set(5, -5, -4);
     scene.add(goldRimLight);
 
-    const leftRimLight = new THREE.DirectionalLight(0xffffff, 3.2);
-    leftRimLight.position.set(-8, 3, -4);
-    scene.add(leftRimLight);
+    const cyanRimLight = new THREE.DirectionalLight(0xd0e8ff, 4.2);
+    cyanRimLight.position.set(-7, 4, -4);
+    scene.add(cyanRimLight);
+
+    const topSpecularLight = new THREE.DirectionalLight(0xffffff, 2.8);
+    topSpecularLight.position.set(0, 12, 1);
+    scene.add(topSpecularLight);
 
     // Mouse Interaction
     const handleMouseMove = (e: MouseEvent) => {
@@ -181,6 +234,19 @@ export function CTA3DCanvas() {
 
       mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
       mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
+
+      // Update 3D Floating Particle Sparks
+      const posAttr = particleGeo.attributes.position as THREE.BufferAttribute;
+      const arr = posAttr.array as Float32Array;
+      for (let i = 0; i < particleCount; i++) {
+        const vel = particleVelocities[i];
+        arr[i * 3 + 1] += vel.vy;
+        if (arr[i * 3 + 1] > 5.0) {
+          arr[i * 3 + 1] = -5.0;
+        }
+      }
+      posAttr.needsUpdate = true;
+      particleSystem.rotation.y = elapsedTime * 0.04 + mouseRef.current.x * 0.2;
 
       // Smooth ascent from below right into center stage + continuous 360-degree rotation
       const targetY = -3.5 * (1 - entry) + Math.sin(elapsedTime * 0.5) * 0.06;
@@ -226,6 +292,9 @@ export function CTA3DCanvas() {
       renderer.dispose();
       oneGeo.dispose();
       threeGeo.dispose();
+      particleGeo.dispose();
+      particleMat.dispose();
+      particleTexture.dispose();
       matTitaniumOne.dispose();
       matTitaniumThree.dispose();
     };

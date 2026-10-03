@@ -29,6 +29,36 @@
   overflow: hidden;
 }
 
+/* ── Tenbin-Style Hero Ambient Glow & Micro-Dot Matrix Backdrop ── */
+.heroAmbientGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    ellipse 65% 55% at 50% 50%,
+    rgba(244, 223, 200, 0.06) 0%,
+    rgba(15, 17, 22, 0.35) 45%,
+    rgba(0, 0, 0, 0.98) 85%
+  );
+}
+
+.heroDotMatrix {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.18;
+  background-size: 36px 36px;
+  background-image: radial-gradient(
+    circle at center,
+    rgba(244, 234, 224, 0.25) 1px,
+    transparent 1px
+  );
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 20%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 20%, transparent 85%);
+}
+
 /* ── 01. Foreground Monumental Hero Typography Layer ──────── */
 .typeLayer {
   position: absolute;
