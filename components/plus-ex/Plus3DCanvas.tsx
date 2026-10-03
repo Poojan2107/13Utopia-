@@ -229,52 +229,96 @@ export function Plus3DCanvas({
     const envRenderTarget = pmremGenerator.fromScene(envScene);
     scene.environment = envRenderTarget.texture;
 
-    // 13 Utopia Signature Iridescent Obsidian & Titanium Shading
+    // ── CUSTOM SHADER UNIFORMS & FX INJECTION ──
+    const shaderUniforms = {
+      uTime: { value: 0 },
+      uMouse: { value: new THREE.Vector2(0, 0) },
+    };
+
+    const attachCustomShaders = (mat: THREE.MeshPhysicalMaterial) => {
+      mat.onBeforeCompile = (shader) => {
+        shader.uniforms.uTime = shaderUniforms.uTime;
+        shader.uniforms.uMouse = shaderUniforms.uMouse;
+
+        shader.fragmentShader = `
+          uniform float uTime;
+          uniform vec2 uMouse;
+        ` + shader.fragmentShader;
+
+        shader.fragmentShader = shader.fragmentShader.replace(
+          "#include <dithering_fragment>",
+          `
+          #include <dithering_fragment>
+          
+          // 13 Utopia Signature Dynamic Obsidian-Titanium Shader Effects
+          vec3 vNormalNorm = normalize(vNormal);
+          vec3 vViewDir = normalize(vViewPosition);
+          float fresnel = pow(1.0 - max(0.0, dot(vNormalNorm, vViewDir)), 3.0);
+          
+          // Flowing liquid titanium wave across the chiseled geometry
+          float wave = sin(dot(vViewPosition.xy, vec2(0.65, 0.45)) * 1.1 - uTime * 1.5 + uMouse.x * 1.2);
+          float wavePulse = smoothstep(0.72, 1.0, wave) * 0.35;
+          
+          // Dual chromatic razor rim highlights (lunar ice & champagne platinum)
+          vec3 rimIce = vec3(0.85, 0.92, 1.00);
+          vec3 rimChampagne = vec3(1.00, 0.90, 0.78);
+          vec3 rimColor = mix(rimIce, rimChampagne, smoothstep(-0.4, 0.4, vNormalNorm.x + uMouse.x * 0.4));
+          
+          gl_FragColor.rgb += rimColor * fresnel * 1.55;
+          gl_FragColor.rgb += rimColor * wavePulse * (1.0 - fresnel * 0.5);
+          `
+        );
+      };
+    };
+
+    // 13 Utopia Signature Dark Obsidian & Titanium Shading
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x2c303a),
-      roughness: 0.24,
-      metalness: 0.82,
-      clearcoat: 0.85,
-      clearcoatRoughness: 0.14,
-      reflectivity: 0.95,
-      iridescence: 0.58,
-      iridescenceIOR: 1.38,
-      iridescenceThicknessRange: [120, 360],
-      sheen: 0.60,
-      sheenColor: new THREE.Color(0xdce6f8),
-      sheenRoughness: 0.22,
+      color: new THREE.Color(0x0a0c10),
+      roughness: 0.16,
+      metalness: 0.92,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.08,
+      reflectivity: 0.98,
+      iridescence: 0.70,
+      iridescenceIOR: 1.45,
+      iridescenceThicknessRange: [100, 360],
+      sheen: 0.75,
+      sheenColor: new THREE.Color(0xd0e2f8),
+      sheenRoughness: 0.18,
       bumpMap: bumpTexture,
-      bumpScale: 0.016,
-      emissive: new THREE.Color(0x0a0d12),
-      emissiveIntensity: 0.16,
-      envMapIntensity: 1.7,
+      bumpScale: 0.012,
+      emissive: new THREE.Color(0x020305),
+      emissiveIntensity: 0.10,
+      envMapIntensity: 2.0,
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
+    attachCustomShaders(matTitaniumOne);
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x262a34),
-      roughness: 0.26,
-      metalness: 0.80,
-      clearcoat: 0.85,
-      clearcoatRoughness: 0.14,
-      reflectivity: 0.95,
-      iridescence: 0.58,
-      iridescenceIOR: 1.38,
-      iridescenceThicknessRange: [120, 360],
-      sheen: 0.60,
-      sheenColor: new THREE.Color(0xdce6f8),
-      sheenRoughness: 0.22,
+      color: new THREE.Color(0x080a0d),
+      roughness: 0.18,
+      metalness: 0.90,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.08,
+      reflectivity: 0.98,
+      iridescence: 0.70,
+      iridescenceIOR: 1.45,
+      iridescenceThicknessRange: [100, 360],
+      sheen: 0.75,
+      sheenColor: new THREE.Color(0xd0e2f8),
+      sheenRoughness: 0.18,
       bumpMap: bumpTexture,
-      bumpScale: 0.016,
-      emissive: new THREE.Color(0x080b10),
-      emissiveIntensity: 0.16,
-      envMapIntensity: 1.7,
+      bumpScale: 0.012,
+      emissive: new THREE.Color(0x020204),
+      emissiveIntensity: 0.10,
+      envMapIntensity: 2.0,
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
     });
+    attachCustomShaders(matTitaniumThree);
 
     // ── 01. SUB-GROUP: "13" EMBLEM ─────────────────────────────
     const thirteenGroup = new THREE.Group();
@@ -467,6 +511,10 @@ export function Plus3DCanvas({
       // Smooth mouse parallax damping
       mouseX += (targetMouseX - mouseX) * 0.06;
       mouseY += (targetMouseY - mouseY) * 0.06;
+
+      // Update custom shader FX uniforms
+      shaderUniforms.uTime.value = elapsedTime;
+      shaderUniforms.uMouse.value.set(mouseX, mouseY);
 
       // Soft studio key light parallax (Natural, diffused edge sheen & dynamic chamfer reflections)
       frontKeyLight.position.x = mouseX * 4.0;
