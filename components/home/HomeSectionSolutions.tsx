@@ -212,7 +212,6 @@ export function HomeSectionSolutions() {
 
                       <div className={styles.utopiaBox}>
                         <div className={styles.boxTagUtopia}>
-                          <span className={styles.utopiaDot} />
                           THE 13 UTOPIA STANDARD
                         </div>
                         <p className={styles.boxTextUtopia}>{solution.utopiaStandard}</p>

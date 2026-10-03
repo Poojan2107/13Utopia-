@@ -76,7 +76,7 @@
 }
 
 .actionBtnPrimary:hover {
-  color: #f4dfc8;
+  color: #e5e7eb;
   transform: translateX(4px);
 }
 
@@ -108,7 +108,7 @@
 }
 
 .actionBtnSecondary:hover {
-  color: #f4dfc8;
+  color: #e5e7eb;
   transform: translateX(4px);
 }
 

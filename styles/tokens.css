@@ -3,11 +3,11 @@
   --color-black-deep: #000000;
   --color-warm-beige: #ffffff;
   --color-cream-almond: #ffffff;
-  --color-champagne-sand: #f4dfc8;
+  --color-champagne-sand: #ffffff;
   --color-warm-white: #ffffff;
   --color-white: #ffffff;
 
-  /* Architectural Monochrome & Champagne Rim Palette */
+  /* Architectural Monochrome & Titanium Palette */
   --color-gold: #ffffff;
   --color-gold-light: #ffffff;
   --color-gold-deep: #ffffff;
@@ -16,8 +16,8 @@
 
   --color-neutral-900: #0a0a0a;
   --color-neutral-800: #141414;
-  --color-neutral-700: #2a2826;
-  --color-neutral-500: #a8a096;
+  --color-neutral-700: #262626;
+  --color-neutral-500: #a3a3a3;
   --color-neutral-200: #ffffff;
 
   --color-bg: #000000;
@@ -30,10 +30,10 @@
   --color-border: color-mix(in srgb, #ffffff 12%, transparent);
   --color-surface: #0a0a0a;
 
-  /* Light section overrides — creamy light beige */
-  --section-bg-light: #f4eae0;
-  --section-bg-cream: #f4eae0;
-  --section-bg-sand: #f4dfc8;
+  /* Light section overrides */
+  --section-bg-light: #ffffff;
+  --section-bg-cream: #ffffff;
+  --section-bg-sand: #ffffff;
   --section-fg-light: #000000;
 
   /* CTA dimensions */
