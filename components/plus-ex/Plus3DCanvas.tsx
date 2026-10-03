@@ -396,35 +396,45 @@ export function Plus3DCanvas({
         let targetScale = 0.88;
         let targetMorph = 0; // 0 = 13, 1.0 = BE
 
-        if (p < 0.16) {
-          // Act 0: Centered Manifesto -> Pure 13 emerging from spatial depth
-          const localP = p / 0.16;
+        if (p < 0.08) {
+          // Act Hero: 3D Titanium Monolith centered majestically behind BE UNREAL UNREASONABLE
+          const localP = p / 0.08;
           targetX = 0;
           targetY = idleFloatY;
-          targetZ = -1.0 + (1 - localP) * -0.6;
-          targetRotY = localP * 0.38;
+          targetZ = -0.82;
+          targetRotY = localP * 0.22;
           targetRotX = 0.06 + idleRotX;
           targetRotZ = idleRotZ;
-          targetScale = 0.88;
+          targetScale = 0.94;
           targetMorph = 0;
-        } else if (p >= 0.16 && p < 0.28) {
-          // Transition 0 -> 1: Center -> Left Column with deep 3D arc swoop & 360° spin (13 => BE)
-          const t = smoothstep(0.16, 0.28, p);
-          // 3D Parabolic swoop into depth
-          const arcDepth = Math.sin(t * Math.PI) * -2.4;
+        } else if (p >= 0.08 && p < 0.24) {
+          // Act 0: Manifesto Editorial Statement
+          const localP = (p - 0.08) / 0.16;
+          targetX = 0;
+          targetY = idleFloatY;
+          targetZ = -0.85 - localP * 0.15;
+          targetRotY = 0.22 + localP * 0.22;
+          targetRotX = 0.06 + idleRotX;
+          targetRotZ = idleRotZ;
+          targetScale = 0.90;
+          targetMorph = 0;
+        } else if (p >= 0.24 && p < 0.32) {
+          // Transition 0 -> 1: Center -> Left Column deep 3D arc swoop & 360° spin (13 => BE)
+          const t = smoothstep(0.24, 0.32, p);
+          const arcDepth = Math.sin(t * Math.PI) * -2.8;
           const arcY = Math.sin(t * Math.PI) * -0.45;
 
           targetX = -3.85 * t;
           targetY = idleFloatY + arcY;
           targetZ = -1.0 + arcDepth;
-          targetRotY = 0.38 * (1 - t) + (Math.PI * 2 + 0.24) * t;
-          targetRotX = 0.06 + Math.sin(t * Math.PI) * 0.26 + idleRotX;
+          targetRotY = 0.44 * (1 - t) + (Math.PI * 2 + 0.24) * t;
+          targetRotX = 0.06 + Math.sin(t * Math.PI) * 0.28 + idleRotX;
           targetRotZ = -Math.sin(t * Math.PI) * 0.14 + 0.04 * t;
-          targetScale = 0.88 + 0.08 * t;
+          targetScale = 0.90 + 0.06 * t;
           targetMorph = t;
-        } else if (p >= 0.28 && p < 0.46) {
+        } else if (p >= 0.32 && p < 0.48) {
           // Act 1: CREATE (Settled Full Left Column as BE)
-          const localP = (p - 0.28) / 0.18;
+          const localP = (p - 0.32) / 0.16;
           targetX = -3.85;
           targetY = idleFloatY;
           targetZ = -1.0;
@@ -433,23 +443,23 @@ export function Plus3DCanvas({
           targetRotZ = 0.04 + idleRotZ;
           targetScale = 0.96;
           targetMorph = 1.0;
-        } else if (p >= 0.46 && p < 0.54) {
+        } else if (p >= 0.48 && p < 0.56) {
           // Transition 1 -> 2: Left -> Right Column deep 3D orbital sweep & 360° spin (BE => 13)
-          const t = smoothstep(0.46, 0.54, p);
-          const arcDepth = Math.sin(t * Math.PI) * -2.8;
+          const t = smoothstep(0.48, 0.56, p);
+          const arcDepth = Math.sin(t * Math.PI) * -3.2;
           const arcY = Math.sin(t * Math.PI) * -0.55;
 
           targetX = -3.85 + 7.7 * t;
           targetY = idleFloatY + arcY;
           targetZ = -1.0 + arcDepth;
           targetRotY = (Math.PI * 2 + 0.24) * (1 - t) + (Math.PI * 4 - 0.24) * t;
-          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.28 + idleRotX;
+          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.30 + idleRotX;
           targetRotZ = 0.04 * (1 - 2 * t) + Math.sin(t * Math.PI) * 0.16;
           targetScale = 0.96;
           targetMorph = 1.0 - t;
-        } else if (p >= 0.54 && p < 0.74) {
+        } else if (p >= 0.56 && p < 0.74) {
           // Act 2: BUILD (Settled Full Right Column as 13)
-          const localP = (p - 0.54) / 0.20;
+          const localP = (p - 0.56) / 0.18;
           targetX = 3.85;
           targetY = idleFloatY;
           targetZ = -1.0;
@@ -461,14 +471,14 @@ export function Plus3DCanvas({
         } else if (p >= 0.74 && p < 0.82) {
           // Transition 2 -> 3: Right -> Left Column deep 3D orbital sweep & 360° spin (13 => BE)
           const t = smoothstep(0.74, 0.82, p);
-          const arcDepth = Math.sin(t * Math.PI) * -2.8;
+          const arcDepth = Math.sin(t * Math.PI) * -3.2;
           const arcY = Math.sin(t * Math.PI) * -0.55;
 
           targetX = 3.85 - 7.7 * t;
           targetY = idleFloatY + arcY;
           targetZ = -1.0 + arcDepth;
           targetRotY = (Math.PI * 4 - 0.24) * (1 - t) + (Math.PI * 6 + 0.24) * t;
-          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.28 + idleRotX;
+          targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.30 + idleRotX;
           targetRotZ = -0.04 * (1 - 2 * t) - Math.sin(t * Math.PI) * 0.16;
           targetScale = 0.96;
           targetMorph = t;
@@ -488,11 +498,11 @@ export function Plus3DCanvas({
           const t = smoothstep(0.96, 1.00, p);
           targetX = -3.85 * (1 - t);
           targetY = idleFloatY;
-          targetZ = -1.0 - 1.2 * t;
+          targetZ = -1.0 - 1.5 * t;
           targetRotY = (Math.PI * 6 + 0.24) * (1 - t) + (Math.PI * 8.0) * t;
           targetRotX = 0.08 - 0.08 * t + idleRotX;
           targetRotZ = 0.04 * (1 - t) + idleRotZ;
-          targetScale = 0.96 * (1 - 0.10 * t);
+          targetScale = 0.96 * (1 - 0.12 * t);
           targetMorph = 1.0 - t;
         }
 

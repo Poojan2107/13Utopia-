@@ -93,6 +93,196 @@
   pointer-events: auto;
 }
 
+/* ── Hero State: Tenbin-Style Centerpiece Monumental Stage ── */
+.heroAct {
+  align-items: center;
+  text-align: center;
+}
+
+.heroLockup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 2.2vh, 1.8rem);
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.heroTopTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.heroPulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+}
+
+.heroTagText {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.68rem, 0.78vw, 0.8rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+}
+
+.monumentLockup {
+  --word-size: min(7.0vw, 13.5vh);
+  --gap-stack: clamp(0.15rem, 0.4vw, 0.6rem);
+  --be-size: calc(var(--word-size) * 2.18 + var(--gap-stack) * 0.4);
+  display: inline-flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: clamp(1rem, 2.2vw, 2.8rem);
+  width: auto;
+  max-width: 92vw;
+  margin: 0 auto;
+  pointer-events: auto;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.beCommonBlock {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0.76;
+}
+
+.beWord {
+  display: block;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: var(--be-size);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.74;
+  letter-spacing: -0.055em;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+}
+
+.stackedBlock {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--gap-stack);
+  line-height: 0.76;
+}
+
+.wordTop,
+.wordBottom {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: var(--word-size);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.76;
+  letter-spacing: -0.05em;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+}
+
+.heroLeadText {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.92rem, 1.15vw, 1.2rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 620px;
+  margin: 0 auto;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.9);
+}
+
+.heroActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+
+.heroPrimaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: #f4eae0;
+  color: #080808;
+  border-radius: 9999px;
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.85rem, 0.95vw, 0.98rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  border: 1px solid #f4eae0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(244, 234, 224, 0.25);
+}
+
+.heroPrimaryBtn:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 16px 40px rgba(244, 234, 224, 0.45);
+  color: #000000;
+}
+
+.btnArrow {
+  transition: transform 0.25s ease;
+}
+
+.heroPrimaryBtn:hover .btnArrow {
+  transform: translateX(4px);
+}
+
+.heroSecondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 28px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.85rem, 0.95vw, 0.98rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.heroSecondaryBtn:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
 /* Act 0: Plus-X 1:1 Editorial Statement (1 Line Lead + 3 Lines Sub = 13) */
 .manifestoContent {
   width: 100%;

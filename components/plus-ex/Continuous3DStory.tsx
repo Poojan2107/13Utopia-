@@ -81,25 +81,14 @@ export function Continuous3DStory() {
     if (!section || !stage) return;
 
     const ctx = gsap.context(() => {
-      // 1. Smooth entry slide from behind the video section
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top bottom",
-        end: "top top",
-        scrub: true,
-        onUpdate: (self) => {
-          setEntryProgress(self.progress);
-        },
-      });
-
-      // 2. Continuous pinned 3D narrative rotation with motion-crafted momentum
+      // Continuous pinned 3D narrative journey from Hero -> Manifesto -> CREATE -> BUILD -> GROW
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: "+=6000",
+        end: "+=7500",
         pin: stage,
         pinSpacing: true,
-        scrub: 0.55,
+        scrub: 0.6,
         onUpdate: (self) => {
           const p = Math.max(0, Math.min(1, self.progress));
           setScrollProgress(p);
@@ -129,15 +118,64 @@ export function Continuous3DStory() {
         <div className={styles.canvasContainer}>
           <Plus3DCanvas
             progress={scrollProgress}
-            entryProgress={entryProgress}
+            entryProgress={1}
           />
         </div>
 
         {/* Dynamic Narrative Overlays */}
         <div className={styles.actsWrapper}>
+          {/* Act Hero: Tenbin-Style Centerpiece Monumental Typography & Action CTAs */}
+          <div
+            className={`${styles.act} ${styles.heroAct} ${
+              scrollProgress < 0.08 ? styles.actVisible : styles.actHidden
+            }`}
+          >
+            <div className={styles.heroLockup}>
+              <div className={styles.heroTopTag}>
+                <span className={styles.heroPulse} />
+                <span className={styles.heroTagText}>ANOMALOUS SPATIAL PRODUCTION</span>
+              </div>
+
+              <div className={styles.monumentLockup}>
+                <div className={styles.beCommonBlock}>
+                  <span className={styles.beWord}>BE</span>
+                </div>
+                <div className={styles.stackedBlock}>
+                  <span className={styles.wordTop}>UNREAL</span>
+                  <span className={styles.wordBottom}>UNREASONABLE</span>
+                </div>
+              </div>
+
+              <p className={styles.heroLeadText}>
+                We engineer living computational platforms, 3D worlds, and enduring brand moats for visionary enterprises.
+              </p>
+
+              <div className={styles.heroActions}>
+                <a
+                  href="mailto:contact@13utopia.com?subject=Project%20Commission%20Inquiry"
+                  className={styles.heroPrimaryBtn}
+                  data-magnetic
+                >
+                  <span>ENTER INTAKE</span>
+                  <span className={styles.btnArrow}>→</span>
+                </a>
+
+                <a
+                  href="#work"
+                  className={styles.heroSecondaryBtn}
+                  data-magnetic
+                >
+                  <span>EXPLORE COMMISSIONS</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
           {/* Act 0: Plus-X 1:1 Narrative Statement (1 Line Lead + 3 Lines Sub = 13) */}
           <div
-            className={`${styles.act} ${scrollProgress < 0.15 ? styles.actVisible : styles.actHidden}`}
+            className={`${styles.act} ${
+              scrollProgress >= 0.09 && scrollProgress < 0.22 ? styles.actVisible : styles.actHidden
+            }`}
           >
             <div className={styles.manifestoContent}>
               <h2 className={styles.manifestoHeading}>
@@ -159,9 +197,9 @@ export function Continuous3DStory() {
           {/* Worlds Sequence: CREATE (Right), BUILD (Left), GROW (Right) */}
           {WORLDS.map((world, idx) => {
             const ranges = [
-              { start: 0.22, end: 0.46 },
-              { start: 0.50, end: 0.74 },
-              { start: 0.78, end: 1.00 },
+              { start: 0.26, end: 0.48 },
+              { start: 0.52, end: 0.74 },
+              { start: 0.78, end: 0.98 },
             ];
             const { start: startP, end: endP } = ranges[idx];
             const isWorldActive = scrollProgress >= startP && scrollProgress <= endP;

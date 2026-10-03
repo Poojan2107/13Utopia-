@@ -2,7 +2,6 @@ import {
   HomeSectionWork,
   HomeCTASection,
 } from "@/components/home";
-import { ExperimentHeroVideoPortal } from "@/components/experiment";
 import { Continuous3DStory } from "@/components/plus-ex";
 import { SiteHeader, SiteFooter } from "@/components/layout";
 import {
@@ -29,19 +28,16 @@ export default function HomePage() {
           backgroundColor: "transparent",
         }}
       >
-        {/* 01 & 02 — HERO INTO VIDEO "O" APERTURE EXPANSION PORTAL */}
-        <ExperimentHeroVideoPortal />
-
-        {/* 03 — 3D MONOLITH EDITORIAL STATEMENT & CREATE · BUILD · GROW CAPABILITIES TRIAD */}
+        {/* 01 — TENBIN-INSPIRED 3D ARCHITECTURAL HERO & NARRATIVE CONTINUUM (HERO -> MANIFESTO -> CREATE -> BUILD -> GROW) */}
         <Continuous3DStory />
 
-        {/* 04 — SELECTED COMMISSIONS: 3D Jesper Landberg Portfolio Carousel with 3D Monolith Descent */}
+        {/* 02 — SELECTED COMMISSIONS: 3D Jesper Landberg Portfolio Carousel with 3D Monolith Descent */}
         <HomeSectionWork />
 
-        {/* 05 — INITIATION: Commission Call-To-Action with 3D Monolith Ascent */}
+        {/* 03 — INITIATION: Commission Call-To-Action with 3D Monolith Ascent */}
         <HomeCTASection />
 
-        {/* 06 — FOOTER: Luxury Agency Footer with Live Telemetry & Directory */}
+        {/* 04 — FOOTER: Luxury Agency Footer with Live Telemetry & Directory */}
         <SiteFooter />
       </main>
     </SmoothScrollProvider>
