@@ -121,12 +121,9 @@
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.45rem 1.1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 9999px;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  padding: 0.45rem 0;
+  background: transparent;
+  border: none;
   margin-bottom: 0.5rem;
 }
 

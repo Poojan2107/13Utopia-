@@ -94,11 +94,8 @@
   align-items: center;
   gap: 8px;
   padding: 6px 16px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: transparent;
+  border: none;
 }
 
 .heroPulse {
@@ -323,9 +320,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.38rem 1.15rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  padding: 0.38rem 0;
+  border: none;
   background: transparent;
 }
 
@@ -504,9 +500,8 @@
   align-items: center;
   justify-content: center;
   align-self: flex-start;
-  padding: 0.38rem 1.15rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  padding: 0.38rem 0;
+  border: none;
   background: transparent;
   margin-top: 0.5rem;
 }

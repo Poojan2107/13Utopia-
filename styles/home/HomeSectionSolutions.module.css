@@ -6,6 +6,7 @@
   padding: clamp(80px, 12vh, 160px) clamp(24px, 5vw, 90px);
   overflow: hidden;
   z-index: 5;
+  border: none;
 }
 
 .ambientGlow {
@@ -20,14 +21,7 @@
 }
 
 .gridOverlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-size: 80px 80px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-  opacity: 0.6;
+  display: none;
 }
 
 .container {
@@ -87,6 +81,7 @@
   color: #ffffff;
   text-transform: uppercase;
   margin: 0;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
 }
 
 .titleHighlight {
@@ -100,35 +95,36 @@
   line-height: 1.55;
   color: rgba(250, 246, 240, 0.72);
   margin: 0;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
 }
 
-/* Accordion Container */
+/* Accordion Container — 100% Transparent, No Box/Borders */
 .accordionContainer {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 32px;
   width: 100%;
 }
 
 .accordionItem {
-  background: rgba(14, 14, 17, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  overflow: hidden;
-  transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease, box-shadow 0.4s ease;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow: visible;
+  transition: opacity 0.3s ease;
 }
 
 .accordionItem:hover {
-  border-color: rgba(255, 255, 255, 0.22);
-  background: rgba(18, 18, 22, 0.85);
+  background: transparent;
+  border: none;
 }
 
 .itemActive {
-  border-color: rgba(244, 223, 200, 0.38);
-  background: rgba(18, 18, 24, 0.95);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 40px rgba(244, 223, 200, 0.05);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 /* Trigger Header */
@@ -138,7 +134,7 @@
   grid-template-columns: 140px 1fr auto 48px;
   align-items: center;
   gap: clamp(16px, 3vw, 40px);
-  padding: clamp(24px, 3.2vh, 36px) clamp(20px, 3vw, 40px);
+  padding: clamp(16px, 2.5vh, 28px) 0;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -155,8 +151,8 @@
 
 .indexNumber {
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1.8rem, 2.4vw, 2.6rem);
-  font-weight: 700;
+  font-size: clamp(2rem, 2.8vw, 3rem);
+  font-weight: 800;
   line-height: 1;
   color: rgba(255, 255, 255, 0.35);
   letter-spacing: -0.02em;
@@ -184,23 +180,25 @@
 
 .domainTitle {
   font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
-  font-size: clamp(1.3rem, 2.1vw, 2.2rem);
-  font-weight: 700;
+  font-size: clamp(1.4rem, 2.3vw, 2.4rem);
+  font-weight: 800;
   letter-spacing: -0.025em;
   color: #ffffff;
   text-transform: uppercase;
   margin: 0;
   line-height: 1.15;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, color 0.3s ease;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
 }
 
 .accordionItem:hover .domainTitle {
-  transform: translateX(4px);
+  transform: translateX(6px);
+  color: #f4eae0;
 }
 
 .domainSubhead {
   font-family: var(--font-body, "PP Neue Montreal", "Inter", sans-serif);
-  font-size: clamp(0.85rem, 0.95vw, 1.05rem);
+  font-size: clamp(0.88rem, 1.0vw, 1.1rem);
   color: rgba(255, 255, 255, 0.55);
   font-weight: 400;
 }
@@ -240,16 +238,14 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .itemActive .toggleIcon {
-  border-color: #f4dfc8;
-  background: rgba(244, 223, 200, 0.12);
   transform: rotate(90deg);
 }
 
@@ -261,13 +257,13 @@
 }
 
 .iconLineHorizontal {
-  width: 12px;
-  height: 1.5px;
+  width: 14px;
+  height: 2px;
 }
 
 .iconLineVertical {
-  width: 1.5px;
-  height: 12px;
+  width: 2px;
+  height: 14px;
 }
 
 .toggleOpen .iconLineVertical {
@@ -275,7 +271,7 @@
   transform: scaleY(0);
 }
 
-/* Expandable Body */
+/* Expandable Body — Transparent & Pure */
 .itemBody {
   display: grid;
   transition: grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
@@ -297,82 +293,83 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  padding: 0 clamp(20px, 3vw, 40px) clamp(24px, 3.5vh, 40px);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  margin-top: 4px;
+  gap: 32px;
+  padding: 16px 0 32px;
+  border: none;
 }
 
-/* Comparison Grid: Antithesis */
+/* Comparison Grid: Antithesis — Transparent & Clean */
 .comparisonGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-top: 20px;
+  gap: clamp(24px, 4vw, 48px);
+  margin-top: 8px;
 }
 
 .industryBox {
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
-  padding: 20px 24px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .boxTag {
   font-family: var(--font-mono, monospace);
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  color: rgba(255, 255, 255, 0.38);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.4);
   text-transform: uppercase;
 }
 
 .boxText {
   font-family: var(--font-body, "PP Neue Montreal", sans-serif);
-  font-size: clamp(0.92rem, 1.05vw, 1.1rem);
-  color: rgba(255, 255, 255, 0.55);
-  line-height: 1.5;
+  font-size: clamp(0.95rem, 1.1vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
   margin: 0;
 }
 
 .utopiaBox {
-  background: linear-gradient(135deg, rgba(244, 223, 200, 0.08) 0%, rgba(20, 20, 24, 0.6) 100%);
-  border: 1px solid rgba(244, 223, 200, 0.22);
-  border-radius: 12px;
-  padding: 20px 24px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .boxTagUtopia {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-family: var(--font-mono, monospace);
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
   color: #f4dfc8;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .utopiaDot {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #10b981;
+  box-shadow: 0 0 8px #10b981;
 }
 
 .boxTextUtopia {
   font-family: var(--font-body, "PP Neue Montreal", sans-serif);
-  font-size: clamp(0.95rem, 1.1vw, 1.15rem);
+  font-size: clamp(1rem, 1.15vw, 1.22rem);
   color: #faf6f0;
-  line-height: 1.5;
+  line-height: 1.6;
   margin: 0;
   font-weight: 400;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
 }
 
 /* Details: Deliverables & Tech Stack */
@@ -380,13 +377,14 @@
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: clamp(24px, 4vw, 48px);
+  padding-top: 12px;
 }
 
 .deliverablesCol,
 .techCol {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .detailsHeading {
@@ -404,7 +402,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .deliverableItem {
@@ -412,56 +410,67 @@
   align-items: center;
   gap: 10px;
   font-family: var(--font-body, "PP Neue Montreal", sans-serif);
-  font-size: clamp(0.9rem, 1.0vw, 1.05rem);
+  font-size: clamp(0.92rem, 1.05vw, 1.1rem);
   color: rgba(255, 255, 255, 0.85);
 }
 
 .bulletSymbol {
   color: #f4dfc8;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 }
 
 .techPills {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .techBadge {
-  padding: 6px 14px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 4px 0;
+  background: transparent;
+  border: none;
   font-family: var(--font-mono, monospace);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.75);
+  margin-right: 12px;
+}
+
+.techBadge::after {
+  content: "·";
+  margin-left: 12px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.techBadge:last-child::after {
+  content: "";
 }
 
 .actionWrap {
-  margin-top: 10px;
+  margin-top: 14px;
 }
 
 .deepDiveLink {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 12px 28px;
   border-radius: 9999px;
-  background: #f4eae0;
+  background: #ffffff;
   color: #000000;
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 600;
   text-decoration: none;
+  border: none;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(244, 234, 224, 0.2);
+  box-shadow: 0 4px 25px rgba(255, 255, 255, 0.25);
 }
 
 .deepDiveLink:hover {
   background: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(244, 234, 224, 0.35);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.4);
 }
 
 .linkArrow {
@@ -476,8 +485,8 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 28px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 32px;
+  border: none;
 }
 
 .footerTelemetry {
@@ -510,9 +519,7 @@
 }
 
 .telemetryDivider {
-  width: 1px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.12);
+  display: none;
 }
 
 .footerActions {
@@ -524,22 +531,20 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 32px;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 12px 0;
   background: transparent;
   color: #ffffff;
+  border: none;
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 1.05rem;
+  font-weight: 600;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .fullStackCta:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: #ffffff;
-  transform: translateY(-2px);
+  color: #f4dfc8;
+  transform: translateX(4px);
 }
 
 .btnArrow {
@@ -548,7 +553,7 @@
 }
 
 .fullStackCta:hover .btnArrow {
-  transform: translateX(4px);
+  transform: translateX(6px);
 }
 
 /* Responsive Styles */
