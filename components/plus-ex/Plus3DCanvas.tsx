@@ -163,30 +163,30 @@ export function Plus3DCanvas({
       bevelSegments: 5,
     };
 
-    // 13 Utopia Signature Refined Titanium Obsidian Physical Material (Tenbin-Level PBR Finish & Visible Chamfers)
+    // 13 Utopia Exact Plus-X & Tenbin Material Grading: Matte Obsidian Architectural Titanium
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x323640),
-      roughness: 0.16,
-      metalness: 0.84,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.04,
-      reflectivity: 1.0,
-      emissive: new THREE.Color(0x0e1014),
-      emissiveIntensity: 0.4,
+      color: new THREE.Color(0x181a1e),
+      roughness: 0.40,
+      metalness: 0.70,
+      clearcoat: 0.35,
+      clearcoatRoughness: 0.25,
+      reflectivity: 0.75,
+      emissive: new THREE.Color(0x060709),
+      emissiveIntensity: 0.2,
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x2a2e36),
-      roughness: 0.18,
-      metalness: 0.82,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.04,
-      reflectivity: 1.0,
-      emissive: new THREE.Color(0x0a0c10),
-      emissiveIntensity: 0.4,
+      color: new THREE.Color(0x15171a),
+      roughness: 0.42,
+      metalness: 0.68,
+      clearcoat: 0.35,
+      clearcoatRoughness: 0.25,
+      reflectivity: 0.75,
+      emissive: new THREE.Color(0x040507),
+      emissiveIntensity: 0.2,
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
@@ -238,33 +238,6 @@ export function Plus3DCanvas({
     scene.add(emblemGroup);
     groupRef.current = emblemGroup;
 
-    // ── 03. TENBIN-STYLE 3D FLOATING PARTICLES & ORBITAL SPARKS ──
-    const particleCount = 280;
-    const particleGeo = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
-    const particleScales = new Float32Array(particleCount);
-    const particleVelocities: Array<{ vx: number; vy: number; vz: number; rotSpeed: number }> = [];
-
-    for (let i = 0; i < particleCount; i++) {
-      const radius = 3.5 + Math.random() * 8.5;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(Math.random() * 2 - 1);
-
-      particlePositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 8.0;
-      particlePositions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta) - 2.0;
-
-      particleScales[i] = 0.8 + Math.random() * 2.2;
-      particleVelocities.push({
-        vx: (Math.random() - 0.5) * 0.004,
-        vy: 0.003 + Math.random() * 0.006,
-        vz: (Math.random() - 0.5) * 0.004,
-        rotSpeed: (Math.random() - 0.5) * 0.008,
-      });
-    }
-
-    particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
-
     // Procedural glowing circular point texture
     const pCanvas = document.createElement("canvas");
     pCanvas.width = 64;
@@ -281,6 +254,70 @@ export function Plus3DCanvas({
     }
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
+    // ── 03. BEHIND-MODEL ATMOSPHERIC AURA PARTICLE HALO ──
+    const auraParticleCount = 450;
+    const auraParticleGeo = new THREE.BufferGeometry();
+    const auraPositions = new Float32Array(auraParticleCount * 3);
+    const auraData: Array<{ radius: number; theta: number; vr: number; vtheta: number; z: number; phase: number }> = [];
+
+    for (let i = 0; i < auraParticleCount; i++) {
+      const radius = 0.5 + Math.random() * 7.5;
+      const theta = Math.random() * Math.PI * 2;
+      const z = -0.6 - Math.random() * 2.5;
+
+      auraPositions[i * 3] = radius * Math.cos(theta);
+      auraPositions[i * 3 + 1] = radius * Math.sin(theta);
+      auraPositions[i * 3 + 2] = z;
+
+      auraData.push({
+        radius,
+        theta,
+        vr: 0.008 + Math.random() * 0.016,
+        vtheta: (Math.random() > 0.5 ? 1 : -1) * (0.002 + Math.random() * 0.004),
+        z,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
+
+    auraParticleGeo.setAttribute("position", new THREE.BufferAttribute(auraPositions, 3));
+
+    const auraParticleMat = new THREE.PointsMaterial({
+      size: 0.18,
+      map: particleTexture,
+      transparent: true,
+      opacity: 0.65,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+
+    const auraParticleSystem = new THREE.Points(auraParticleGeo, auraParticleMat);
+    scene.add(auraParticleSystem);
+
+    // ── 04. TENBIN-STYLE 3D FLOATING PARTICLES & ORBITAL SPARKS ──
+    const particleCount = 280;
+    const particleGeo = new THREE.BufferGeometry();
+    const particlePositions = new Float32Array(particleCount * 3);
+    const particleVelocities: Array<{ vx: number; vy: number; vz: number; rotSpeed: number }> = [];
+
+    for (let i = 0; i < particleCount; i++) {
+      const radius = 3.5 + Math.random() * 8.5;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(Math.random() * 2 - 1);
+
+      particlePositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 8.0;
+      particlePositions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta) - 2.0;
+
+      particleVelocities.push({
+        vx: (Math.random() - 0.5) * 0.004,
+        vy: 0.003 + Math.random() * 0.006,
+        vz: (Math.random() - 0.5) * 0.004,
+        rotSpeed: (Math.random() - 0.5) * 0.008,
+      });
+    }
+
+    particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
+
     const particleMat = new THREE.PointsMaterial({
       size: 0.14,
       map: particleTexture,
@@ -293,34 +330,29 @@ export function Plus3DCanvas({
     const particleSystem = new THREE.Points(particleGeo, particleMat);
     scene.add(particleSystem);
 
-    // Studio Lighting (Enhanced Tenbin High-Key Contrast & Precision Visibility)
-    const ambientLight = new THREE.AmbientLight(0xdde6f0, 2.4);
+    // Studio Lighting (Tenbin & Plus-X Softbox & Top-Down Rim Architecture)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 5.2);
-    keyLight.position.set(6, 8, 7);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 4.0);
+    keyLight.position.set(10, 16, 12);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x9cb4cc, 3.2);
-    fillLight.position.set(-8, 3, 5);
+    const fillLight = new THREE.DirectionalLight(0x8ca0b8, 2.2);
+    fillLight.position.set(-14, -4, 10);
     scene.add(fillLight);
 
-    const goldRimLight = new THREE.DirectionalLight(0xf6edd8, 6.2);
-    goldRimLight.position.set(5, -5, -4);
-    scene.add(goldRimLight);
+    const topRimLight = new THREE.DirectionalLight(0xffffff, 4.5);
+    topRimLight.position.set(0, 20, 1);
+    scene.add(topRimLight);
 
-    const cyanRimLight = new THREE.DirectionalLight(0xd8eeff, 5.4);
-    cyanRimLight.position.set(-7, 4, -4);
-    scene.add(cyanRimLight);
+    const backRimLight = new THREE.DirectionalLight(0xdde8f5, 5.0);
+    backRimLight.position.set(0, -8, -12);
+    scene.add(backRimLight);
 
-    const topSpecularLight = new THREE.DirectionalLight(0xffffff, 3.8);
-    topSpecularLight.position.set(0, 12, 1);
-    scene.add(topSpecularLight);
-
-    // Interactive Dynamic Cursor Follow Point Light
-    const cursorGlintLight = new THREE.PointLight(0xffffff, 9.0, 32);
-    cursorGlintLight.position.set(0, 0, 6.0);
-    scene.add(cursorGlintLight);
+    const sideGrazingLight = new THREE.DirectionalLight(0xf4dfc8, 3.2);
+    sideGrazingLight.position.set(12, -4, -6);
+    scene.add(sideGrazingLight);
 
     // Mouse Parallax Trackers
     let mouseX = 0;
@@ -374,15 +406,33 @@ export function Plus3DCanvas({
       mouseX += (targetMouseX - mouseX) * 0.06;
       mouseY += (targetMouseY - mouseY) * 0.06;
 
-      // Update cursor follow point light and key lighting tracking
-      cursorGlintLight.position.x = mouseX * 8.5;
-      cursorGlintLight.position.y = mouseY * 6.5;
-      cursorGlintLight.position.z = 5.5 + Math.sin(elapsedTime * 1.8) * 0.4;
+      // Soft studio key light parallax (Natural, diffused edge sheen — zero glare blobs)
+      keyLight.position.x = 10 + mouseX * 2.5;
+      keyLight.position.y = 16 + mouseY * 2.0;
 
-      keyLight.position.x = 6 + mouseX * 3.5;
-      keyLight.position.y = 8 + mouseY * 2.5;
+      topRimLight.position.x = mouseX * 2.0;
 
-      topSpecularLight.position.x = mouseX * 4.0;
+      // Update Behind-Model Atmospheric Aura Particles
+      const auraAttr = auraParticleGeo.attributes.position as THREE.BufferAttribute;
+      const aArr = auraAttr.array as Float32Array;
+
+      for (let i = 0; i < auraParticleCount; i++) {
+        const item = auraData[i];
+        item.radius += item.vr;
+        item.theta += item.vtheta;
+
+        if (item.radius > 8.5) {
+          item.radius = 0.5 + Math.random() * 0.8;
+          item.theta = Math.random() * Math.PI * 2;
+        }
+
+        const harmonicZ = item.z + Math.sin(elapsedTime * 1.5 + item.phase) * 0.25;
+        aArr[i * 3] = item.radius * Math.cos(item.theta) + currentX * 0.5;
+        aArr[i * 3 + 1] = item.radius * Math.sin(item.theta) * 0.85 + currentY * 0.5;
+        aArr[i * 3 + 2] = harmonicZ;
+      }
+      auraAttr.needsUpdate = true;
+      auraParticleSystem.rotation.z = elapsedTime * 0.012;
 
       // Update 3D Floating Cosmic Particle Field
       const posAttr = particleGeo.attributes.position as THREE.BufferAttribute;
@@ -576,6 +626,8 @@ export function Plus3DCanvas({
       eGeo.dispose();
       particleGeo.dispose();
       particleMat.dispose();
+      auraParticleGeo.dispose();
+      auraParticleMat.dispose();
       particleTexture.dispose();
       matTitaniumOne.dispose();
       matTitaniumThree.dispose();

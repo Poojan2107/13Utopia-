@@ -5,13 +5,13 @@
 .footer {
   position: relative;
   width: 100%;
-  background-color: #000000;
+  background-color: transparent;
   color: #ffffff;
   padding: clamp(4.5rem, 8.5vh, 7.5rem) clamp(1.5rem, 4vw, 5.5rem) clamp(1.5rem, 3vh, 2.5rem);
   box-sizing: border-box;
   overflow: hidden;
   z-index: 10;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .container {

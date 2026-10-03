@@ -6,11 +6,10 @@
 .section {
   position: relative;
   width: 100%;
-  background-color: #000000;
+  background-color: transparent;
   color: #ffffff;
   overflow: hidden;
   box-sizing: border-box;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* ── Section eyebrow strip ──────────────────────────────── */
@@ -21,10 +20,10 @@
   align-items: center;
   gap: 0.6rem;
   padding: 1.25rem clamp(1.5rem, 5vw, 6rem);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(8, 8, 10, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .eyebrowNum {
