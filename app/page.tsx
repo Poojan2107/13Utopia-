@@ -1,4 +1,5 @@
 import {
+  HomeNarrativeSection,
   HomeSectionWork,
   HomeCTASection,
 } from "@/components/home";
@@ -19,7 +20,7 @@ export default function HomePage() {
       {/* Site Header (Top Right Logo & Menu Toggle) */}
       <SiteHeader />
 
-      {/* Unified Continuous Architecture (Hero -> 3D Story -> Portfolio Carousel -> CTA Ascent) */}
+      {/* Unified Continuous Architecture (Hero -> 3D Story -> Narrative Bust -> Portfolio Carousel -> CTA Ascent) */}
       <main
         id="main-content"
         style={{
@@ -28,10 +29,13 @@ export default function HomePage() {
           backgroundColor: "transparent",
         }}
       >
-        {/* 01 — TENBIN-INSPIRED 3D ARCHITECTURAL HERO & NARRATIVE CONTINUUM (HERO -> MANIFESTO -> CREATE -> BUILD -> GROW) */}
+        {/* 01 — 3D ARCHITECTURAL HERO & NARRATIVE CONTINUUM (HERO -> MANIFESTO -> CREATE -> BUILD -> GROW) */}
         <Continuous3DStory />
 
-        {/* 02 — SELECTED COMMISSIONS: 3D Jesper Landberg Portfolio Carousel with 3D Monolith Descent */}
+        {/* 02 — IDENTITY & PHILOSOPHY: Transparent WebGL Metallic Digital Bust & Architectural Thesis */}
+        <HomeNarrativeSection />
+
+        {/* 03 — SELECTED COMMISSIONS: 3D Jesper Landberg Portfolio Carousel with 3D Monolith Descent */}
         <HomeSectionWork />
 
         {/* 04 — INITIATION: Commission Call-To-Action with 3D Monolith Ascent */}
