@@ -110,10 +110,6 @@ export function Continuous3DStory() {
     >
       {/* Pinned 3D Viewport Stage */}
       <div ref={stageRef} className={styles.stagePin}>
-        {/* Background Gradients & Architectural Grid */}
-        <div className={styles.ambientGlow} />
-        <div className={styles.architecturalGrid} />
-
         {/* 3D 13 Utopia Architectural Emblem Canvas */}
         <div className={styles.canvasContainer}>
           <Plus3DCanvas

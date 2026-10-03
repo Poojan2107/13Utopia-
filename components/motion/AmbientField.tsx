@@ -5,9 +5,9 @@ import * as THREE from "three";
 import styles from "@/styles/motion/AmbientField.module.css";
 
 /**
- * Tenbin Exact Hero Atmosphere Replication:
+ * Tenbin Exact Hero Atmosphere:
  * 1. Volumetric Gaseous Cosmic Smoke & Nebula Cloud Shader (fBm Domain-Warped Simplex Noise)
- * 2. Ultra-Fine Micro-Stardust Particulate Stream (sub-pixel dust motes with 3D depth)
+ * 2. Ultra-Fine Stardust Grain Field (hundreds of micro-dust motes with 3D depth)
  * 3. Filmic Analogue Grain & Vignette Integration
  */
 export function AmbientField() {
@@ -20,11 +20,9 @@ export function AmbientField() {
     let width = window.innerWidth;
     let height = window.innerHeight;
 
-    // Main Scene
+    // Perspective Camera for 3D Stardust Particulates
     const scene = new THREE.Scene();
-
-    // Perspective Camera for natural 3D depth & parallax
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
     camera.position.set(0, 0, 10);
 
     const renderer = new THREE.WebGLRenderer({
@@ -34,26 +32,27 @@ export function AmbientField() {
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(width, height);
-    renderer.setClearColor(0x000000, 0);
+    renderer.setClearColor(0x000000, 1);
     container.appendChild(renderer.domElement);
 
-    // ── 01. TENBIN COSMIC NEBULA & SMOKE SHADER PLANE ──────────────────────
+    // ── 01. TENBIN VOLUMETRIC SMOKE & NEBULA SHADER PLANE ──────────────────
     const nebulaVertexShader = `
       varying vec2 vUv;
       void main() {
         vUv = uv;
-        gl_Position = vec4(position, 1.0);
+        gl_Position = vec4(position.xy, 0.0, 1.0);
       }
     `;
 
     const nebulaFragmentShader = `
+      precision highp float;
       uniform float uTime;
       uniform vec2 uResolution;
       uniform vec2 uMouse;
       uniform float uScroll;
       varying vec2 vUv;
 
-      // 3D Simplex Noise implementation
+      // 3D Simplex Noise
       vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
       vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
       vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
@@ -105,67 +104,68 @@ export function AmbientField() {
         return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
       }
 
-      // Fractional Brownian Motion with Domain Warping for silken cosmic smoke
+      // Fractional Brownian Motion for silken cosmic smoke
       float fbm(vec3 p) {
         float v = 0.0;
-        float a = 0.52;
+        float a = 0.5;
         vec3 shift = vec3(100.0);
         for (int i = 0; i < 5; ++i) {
           v += a * snoise(p);
-          p = p * 2.05 + shift;
-          a *= 0.48;
+          p = p * 2.02 + shift;
+          a *= 0.5;
         }
         return v;
       }
 
-      // High-frequency film grain generator
-      float randomGrain(vec2 st) {
-        return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+      // Filmic analog noise
+      float hash(vec2 p) {
+        p = fract(p * vec2(123.34, 456.21));
+        p += dot(p, p + 45.32);
+        return fract(p.x * p.y);
       }
 
       void main() {
         vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution.xy) / min(uResolution.x, uResolution.y);
 
         // Responsive parallax drift
-        vec2 p = uv * 1.85 + uMouse * 0.12;
-        p.y += uScroll * 0.00045;
+        vec2 p = uv * 1.5 + uMouse * 0.15;
+        p.y += uScroll * 0.00035;
 
         float t = uTime * 0.045;
 
-        // Domain warping: Smoke streams billowing across space
-        vec3 coord1 = vec3(p * 1.2, t);
+        // Domain warping: Smoke streams billowing across space (Tenbin aesthetic)
+        vec3 coord1 = vec3(p * 1.1, t);
         float q1 = fbm(coord1);
 
-        vec3 coord2 = vec3(p * 1.8 + vec2(q1 * 0.85, -q1 * 0.6), t * 1.25);
+        vec3 coord2 = vec3(p * 1.7 + vec2(q1 * 0.75, -q1 * 0.55), t * 1.15);
         float q2 = fbm(coord2);
 
-        vec3 coord3 = vec3(p * 2.6 + vec2(-q2 * 0.75, q2 * 0.95), t * 1.6);
+        vec3 coord3 = vec3(p * 2.3 + vec2(-q2 * 0.65, q2 * 0.85), t * 1.4);
         float smoke = fbm(coord3);
 
-        // Contrast shaping: Tenbin luminous atmospheric clouds
-        smoke = smoothstep(-0.25, 0.95, smoke + q2 * 0.35);
+        // Tenbin Contrast Curve: deep darks + luminous gaseous silver plumes
+        float density = smoothstep(-0.2, 0.75, smoke + q2 * 0.4);
 
-        // Tenbin Monochromatic Silver-Titanium Palette
-        vec3 deepVoid = vec3(0.0, 0.0, 0.0);
-        vec3 graphiteDust = vec3(0.10, 0.11, 0.13);
-        vec3 silverNebula = vec3(0.38, 0.42, 0.48);
-        vec3 luminousWhite = vec3(0.72, 0.76, 0.82);
+        // Color Palette: Deep Space Void -> Graphite Mist -> Luminous Silver & Cloud White
+        vec3 spaceBlack = vec3(0.008, 0.009, 0.012);
+        vec3 graphiteDust = vec3(0.08, 0.09, 0.12);
+        vec3 silverCloud = vec3(0.35, 0.39, 0.45);
+        vec3 brightNebula = vec3(0.82, 0.86, 0.92);
 
-        vec3 col = mix(deepVoid, graphiteDust, smoothstep(0.0, 0.45, smoke));
-        col = mix(col, silverNebula, smoothstep(0.40, 0.80, smoke));
-        col = mix(col, luminousWhite, smoothstep(0.75, 1.10, smoke));
+        vec3 col = mix(spaceBlack, graphiteDust, smoothstep(0.0, 0.45, density));
+        col = mix(col, silverCloud, smoothstep(0.35, 0.80, density));
+        col = mix(col, brightNebula, smoothstep(0.70, 1.15, density));
 
-        // Subtle peripheral vignette to maintain deep black boundaries
-        float distFromCenter = length(uv);
-        float vignette = smoothstep(1.35, 0.35, distFromCenter);
+        // Center clearance for text + peripheral vignette (Valid GLSL)
+        float d = length(uv);
+        float centerLift = 1.0 - smoothstep(0.1, 1.4, d) * 0.25;
+        col *= centerLift;
 
-        // Fine film grain dither
-        float grain = (randomGrain(gl_FragCoord.xy + fract(uTime)) - 0.5) * 0.035;
+        // Subtle film grain
+        float grain = (hash(gl_FragCoord.xy + fract(uTime * 10.0)) - 0.5) * 0.04;
+        col += grain;
 
-        // Overall alpha curve: Rich, immersive yet subtle enough for foreground typography
-        float alpha = clamp(smoke * 0.72 * vignette + grain, 0.0, 0.85);
-
-        gl_FragColor = vec4(col + grain, alpha);
+        gl_FragColor = vec4(col, 1.0);
       }
     `;
 
@@ -181,19 +181,16 @@ export function AmbientField() {
       vertexShader: nebulaVertexShader,
       fragmentShader: nebulaFragmentShader,
       uniforms: nebulaUniforms,
-      transparent: true,
+      depthTest: false,
       depthWrite: false,
-      blending: THREE.NormalBlending,
     });
 
-    // Background quad in separate ortho camera
     const bgScene = new THREE.Scene();
     const bgCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const bgMesh = new THREE.Mesh(nebulaGeo, nebulaMat);
     bgScene.add(bgMesh);
 
     // ── 02. TENBIN MICRO-STARDUST PARTICULATE FIELD ────────────────────────
-    // Procedural soft-glow micro-particle point sprite
     const pCanvas = document.createElement("canvas");
     pCanvas.width = 64;
     pCanvas.height = 64;
@@ -201,46 +198,39 @@ export function AmbientField() {
     if (pCtx) {
       const grad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
       grad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
-      grad.addColorStop(0.2, "rgba(235, 242, 255, 0.75)");
-      grad.addColorStop(0.55, "rgba(180, 200, 230, 0.20)");
+      grad.addColorStop(0.25, "rgba(240, 246, 255, 0.85)");
+      grad.addColorStop(0.65, "rgba(190, 210, 235, 0.25)");
       grad.addColorStop(1, "rgba(0, 0, 0, 0)");
       pCtx.fillStyle = grad;
       pCtx.fillRect(0, 0, 64, 64);
     }
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
-    // 650 Delicate Micro-Stardust Specks (sub-pixel cosmic grain)
-    const particleCount = 650;
+    // 700 Micro-Stardust particles scattered in 3D depth
+    const particleCount = 700;
     const particleGeo = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
-    const particleVelocities: Array<{ vx: number; vy: number; vz: number; baseAlpha: number }> = [];
+    const particleVelocities: Array<{ vx: number; vy: number; vz: number }> = [];
 
     for (let i = 0; i < particleCount; i++) {
-      const radius = 2.5 + Math.random() * 14.0;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(Math.random() * 2 - 1);
-
-      particlePositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 18.0;
-      particlePositions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta) - 2.0;
-
-      const alpha = 0.15 + Math.random() * 0.65;
+      particlePositions[i * 3] = (Math.random() - 0.5) * 28.0;
+      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 20.0;
+      particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 12.0;
 
       particleVelocities.push({
         vx: (Math.random() - 0.5) * 0.002,
-        vy: 0.002 + Math.random() * 0.004,
+        vy: 0.002 + Math.random() * 0.005,
         vz: (Math.random() - 0.5) * 0.002,
-        baseAlpha: alpha,
       });
     }
 
     particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
 
     const particleMat = new THREE.PointsMaterial({
-      size: 0.075,
+      size: 0.12,
       map: particleTexture,
       transparent: true,
-      opacity: 0.60,
+      opacity: 0.70,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -248,7 +238,7 @@ export function AmbientField() {
     const particleSystem = new THREE.Points(particleGeo, particleMat);
     scene.add(particleSystem);
 
-    // ── 03. INTERACTION & ANIMATION ────────────────────────────────────────
+    // ── 03. TRACKERS & RENDER LOOP ─────────────────────────────────────────
     let mouseX = 0;
     let mouseY = 0;
     let targetMouseX = 0;
@@ -311,7 +301,7 @@ export function AmbientField() {
       particleSystem.rotation.x = mouseY * 0.05 + scrollY * 0.0002;
       particleSystem.position.y = -(scrollY * 0.001);
 
-      // Render 2-pass (Nebula Background Shader -> 3D Stardust Depth Layer)
+      // Render 2-pass: (1) Tenbin Nebula Shader Quad, then (2) 3D Micro-Stardust Depth Field
       renderer.autoClear = false;
       renderer.clear();
       renderer.render(bgScene, bgCamera);
