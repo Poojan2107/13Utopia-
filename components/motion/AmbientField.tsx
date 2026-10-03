@@ -35,7 +35,7 @@ export function AmbientField() {
     renderer.setClearColor(0x000000, 1);
     container.appendChild(renderer.domElement);
 
-    // ── 01. TENBIN EXACT GRANULAR STARDUST SPRAY SHADER ──────────────────
+    // ── 01. 13 UTOPIA BESPOKE VOLUMETRIC LIQUID SMOKE & NEBULA SHADER ──
     const nebulaVertexShader = `
       varying vec2 vUv;
       void main() {
@@ -52,74 +52,139 @@ export function AmbientField() {
       uniform float uScroll;
       varying vec2 vUv;
 
-      // High-precision pseudo-random hash
-      float hash21(vec2 p) {
+      // 3D Simplex Noise for silken fluid plumes
+      vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+      vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+      vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+      vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+
+      float snoise(vec3 v) {
+        const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+        const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+        vec3 i  = floor(v + dot(v, C.yyy));
+        vec3 x0 = v - i + dot(i, C.xxx);
+        vec3 g = step(x0.yzx, x0.xyz);
+        vec3 l = 1.0 - g;
+        vec3 i1 = min(g.xyz, l.zxy);
+        vec3 i2 = max(g.xyz, l.zxy);
+        vec3 x1 = x0 - i1 + C.xxx;
+        vec3 x2 = x0 - i2 + C.yyy;
+        vec3 x3 = x0 - D.yyy;
+        i = mod289(i);
+        vec4 p = permute(permute(permute(
+                   i.z + vec4(0.0, i1.z, i2.z, 1.0))
+                 + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+                 + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+        float n_ = 0.142857142857;
+        vec3  ns = n_ * D.wyz - D.xzx;
+        vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+        vec4 x_ = floor(j * ns.z);
+        vec4 y_ = floor(j - 7.0 * x_);
+        vec4 x = x_ *ns.x + ns.yyyy;
+        vec4 y = y_ *ns.x + ns.yyyy;
+        vec4 h = 1.0 - abs(x) - abs(y);
+        vec4 b0 = vec4(x.xy, y.xy);
+        vec4 b1 = vec4(x.zw, y.zw);
+        vec4 s0 = floor(b0)*2.0 + 1.0;
+        vec4 s1 = floor(b1)*2.0 + 1.0;
+        vec4 sh = -step(h, vec4(0.0));
+        vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+        vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+        vec3 p0 = vec3(a0.xy, h.x);
+        vec3 p1 = vec3(a0.zw, h.y);
+        vec3 p2 = vec3(a1.xy, h.z);
+        vec3 p3 = vec3(a1.zw, h.w);
+        vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+        p0 *= norm.x;
+        p1 *= norm.y;
+        p2 *= norm.z;
+        p3 *= norm.w;
+        vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+        m = m * m;
+        return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+      }
+
+      // Fractional Brownian Motion for ethereal plumes
+      float fbm(vec3 p) {
+        float v = 0.0;
+        float a = 0.52;
+        vec3 shift = vec3(80.0);
+        for (int i = 0; i < 5; ++i) {
+          v += a * snoise(p);
+          p = p * 2.08 + shift;
+          a *= 0.48;
+        }
+        return v;
+      }
+
+      // Analytical filmic grain
+      float hash(vec2 p) {
         p = fract(p * vec2(123.34, 456.21));
         p += dot(p, p + 45.32);
         return fract(p.x * p.y);
       }
 
-      // Fast multi-scale stardust grain
+      // Stardust micro-glints
       float stardust(vec2 uv, float scale, float density, float t) {
         vec2 gv = fract(uv * scale) - 0.5;
         vec2 id = floor(uv * scale);
-        float n = hash21(id);
+        float n = hash(id);
         if (n > density) return 0.0;
-
-        vec2 offset = vec2(hash21(id + 1.3), hash21(id + 7.1)) - 0.5;
-        float d = length(gv - offset * 0.6);
-        float sparkle = 0.7 + 0.3 * sin(t * 3.0 + n * 6.28);
-        return smoothstep(0.045, 0.005, d) * sparkle;
+        vec2 offset = (vec2(hash(id + 1.3), hash(id + 7.1)) - 0.5) * 0.7;
+        float d = length(gv - offset);
+        float sparkle = 0.7 + 0.3 * sin(t * 3.5 + n * 6.28);
+        return smoothstep(0.04, 0.005, d) * sparkle;
       }
 
       void main() {
         vec2 uv = gl_FragCoord.xy / uResolution.xy;
         vec2 centeredUv = (gl_FragCoord.xy - 0.5 * uResolution.xy) / min(uResolution.x, uResolution.y);
 
-        // Smooth mouse parallax drift
-        vec2 mouseOffset = uMouse * 0.035;
-        vec2 p = centeredUv + mouseOffset;
-        p.y += uScroll * 0.00015;
+        // Fluid mouse parallax and scroll momentum
+        vec2 p = centeredUv * 1.35 + uMouse * 0.12;
+        p.y += uScroll * 0.00030;
 
-        float t = uTime * 0.015;
+        float t = uTime * 0.038;
 
-        // ── 1. SILKY-SMOOTH CONTINUOUS STARDUST CANOPY (ZERO PIXEL BLOCKS) ──
-        // Smooth overhead Gaussian gradient from top (uv.y = 1.0) fading into void at bottom (uv.y < 0.25)
-        float vertLight = smoothstep(0.18, 0.85, uv.y);
-        float horizSpan = smoothstep(1.30, 0.10, abs(centeredUv.x * 0.65));
-        float macroHaze = pow(vertLight * horizSpan, 1.35);
+        // ── 1. DOMAIN WARPING: VOLUMETRIC BILLOWING PLUMES ──
+        vec3 coord1 = vec3(p * 1.15, t);
+        float q1 = fbm(coord1);
 
-        // ── 2. SUB-PIXEL MICRO-STARDUST SAND SPRAY ──
-        float d1 = stardust(p + vec2(t * 0.003, -t * 0.008), 160.0, 0.45, uTime);
-        float d2 = stardust(p * 1.45 + vec2(-t * 0.005, -t * 0.010) + vec2(0.3, 0.7), 340.0, 0.40, uTime * 1.25);
-        float d3 = stardust(p * 2.30 + vec2(t * 0.008, -t * 0.012) + vec2(0.8, 0.2), 620.0, 0.35, uTime * 0.90);
-        float d4 = stardust(p * 3.80 + vec2(0.15, 0.45), 1150.0, 0.28, uTime * 1.15);
-        float stardustSpray = d1 * 1.0 + d2 * 0.80 + d3 * 0.60 + d4 * 0.40;
+        vec3 coord2 = vec3(p * 1.65 + vec2(q1 * 0.65, -q1 * 0.45), t * 1.12);
+        float q2 = fbm(coord2);
 
-        // ── 3. TENBIN EXACT MONOCHROME COLOR PALETTE ──
-        // Silky obsidian space void -> graphite mist -> soft silver haze -> bright stardust crystals
-        vec3 cSpace = vec3(0.002, 0.002, 0.003);        // Deep void
-        vec3 cMist = vec3(0.08, 0.08, 0.09);            // Ambient graphite mist
-        vec3 cSilverGlow = vec3(0.35, 0.35, 0.38);      // Soft silver canopy
-        vec3 cCoreLight = vec3(0.70, 0.70, 0.74);       // Overhead luminous crest
-        vec3 cStarWhite = vec3(1.0, 1.0, 1.0);          // Pure white stardust points
+        vec3 coord3 = vec3(p * 2.20 + vec2(-q2 * 0.55, q2 * 0.75), t * 1.35);
+        float smoke = fbm(coord3);
 
-        vec3 col = cSpace;
-        col = mix(col, cMist, smoothstep(0.02, 0.35, macroHaze));
-        col = mix(col, cSilverGlow, smoothstep(0.30, 0.72, macroHaze));
-        col = mix(col, cCoreLight, smoothstep(0.65, 0.98, macroHaze) * 0.75);
+        // Density Curve with smooth contrast
+        float density = smoothstep(-0.15, 0.75, smoke + q2 * 0.35);
 
-        // Illuminate the fine stardust grains across the canopy
-        float grainIntensity = (0.20 + 0.80 * macroHaze) * stardustSpray;
-        col += cStarWhite * grainIntensity * 2.0;
+        // ── 2. 13 UTOPIA BESPOKE METALLIC TITANIUM & OBSIDIAN SMOKE PALETTE ──
+        vec3 spaceVoid = vec3(0.005, 0.006, 0.008);      // Pure Obsidian Space Void
+        vec3 graphitePlume = vec3(0.07, 0.08, 0.10);     // Dark Graphite Velvet Smoke
+        vec3 liquidSilver = vec3(0.32, 0.36, 0.44);      // Liquid Silver & Pewter Filaments
+        vec3 titaniumLight = vec3(0.75, 0.80, 0.88);     // Radiant Luminous Platinum Crests
+        vec3 crystalGlint = vec3(1.0, 1.0, 1.0);         // Pure Stardust Glints
 
-        // Subtle filmic analogue grain (per-pixel smooth noise)
-        float filmNoise = (hash21(gl_FragCoord.xy + fract(uTime * 9.21)) - 0.5) * 0.025;
-        col += vec3(filmNoise);
+        vec3 col = spaceVoid;
+        col = mix(col, graphitePlume, smoothstep(0.0, 0.42, density));
+        col = mix(col, liquidSilver, smoothstep(0.32, 0.75, density));
+        col = mix(col, titaniumLight, smoothstep(0.65, 1.05, density) * 0.85);
 
-        // Soft peripheral vignette keeping lower corners deep obsidian
-        float vignette = smoothstep(1.50, 0.25, length(centeredUv));
-        col *= (0.85 + 0.15 * vignette);
+        // ── 3. EMBEDDED STARDUST CRYSTALS & MICRO-GRAIN ──
+        float dust1 = stardust(centeredUv + uMouse * 0.03, 260.0, 0.28, uTime);
+        float dust2 = stardust(centeredUv * 1.4 + vec2(0.3, 0.7), 540.0, 0.22, uTime * 1.2);
+        float stardustIntensity = (0.25 + 0.75 * density) * (dust1 + dust2 * 0.7);
+        col += crystalGlint * stardustIntensity * 1.8;
+
+        // Soft peripheral vignette keeping outer boundaries deep and immersive
+        float d = length(centeredUv);
+        float vignette = smoothstep(1.45, 0.30, d);
+        col *= (0.80 + 0.20 * vignette);
+
+        // Filmic subtle grain
+        float filmGrain = (hash(gl_FragCoord.xy + fract(uTime * 8.71)) - 0.5) * 0.030;
+        col += vec3(filmGrain);
 
         gl_FragColor = vec4(col, 1.0);
       }
