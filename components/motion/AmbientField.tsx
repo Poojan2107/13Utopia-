@@ -159,17 +159,17 @@ export function AmbientField() {
         // Density Curve with smooth contrast
         float density = smoothstep(-0.15, 0.75, smoke + q2 * 0.35);
 
-        // ── 2. 13 UTOPIA BESPOKE METALLIC TITANIUM & OBSIDIAN SMOKE PALETTE ──
-        vec3 spaceVoid = vec3(0.005, 0.006, 0.008);      // Pure Obsidian Space Void
-        vec3 graphitePlume = vec3(0.07, 0.08, 0.10);     // Dark Graphite Velvet Smoke
-        vec3 liquidSilver = vec3(0.32, 0.36, 0.44);      // Liquid Silver & Pewter Filaments
-        vec3 titaniumLight = vec3(0.75, 0.80, 0.88);     // Radiant Luminous Platinum Crests
+        // ── 2. PURE PITCH BLACK & MONOCHROME WHITE/SILVER SMOKE PALETTE ──
+        vec3 spaceVoid = vec3(0.0, 0.0, 0.0);            // 100% Pitch Black Void
+        vec3 graphitePlume = vec3(0.08, 0.08, 0.08);     // Deep Charcoal Monochrome Velvet
+        vec3 liquidSilver = vec3(0.42, 0.42, 0.42);      // Pure Neutral Liquid Silver
+        vec3 titaniumLight = vec3(0.88, 0.88, 0.88);     // Radiant Pure White Crests
         vec3 crystalGlint = vec3(1.0, 1.0, 1.0);         // Pure Stardust Glints
 
         vec3 col = spaceVoid;
-        col = mix(col, graphitePlume, smoothstep(0.0, 0.42, density));
-        col = mix(col, liquidSilver, smoothstep(0.32, 0.75, density));
-        col = mix(col, titaniumLight, smoothstep(0.65, 1.05, density) * 0.85);
+        col = mix(col, graphitePlume, smoothstep(0.0, 0.40, density));
+        col = mix(col, liquidSilver, smoothstep(0.30, 0.72, density));
+        col = mix(col, titaniumLight, smoothstep(0.62, 1.02, density) * 0.90);
 
         // ── 3. EMBEDDED STARDUST CRYSTALS & MICRO-GRAIN ──
         float dust1 = stardust(centeredUv + uMouse * 0.03, 260.0, 0.28, uTime);
@@ -177,14 +177,15 @@ export function AmbientField() {
         float stardustIntensity = (0.25 + 0.75 * density) * (dust1 + dust2 * 0.7);
         col += crystalGlint * stardustIntensity * 1.8;
 
-        // Soft peripheral vignette keeping outer boundaries deep and immersive
+        // Soft peripheral vignette keeping outer boundaries pitch black
         float d = length(centeredUv);
         float vignette = smoothstep(1.45, 0.30, d);
-        col *= (0.80 + 0.20 * vignette);
+        col *= (0.75 + 0.25 * vignette);
 
-        // Filmic subtle grain
-        float filmGrain = (hash(gl_FragCoord.xy + fract(uTime * 8.71)) - 0.5) * 0.030;
+        // Filmic subtle monochrome grain
+        float filmGrain = (hash(gl_FragCoord.xy + fract(uTime * 8.71)) - 0.5) * 0.025;
         col += vec3(filmGrain);
+        col = max(vec3(0.0), col);
 
         gl_FragColor = vec4(col, 1.0);
       }
@@ -219,8 +220,8 @@ export function AmbientField() {
     if (pCtx) {
       const grad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
       grad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
-      grad.addColorStop(0.25, "rgba(235, 244, 255, 0.85)");
-      grad.addColorStop(0.60, "rgba(185, 210, 240, 0.25)");
+      grad.addColorStop(0.25, "rgba(255, 255, 255, 0.85)");
+      grad.addColorStop(0.60, "rgba(255, 255, 255, 0.20)");
       grad.addColorStop(1, "rgba(0, 0, 0, 0)");
       pCtx.fillStyle = grad;
       pCtx.fillRect(0, 0, 64, 64);

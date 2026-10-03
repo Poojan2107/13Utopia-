@@ -31,20 +31,20 @@ void main() {
   // Crisp anti-aliased edge mask at the dark contour
   float alpha = smoothstep(0.008, 0.035, luma);
   
-  // 13 Utopia Signature Dark Architectural Titanium & Obsidian Palette:
-  vec3 obsidianDark   = vec3(0.08, 0.09, 0.11); // #14161c (deep shadow void)
-  vec3 titaniumBody   = vec3(0.18, 0.20, 0.24); // #222428 (3D model primary monolith)
-  vec3 titaniumSheen  = vec3(0.58, 0.62, 0.68); // Polished titanium wireframe ribs
-  vec3 champagneGlint = vec3(0.96, 0.88, 0.78); // #f4dfc8 (3D model signature chamfer rim reflection)
+  // 13 Utopia Signature Pure Monochrome Architectural Chrome & Obsidian Palette:
+  vec3 obsidianDark   = vec3(0.04, 0.04, 0.04); // Deep shadow void
+  vec3 titaniumBody   = vec3(0.22, 0.22, 0.22); // Monochrome titanium midtones
+  vec3 titaniumSheen  = vec3(0.65, 0.65, 0.65); // Polished silver wireframe ribs
+  vec3 platinumGlint  = vec3(0.92, 0.92, 0.92); // Crisp pure platinum reflection
   vec3 specularWhite  = vec3(1.00, 1.00, 1.00); // Pure crisp white specular gleam
   
   vec3 color = mix(obsidianDark, titaniumBody, smoothstep(0.01, 0.35, luma));
   color = mix(color, titaniumSheen, smoothstep(0.30, 0.72, luma));
-  color = mix(color, champagneGlint, smoothstep(0.68, 0.90, luma));
-  color = mix(color, specularWhite, pow(clamp(luma, 0.0, 1.0), 3.2));
+  color = mix(color, platinumGlint, smoothstep(0.68, 0.90, luma));
+  color = mix(color, specularWhite, pow(clamp(luma, 0.0, 1.0), 3.0));
   
   // Modulate with micro-detail texture highlights
-  color *= (tex.rgb / max(luma, 0.001)) * 0.10 + 0.90;
+  color *= (tex.rgb / max(luma, 0.001)) * 0.04 + 0.96;
   
   gl_FragColor = vec4(color * alpha, alpha);
 }
