@@ -21,9 +21,9 @@ varying vec2 v_uv;
 void main() {
   float aspect = u_resolution.x / max(u_resolution.y, 1.0);
   
-  // Natural un-distorted framing: Head aligned cleanly at top (y=0.27), chest base at y=1.00
-  float scaleY = 0.74;
-  float centerY = 0.64;
+  // Natural un-distorted framing: Perfectly centered bust with head and chest framing
+  float scaleY = 0.78;
+  float centerY = 0.62;
   float scaleX = scaleY * aspect * (1080.0 / 1920.0);
   float centerX = 0.50;
   
