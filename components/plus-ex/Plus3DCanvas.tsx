@@ -293,44 +293,90 @@ export function Plus3DCanvas({
     const particleSystem = new THREE.Points(particleGeo, particleMat);
     scene.add(particleSystem);
 
-    // ── 04. HERO TEXT DISPERSION PARTICLES (Scroll-activated Text-to-Cosmos mixing) ──
-    const heroParticleCount = 420;
+    // ── 04. HERO MONUMENTAL TEXT PARTICLE MATRIX ("BE UNREAL UNREASONABLE") ──
+    const generateTextParticles = () => {
+      const tCanvas = document.createElement("canvas");
+      tCanvas.width = 1600;
+      tCanvas.height = 800;
+      const tCtx = tCanvas.getContext("2d");
+      if (!tCtx) return { positions: new Float32Array(0), offsets: [] };
+
+      tCtx.fillStyle = "#000000";
+      tCtx.fillRect(0, 0, 1600, 800);
+
+      tCtx.fillStyle = "#ffffff";
+      tCtx.textAlign = "left";
+      tCtx.textBaseline = "alphabetic";
+
+      // Draw "BE" on left
+      tCtx.font = "900 320px 'PP Neue Montreal', 'Inter', 'Impact', sans-serif";
+      tCtx.fillText("BE", 60, 520);
+
+      // Draw stacked "UNREAL" and "UNREASONABLE" on right
+      tCtx.font = "900 155px 'PP Neue Montreal', 'Inter', 'Impact', sans-serif";
+      tCtx.fillText("UNREAL", 620, 360);
+      tCtx.fillText("UNREASONABLE", 620, 530);
+
+      const imgData = tCtx.getImageData(0, 0, 1600, 800);
+      const data = imgData.data;
+      const pts: Array<{ x: number; y: number; z: number; ox: number; oy: number; oz: number; phase: number; speed: number }> = [];
+
+      // Sample every 5 pixels
+      const step = 5;
+      for (let y = 0; y < 800; y += step) {
+        for (let x = 0; x < 1600; x += step) {
+          const idx = (y * 1600 + x) * 4;
+          if (data[idx] > 120) {
+            // Map 2D pixel to 3D world space (centered in front of monolith)
+            const px = ((x - 800) / 800) * 5.4;
+            const py = -((y - 400) / 400) * 2.7 + 0.45;
+            const pz = 1.1 + (Math.random() - 0.5) * 0.15;
+
+            pts.push({
+              x: px,
+              y: py,
+              z: pz,
+              ox: px + (Math.random() - 0.5) * 14.0,
+              oy: py + (Math.random() * 12.0 + 3.0),
+              oz: pz + (Math.random() - 0.5) * 12.0 - 2.5,
+              phase: Math.random() * Math.PI * 2,
+              speed: 0.7 + Math.random() * 1.5,
+            });
+          }
+        }
+      }
+
+      const count = pts.length;
+      const basePos = new Float32Array(count * 3);
+      const curPos = new Float32Array(count * 3);
+
+      for (let i = 0; i < count; i++) {
+        basePos[i * 3] = pts[i].x;
+        basePos[i * 3 + 1] = pts[i].y;
+        basePos[i * 3 + 2] = pts[i].z;
+
+        curPos[i * 3] = pts[i].x;
+        curPos[i * 3 + 1] = pts[i].y;
+        curPos[i * 3 + 2] = pts[i].z;
+      }
+
+      return { count, basePos, curPos, offsets: pts };
+    };
+
+    const textParticleData = generateTextParticles();
+    const heroParticleCount = textParticleData.count || 1;
+    const heroBasePositions = textParticleData.basePos;
+    const heroCurrentPositions = textParticleData.curPos;
+    const heroParticleOffsets = textParticleData.offsets;
+
     const heroParticleGeo = new THREE.BufferGeometry();
-    const heroBasePositions = new Float32Array(heroParticleCount * 3);
-    const heroCurrentPositions = new Float32Array(heroParticleCount * 3);
-    const heroParticleOffsets: Array<{ x: number; y: number; z: number; speed: number; phase: number }> = [];
-
-    for (let i = 0; i < heroParticleCount; i++) {
-      const u = Math.random();
-      const v = Math.random();
-      const bx = (u - 0.5) * 7.5;
-      const by = (v - 0.5) * 3.0;
-      const bz = (Math.random() - 0.5) * 0.6 + 0.4;
-
-      heroBasePositions[i * 3] = bx;
-      heroBasePositions[i * 3 + 1] = by;
-      heroBasePositions[i * 3 + 2] = bz;
-
-      heroCurrentPositions[i * 3] = bx;
-      heroCurrentPositions[i * 3 + 1] = by;
-      heroCurrentPositions[i * 3 + 2] = bz;
-
-      heroParticleOffsets.push({
-        x: (Math.random() - 0.5) * 7.5,
-        y: 2.5 + Math.random() * 7.0,
-        z: (Math.random() - 0.5) * 8.0 - 1.5,
-        speed: 0.6 + Math.random() * 1.4,
-        phase: Math.random() * Math.PI * 2,
-      });
-    }
-
     heroParticleGeo.setAttribute("position", new THREE.BufferAttribute(heroCurrentPositions, 3));
 
     const heroParticleMat = new THREE.PointsMaterial({
-      size: 0.15,
+      size: 0.085,
       map: particleTexture,
       transparent: true,
-      opacity: 0.7,
+      opacity: 0.95,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -443,10 +489,13 @@ export function Plus3DCanvas({
       particleSystem.rotation.y = elapsedTime * 0.03 + mouseX * 0.15;
       particleSystem.rotation.x = mouseY * 0.08;
 
-      // Hero text particle dissolution & background cosmos mixing on scroll
+      // ── HERO TEXT PARTICLE MATRIX ANIMATION (Formed typography at rest, interactive mouse repulsion, and scroll dispersion) ──
       const heroPosAttr = heroParticleGeo.attributes.position as THREE.BufferAttribute;
       const hArr = heroPosAttr.array as Float32Array;
-      const disperseP = smoothstep(0.0, 0.16, p);
+      const disperseP = smoothstep(0.0, 0.12, p);
+
+      const mouseWorldX = mouseX * 5.2;
+      const mouseWorldY = mouseY * 3.0;
 
       for (let i = 0; i < heroParticleCount; i++) {
         const off = heroParticleOffsets[i];
@@ -454,19 +503,40 @@ export function Plus3DCanvas({
         const by = heroBasePositions[i * 3 + 1];
         const bz = heroBasePositions[i * 3 + 2];
 
-        const turbX = Math.sin(elapsedTime * 1.5 + off.phase) * 0.35 * disperseP;
-        const turbY = Math.cos(elapsedTime * 1.2 + off.phase) * 0.35 * disperseP;
+        // Cursor kinetic repulsion force
+        const dx = bx - mouseWorldX;
+        const dy = by - mouseWorldY;
+        const distSq = dx * dx + dy * dy;
+        let repelX = 0;
+        let repelY = 0;
+        let repelZ = 0;
 
-        const targetPx = bx + off.x * disperseP + turbX;
-        const targetPy = by + (off.y * disperseP + (elapsedTime * 0.45 * off.speed) % 10.0 - 5.0) * disperseP + turbY;
-        const targetPz = bz + off.z * disperseP;
+        if (distSq < 1.8 && distSq > 0.0001) {
+          const dist = Math.sqrt(distSq);
+          const force = ((1.34 - dist) / 1.34) * (1 - disperseP);
+          repelX = (dx / dist) * force * 0.75;
+          repelY = (dy / dist) * force * 0.75;
+          repelZ = force * 0.6;
+        }
 
-        hArr[i * 3] = bx * (1 - disperseP) + targetPx * disperseP;
-        hArr[i * 3 + 1] = by * (1 - disperseP) + targetPy * disperseP;
-        hArr[i * 3 + 2] = bz * (1 - disperseP) + targetPz * disperseP;
+        // Living breath micro-shimmer
+        const shimmerX = Math.sin(elapsedTime * 2.2 + off.phase) * 0.015 * (1 - disperseP);
+        const shimmerY = Math.cos(elapsedTime * 1.8 + off.phase) * 0.015 * (1 - disperseP);
+
+        // 3D Curl Turbulence when dispersing on scroll
+        const turbX = Math.sin(elapsedTime * 1.6 + off.phase) * 0.45 * disperseP;
+        const turbY = Math.cos(elapsedTime * 1.3 + off.phase) * 0.45 * disperseP;
+
+        const targetPx = bx + off.ox * disperseP + turbX;
+        const targetPy = by + (off.oy * disperseP + (elapsedTime * 0.55 * off.speed) % 12.0 - 6.0) * disperseP + turbY;
+        const targetPz = bz + off.oz * disperseP;
+
+        hArr[i * 3] = (bx + repelX + shimmerX) * (1 - disperseP) + targetPx * disperseP;
+        hArr[i * 3 + 1] = (by + repelY + shimmerY) * (1 - disperseP) + targetPy * disperseP;
+        hArr[i * 3 + 2] = (bz + repelZ) * (1 - disperseP) + targetPz * disperseP;
       }
       heroPosAttr.needsUpdate = true;
-      heroParticleMat.opacity = Math.max(0.25, 0.85 - p * 0.65);
+      heroParticleMat.opacity = Math.max(0.2, 0.95 - p * 0.75);
 
       if (emblemGroup) {
         const entryFade = smoothstep(0.05, 0.65, entryP);

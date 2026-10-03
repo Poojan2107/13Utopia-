@@ -1,7 +1,6 @@
 import {
   HomeSectionWork,
   HomeCTASection,
-  ButterVentureEngine,
 } from "@/components/home";
 import { Continuous3DStory } from "@/components/plus-ex";
 import { SiteHeader, SiteFooter } from "@/components/layout";
@@ -20,7 +19,7 @@ export default function HomePage() {
       {/* Site Header (Top Right Logo & Menu Toggle) */}
       <SiteHeader />
 
-      {/* Unified Continuous Architecture (Hero -> 3D Story -> Butter Venture Engine -> Portfolio Carousel -> CTA Ascent) */}
+      {/* Unified Continuous Architecture (Hero -> 3D Story -> Portfolio Carousel -> CTA Ascent) */}
       <main
         id="main-content"
         style={{
@@ -32,10 +31,7 @@ export default function HomePage() {
         {/* 01 — TENBIN-INSPIRED 3D ARCHITECTURAL HERO & NARRATIVE CONTINUUM (HERO -> MANIFESTO -> CREATE -> BUILD -> GROW) */}
         <Continuous3DStory />
 
-        {/* 02 — BUTTER.VIDEO STYLE VENTURE ENGINE: INLINE 3D GLASS BADGES, TIMELINE DOCK & CAPABILITY CARDS */}
-        <ButterVentureEngine />
-
-        {/* 03 — SELECTED COMMISSIONS: 3D Jesper Landberg Portfolio Carousel with 3D Monolith Descent */}
+        {/* 02 — SELECTED COMMISSIONS: 3D Jesper Landberg Portfolio Carousel with 3D Monolith Descent */}
         <HomeSectionWork />
 
         {/* 04 — INITIATION: Commission Call-To-Action with 3D Monolith Ascent */}

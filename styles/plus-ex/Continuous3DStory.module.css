@@ -149,8 +149,10 @@
   gap: clamp(1rem, 2.2vw, 2.8rem);
   width: auto;
   max-width: 92vw;
+  height: clamp(160px, 26vh, 280px);
   margin: 0 auto;
-  pointer-events: auto;
+  opacity: 0;
+  pointer-events: none;
   user-select: none;
   box-sizing: border-box;
 }
