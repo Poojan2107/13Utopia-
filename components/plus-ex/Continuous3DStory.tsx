@@ -124,11 +124,16 @@ export function Continuous3DStory() {
 
         {/* Dynamic Narrative Overlays */}
         <div className={styles.actsWrapper}>
-          {/* Act Hero: Tenbin-Style Centerpiece Monumental Typography & Action CTAs */}
+          {/* Act Hero: Tenbin-Style Centerpiece Monumental Typography & Tagline */}
           <div
             className={`${styles.act} ${styles.heroAct} ${
               scrollProgress < 0.08 ? styles.actVisible : styles.actHidden
             }`}
+            style={{
+              opacity: scrollProgress <= 0.008 ? 1 : Math.max(0, 1 - (scrollProgress - 0.008) / 0.022),
+              transform: `translateY(${scrollProgress * -30}px)`,
+              pointerEvents: scrollProgress < 0.02 ? "auto" : "none",
+            }}
           >
             <div className={styles.heroLockup}>
               <div className={styles.monumentLockup}>

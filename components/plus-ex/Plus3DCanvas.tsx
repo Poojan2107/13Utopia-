@@ -489,54 +489,74 @@ export function Plus3DCanvas({
       particleSystem.rotation.y = elapsedTime * 0.03 + mouseX * 0.15;
       particleSystem.rotation.x = mouseY * 0.08;
 
-      // ── HERO TEXT PARTICLE MATRIX ANIMATION (Formed typography at rest, interactive mouse repulsion, and scroll dispersion) ──
+      // ── HERO TEXT PARTICLE MATRIX ANIMATION (Solid at top, transforms to particle matrix on scroll, and disperses into cosmos) ──
       const heroPosAttr = heroParticleGeo.attributes.position as THREE.BufferAttribute;
       const hArr = heroPosAttr.array as Float32Array;
-      const disperseP = smoothstep(0.0, 0.12, p);
 
-      const mouseWorldX = mouseX * 5.2;
-      const mouseWorldY = mouseY * 3.0;
+      let particleOpacity = 0;
+      let disperseP = 0;
 
-      for (let i = 0; i < heroParticleCount; i++) {
-        const off = heroParticleOffsets[i];
-        const bx = heroBasePositions[i * 3];
-        const by = heroBasePositions[i * 3 + 1];
-        const bz = heroBasePositions[i * 3 + 2];
-
-        // Cursor kinetic repulsion force
-        const dx = bx - mouseWorldX;
-        const dy = by - mouseWorldY;
-        const distSq = dx * dx + dy * dy;
-        let repelX = 0;
-        let repelY = 0;
-        let repelZ = 0;
-
-        if (distSq < 1.8 && distSq > 0.0001) {
-          const dist = Math.sqrt(distSq);
-          const force = ((1.34 - dist) / 1.34) * (1 - disperseP);
-          repelX = (dx / dist) * force * 0.75;
-          repelY = (dy / dist) * force * 0.75;
-          repelZ = force * 0.6;
-        }
-
-        // Living breath micro-shimmer
-        const shimmerX = Math.sin(elapsedTime * 2.2 + off.phase) * 0.015 * (1 - disperseP);
-        const shimmerY = Math.cos(elapsedTime * 1.8 + off.phase) * 0.015 * (1 - disperseP);
-
-        // 3D Curl Turbulence when dispersing on scroll
-        const turbX = Math.sin(elapsedTime * 1.6 + off.phase) * 0.45 * disperseP;
-        const turbY = Math.cos(elapsedTime * 1.3 + off.phase) * 0.45 * disperseP;
-
-        const targetPx = bx + off.ox * disperseP + turbX;
-        const targetPy = by + (off.oy * disperseP + (elapsedTime * 0.55 * off.speed) % 12.0 - 6.0) * disperseP + turbY;
-        const targetPz = bz + off.oz * disperseP;
-
-        hArr[i * 3] = (bx + repelX + shimmerX) * (1 - disperseP) + targetPx * disperseP;
-        hArr[i * 3 + 1] = (by + repelY + shimmerY) * (1 - disperseP) + targetPy * disperseP;
-        hArr[i * 3 + 2] = (bz + repelZ) * (1 - disperseP) + targetPz * disperseP;
+      if (p <= 0.008) {
+        particleOpacity = 0;
+        disperseP = 0;
+      } else if (p > 0.008 && p <= 0.035) {
+        particleOpacity = smoothstep(0.008, 0.030, p);
+        disperseP = smoothstep(0.015, 0.035, p) * 0.10;
+      } else if (p > 0.035 && p <= 0.14) {
+        particleOpacity = 1.0 - smoothstep(0.09, 0.14, p);
+        disperseP = 0.10 + smoothstep(0.035, 0.14, p) * 0.90;
+      } else {
+        particleOpacity = 0;
+        disperseP = 1.0;
       }
-      heroPosAttr.needsUpdate = true;
-      heroParticleMat.opacity = Math.max(0.2, 0.95 - p * 0.75);
+
+      heroParticleSystem.visible = particleOpacity > 0.005;
+      heroParticleMat.opacity = particleOpacity * 0.95;
+
+      if (heroParticleSystem.visible) {
+        const mouseWorldX = mouseX * 5.2;
+        const mouseWorldY = mouseY * 3.0;
+
+        for (let i = 0; i < heroParticleCount; i++) {
+          const off = heroParticleOffsets[i];
+          const bx = heroBasePositions[i * 3];
+          const by = heroBasePositions[i * 3 + 1];
+          const bz = heroBasePositions[i * 3 + 2];
+
+          // Cursor kinetic repulsion force
+          const dx = bx - mouseWorldX;
+          const dy = by - mouseWorldY;
+          const distSq = dx * dx + dy * dy;
+          let repelX = 0;
+          let repelY = 0;
+          let repelZ = 0;
+
+          if (distSq < 1.8 && distSq > 0.0001) {
+            const dist = Math.sqrt(distSq);
+            const force = ((1.34 - dist) / 1.34) * (1 - disperseP);
+            repelX = (dx / dist) * force * 0.75;
+            repelY = (dy / dist) * force * 0.75;
+            repelZ = force * 0.6;
+          }
+
+          // Living breath micro-shimmer
+          const shimmerX = Math.sin(elapsedTime * 2.2 + off.phase) * 0.015 * (1 - disperseP);
+          const shimmerY = Math.cos(elapsedTime * 1.8 + off.phase) * 0.015 * (1 - disperseP);
+
+          // 3D Curl Turbulence when dispersing on scroll
+          const turbX = Math.sin(elapsedTime * 1.6 + off.phase) * 0.45 * disperseP;
+          const turbY = Math.cos(elapsedTime * 1.3 + off.phase) * 0.45 * disperseP;
+
+          const targetPx = bx + off.ox * disperseP + turbX;
+          const targetPy = by + (off.oy * disperseP + (elapsedTime * 0.55 * off.speed) % 12.0 - 6.0) * disperseP + turbY;
+          const targetPz = bz + off.oz * disperseP;
+
+          hArr[i * 3] = (bx + repelX + shimmerX) * (1 - disperseP) + targetPx * disperseP;
+          hArr[i * 3 + 1] = (by + repelY + shimmerY) * (1 - disperseP) + targetPy * disperseP;
+          hArr[i * 3 + 2] = (bz + repelZ) * (1 - disperseP) + targetPz * disperseP;
+        }
+        heroPosAttr.needsUpdate = true;
+      }
 
       if (emblemGroup) {
         const entryFade = smoothstep(0.05, 0.65, entryP);
