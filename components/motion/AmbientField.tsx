@@ -159,23 +159,23 @@ export function AmbientField() {
         // Density Curve with smooth contrast
         float density = smoothstep(-0.15, 0.75, smoke + q2 * 0.35);
 
-        // ── 2. PURE PITCH BLACK & MONOCHROME WHITE/SILVER SMOKE PALETTE ──
+        // ── 2. DEEP OBSIDIAN VELVET SMOKE PALETTE (ULTRA-HIGH TEXT CONTRAST) ──
         vec3 spaceVoid = vec3(0.0, 0.0, 0.0);            // 100% Pitch Black Void
-        vec3 graphitePlume = vec3(0.08, 0.08, 0.08);     // Deep Charcoal Monochrome Velvet
-        vec3 liquidSilver = vec3(0.42, 0.42, 0.42);      // Pure Neutral Liquid Silver
-        vec3 titaniumLight = vec3(0.88, 0.88, 0.88);     // Radiant Pure White Crests
-        vec3 crystalGlint = vec3(1.0, 1.0, 1.0);         // Pure Stardust Glints
+        vec3 graphitePlume = vec3(0.03, 0.03, 0.03);     // Deep Obsidian Velvet
+        vec3 liquidSilver = vec3(0.09, 0.09, 0.09);      // Muted Silken Sheen
+        vec3 titaniumLight = vec3(0.22, 0.22, 0.22);     // Soft Moody Crests (Prevents text blowout)
+        vec3 crystalGlint = vec3(0.90, 0.90, 0.90);      // Pure Stardust Glints
 
         vec3 col = spaceVoid;
         col = mix(col, graphitePlume, smoothstep(0.0, 0.40, density));
         col = mix(col, liquidSilver, smoothstep(0.30, 0.72, density));
-        col = mix(col, titaniumLight, smoothstep(0.62, 1.02, density) * 0.90);
+        col = mix(col, titaniumLight, smoothstep(0.62, 1.02, density) * 0.80);
 
         // ── 3. EMBEDDED STARDUST CRYSTALS & MICRO-GRAIN ──
         float dust1 = stardust(centeredUv + uMouse * 0.03, 260.0, 0.28, uTime);
         float dust2 = stardust(centeredUv * 1.4 + vec2(0.3, 0.7), 540.0, 0.22, uTime * 1.2);
-        float stardustIntensity = (0.25 + 0.75 * density) * (dust1 + dust2 * 0.7);
-        col += crystalGlint * stardustIntensity * 1.8;
+        float stardustIntensity = (0.20 + 0.60 * density) * (dust1 + dust2 * 0.7);
+        col += crystalGlint * stardustIntensity * 1.4;
 
         // Soft peripheral vignette keeping outer boundaries pitch black
         float d = length(centeredUv);

@@ -49,8 +49,9 @@
   font-size: clamp(0.72rem, 0.82vw, 0.86rem);
   font-weight: 600;
   letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.75);
   text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
 }
 
 .eyebrowNum {
@@ -81,28 +82,28 @@
   color: #ffffff;
   text-transform: uppercase;
   margin: 0;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.98), 0 0 40px rgba(0, 0, 0, 0.95);
 }
 
 .titleHighlight {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .leadText {
   font-family: var(--font-body, "PP Neue Montreal", "Inter", sans-serif);
   font-size: clamp(1.05rem, 1.35vw, 1.35rem);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.55;
-  color: rgba(250, 246, 240, 0.72);
+  color: #faf6f0;
   margin: 0;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.98), 0 0 25px rgba(0, 0, 0, 0.9);
 }
 
 /* Accordion Container — 100% Transparent, No Box/Borders */
 .accordionContainer {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 36px;
   width: 100%;
 }
 
@@ -151,12 +152,13 @@
 
 .indexNumber {
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: clamp(2rem, 2.8vw, 3rem);
+  font-size: clamp(2.2rem, 3.0vw, 3.2rem);
   font-weight: 800;
   line-height: 1;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.45);
   letter-spacing: -0.02em;
   transition: color 0.3s ease;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95);
 }
 
 .itemActive .indexNumber,
@@ -166,21 +168,23 @@
 
 .indexCategory {
   font-family: var(--font-mono, monospace);
-  font-size: 0.68rem;
+  font-size: 0.70rem;
   letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.65);
   text-transform: uppercase;
+  font-weight: 600;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
 }
 
 .titleCol {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .domainTitle {
   font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
-  font-size: clamp(1.4rem, 2.3vw, 2.4rem);
+  font-size: clamp(1.45rem, 2.4vw, 2.5rem);
   font-weight: 800;
   letter-spacing: -0.025em;
   color: #ffffff;
@@ -188,7 +192,7 @@
   margin: 0;
   line-height: 1.15;
   transition: transform 0.3s ease, color 0.3s ease;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 4px 25px rgba(0, 0, 0, 0.98), 0 0 35px rgba(0, 0, 0, 0.9);
 }
 
 .accordionItem:hover .domainTitle {
@@ -198,9 +202,10 @@
 
 .domainSubhead {
   font-family: var(--font-body, "PP Neue Montreal", "Inter", sans-serif);
-  font-size: clamp(0.88rem, 1.0vw, 1.1rem);
-  color: rgba(255, 255, 255, 0.55);
+  font-size: clamp(0.92rem, 1.05vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.85);
   font-weight: 400;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
 }
 
 .metricCol {
@@ -212,19 +217,22 @@
 
 .metricVal {
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1.4rem, 2.0vw, 2.2rem);
-  font-weight: 700;
-  color: #f4eae0;
+  font-size: clamp(1.5rem, 2.2vw, 2.4rem);
+  font-weight: 800;
+  color: #ffffff;
   line-height: 1;
   letter-spacing: -0.02em;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95);
 }
 
 .metricLbl {
   font-family: var(--font-mono, monospace);
-  font-size: 0.68rem;
+  font-size: 0.70rem;
   letter-spacing: 0.14em;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.65);
   text-transform: uppercase;
+  font-weight: 600;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
 }
 
 .toggleCol {
@@ -254,6 +262,7 @@
   position: absolute;
   background: #ffffff;
   transition: transform 0.3s ease, opacity 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
 }
 
 .iconLineHorizontal {
@@ -320,16 +329,19 @@
   font-family: var(--font-mono, monospace);
   font-size: 0.72rem;
   letter-spacing: 0.16em;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.60);
   text-transform: uppercase;
+  font-weight: 600;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
 }
 
 .boxText {
   font-family: var(--font-body, "PP Neue Montreal", sans-serif);
-  font-size: clamp(0.95rem, 1.1vw, 1.15rem);
-  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(0.98rem, 1.15vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.85);
   line-height: 1.6;
   margin: 0;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
 }
 
 .utopiaBox {
@@ -352,6 +364,7 @@
   color: #f4dfc8;
   text-transform: uppercase;
   font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
 }
 
 .utopiaDot {
@@ -359,17 +372,17 @@
   height: 6px;
   border-radius: 50%;
   background: #10b981;
-  box-shadow: 0 0 8px #10b981;
+  box-shadow: 0 0 10px #10b981;
 }
 
 .boxTextUtopia {
   font-family: var(--font-body, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1rem, 1.15vw, 1.22rem);
-  color: #faf6f0;
+  font-size: clamp(1.02rem, 1.2vw, 1.25rem);
+  color: #ffffff;
   line-height: 1.6;
   margin: 0;
-  font-weight: 400;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
+  font-weight: 500;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.98), 0 0 25px rgba(0, 0, 0, 0.9);
 }
 
 /* Details: Deliverables & Tech Stack */
@@ -389,11 +402,13 @@
 
 .detailsHeading {
   font-family: var(--font-mono, monospace);
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   letter-spacing: 0.16em;
-  color: rgba(255, 255, 255, 0.5);
+  color: #f4dfc8;
   text-transform: uppercase;
+  font-weight: 700;
   margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
 }
 
 .deliverablesList {
@@ -410,8 +425,10 @@
   align-items: center;
   gap: 10px;
   font-family: var(--font-body, "PP Neue Montreal", sans-serif);
-  font-size: clamp(0.92rem, 1.05vw, 1.1rem);
-  color: rgba(255, 255, 255, 0.85);
+  font-size: clamp(0.95rem, 1.1vw, 1.15rem);
+  color: #ffffff;
+  font-weight: 400;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
 }
 
 .bulletSymbol {
@@ -430,16 +447,18 @@
   background: transparent;
   border: none;
   font-family: var(--font-mono, monospace);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.75);
+  color: #ffffff;
+  font-weight: 500;
   margin-right: 12px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
 }
 
 .techBadge::after {
   content: "·";
   margin-left: 12px;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .techBadge:last-child::after {
@@ -508,14 +527,17 @@
   font-weight: 700;
   color: #ffffff;
   line-height: 1;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95);
 }
 
 .telemetryLbl {
   font-family: var(--font-mono, monospace);
-  font-size: 0.68rem;
+  font-size: 0.70rem;
   letter-spacing: 0.14em;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.65);
   text-transform: uppercase;
+  font-weight: 600;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
 }
 
 .telemetryDivider {
@@ -540,6 +562,7 @@
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
 }
 
 .fullStackCta:hover {

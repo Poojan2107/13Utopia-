@@ -495,12 +495,12 @@ export function Plus3DCanvas({
           // Act Hero: 3D Titanium Monolith centered majestically behind BE UNREAL UNREASONABLE
           const localP = p / 0.08;
           targetX = 0;
-          targetY = idleFloatY;
-          targetZ = -0.82;
-          targetRotY = localP * 0.22;
-          targetRotX = 0.06 + idleRotX;
+          targetY = 0.28 + idleFloatY;
+          targetZ = -1.15;
+          targetRotY = localP * 0.20;
+          targetRotX = 0.05 + idleRotX;
           targetRotZ = idleRotZ;
-          targetScale = 0.94;
+          targetScale = 0.78;
           targetMorph = 0;
         } else if (p >= 0.08 && p < 0.24) {
           // Act 0: Manifesto Editorial Statement
