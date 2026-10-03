@@ -8,20 +8,36 @@ import { Plus3DCanvas } from "./Plus3DCanvas";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const WORLDS = [
+interface WorldKeyword {
+  stance: string;
+  deliverable?: string;
+}
+
+interface WorldConfig {
+  id: string;
+  header: string;
+  index: string;
+  tag: string;
+  keywords: WorldKeyword[];
+  leadTitle: string;
+  subTitle: string;
+  pill: string;
+  align: "left" | "right";
+}
+
+const WORLDS: WorldConfig[] = [
   {
     id: "create",
-    header: "BE ORIGINAL",
+    header: "CREATE",
     index: "01",
     tag: "01 // CREATE",
     keywords: [
-      "UNREAL",
-      "ORIGINAL",
-      "ICONIC",
-      "CATEGORY-DEFINING",
-      "TIMELESS",
-      "DISTINCT",
-      "UNCOMPROMISING",
+      { stance: "BE ORIGINAL", deliverable: "BRAND STRATEGY & IDENTITY" },
+      { stance: "BE UNREAL", deliverable: "ART & CREATIVE DIRECTION" },
+      { stance: "BE ICONIC", deliverable: "CGI, 3D & MOTION GRAPHICS" },
+      { stance: "BE DISTINCT", deliverable: "UI/UX & INTERACTION DESIGN" },
+      { stance: "BE TIMELESS", deliverable: "BRAND EXPERIENCE & SPATIAL" },
+      { stance: "BE UNCOMPROMISING", deliverable: "VISUAL IDENTITY SYSTEMS" },
     ],
     leadTitle: "BE THE BRAND THAT OWNS THE CATEGORY.",
     subTitle: "WE DEVELOP BRAND STRATEGY, CUSTOM IDENTITY SYSTEMS, AND CINEMATIC MOTION FROM FIRST PRINCIPLES. EVERY ENGAGEMENT IS ORIGINAL.",
@@ -34,13 +50,12 @@ const WORLDS = [
     index: "02",
     tag: "02 // 13 UTOPIA",
     keywords: [
-      "DIGITAL PRODUCTS",
-      "WEB & MOBILE APPS",
-      "SAAS PLATFORMS",
-      "AI AGENT SYSTEMS",
-      "WORKFLOW AUTOMATION",
-      "CLOUD INFRASTRUCTURE",
-      "FULL-STACK ENGINEERING",
+      { stance: "DIGITAL PRODUCTS", deliverable: "WEB & MOBILE APPLICATIONS" },
+      { stance: "SAAS PLATFORMS", deliverable: "FULL-STACK PRODUCT ENGINEERING" },
+      { stance: "AI AGENTS", deliverable: "WORKFLOW & PROCESS AUTOMATION" },
+      { stance: "CLOUD INFRASTRUCTURE", deliverable: "DEVOPS, CI/CD & RELIABILITY" },
+      { stance: "CUSTOM SOFTWARE", deliverable: "MODERN API & BACKEND SYSTEMS" },
+      { stance: "E-COMMERCE & MVPS", deliverable: "HIGH-CONVERTING ARCHITECTURE" },
     ],
     leadTitle: "PRODUCTS ENGINEERED FOR SCALE AND PERFORMANCE.",
     subTitle: "WE ENGINEER WEBSITES, MOBILE APPS, SAAS PLATFORMS, AI SYSTEMS, AND CLOUD INFRASTRUCTURE. BUILT TO PERFORM UNDER REAL CONDITIONS.",
@@ -49,17 +64,16 @@ const WORLDS = [
   },
   {
     id: "grow",
-    header: "BE UNREASONABLE",
+    header: "GROW",
     index: "03",
     tag: "03 // GROW",
     keywords: [
-      "UNREASONABLE",
-      "EXPONENTIAL",
-      "AUTHORITATIVE",
-      "COMPOUNDING",
-      "DOMINANT",
-      "MEASURABLE",
-      "PROVEN",
+      { stance: "BE EXPONENTIAL", deliverable: "SEARCH ENGINE OPTIMIZATION (SEO)" },
+      { stance: "BE UNREASONABLE", deliverable: "PERFORMANCE MARKETING & ADS" },
+      { stance: "BE AUTHORITATIVE", deliverable: "CONTENT STRATEGY & POSITIONING" },
+      { stance: "BE MEASURABLE", deliverable: "LEAD GENERATION & PIPELINE" },
+      { stance: "BE DOMINANT", deliverable: "CONVERSION OPTIMIZATION (CRO)" },
+      { stance: "BE PROVEN", deliverable: "MARKET CATEGORY LEADERSHIP" },
     ],
     leadTitle: "GROWTH SYSTEMS THAT COMPOUND INTO MARKET AUTHORITY.",
     subTitle: "SEO ARCHITECTURE, PERFORMANCE MARKETING, AND CONTENT SYSTEMS DESIGNED TO DRIVE MEASURABLE PIPELINE AND HOLD CATEGORY POSITION.",
@@ -227,7 +241,7 @@ export function Continuous3DStory() {
 
                           return (
                             <div
-                              key={word}
+                              key={wIdx}
                               className={`${styles.drumItem} ${
                                 isCenter ? styles.drumItemActive : styles.drumItemDimmed
                               }`}
@@ -236,7 +250,14 @@ export function Continuous3DStory() {
                                 opacity: opacity.toFixed(3),
                               }}
                             >
-                              {word}
+                              <div className={styles.drumItemContent}>
+                                <span className={styles.drumStance}>{word.stance}</span>
+                                {word.deliverable && (
+                                  <span className={styles.drumDeliverable}>
+                                    {word.deliverable}
+                                  </span>
+                                )}
+                              </div>
                             </div>
                           );
                         })}
