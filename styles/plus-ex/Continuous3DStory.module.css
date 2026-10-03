@@ -266,44 +266,43 @@
 /* Act 0: Plus-X 1:1 Editorial Statement (1 Line Lead + 3 Lines Sub = 13) */
 .manifestoContent {
   width: 100%;
-  max-width: clamp(750px, 80vw, 1260px);
+  max-width: 96vw;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: clamp(1.8rem, 3.5vh, 2.8rem);
-  padding: 0 clamp(1.5rem, 4vw, 4rem);
+  gap: clamp(1.5rem, 3vh, 2.5rem);
+  padding: 0 clamp(1.5rem, 4.5vw, 5.5rem);
   box-sizing: border-box;
 }
 
 .manifestoHeading {
-  font-family: var(--font-display, "PP Neue Montreal", "Inter", -apple-system, sans-serif);
-  font-size: clamp(1.4rem, 2.3vw, 2.75rem);
-  font-weight: 600;
-  line-height: 1.28;
-  letter-spacing: -0.015em;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", "Inter", -apple-system, sans-serif);
+  font-size: clamp(2.2rem, 4.2vw, 5.2rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
   color: #ffffff;
   text-transform: uppercase;
   margin: 0;
   display: block;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.85);
 }
 
 .leadLine {
   display: block;
   color: #ffffff;
-  white-space: nowrap;
 }
 
 .subLines {
   display: block;
   color: #ffffff;
-  white-space: nowrap;
 }
 
 @media (max-width: 900px) {
-  .leadLine,
-  .subLines {
-    white-space: normal;
+  .manifestoHeading {
+    font-size: clamp(1.8rem, 6vw, 3.2rem);
+    line-height: 1.12;
   }
 }
 
