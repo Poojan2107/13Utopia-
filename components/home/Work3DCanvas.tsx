@@ -8,13 +8,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * CTA3DCanvas — Section 05 (Initiation CTA)
- * The 3D 13 Monolith ascends into center stage directly behind "HAVE AN UNREASONABLE IDEA?".
+ * Work3DCanvas — Section 04 (Selected Commissions)
+ * The 3D 13 Monolith glides smoothly in the deep background behind the portfolio carousel cards.
  */
-export function CTA3DCanvas() {
+export function Work3DCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
-  const scrollEntryRef = useRef(0);
+  const scrollRef = useRef(0);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -127,10 +126,6 @@ export function CTA3DCanvas() {
     keyLight.position.set(7, 9, 8);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xcccccc, 1.8);
-    fillLight.position.set(-7, 2, 5);
-    scene.add(fillLight);
-
     const goldRimLight = new THREE.DirectionalLight(0xf4dfc8, 4.5);
     goldRimLight.position.set(4, -6, -3);
     scene.add(goldRimLight);
@@ -139,35 +134,26 @@ export function CTA3DCanvas() {
     leftRimLight.position.set(-8, 3, -4);
     scene.add(leftRimLight);
 
-    // Mouse Interaction
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current.targetX = (e.clientX / window.innerWidth - 0.5) * 0.35;
-      mouseRef.current.targetY = (e.clientY / window.innerHeight - 0.5) * 0.35;
-    };
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-
-    // ScrollTrigger across CTA Section
+    // ScrollTrigger across Selected Commissions Section
     const sectionEl = container.closest("section") || container;
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: sectionEl,
         start: "top bottom",
-        end: "center center",
+        end: "bottom top",
         scrub: 1.0,
         onUpdate: (self) => {
-          scrollEntryRef.current = self.progress;
+          scrollRef.current = self.progress;
         },
       });
     }, container);
 
     let rafId: number;
-    let clock = new THREE.Clock();
-
-    let currentY = -3.5;
-    let currentZ = -4.0;
-    let currentScale = 0.70;
-    let currentRotX = -0.20;
-    let currentRotY = 0;
+    let currentY = 0;
+    let currentZ = -3.5;
+    let currentScale = 0.72;
+    let currentRotX = -0.08;
+    let currentRotY = Math.PI * 8.0;
 
     const smoothstep = (min: number, max: number, value: number) => {
       const x = Math.max(0, Math.min(1, (value - min) / (max - min)));
@@ -176,20 +162,17 @@ export function CTA3DCanvas() {
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
-      const entry = smoothstep(0.0, 1.0, scrollEntryRef.current);
+      const p = Math.max(0, Math.min(1, scrollRef.current));
+      const u = smoothstep(0.0, 1.0, p);
 
-      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
-      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
+      // Centered behind the cards, smoothly gliding down and deeper into depth
+      const targetY = -2.5 * u;
+      const targetZ = -3.5 - 4.5 * u;
+      const targetScale = 0.72 - 0.22 * u;
+      const targetRotX = -0.08 - 0.12 * u;
+      const targetRotY = Math.PI * 8.0 + p * (Math.PI * 1.8);
 
-      // Smooth ascent from below right into center stage + continuous 360-degree rotation
-      const targetY = -3.5 * (1 - entry) + Math.sin(elapsedTime * 0.5) * 0.06;
-      const targetZ = -4.0 * (1 - entry);
-      const targetScale = 0.70 + 0.25 * entry;
-      const targetRotX = -0.20 * (1 - entry) + 0.06 + Math.sin(elapsedTime * 0.3) * 0.04 - mouseRef.current.y * 0.2;
-      const targetRotY = (1 - entry) * -Math.PI * 0.5 + elapsedTime * 0.55 + mouseRef.current.x * 0.35;
-
-      const damp = 0.08;
+      const damp = 0.09;
       currentY += (targetY - currentY) * damp;
       currentZ += (targetZ - currentZ) * damp;
       currentScale += (targetScale - currentScale) * damp;
@@ -205,7 +188,7 @@ export function CTA3DCanvas() {
 
     animate();
 
-    const handleResize = () => {
+    const onResize = () => {
       if (!container) return;
       const w = container.clientWidth;
       const h = container.clientHeight;
@@ -213,21 +196,20 @@ export function CTA3DCanvas() {
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", onResize);
 
     return () => {
       ctx.revert();
       cancelAnimationFrame(rafId);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", onResize);
       if (renderer.domElement && container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
-      renderer.dispose();
       oneGeo.dispose();
       threeGeo.dispose();
       matTitaniumOne.dispose();
       matTitaniumThree.dispose();
+      renderer.dispose();
     };
   }, []);
 

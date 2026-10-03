@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { CTA3DCanvas } from "./CTA3DCanvas";
 import styles from "@/styles/home/HomeCTASection.module.css";
 
 /**
  * HomeCTASection — Section 05 (Initiation Finale)
- * Plus-X inspired monumental commission initiation section.
+ * The 3D 13 Monolith ascends smoothly from behind the portfolio section
+ * as the grand centerpiece behind the call-to-action typography.
  */
 export function HomeCTASection() {
   return (
@@ -14,6 +16,11 @@ export function HomeCTASection() {
       id="commission"
       aria-label="Initiate Commission with 13 Utopia"
     >
+      {/* 3D 13 Monolith Emergence Canvas */}
+      <div className={styles.canvasBackground} aria-hidden="true">
+        <CTA3DCanvas />
+      </div>
+
       <div className={styles.ctaContainer}>
         <h2 className={styles.title}>
           HAVE AN<br />

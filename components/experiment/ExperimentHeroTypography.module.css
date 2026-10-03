@@ -15,14 +15,17 @@
   padding: 0 clamp(1.5rem, 4vw, 4rem);
 }
 
-/* ── Central Compound Lockup: Zero Clipping Guaranteed ──────── */
+/* ── Central Compound Lockup: Scaled Proportional Lockup ────── */
 .monumentLockup {
+  --word-size: min(7.6vw, 14.8vh);
+  --gap-stack: clamp(0.15rem, 0.4vw, 0.6rem);
+  --be-size: calc(var(--word-size) * 2.18 + var(--gap-stack) * 0.4);
   display: inline-flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  gap: clamp(1rem, 2.8vw, 3.2rem);
+  gap: clamp(1rem, 2.2vw, 2.8rem);
   width: auto;
-  max-width: 88vw;
+  max-width: 90vw;
   margin: 0 auto;
   pointer-events: auto;
   user-select: none;
@@ -42,12 +45,12 @@
   display: block;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   /* Sized to match the exact total height of the 2 stacked words */
-  font-size: min(15.2vw, 32vh);
+  font-size: var(--be-size);
   font-weight: 800;
   text-transform: uppercase;
   color: #ffffff;
-  line-height: 0.76;
-  letter-spacing: -0.06em;
+  line-height: 0.74;
+  letter-spacing: -0.055em;
   margin: 0;
   padding: 0;
   white-space: nowrap;
@@ -63,20 +66,20 @@
   flex: 0 1 auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-start;
-  gap: clamp(0.3rem, 0.9vw, 1.1rem);
-  line-height: 0.78;
+  gap: var(--gap-stack);
+  line-height: 0.76;
 }
 
 .wordTop {
   display: block;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: min(7.5vw, 15.6vh);
+  font-size: var(--word-size);
   font-weight: 800;
   text-transform: uppercase;
   color: #ffffff;
-  line-height: 0.78;
+  line-height: 0.76;
   letter-spacing: -0.05em;
   margin: 0;
   padding: 0;
@@ -87,11 +90,11 @@
 .wordBottom {
   display: block;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: min(7.5vw, 15.6vh);
+  font-size: var(--word-size);
   font-weight: 800;
   text-transform: uppercase;
   color: #ffffff;
-  line-height: 0.78;
+  line-height: 0.76;
   letter-spacing: -0.055em;
   margin: 0;
   padding: 0;
@@ -107,18 +110,9 @@
 
 @media (max-width: 768px) {
   .monumentLockup {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.4rem;
-    max-width: 92vw;
-  }
-
-  .beWord {
-    font-size: min(24vw, 16vh);
-  }
-
-  .wordTop,
-  .wordBottom {
-    font-size: min(11.5vw, 7.8vh);
+    --word-size: min(8.5vw, 6vh);
+    --gap-stack: 0.15rem;
+    gap: clamp(0.5rem, 2vw, 1.2rem);
+    max-width: 95vw;
   }
 }

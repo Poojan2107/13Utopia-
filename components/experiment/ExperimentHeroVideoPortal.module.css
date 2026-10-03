@@ -1,6 +1,6 @@
 /* =========================================================
-   13 UTOPIA // GPU-ACCELERATED "O" APERTURE VIDEO EXPANSION
-   Zero-layout-shift, 120fps GPU compositor pipeline
+   13 UTOPIA // THE ROMANS (WEARETHEROMANS.COM) HERO ARCHITECTURE
+   Static Crisp Typography + Inline Video Portal -> Viewport Full Bleed
    ========================================================= */
 
 .pinnedWrapper {
@@ -10,7 +10,10 @@
   height: 100dvh;
   background-color: #000000;
   overflow: hidden;
-  z-index: 2;
+  z-index: 10;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .stage {
@@ -24,10 +27,9 @@
   justify-content: center;
   background-color: #000000;
   overflow: hidden;
-  perspective: 1200px;
 }
 
-/* ── 01. Hero Typography Layer ────────────────────────────── */
+/* ── 01. Foreground Monumental Hero Typography Layer ──────── */
 .typeLayer {
   position: absolute;
   inset: 0;
@@ -38,17 +40,19 @@
   pointer-events: none;
   box-sizing: border-box;
   padding: 0 clamp(1.5rem, 4vw, 4rem);
-  will-change: transform, opacity, filter;
-  transform: translateZ(0);
+  will-change: opacity;
 }
 
 .monumentLockup {
+  --word-size: min(7.0vw, 13.5vh);
+  --gap-stack: clamp(0.15rem, 0.4vw, 0.6rem);
+  --be-size: calc(var(--word-size) * 2.18 + var(--gap-stack) * 0.4);
   display: inline-flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  gap: clamp(1rem, 2.8vw, 3.2rem);
+  gap: clamp(1rem, 2.2vw, 2.8rem);
   width: auto;
-  max-width: 88vw;
+  max-width: 92vw;
   margin: 0 auto;
   pointer-events: auto;
   user-select: none;
@@ -66,12 +70,12 @@
 .beWord {
   display: block;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: min(15.2vw, 32vh);
+  font-size: var(--be-size);
   font-weight: 800;
   text-transform: uppercase;
   color: #ffffff;
-  line-height: 0.76;
-  letter-spacing: -0.06em;
+  line-height: 0.74;
+  letter-spacing: -0.055em;
   margin: 0;
   padding: 0;
   white-space: nowrap;
@@ -81,20 +85,21 @@
   flex: 0 1 auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-start;
-  gap: clamp(0.3rem, 0.9vw, 1.1rem);
-  line-height: 0.78;
+  gap: var(--gap-stack);
+  line-height: 0.76;
 }
 
 .wordTop {
-  display: block;
+  display: flex;
+  align-items: center;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: min(7.5vw, 15.6vh);
+  font-size: var(--word-size);
   font-weight: 800;
   text-transform: uppercase;
   color: #ffffff;
-  line-height: 0.78;
+  line-height: 0.76;
   letter-spacing: -0.05em;
   margin: 0;
   padding: 0;
@@ -103,40 +108,52 @@
 
 .wordBottom {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: min(7.5vw, 15.6vh);
+  font-size: var(--word-size);
   font-weight: 800;
   text-transform: uppercase;
   color: #ffffff;
-  line-height: 0.78;
+  line-height: 0.76;
   letter-spacing: -0.055em;
   margin: 0;
   padding: 0;
   white-space: nowrap;
 }
 
-/* Pure solid letter "O" */
+/* ── Pure Typography Letter "O" ────────────────────────────── */
 .letterO {
   display: inline-block;
   color: #ffffff;
   position: relative;
-  line-height: 1;
+  margin: 0;
+  padding: 0;
 }
 
-/* ── 02. GPU-Accelerated Emerging Video Layer ──────────────── */
-.emergingVideoCard {
+/* ── 02. Ethereal Particle Disintegration Overlay Canvas ───── */
+.particlesCanvas {
   position: absolute;
   inset: 0;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  z-index: 5;
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* ── 03. Live Video Showcase Layer ─────────────────────────── */
+.fullscreenVideoCard,
+.expandingVideoCard {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background-color: #000000;
+  z-index: 2;
   pointer-events: none;
-  opacity: 0;
-  will-change: clip-path, opacity, transform;
+  will-change: opacity, filter;
   transform: translateZ(0);
 }
 
@@ -145,27 +162,27 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: grayscale(100%) contrast(1.15) brightness(0.96);
-  will-change: transform;
-  transform: scale(1.25) translateZ(0);
+  filter: grayscale(100%) contrast(1.18) brightness(1.0);
+  transform-origin: 50% 50%;
+  will-change: transform, filter;
 }
 
 .videoScrim {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 60% at 50% 45%, rgba(244, 223, 200, 0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(244, 223, 200, 0.04) 0%, transparent 70%),
     linear-gradient(
       to bottom,
-      rgba(0, 0, 0, 0.8) 0%,
-      rgba(0, 0, 0, 0.08) 35%,
-      rgba(0, 0, 0, 0.08) 65%,
-      rgba(0, 0, 0, 0.85) 100%
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0.05) 35%,
+      rgba(0, 0, 0, 0.05) 65%,
+      rgba(0, 0, 0, 0.8) 100%
     );
   pointer-events: none;
 }
 
-/* Top & Bottom Vignettes */
+/* Top & Bottom Cinematic Vignettes */
 .fadeTop {
   position: absolute;
   top: 0;
@@ -182,18 +199,18 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 140px;
-  background: linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0.6) 40%, transparent 100%);
+  height: 160px;
+  background: linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0.7) 45%, transparent 100%);
   pointer-events: none;
   z-index: 6;
 }
 
-/* ── 03. Video HUD Caption (Fades in when video settles) ───── */
+/* ── 03. Video HUD Caption (Pure Minimalist Floating Type) ── */
 .hudBottom {
   position: absolute;
-  bottom: clamp(1.5rem, 3.5vh, 3.5rem);
-  left: clamp(1.5rem, 4vw, 4rem);
-  right: clamp(1.5rem, 4vw, 4rem);
+  bottom: clamp(2rem, 5vh, 4rem);
+  left: clamp(1.5rem, 5vw, 5rem);
+  right: clamp(1.5rem, 5vw, 5rem);
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -207,53 +224,51 @@
 
 .captionBlock {
   max-width: 680px;
+  background: transparent;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .chapterNum {
   display: block;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: clamp(0.68rem, 0.8vw, 0.8rem);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
   color: #dfb76c;
   margin-bottom: 0.5rem;
-  text-transform: uppercase;
 }
 
 .chapterTitle {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1.4rem, 2.8vw, 2.4rem);
-  font-weight: 800;
+  font-size: clamp(1.3rem, 2.4vw, 2.6rem);
+  font-weight: 700;
   letter-spacing: -0.02em;
+  text-transform: uppercase;
   line-height: 1.05;
   color: #ffffff;
-  margin: 0 0 0.5rem 0;
-  text-transform: uppercase;
+  margin: 0 0 0.65rem 0;
 }
 
 .chapterSub {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
-  font-size: clamp(0.85rem, 1.1vw, 1.05rem);
-  line-height: 1.4;
+  font-size: clamp(0.85rem, 1.05vw, 1.05rem);
+  line-height: 1.5;
   color: rgba(255, 255, 255, 0.65);
   margin: 0;
-  font-weight: 400;
 }
 
+/* ── Responsive Refinements ──────────────────────────────── */
 @media (max-width: 768px) {
   .monumentLockup {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.4rem;
-    max-width: 92vw;
+    --word-size: min(8.2vw, 11vh);
+    gap: 1.2rem;
   }
 
-  .beWord {
-    font-size: min(24vw, 16vh);
-  }
-
-  .wordTop,
-  .wordBottom {
-    font-size: min(11.5vw, 7.8vh);
+  .captionBlock {
+    max-width: 100%;
   }
 }

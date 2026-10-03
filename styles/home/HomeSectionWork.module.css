@@ -172,7 +172,7 @@
   height: 94dvh;
   min-height: 640px;
   overflow: hidden;
-  background-color: #000000;
+  background-color: transparent;
 }
 
 .canvasBackdrop {
@@ -181,9 +181,9 @@
   pointer-events: none;
   background: radial-gradient(
     circle at 50% 50%,
-    rgba(244, 223, 200, 0.05) 0%,
-    rgba(14, 14, 18, 0.65) 50%,
-    #000000 100%
+    rgba(244, 223, 200, 0.02) 0%,
+    rgba(14, 14, 18, 0.35) 50%,
+    transparent 100%
   );
   z-index: 0;
 }

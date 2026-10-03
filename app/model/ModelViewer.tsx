@@ -5,52 +5,32 @@ import * as THREE from "three";
 import Link from "next/link";
 import styles from "./ModelViewer.module.css";
 
-export type ModelType = "BE" | "13" | "X";
-export type XVariantType = "X1" | "X2" | "X3" | "X4" | "X5" | "X6";
+export type ModelType = "13" | "BE" | "INVERTED_CURVES";
 
-const X_VARIANTS_INFO: Record<XVariantType, { label: string; tag: string; desc: string; formula: string }> = {
-  X1: {
-    label: "X-1: CROSSING PILLARS",
-    tag: "CROSSING MONOLITHS",
-    desc: "Two diagonal monolithic '1' pillars crossed at ±35° with chamfered caps and layered specular depth.",
-    formula: "oneGeo (\\) + oneGeo (/)",
+const MODELS_INFO: Record<ModelType, { label: string; tag: string; desc: string; formula: string }> = {
+  "13": {
+    label: "13 EMBLEM",
+    tag: "13 MONOLITH EMBLEM (OFFICIAL)",
+    desc: "Signature 13 Utopia brand emblem: Tapered monolith '1' paired with sculptural organic ribbon '3'.",
+    formula: "oneGeo (-1.35) + threeGeo (+1.10)",
   },
-  X2: {
-    label: "X-2: MERGED WINGS",
-    tag: "ORGANIC WINGS (3 ✕ Ɛ)",
-    desc: "Organic '3' from the 13 brand merged back-to-back with mirrored '3' (E) from the BE brand mark.",
-    formula: "threeGeo (left) + mirroredThreeGeo (right)",
+  BE: {
+    label: "BE MONOLITH",
+    tag: "BE MONUMENTAL MONOLITH (OFFICIAL)",
+    desc: "Signature BE mark: Monolithic '1' docked with organic '3' to form 'B', paired with mirrored '3' ('E').",
+    formula: "bGroup (-2.28) + eMesh (+2.12)",
   },
-  X3: {
-    label: "X-3: INTERLOCKING CURVES",
-    tag: "ROTATED 3-RIBBONS (⤫)",
-    desc: "Signature organic ribbons rotated at ±45° and interlocked through the central axis.",
-    formula: "threeGeo (rot 45°) + mirroredThreeGeo (rot -45°)",
-  },
-  X4: {
-    label: "X-4: INVERTED CURVES",
-    tag: "INWARD RIBBONS (Ɛ ✕ 3)",
-    desc: "Mirrored '3' on the left and standard '3' on the right facing inward with a cinched architectural waist.",
+  INVERTED_CURVES: {
+    label: "INVERTED CURVES",
+    tag: "INVERTED CURVES (Ɛ ✕ 3)",
+    desc: "Mirrored '3' (Ɛ) on the left and standard '3' on the right facing inward with a cinched architectural waist.",
     formula: "mirroredThreeGeo (left) + threeGeo (right)",
-  },
-  X5: {
-    label: "X-5: 13 ✕ BE MONOGRAM",
-    tag: "BRAND MONOGRAM FUSION",
-    desc: "Full '13' and 'BE' marks docked and overlapping into a multi-layer collaboration monogram.",
-    formula: "thirteenGroup + beGroup [Interlocked]",
-  },
-  X6: {
-    label: "X-6: ARCHITECTURAL RIBBON",
-    tag: "MONOLITHIC 4-POINT CROSS",
-    desc: "Bespoke 4-point architectural cross geometry with beveled chamfers and sculpted fluid curvature.",
-    formula: "architecturalXShape [Extruded Bevel]",
   },
 };
 
 export function ModelViewer() {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [activeModel, setActiveModel] = useState<ModelType>("X");
-  const [xVariant, setXVariant] = useState<XVariantType>("X1");
+  const [activeModel, setActiveModel] = useState<ModelType>("13");
   const [colorMode, setColorMode] = useState<"titanium" | "chrome" | "clay" | "gold">("chrome");
   const [lightBoost, setLightBoost] = useState(true);
   const [wireframeMode, setWireframeMode] = useState(false);
@@ -62,14 +42,7 @@ export function ModelViewer() {
   const rootGroupRef = useRef<THREE.Group | null>(null);
   const thirteenGroupRef = useRef<THREE.Group | null>(null);
   const beGroupRef = useRef<THREE.Group | null>(null);
-  const xGroupsRef = useRef<Record<XVariantType, THREE.Group | null>>({
-    X1: null,
-    X2: null,
-    X3: null,
-    X4: null,
-    X5: null,
-    X6: null,
-  });
+  const invertedCurvesGroupRef = useRef<THREE.Group | null>(null);
 
   const matOneRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
   const matThreeRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
@@ -154,7 +127,7 @@ export function ModelViewer() {
     }
   }, [lightBoost]);
 
-  // Switch visible model & X variants
+  // Switch visible model
   useEffect(() => {
     if (thirteenGroupRef.current) {
       thirteenGroupRef.current.visible = activeModel === "13";
@@ -162,15 +135,10 @@ export function ModelViewer() {
     if (beGroupRef.current) {
       beGroupRef.current.visible = activeModel === "BE";
     }
-
-    const xDict = xGroupsRef.current;
-    (Object.keys(xDict) as XVariantType[]).forEach((key) => {
-      const grp = xDict[key];
-      if (grp) {
-        grp.visible = activeModel === "X" && xVariant === key;
-      }
-    });
-  }, [activeModel, xVariant]);
+    if (invertedCurvesGroupRef.current) {
+      invertedCurvesGroupRef.current.visible = activeModel === "INVERTED_CURVES";
+    }
+  }, [activeModel]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -202,7 +170,7 @@ export function ModelViewer() {
     gridHelper.position.y = -3.2;
     scene.add(gridHelper);
 
-    // 4. Materials
+    // 4. Materials with polygonOffset for zero Z-fighting
     const matOne = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(0xd0d5dd),
       roughness: 0.18,
@@ -210,6 +178,9 @@ export function ModelViewer() {
       clearcoat: 0.90,
       clearcoatRoughness: 0.10,
       reflectivity: 0.90,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+      polygonOffsetUnits: -1,
     });
     matOneRef.current = matOne;
 
@@ -220,6 +191,9 @@ export function ModelViewer() {
       clearcoat: 0.90,
       clearcoatRoughness: 0.10,
       reflectivity: 0.90,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
     });
     matThreeRef.current = matThree;
 
@@ -293,31 +267,6 @@ export function ModelViewer() {
       return shape;
     };
 
-    const createArchitecturalXShape = () => {
-      const shape = new THREE.Shape();
-      const armW = 0.52;
-      const armL = 2.40;
-      const inner = 0.40;
-
-      shape.moveTo(inner, inner + armW);
-      shape.lineTo(armL - 0.25, armL + 0.35);
-      shape.bezierCurveTo(armL + 0.35, armL + 0.55, armL + 0.65, armL + 0.15, armL + 0.35, armL - 0.25);
-      shape.lineTo(inner + armW, inner);
-
-      shape.lineTo(armL + 0.35, -armL + 0.25);
-      shape.bezierCurveTo(armL + 0.65, -armL - 0.15, armL + 0.35, -armL - 0.55, armL - 0.25, -armL - 0.35);
-      shape.lineTo(inner, -inner - armW);
-
-      shape.lineTo(-armL + 0.25, -armL - 0.35);
-      shape.bezierCurveTo(-armL - 0.35, -armL - 0.55, -armL - 0.65, -armL - 0.15, -armL - 0.35, -armL + 0.25);
-      shape.lineTo(-inner - armW, -inner);
-
-      shape.lineTo(-armL - 0.35, armL - 0.25);
-      shape.bezierCurveTo(-armL - 0.65, armL + 0.15, -armL - 0.35, armL + 0.55, -armL + 0.25, armL + 0.35);
-      shape.closePath();
-      return shape;
-    };
-
     const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
     oneGeo.center();
 
@@ -326,9 +275,6 @@ export function ModelViewer() {
 
     const eGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
     eGeo.center();
-
-    const archXGeo = new THREE.ExtrudeGeometry(createArchitecturalXShape(), extrudeSettings);
-    archXGeo.center();
 
     // ── 01. "13" GROUP ─────────────────────────────────────────
     const thirteenGroup = new THREE.Group();
@@ -348,9 +294,9 @@ export function ModelViewer() {
 
     const bGroup = new THREE.Group();
     const bSpine = new THREE.Mesh(oneGeo, matOne);
-    bSpine.position.set(-1.00, 0, 0);
+    bSpine.position.set(-1.00, 0, 0.003);
     const bBowls = new THREE.Mesh(threeGeo, matThree);
-    bBowls.position.set(0.40, 0, 0);
+    bBowls.position.set(0.40, 0, -0.003);
     bGroup.add(bSpine);
     bGroup.add(bBowls);
     bGroup.position.set(-2.28, 0, 0);
@@ -360,85 +306,17 @@ export function ModelViewer() {
     eMesh.position.set(2.12, 0, 0);
     beGroup.add(eMesh);
 
-    // ── 03. ALL X MODEL VARIATIONS ──────────────────────────────
+    // ── 03. "INVERTED CURVES" (Ɛ ✕ 3) ───────────────────────────
+    const invertedCurvesGroup = new THREE.Group();
+    invertedCurvesGroupRef.current = invertedCurvesGroup;
 
-    // [X1]: Crossing Monoliths (Diagonal 1 Pillars at ±35°)
-    const xGroup1 = new THREE.Group();
-    const x1Beam1 = new THREE.Mesh(oneGeo, matOne);
-    x1Beam1.rotation.z = Math.PI / 5.2;
-    x1Beam1.position.z = 0.04;
-    xGroup1.add(x1Beam1);
-    const x1Beam2 = new THREE.Mesh(oneGeo, matThree);
-    x1Beam2.rotation.z = -Math.PI / 5.2;
-    x1Beam2.position.z = -0.04;
-    xGroup1.add(x1Beam2);
-    xGroupsRef.current.X1 = xGroup1;
+    const icLeft = new THREE.Mesh(eGeo, matOne);
+    icLeft.position.set(-1.42, 0, 0);
+    invertedCurvesGroup.add(icLeft);
 
-    // [X2]: Organic Wings (3 + Mirrored 3 merged back-to-back 3Ɛ)
-    const xGroup2 = new THREE.Group();
-    const x2Left = new THREE.Mesh(threeGeo, matOne);
-    x2Left.position.set(-1.42, 0, 0);
-    xGroup2.add(x2Left);
-    const x2Right = new THREE.Mesh(eGeo, matThree);
-    x2Right.position.set(1.42, 0, 0);
-    xGroup2.add(x2Right);
-    xGroupsRef.current.X2 = xGroup2;
-
-    // [X3]: Interlocking Curves (Turned 3s intersecting at 45°)
-    const xGroup3 = new THREE.Group();
-    const x3Mesh1 = new THREE.Mesh(threeGeo, matOne);
-    x3Mesh1.rotation.z = Math.PI / 4;
-    x3Mesh1.position.set(0, 0, 0.04);
-    xGroup3.add(x3Mesh1);
-    const x3Mesh2 = new THREE.Mesh(eGeo, matThree);
-    x3Mesh2.rotation.z = -Math.PI / 4;
-    x3Mesh2.position.set(0, 0, -0.04);
-    xGroup3.add(x3Mesh2);
-    xGroupsRef.current.X3 = xGroup3;
-
-    // [X4]: Inverted Curves (Ɛ + 3 facing inward)
-    const xGroup4 = new THREE.Group();
-    const x4Left = new THREE.Mesh(eGeo, matOne);
-    x4Left.position.set(-1.42, 0, 0);
-    xGroup4.add(x4Left);
-    const x4Right = new THREE.Mesh(threeGeo, matThree);
-    x4Right.position.set(1.42, 0, 0);
-    xGroup4.add(x4Right);
-    xGroupsRef.current.X4 = xGroup4;
-
-    // [X5]: 13 ✕ BE Monogram (Full 13 and BE crossed)
-    const xGroup5 = new THREE.Group();
-    const x5_13 = new THREE.Group();
-    const x5_1 = new THREE.Mesh(oneGeo, matOne);
-    x5_1.position.set(-1.25, 0, 0);
-    const x5_3 = new THREE.Mesh(threeGeo, matThree);
-    x5_3.position.set(1.00, 0, 0);
-    x5_13.add(x5_1);
-    x5_13.add(x5_3);
-    x5_13.scale.setScalar(0.72);
-    x5_13.position.set(-1.4, 0, 0.04);
-    xGroup5.add(x5_13);
-
-    const x5_BE = new THREE.Group();
-    const x5_BSpine = new THREE.Mesh(oneGeo, matOne);
-    x5_BSpine.position.set(-1.00, 0, 0);
-    const x5_BBowls = new THREE.Mesh(threeGeo, matThree);
-    x5_BBowls.position.set(0.40, 0, 0);
-    const x5_E = new THREE.Mesh(eGeo, matThree);
-    x5_E.position.set(2.00, 0, 0);
-    x5_BE.add(x5_BSpine);
-    x5_BE.add(x5_BBowls);
-    x5_BE.add(x5_E);
-    x5_BE.scale.setScalar(0.72);
-    x5_BE.position.set(1.4, 0, -0.04);
-    xGroup5.add(x5_BE);
-    xGroupsRef.current.X5 = xGroup5;
-
-    // [X6]: Architectural Ribbon Cross (Monolithic 4-point cross)
-    const xGroup6 = new THREE.Group();
-    const x6Mesh = new THREE.Mesh(archXGeo, matOne);
-    xGroup6.add(x6Mesh);
-    xGroupsRef.current.X6 = xGroup6;
+    const icRight = new THREE.Mesh(threeGeo, matThree);
+    icRight.position.set(1.42, 0, 0);
+    invertedCurvesGroup.add(icRight);
 
     // ── ROOT ORBIT ANCHOR ──────────────────────────────────────
     const rootGroup = new THREE.Group();
@@ -448,21 +326,11 @@ export function ModelViewer() {
 
     thirteenGroup.visible = activeModel === "13";
     beGroup.visible = activeModel === "BE";
-    xGroup1.visible = activeModel === "X" && xVariant === "X1";
-    xGroup2.visible = activeModel === "X" && xVariant === "X2";
-    xGroup3.visible = activeModel === "X" && xVariant === "X3";
-    xGroup4.visible = activeModel === "X" && xVariant === "X4";
-    xGroup5.visible = activeModel === "X" && xVariant === "X5";
-    xGroup6.visible = activeModel === "X" && xVariant === "X6";
+    invertedCurvesGroup.visible = activeModel === "INVERTED_CURVES";
 
     rootGroup.add(thirteenGroup);
     rootGroup.add(beGroup);
-    rootGroup.add(xGroup1);
-    rootGroup.add(xGroup2);
-    rootGroup.add(xGroup3);
-    rootGroup.add(xGroup4);
-    rootGroup.add(xGroup5);
-    rootGroup.add(xGroup6);
+    rootGroup.add(invertedCurvesGroup);
     scene.add(rootGroup);
 
     // 6. Studio Lighting Setup
@@ -592,13 +460,18 @@ export function ModelViewer() {
       if (container.contains(domEl)) {
         container.removeChild(domEl);
       }
+      oneGeo.dispose();
+      threeGeo.dispose();
+      eGeo.dispose();
+      matOne.dispose();
+      matThree.dispose();
       renderer.dispose();
     };
   }, []);
 
   // Update Grid
   useEffect(() => {
-    // gridHelper is managed in scene
+    // gridHelper managed in scene
   }, [showGrid]);
 
   const handleResetCamera = () => {
@@ -615,7 +488,7 @@ export function ModelViewer() {
     }
   };
 
-  const currentXInfo = X_VARIANTS_INFO[xVariant];
+  const currentInfo = MODELS_INFO[activeModel];
 
   return (
     <div className={styles.viewerPage}>
@@ -633,14 +506,14 @@ export function ModelViewer() {
           <span className={styles.hudBadge}>OFFICIAL 3D ARTIFACTS</span>
         </div>
 
-        {/* Model Switcher Pill Deck: BE, 13, and ALL X MODELS */}
+        {/* Model Switcher Pill Deck: 13, BE, and INVERTED CURVES only */}
         <div className={styles.modelSwitcher}>
           <button
-            className={`${styles.modelSwitchBtn} ${activeModel === "X" ? styles.modelSwitchBtnActive : ""}`}
-            onClick={() => setActiveModel("X")}
+            className={`${styles.modelSwitchBtn} ${activeModel === "13" ? styles.modelSwitchBtnActive : ""}`}
+            onClick={() => setActiveModel("13")}
             type="button"
           >
-            ✦ ALL X MODELS ({Object.keys(X_VARIANTS_INFO).length})
+            13 EMBLEM
           </button>
           <button
             className={`${styles.modelSwitchBtn} ${activeModel === "BE" ? styles.modelSwitchBtnActive : ""}`}
@@ -650,11 +523,11 @@ export function ModelViewer() {
             BE MONOLITH
           </button>
           <button
-            className={`${styles.modelSwitchBtn} ${activeModel === "13" ? styles.modelSwitchBtnActive : ""}`}
-            onClick={() => setActiveModel("13")}
+            className={`${styles.modelSwitchBtn} ${activeModel === "INVERTED_CURVES" ? styles.modelSwitchBtnActive : ""}`}
+            onClick={() => setActiveModel("INVERTED_CURVES")}
             type="button"
           >
-            13 EMBLEM
+            INVERTED CURVES (Ɛ ✕ 3)
           </button>
         </div>
 
@@ -668,44 +541,20 @@ export function ModelViewer() {
         </div>
       </header>
 
-      {/* Secondary Gallery Ribbon for switching between all X Variations */}
-      {activeModel === "X" && (
-        <div className={styles.xVariantBar}>
-          {(Object.keys(X_VARIANTS_INFO) as XVariantType[]).map((key) => (
-            <button
-              key={key}
-              className={`${styles.xVariantBtn} ${xVariant === key ? styles.xVariantBtnActive : ""}`}
-              onClick={() => setXVariant(key)}
-              type="button"
-            >
-              {X_VARIANTS_INFO[key].label}
-            </button>
-          ))}
-        </div>
-      )}
-
       {/* Live Telemetry Info Panel (Bottom Left) */}
       <div className={styles.telemetryPanel}>
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>ARTIFACT</span>
-          <span className={styles.telemetryVal}>
-            {activeModel === "BE" && "BE MONUMENTAL MONOLITH (OFFICIAL)"}
-            {activeModel === "13" && "13 MONOLITH EMBLEM (OFFICIAL)"}
-            {activeModel === "X" && `${currentXInfo.label} — ${currentXInfo.tag}`}
-          </span>
+          <span className={styles.telemetryVal}>{currentInfo.tag}</span>
         </div>
-        {activeModel === "X" && (
-          <>
-            <div className={styles.telemetryRow}>
-              <span className={styles.telemetryKey}>CONCEPT</span>
-              <span className={styles.telemetryVal}>{currentXInfo.desc}</span>
-            </div>
-            <div className={styles.telemetryRow}>
-              <span className={styles.telemetryKey}>GEOMETRY</span>
-              <span className={styles.telemetryVal}>{currentXInfo.formula}</span>
-            </div>
-          </>
-        )}
+        <div className={styles.telemetryRow}>
+          <span className={styles.telemetryKey}>CONCEPT</span>
+          <span className={styles.telemetryVal}>{currentInfo.desc}</span>
+        </div>
+        <div className={styles.telemetryRow}>
+          <span className={styles.telemetryKey}>GEOMETRY</span>
+          <span className={styles.telemetryVal}>{currentInfo.formula}</span>
+        </div>
         <div className={styles.telemetryRow}>
           <span className={styles.telemetryKey}>MATERIAL</span>
           <span className={styles.telemetryVal}>
@@ -728,7 +577,7 @@ export function ModelViewer() {
           </span>
         </div>
         <div className={styles.telemetryTip}>
-          <span>Drag to orbit · Scroll to zoom · Switch X models above</span>
+          <span>Drag to orbit · Scroll to zoom · Switch 3D models above</span>
         </div>
       </div>
 

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "@/styles/plus-ex/Continuous3DStory.module.css";
-import Link from "next/link";
 import { Plus3DCanvas } from "./Plus3DCanvas";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -73,7 +72,7 @@ export function Continuous3DStory() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
 
-  const [entryProgress, setEntryProgress] = useState(1);
+  const [entryProgress, setEntryProgress] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
@@ -97,11 +96,10 @@ export function Continuous3DStory() {
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: "+=8800",
+        end: "+=6000",
         pin: stage,
         pinSpacing: true,
-        scrub: 1.4,
-        anticipatePin: 1,
+        scrub: 0.55,
         onUpdate: (self) => {
           const p = Math.max(0, Math.min(1, self.progress));
           setScrollProgress(p);
@@ -160,10 +158,6 @@ export function Continuous3DStory() {
 
           {/* Worlds Sequence: CREATE (Right), BUILD (Left), GROW (Right) */}
           {WORLDS.map((world, idx) => {
-            // Synchronized timing matching 3D kinematics:
-            // Act 1 CREATE: [0.22, 0.46]
-            // Act 2 BUILD: [0.50, 0.74]
-            // Act 3 GROW: [0.78, 1.00]
             const ranges = [
               { start: 0.22, end: 0.46 },
               { start: 0.50, end: 0.74 },
@@ -243,7 +237,7 @@ export function Continuous3DStory() {
                     </div>
                   </div>
 
-                  {/* Mode 2: Plus-X Editorial Statement (Screenshot 3) */}
+                  {/* Mode 2: Plus-X Editorial Statement */}
                   <div
                     className={`${styles.statementView} ${
                       !isReel ? styles.modeVisible : styles.modeHidden

@@ -7,21 +7,24 @@ import styles from "@/styles/plus-ex/Plus3DCanvas.module.css";
 export interface Plus3DCanvasProps {
   progress?: number;
   entryProgress?: number;
-  actIndex?: number;
   className?: string;
   theme?: "dark" | "light" | "transparent";
 }
 
 /**
  * 3D 13 Utopia Architectural Emblem Canvas
- * Plus-X Exact Materiality & Lighting:
- * Matte architectural graphite monoliths with razor chamfers, deep studio lighting,
- * and a full continuous scroll-driven rotation story.
+ * Plus-X Exact Materiality & Kinematics:
+ * Matte architectural titanium monoliths with razor chamfers, deep studio lighting,
+ * and a full continuous scroll-driven rotation story:
+ * Act 0: Centered "13"
+ * Act 1 (CREATE): Left Column "BE" (360° spin)
+ * Act 2 (BUILD): Right Column "13" (360° spin)
+ * Act 3 (GROW): Left Column "BE" (360° spin)
+ * Finale: Sweeps to Center "13" and dives down into depth behind the portfolio
  */
 export function Plus3DCanvas({
   progress = 0,
   entryProgress = 1,
-  actIndex = 0,
   className,
   theme = "transparent",
 }: Plus3DCanvasProps) {
@@ -29,7 +32,6 @@ export function Plus3DCanvas({
   const groupRef = useRef<THREE.Group | null>(null);
   const progressRef = useRef(progress);
   const entryProgressRef = useRef(entryProgress);
-  const actRef = useRef(actIndex);
 
   useEffect(() => {
     progressRef.current = progress;
@@ -38,10 +40,6 @@ export function Plus3DCanvas({
   useEffect(() => {
     entryProgressRef.current = entryProgress;
   }, [entryProgress]);
-
-  useEffect(() => {
-    actRef.current = actIndex;
-  }, [actIndex]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -88,7 +86,6 @@ export function Plus3DCanvas({
       const topY = 2.62;
       const botY = -2.42;
 
-      // Start at left bottom
       shape.moveTo(-botR, botY);
       shape.lineTo(-topR, topY);
       shape.absarc(0, topY, topR, Math.PI, 0, true);
@@ -102,7 +99,6 @@ export function Plus3DCanvas({
     const createThreeShape = () => {
       const shape = new THREE.Shape();
 
-      // Top outer cap & upper arch
       shape.moveTo(-0.45, 2.82);
       shape.bezierCurveTo(0.30, 3.12, 1.30, 3.08, 1.88, 2.48);
       shape.bezierCurveTo(2.38, 1.95, 2.28, 1.12, 1.72, 0.52);
@@ -167,23 +163,29 @@ export function Plus3DCanvas({
       bevelSegments: 5,
     };
 
-    // 13 Utopia Signature Dark Titanium Obsidian Physical Material (Pure Architectural Metal)
+    // 13 Utopia Signature Dark Titanium Obsidian Physical Material
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x222428), // Dark architectural titanium
+      color: new THREE.Color(0x222428),
       roughness: 0.28,
       metalness: 0.82,
       clearcoat: 0.45,
       clearcoatRoughness: 0.16,
       reflectivity: 0.90,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+      polygonOffsetUnits: -1,
     });
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x1e2024), // Deep obsidian graphite
+      color: new THREE.Color(0x1e2024),
       roughness: 0.30,
       metalness: 0.80,
       clearcoat: 0.45,
       clearcoatRoughness: 0.16,
       reflectivity: 0.90,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
     });
 
     // ── 01. SUB-GROUP: "13" EMBLEM ─────────────────────────────
@@ -206,18 +208,16 @@ export function Plus3DCanvas({
     // ── 02. SUB-GROUP: "BE" MONOLITH EMBLEM ────────────────────
     const beGroup = new THREE.Group();
 
-    // "B": Signature "1" + "3" docked together from the 13 brand mark
     const bGroup = new THREE.Group();
     const bSpine = new THREE.Mesh(oneGeo, matTitaniumOne);
-    bSpine.position.set(-1.00, 0, 0);
+    bSpine.position.set(-1.00, 0, 0.003);
     const bBowls = new THREE.Mesh(threeGeo, matTitaniumThree);
-    bBowls.position.set(0.40, 0, 0);
+    bBowls.position.set(0.40, 0, -0.003);
     bGroup.add(bSpine);
     bGroup.add(bBowls);
     bGroup.position.set(-2.28, 0, 0);
     beGroup.add(bGroup);
 
-    // "E": Organic "3" ribbon mirrored with refined kerning gap
     const eGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
     eGeo.center();
     const eMesh = new THREE.Mesh(eGeo, matTitaniumThree);
@@ -227,43 +227,37 @@ export function Plus3DCanvas({
     beGroup.visible = false;
     emblemGroup.add(beGroup);
 
-    // Center the entire 13 emblem group in the screen
-    emblemGroup.scale.setScalar(0.80);
+    // Center the entire 13 emblem group
+    emblemGroup.scale.setScalar(0.88);
     emblemGroup.position.set(0, 0, -1.0);
     emblemGroup.rotation.set(0, 0, 0);
     scene.add(emblemGroup);
     groupRef.current = emblemGroup;
 
-    // Studio Lighting (Crisp Dark Body with Luxury Rim Highlights)
+    // Studio Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
     scene.add(ambientLight);
 
-    // Key Light
     const keyLight = new THREE.DirectionalLight(0xffffff, 3.8);
     keyLight.position.set(7, 9, 8);
     scene.add(keyLight);
 
-    // Soft Fill Light
     const fillLight = new THREE.DirectionalLight(0xcccccc, 1.8);
     fillLight.position.set(-7, 2, 5);
     scene.add(fillLight);
 
-    // Champagne Rim Light (Accentuates Curves & Chamfers)
     const goldRimLight = new THREE.DirectionalLight(0xf4dfc8, 4.5);
     goldRimLight.position.set(4, -6, -3);
     scene.add(goldRimLight);
 
-    // Left Rim Light (Edge Definition)
     const leftRimLight = new THREE.DirectionalLight(0xffffff, 3.2);
     leftRimLight.position.set(-8, 3, -4);
     scene.add(leftRimLight);
 
-    // Top Overhead Light
     const topLight = new THREE.DirectionalLight(0xffffff, 1.5);
     topLight.position.set(0, 10, -1);
     scene.add(topLight);
 
-    // Front Specular Highlight for Chamfer Definition
     const frontSpecular = new THREE.DirectionalLight(0xffffff, 2.6);
     frontSpecular.position.set(0, 3, 7);
     scene.add(frontSpecular);
@@ -279,7 +273,7 @@ export function Plus3DCanvas({
     };
     window.addEventListener("resize", onResize);
 
-    // Render loop — continuous scroll-driven cinematic kinematics & clean 13 ⇄ BE transformations
+    // Render loop — authentic continuous scroll kinematics
     let rafId: number;
     let currentX = 0;
     let currentY = 0;
@@ -287,10 +281,9 @@ export function Plus3DCanvas({
     let currentRotX = 0.08;
     let currentRotY = 0;
     let currentRotZ = 0;
-    let currentScale = 0.80;
+    let currentScale = 0.88;
     let currentMorph = 0; // 0 = "13", 1.0 = "BE"
 
-    // Smoothstep easing helper
     const smoothstep = (min: number, max: number, value: number) => {
       const x = Math.max(0, Math.min(1, (value - min) / (max - min)));
       return x * x * (3 - 2 * x);
@@ -302,10 +295,12 @@ export function Plus3DCanvas({
       const entryP = Math.max(0, Math.min(1, entryProgressRef.current));
 
       if (emblemGroup) {
-        // Slide smoothly from behind video during entry (entryP: 0 -> 1)
-        const targetSlideY = (1 - entryP) * -4.2;
+        const targetSlideY = 0;
+        const entryFade = smoothstep(0.05, 0.65, entryP);
 
         let targetX = 0;
+        let targetY = 0;
+        let targetZ = -1.0;
         let targetRotY = 0;
         let targetRotX = 0.08;
         let targetRotZ = 0;
@@ -316,7 +311,9 @@ export function Plus3DCanvas({
           // Act 0: Centered Manifesto -> Pure 13
           const localP = p / 0.16;
           targetX = 0;
-          targetRotY = localP * 0.20;
+          targetY = 0;
+          targetZ = -1.0;
+          targetRotY = localP * 0.35;
           targetRotX = 0.06;
           targetRotZ = 0;
           targetScale = 0.88;
@@ -325,7 +322,9 @@ export function Plus3DCanvas({
           // Transition 0 -> 1: Center -> Left Column with 360° spin (13 => BE)
           const t = smoothstep(0.16, 0.28, p);
           targetX = -3.9 * t;
-          targetRotY = 0.20 * (1 - t) + (Math.PI * 2 + 0.22) * t;
+          targetY = 0;
+          targetZ = -1.0;
+          targetRotY = 0.35 * (1 - t) + (Math.PI * 2 + 0.22) * t;
           targetRotX = 0.06 + Math.sin(t * Math.PI) * 0.12;
           targetRotZ = 0.04 * t;
           targetScale = 0.88 + 0.08 * t;
@@ -334,6 +333,8 @@ export function Plus3DCanvas({
           // Act 1: CREATE (Settled Full Left Column as BE)
           const localP = (p - 0.28) / 0.18;
           targetX = -3.9;
+          targetY = 0;
+          targetZ = -1.0;
           targetRotY = Math.PI * 2 + 0.22 + Math.sin(localP * Math.PI) * 0.08;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = 0.04;
@@ -343,6 +344,8 @@ export function Plus3DCanvas({
           // Transition 1 -> 2: Left -> Right Column sweep with 360° spin (BE => 13)
           const t = smoothstep(0.46, 0.54, p);
           targetX = -3.9 + 7.8 * t;
+          targetY = 0;
+          targetZ = -1.0;
           targetRotY = (Math.PI * 2 + 0.22) * (1 - t) + (Math.PI * 4 - 0.22) * t;
           targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
           targetRotZ = 0.04 * (1 - 2 * t);
@@ -352,6 +355,8 @@ export function Plus3DCanvas({
           // Act 2: BUILD (Settled Full Right Column as 13)
           const localP = (p - 0.54) / 0.20;
           targetX = 3.9;
+          targetY = 0;
+          targetZ = -1.0;
           targetRotY = Math.PI * 4 - 0.22 - Math.sin(localP * Math.PI) * 0.08;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = -0.04;
@@ -361,50 +366,61 @@ export function Plus3DCanvas({
           // Transition 2 -> 3: Right -> Left Column sweep with 360° spin (13 => BE)
           const t = smoothstep(0.74, 0.82, p);
           targetX = 3.9 - 7.8 * t;
+          targetY = 0;
+          targetZ = -1.0;
           targetRotY = (Math.PI * 4 - 0.22) * (1 - t) + (Math.PI * 6 + 0.22) * t;
           targetRotX = 0.08 + Math.sin(t * Math.PI) * 0.14;
           targetRotZ = -0.04 * (1 - 2 * t);
           targetScale = 0.96;
           targetMorph = t;
-        } else if (p >= 0.82 && p < 0.94) {
-          // Act 3: GROW (Settled Full Left Column as BE)
-          const localP = (p - 0.82) / 0.12;
+        } else if (p >= 0.82 && p < 0.96) {
+          // Act 3: GROW (Settled Full Left Column as BE — Identical kinetics to CREATE & BUILD)
+          const localP = (p - 0.82) / 0.14;
           targetX = -3.9;
+          targetY = 0;
+          targetZ = -1.0;
           targetRotY = Math.PI * 6 + 0.22 + Math.sin(localP * Math.PI) * 0.08;
           targetRotX = 0.08 + Math.cos(localP * Math.PI) * 0.03;
           targetRotZ = 0.04;
           targetScale = 0.96;
           targetMorph = 1.0;
         } else {
-          // Finale [0.94 -> 1.00]: Sweeps to Center, settles back to 13 (BE => 13)
-          const t = smoothstep(0.94, 1.00, p);
+          // Continuous handover to Section 04: Sweeps Left -> Center, morphs BE -> 13
+          const t = smoothstep(0.96, 1.00, p);
           targetX = -3.9 * (1 - t);
-          targetRotY = (Math.PI * 6 + 0.22) * (1 - t) + (Math.PI * 8) * t;
-          targetRotX = 0.08;
+          targetY = 0;
+          targetZ = -1.0;
+          targetRotY = (Math.PI * 6 + 0.22) * (1 - t) + (Math.PI * 8.0) * t;
+          targetRotX = 0.08 - 0.08 * t;
           targetRotZ = 0.04 * (1 - t);
-          targetScale = 0.96 - 0.08 * t;
+          targetScale = 0.96 * (1 - 0.08 * t);
           targetMorph = 1.0 - t;
         }
 
-        // High-inertia smooth damping for cinematic motion & transformation
-        const dampFactor = 0.036;
-        const morphDamp = 0.075;
+        // Precision physics damping matching CREATE and BUILD
+        const dampFactor = 0.11;
+        const morphDamp = 0.15;
 
         currentX += (targetX - currentX) * dampFactor;
-        currentY += (targetSlideY - currentY) * dampFactor;
+        currentY += (targetY - currentY) * dampFactor;
+        currentZ += (targetZ - currentZ) * dampFactor;
         currentScale += (targetScale - currentScale) * dampFactor;
         currentRotX += (targetRotX - currentRotX) * dampFactor;
         currentRotY += (targetRotY - currentRotY) * dampFactor;
         currentRotZ += (targetRotZ - currentRotZ) * dampFactor;
         currentMorph += (targetMorph - currentMorph) * morphDamp;
 
-        emblemGroup.position.set(currentX, currentY, currentZ);
-        emblemGroup.scale.setScalar(currentScale);
-        emblemGroup.rotation.set(currentRotX, currentRotY, currentRotZ);
+        renderer.domElement.style.opacity = `${entryFade}`;
+        emblemGroup.visible = entryP > 0.02;
 
-        // Seamless solid edge-on morph: 13 ⇄ BE
-        thirteenGroup.visible = currentMorph < 0.50;
-        beGroup.visible = currentMorph >= 0.50;
+        if (emblemGroup.visible) {
+          emblemGroup.position.set(currentX, currentY, currentZ);
+          emblemGroup.scale.setScalar(currentScale);
+          emblemGroup.rotation.set(currentRotX, currentRotY, currentRotZ);
+
+          thirteenGroup.visible = currentMorph < 0.50;
+          beGroup.visible = currentMorph >= 0.50;
+        }
       }
 
       renderer.render(scene, camera);
