@@ -294,24 +294,28 @@ export function Plus3DCanvas({
     scene.add(auraParticleSystem);
 
     // Studio Lighting (Tenbin Exact Overhead Grazing & Neutral Chiaroscuro Pipeline)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 3.0);
     scene.add(ambientLight);
 
+    const frontKeyLight = new THREE.DirectionalLight(0xffffff, 5.0);
+    frontKeyLight.position.set(0, 3, 11);
+    scene.add(frontKeyLight);
+
     const keyLight = new THREE.DirectionalLight(0xffffff, 5.5);
-    keyLight.position.set(4, 12, 10);
+    keyLight.position.set(5, 12, 9);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xd8d8d8, 3.0);
+    const fillLight = new THREE.DirectionalLight(0xd8d8d8, 3.5);
     fillLight.position.set(-10, -2, 8);
     scene.add(fillLight);
 
     // Overhead high-intensity grazing light for sharp top chamfer specular highlights
-    const topRimLight = new THREE.DirectionalLight(0xffffff, 10.0);
+    const topRimLight = new THREE.DirectionalLight(0xffffff, 11.0);
     topRimLight.position.set(0, 18, 1);
     scene.add(topRimLight);
 
     // Back-kicker rim light for crisp edge separation from dark stardust void
-    const backRimLight = new THREE.DirectionalLight(0xffffff, 7.5);
+    const backRimLight = new THREE.DirectionalLight(0xffffff, 8.0);
     backRimLight.position.set(0, -6, -10);
     scene.add(backRimLight);
 
