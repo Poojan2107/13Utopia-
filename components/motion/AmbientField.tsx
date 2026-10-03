@@ -6,10 +6,9 @@ import styles from "@/styles/motion/AmbientField.module.css";
 
 /**
  * Tenbin Exact 1:1 Atmosphere:
- * 1. Wide-Angle Interstellar Stardust Cloud & Silvery Cosmic Haze
- * 2. High-Density Micro-Grain Sand / Cosmic Dust Particulates
- * 3. Overhead Volumetric Illumination with Natural Horizontal Spread
- * 4. 3D Floating Dust Motes with Cursor Parallax
+ * - Deep, moody dark obsidian/slate backdrop with subtle silver stardust haze
+ * - High contrast for foreground typography
+ * - Tactile sand grain and glistening micro-stardust particles
  */
 export function AmbientField() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -21,7 +20,6 @@ export function AmbientField() {
     let width = window.innerWidth;
     let height = window.innerHeight;
 
-    // Perspective Scene for 3D Floating Dust Particulates
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
     camera.position.set(0, 0, 10);
@@ -36,7 +34,7 @@ export function AmbientField() {
     renderer.setClearColor(0x000000, 1);
     container.appendChild(renderer.domElement);
 
-    // ── 01. TENBIN 1:1 WIDE COSMIC STARDUST & HAZE SHADER ──────────────────
+    // ── 01. TENBIN 1:1 MOODY STARDUST SHADER ───────────────────────────────
     const nebulaVertexShader = `
       varying vec2 vUv;
       void main() {
@@ -88,65 +86,57 @@ export function AmbientField() {
         float scrollFraction = uScroll / max(uResolution.y, 1.0);
         float scrollOffset = scrollFraction * 0.75;
 
-        // Subtle mouse parallax
-        vec2 m = uMouse * 0.06;
+        vec2 m = uMouse * 0.05;
         vec2 p = vec2(uv.x * 1.1 + m.x, uv.y - scrollOffset * 0.5);
 
-        float t = uTime * 0.03;
+        float t = uTime * 0.025;
 
-        // 1. WIDE HORIZONTAL OVERHEAD STARDUST CLOUD (Tenbin 1:1 exact broad envelope)
-        // High density across top center, extending broadly to top-left and top-right
-        float vertGrad = smoothstep(-0.65, 0.75, uv.y + 0.15 - scrollOffset);
-        float horizSpread = 1.0 - smoothstep(0.4, 2.2, abs(uv.x - m.x * 0.3));
+        // 1. TENBIN SOFT HORIZONTAL COSMIC DUST ENVELOPE (Moody, not washed out)
+        float vertGrad = smoothstep(-0.7, 0.8, uv.y + 0.2 - scrollOffset);
+        float horizSpread = 1.0 - smoothstep(0.3, 2.4, abs(uv.x - m.x * 0.25));
         float cloudBase = vertGrad * horizSpread;
 
-        // Organic wispy stardust filaments & cosmic clouds
-        float n1 = fbm(p * 1.35 + vec2(t * 0.05, -t * 0.08));
-        float n2 = fbm(p * 2.8 + vec2(-t * 0.06, t * 0.04) + n1 * 0.65);
-        float n3 = fbm(p * 5.2 + n2 * 0.5);
+        float n1 = fbm(p * 1.4 + vec2(t * 0.04, -t * 0.06));
+        float n2 = fbm(p * 2.8 + vec2(-t * 0.05, t * 0.03) + n1 * 0.5);
 
-        float nebulaWisps = mix(n1, n2, 0.5) * 0.75 + n3 * 0.25;
+        float nebulaWisps = mix(n1, n2, 0.5);
+        float atmosphere = cloudBase * 0.55 + nebulaWisps * cloudBase * 0.45;
 
-        // Combine broad cloud envelope with organic cosmic filaments
-        float atmosphere = cloudBase * 0.70 + nebulaWisps * cloudBase * 0.65;
-
-        // Central luminous halo behind the monolith
-        float centerDist = length(vec2(uv.x * 1.15 - m.x * 0.2, (uv.y - 0.15 + scrollOffset) * 1.3));
-        float centralAura = exp(-centerDist * 1.6) * 0.45;
+        // Gentle central aura behind the monolith
+        float centerDist = length(vec2(uv.x * 1.15 - m.x * 0.15, (uv.y - 0.15 + scrollOffset) * 1.25));
+        float centralAura = exp(-centerDist * 1.8) * 0.35;
         atmosphere += centralAura * vertGrad;
 
-        // 2. ULTRA-DENSE TACTILE MICRO-STARDUST & SAND GRAIN (Tenbin signature texture)
+        // 2. TACTILE SAND GRAIN & GLISTENING STARDUST
         vec2 grainCoord = gl_FragCoord.xy;
         float g1 = hash12(grainCoord + fract(uTime * 0.02) * 100.0);
         float g2 = hash12(grainCoord * 0.5 + vec2(23.4, 67.8));
         float g3 = hash12(grainCoord * 1.6 + vec2(89.2, 14.1));
 
-        // Micro-speckles caught in light
-        float stardustSpecks = step(0.965, g1) * (0.4 + 0.6 * g2);
+        float stardustSpecks = step(0.966, g1) * (0.35 + 0.65 * g2);
         float fineSand = (g1 * 0.5 + g2 * 0.3 + g3 * 0.2);
 
-        // Stardust illumination follows the atmosphere
-        float dustGlow = clamp(atmosphere * 1.45, 0.10, 1.0);
+        float dustGlow = clamp(atmosphere * 1.35, 0.08, 0.85);
 
-        // 3. TENBIN MONOCHROMATIC COLOR COMPOSITION
-        vec3 deepVoid = vec3(0.008, 0.009, 0.012);       // Deep space background
-        vec3 graphiteDust = vec3(0.11, 0.12, 0.15);     // Ambient dust haze
-        vec3 silverNebula = vec3(0.48, 0.52, 0.58);     // Illuminated silver stardust
-        vec3 brightWhite = vec3(0.92, 0.94, 0.98);      // Peak cloud highlights
+        // 3. TENBIN MOODY DARK COLOR PALETTE (Deep Slate & Silver Mist — Never blinding white)
+        vec3 deepVoid = vec3(0.012, 0.014, 0.018);       // Deep space base
+        vec3 graphiteDust = vec3(0.055, 0.065, 0.085);  // Subtle ambient haze
+        vec3 silverNebula = vec3(0.16, 0.19, 0.24);     // Atmospheric silver dust
+        vec3 softHighlight = vec3(0.32, 0.37, 0.45);    // Peak ambient light
 
         vec3 col = deepVoid;
-        col = mix(col, graphiteDust, smoothstep(0.05, 0.38, atmosphere));
-        col = mix(col, silverNebula, smoothstep(0.35, 0.72, atmosphere));
-        col = mix(col, brightWhite, smoothstep(0.68, 1.05, atmosphere));
+        col = mix(col, graphiteDust, smoothstep(0.04, 0.35, atmosphere));
+        col = mix(col, silverNebula, smoothstep(0.32, 0.70, atmosphere));
+        col = mix(col, softHighlight, smoothstep(0.65, 1.05, atmosphere));
 
-        // Apply tactile photographic sand grain
-        col += (fineSand - 0.5) * 0.085 * (0.4 + 0.8 * cloudBase);
+        // Tactile photographic film grain
+        col += (fineSand - 0.5) * 0.065 * (0.35 + 0.65 * cloudBase);
 
-        // Apply glistening stardust points
-        col += vec3(stardustSpecks * 0.75 * dustGlow);
+        // Stardust pin-prick points
+        col += vec3(stardustSpecks * 0.65 * dustGlow);
 
-        // Smooth bottom and side vignette for cinematic framing
-        float vignette = 1.0 - smoothstep(0.6, 1.8, length(uv * vec2(0.95, 1.2)));
+        // Smooth cinematic vignette
+        float vignette = 1.0 - smoothstep(0.55, 1.75, length(uv * vec2(0.95, 1.2)));
         col *= vignette;
 
         gl_FragColor = vec4(col, 1.0);
@@ -182,15 +172,15 @@ export function AmbientField() {
     if (pCtx) {
       const grad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
       grad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
-      grad.addColorStop(0.22, "rgba(240, 246, 255, 0.85)");
-      grad.addColorStop(0.6, "rgba(190, 210, 235, 0.2)");
+      grad.addColorStop(0.22, "rgba(220, 235, 255, 0.75)");
+      grad.addColorStop(0.6, "rgba(160, 185, 220, 0.15)");
       grad.addColorStop(1, "rgba(0, 0, 0, 0)");
       pCtx.fillStyle = grad;
       pCtx.fillRect(0, 0, 64, 64);
     }
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
-    const particleCount = 850;
+    const particleCount = 750;
     const particleGeo = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
     const particleVelocities: Array<{ vx: number; vy: number; vz: number }> = [];
@@ -210,10 +200,10 @@ export function AmbientField() {
     particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
 
     const particleMat = new THREE.PointsMaterial({
-      size: 0.10,
+      size: 0.09,
       map: particleTexture,
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.55,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -257,16 +247,13 @@ export function AmbientField() {
       rafId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
-      // Mouse Parallax Damping
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;
 
-      // Update Shader Uniforms
       nebulaUniforms.uTime.value = elapsedTime;
       nebulaUniforms.uMouse.value.set(mouseX, mouseY);
       nebulaUniforms.uScroll.value = scrollY;
 
-      // Update 3D Floating Dust
       const posAttr = particleGeo.attributes.position as THREE.BufferAttribute;
       const arr = posAttr.array as Float32Array;
 
@@ -279,12 +266,10 @@ export function AmbientField() {
       }
       posAttr.needsUpdate = true;
 
-      // Deep space orbital parallax
       particleSystem.rotation.y = elapsedTime * 0.012 + mouseX * 0.06;
       particleSystem.rotation.x = mouseY * 0.04;
       particleSystem.position.y = -(scrollY * 0.001);
 
-      // Render 2-pass: (1) Continuous Atmospheric Shader, (2) 3D Micro-Stardust
       renderer.autoClear = false;
       renderer.clear();
       renderer.render(bgScene, bgCamera);

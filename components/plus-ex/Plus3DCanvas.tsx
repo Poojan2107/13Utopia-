@@ -189,34 +189,34 @@ export function Plus3DCanvas({
     bumpTexture.wrapT = THREE.RepeatWrapping;
     bumpTexture.repeat.set(3.5, 3.5);
 
-    // 13 Utopia Exact Tenbin Material Grading: Chiseled Obsidian Architectural Titanium
+    // 13 Utopia Exact Tenbin Material Grading: Chiseled Obsidian Architectural Slate / Titanium
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x0e1014),
-      roughness: 0.35,
-      metalness: 0.85,
-      clearcoat: 0.75,
-      clearcoatRoughness: 0.18,
-      reflectivity: 0.90,
+      color: new THREE.Color(0x242830),
+      roughness: 0.38,
+      metalness: 0.65,
+      clearcoat: 0.50,
+      clearcoatRoughness: 0.20,
+      reflectivity: 0.85,
       bumpMap: bumpTexture,
-      bumpScale: 0.018,
-      emissive: new THREE.Color(0x030406),
-      emissiveIntensity: 0.15,
+      bumpScale: 0.028,
+      emissive: new THREE.Color(0x06080b),
+      emissiveIntensity: 0.1,
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x0c0e12),
-      roughness: 0.36,
-      metalness: 0.84,
-      clearcoat: 0.75,
-      clearcoatRoughness: 0.18,
-      reflectivity: 0.90,
+      color: new THREE.Color(0x20242c),
+      roughness: 0.39,
+      metalness: 0.65,
+      clearcoat: 0.50,
+      clearcoatRoughness: 0.20,
+      reflectivity: 0.85,
       bumpMap: bumpTexture,
-      bumpScale: 0.018,
-      emissive: new THREE.Color(0x020305),
-      emissiveIntensity: 0.15,
+      bumpScale: 0.028,
+      emissive: new THREE.Color(0x05070a),
+      emissiveIntensity: 0.1,
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
@@ -323,32 +323,37 @@ export function Plus3DCanvas({
     const auraParticleSystem = new THREE.Points(auraParticleGeo, auraParticleMat);
     scene.add(auraParticleSystem);
 
-    // Studio Lighting (Tenbin High-Impact Top Rim & Kicker Specular Architecture)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.2);
+    // Studio Lighting (Tenbin Direct Front Key + Top Rim + Back Grazers)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
     scene.add(ambientLight);
 
-    const topRimLight = new THREE.DirectionalLight(0xffffff, 7.5);
-    topRimLight.position.set(0, 18, 4);
+    // Direct front camera key light (Illuminates the front stone face and chamfers)
+    const frontKeyLight = new THREE.DirectionalLight(0xffffff, 4.5);
+    frontKeyLight.position.set(0, 2, 14);
+    scene.add(frontKeyLight);
+
+    const topRimLight = new THREE.DirectionalLight(0xffffff, 6.5);
+    topRimLight.position.set(0, 16, 4);
     scene.add(topRimLight);
 
-    const keyLight = new THREE.DirectionalLight(0xdfe8f5, 5.5);
-    keyLight.position.set(10, 14, 12);
+    const keyLight = new THREE.DirectionalLight(0xdfe8f5, 4.0);
+    keyLight.position.set(10, 12, 10);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x8fa0b8, 3.5);
-    fillLight.position.set(-14, -4, 10);
+    const fillLight = new THREE.DirectionalLight(0x8fa0b8, 3.0);
+    fillLight.position.set(-12, -2, 10);
     scene.add(fillLight);
 
-    const backRimLeft = new THREE.DirectionalLight(0xcfdbe8, 6.0);
-    backRimLeft.position.set(-12, -6, -10);
+    const backRimLeft = new THREE.DirectionalLight(0xcfdbe8, 5.5);
+    backRimLeft.position.set(-12, -4, -10);
     scene.add(backRimLeft);
 
-    const backRimRight = new THREE.DirectionalLight(0xe5effa, 6.0);
-    backRimRight.position.set(12, -6, -10);
+    const backRimRight = new THREE.DirectionalLight(0xe5effa, 5.5);
+    backRimRight.position.set(12, -4, -10);
     scene.add(backRimRight);
 
-    const sideGrazingLight = new THREE.DirectionalLight(0xf4dfc8, 3.8);
-    sideGrazingLight.position.set(12, -4, -6);
+    const sideGrazingLight = new THREE.DirectionalLight(0xf4dfc8, 3.2);
+    sideGrazingLight.position.set(12, -2, -6);
     scene.add(sideGrazingLight);
 
     // Mouse Parallax Trackers
@@ -404,8 +409,11 @@ export function Plus3DCanvas({
       mouseY += (targetMouseY - mouseY) * 0.06;
 
       // Soft studio key light parallax (Natural, diffused edge sheen — zero glare blobs)
+      frontKeyLight.position.x = mouseX * 4.5;
+      frontKeyLight.position.y = 2 + mouseY * 3.5;
+
       keyLight.position.x = 10 + mouseX * 2.5;
-      keyLight.position.y = 16 + mouseY * 2.0;
+      keyLight.position.y = 12 + mouseY * 2.0;
 
       topRimLight.position.x = mouseX * 2.0;
 
