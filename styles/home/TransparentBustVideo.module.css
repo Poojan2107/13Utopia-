@@ -19,14 +19,15 @@
 }
 
 .fallbackImage {
-  position: relative;
-  width: 100%;
-  max-width: 860px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(860px, 90vw);
   height: min(78vh, 780px);
   aspect-ratio: 1 / 1;
   object-fit: cover;
   object-position: center 55%;
-  margin: 0 auto;
   pointer-events: none;
   opacity: 0.96;
   transition: opacity 0.5s ease;
@@ -37,13 +38,13 @@
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
+  display: none !important;
 }
 
 .canvas {
   position: relative;
   z-index: 2;
-  width: 100%;
-  max-width: 860px;
+  width: min(860px, 90vw);
   height: min(78vh, 780px);
   aspect-ratio: 1 / 1;
   display: block;
@@ -54,7 +55,7 @@
 @media (max-width: 1100px) {
   .fallbackImage,
   .canvas {
-    max-width: 700px;
+    width: min(700px, 92vw);
     height: min(70vh, 700px);
   }
 }
@@ -62,7 +63,7 @@
 @media (max-width: 768px) {
   .fallbackImage,
   .canvas {
-    max-width: 100vw;
+    width: 100vw;
     height: min(58vh, 450px);
   }
 }
