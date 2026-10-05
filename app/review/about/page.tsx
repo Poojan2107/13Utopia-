@@ -30,7 +30,7 @@ export default function ReviewAboutPage() {
               </h1>
 
               <p className={styles.thesis}>
-                13 Utopia is an independent creative technology and digital marketing company founded in Canada and operating globally. We bridge the structural gap between world-class brand aesthetic, deep full-stack engineering, and high-performance search and growth systems.
+                13 Utopia is an independent creative technology and digital marketing company operating globally. We bridge the structural gap between world-class brand aesthetic, deep full-stack engineering, and high-performance search and growth systems.
               </p>
             </div>
 
@@ -40,34 +40,26 @@ export default function ReviewAboutPage() {
           </div>
         </section>
 
-        {/* Global Studio Hubs */}
+        {/* Operating Scope */}
         <section className={styles.hubsSection}>
           <div className={styles.sectionHeaderGroup}>
-            <span className={styles.sectionHeading}>GLOBAL STUDIO HUBS // VERIFIED LOCATIONS</span>
-            <h2 className={styles.sectionLead}>Active physical presence across continents.</h2>
+            <span className={styles.sectionHeading}>GLOBAL ENGAGEMENT // WORLDWIDE DELIVERY</span>
+            <h2 className={styles.sectionLead}>Direct senior-partner execution for international brands.</h2>
           </div>
 
           <div className={styles.hubsGrid}>
             <div className={styles.hubCard}>
-              <h3 className={styles.hubCity}>Scarborough / Toronto, Canada</h3>
+              <h3 className={styles.hubCity}>Independent Creative Direction</h3>
               <p className={styles.hubDesc}>
-                30 Kimbercroft Ct, Markham Corners, Scarborough, ON M1S 4K9, Canada. North American executive client partnerships, brand positioning, spatial UI architecture, and international contracts.
+                Direct executive client partnerships, brand positioning, spatial UI architecture, and high-conversion visual systems built with bespoke craftsmanship.
               </p>
-              <div className={styles.hubTimezone}>
-                <span className={styles.hubLiveDot} />
-                <span>EST (UTC-5:00) · OFFICIAL CANADIAN HQ</span>
-              </div>
             </div>
 
             <div className={styles.hubCard}>
-              <h3 className={styles.hubCity}>Ahmedabad / Delhi, India</h3>
+              <h3 className={styles.hubCity}>Full-Stack Engineering &amp; Growth</h3>
               <p className={styles.hubDesc}>
-                1123 Iconic Shyamal, Shyamal Cross Roads, 132 Feet Ring Rd, Ahmedabad, Gujarat 380015, India. Full-stack engineering laboratory, AI agent development, WebGL graphics pipelines, and technical SEO operations.
+                Modern web architectures, AI workflows, WebGL graphics pipelines, and technical SEO operations engineered with zero templates and 100% IP transfer.
               </p>
-              <div className={styles.hubTimezone}>
-                <span className={styles.hubLiveDot} />
-                <span>IST (UTC+5:30) · ACTIVE ENGINEERING LAB</span>
-              </div>
             </div>
           </div>
         </section>

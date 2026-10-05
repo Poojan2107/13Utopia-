@@ -1,38 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import styles from "@/styles/framer/FramerSectionCTA.module.css";
 
 export function FramerSectionCTA() {
-  const [delhiTime, setDelhiTime] = useState("");
-  const [torontoTime, setTorontoTime] = useState("");
-
-  useEffect(() => {
-    const update = () => {
-      const now = new Date();
-      setDelhiTime(
-        now.toLocaleTimeString("en-US", {
-          timeZone: "Asia/Kolkata",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        })
-      );
-      setTorontoTime(
-        now.toLocaleTimeString("en-US", {
-          timeZone: "America/Toronto",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        })
-      );
-    };
-    update();
-    const timer = setInterval(update, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
     <section className={styles.section} aria-label="Section 09: Initiation" id="contact">
       <div className={styles.container}>
@@ -102,16 +73,12 @@ export function FramerSectionCTA() {
         >
           <div className={styles.nodeStatus}>
             <span className={styles.statusDot} />
-            <span className={styles.statusLabel}>ACCEPTING COMMISSIONS & PROJECTS</span>
+            <span className={styles.statusLabel}>ACCEPTING COMMISSIONS &amp; PROJECTS</span>
           </div>
 
           <div className={styles.timeNodes}>
             <span className={styles.timeNode}>
-              DELHI {delhiTime || "IST"}
-            </span>
-            <span className={styles.nodeDot}>·</span>
-            <span className={styles.timeNode}>
-              TORONTO {torontoTime || "EST"}
+              GLOBAL CLIENT PARTNERSHIPS
             </span>
           </div>
         </motion.div>

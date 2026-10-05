@@ -186,26 +186,6 @@ export default function ContactPage() {
             </div>
 
             <div className={styles.infoBlock}>
-              <span className={styles.infoHeading}>GLOBAL OPERATIONAL HUBS</span>
-              <div className={styles.hubList}>
-                <div className={styles.hubItem}>
-                  <span className={styles.hubCity}>Delhi, India</span>
-                  <div className={styles.hubTime}>
-                    <span className={styles.hubLiveDot} />
-                    <span>IST (UTC+5:30) · ACTIVE ENGINEERING</span>
-                  </div>
-                </div>
-                <div className={styles.hubItem}>
-                  <span className={styles.hubCity}>Toronto, Canada</span>
-                  <div className={styles.hubTime}>
-                    <span className={styles.hubLiveDot} />
-                    <span>EST (UTC-5:00) · STRATEGY &amp; DESIGN</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.infoBlock}>
               <span className={styles.infoHeading}>FAQ // ENGAGEMENT PROCESS</span>
               <div className={styles.faqBlock}>
                 <div className={styles.faqItem}>

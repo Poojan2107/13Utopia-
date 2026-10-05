@@ -103,18 +103,18 @@ export default function ReviewHubPage() {
             <Link href="/review/about" className={styles.principleBlock} style={{ textDecoration: "none", color: "inherit" }}>
               <span className={styles.principleWatermark}>03</span>
               <span className={styles.principleNum}>SECTION 03 // ABOUT</span>
-              <h3 className={styles.principleTitle}>Studio Story &amp; Dual Hubs →</h3>
+              <h3 className={styles.principleTitle}>Studio Story &amp; Ethos →</h3>
               <p className={styles.principleDesc}>
-                Real founding credentials, dual operational hubs in Scarborough / Toronto, Canada &amp; Ahmedabad / Delhi, India with active timezone telemetry and zero-template operating principles.
+                Direct executive partnerships, senior engineering craftsmanship, and zero-template operating principles for modern digital brands worldwide.
               </p>
             </Link>
 
             <Link href="/review/contact" className={styles.principleBlock} style={{ textDecoration: "none", color: "inherit" }}>
               <span className={styles.principleWatermark}>04</span>
               <span className={styles.principleNum}>SECTION 04 // CONTACT</span>
-              <h3 className={styles.principleTitle}>Client Intake &amp; Office Details →</h3>
+              <h3 className={styles.principleTitle}>Client Intake &amp; Commissions →</h3>
               <p className={styles.principleDesc}>
-                Real company phone number (+1 437-603-9004), official address (30 Kimbercroft Ct, Scarborough, ON M1S 4K9), verified email (`info@13utopia.com`), and interactive commission scope generator.
+                Direct executive inquiry transmission channel (`contact@13utopia.com`) and interactive commission scope selector for international partnerships.
               </p>
             </Link>
 

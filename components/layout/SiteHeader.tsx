@@ -77,10 +77,6 @@ export function SiteHeader() {
   const [hidden, setHidden] = useState(false);
   const [lastPathname, setLastPathname] = useState(pathname);
   const [hoveredIdx, setHoveredIdx] = useState<number>(0);
-  const [studioTimes, setStudioTimes] = useState<{ delhi: string; toronto: string }>({
-    delhi: "",
-    toronto: "",
-  });
   const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -138,30 +134,6 @@ export function SiteHeader() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open]);
-
-  // Live real-time studio clocks (Delhi & Toronto)
-  useEffect(() => {
-    if (!open) return;
-    const updateTime = () => {
-      const now = new Date();
-      const delhi = now.toLocaleTimeString("en-US", {
-        timeZone: "Asia/Kolkata",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      });
-      const toronto = now.toLocaleTimeString("en-US", {
-        timeZone: "America/Toronto",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      });
-      setStudioTimes({ delhi, toronto });
-    };
-    updateTime();
-    const timer = setInterval(updateTime, 1000);
-    return () => clearInterval(timer);
   }, [open]);
 
   // Track mouse coordinates over menu for dynamic ambient reactive glow
@@ -256,16 +228,14 @@ export function SiteHeader() {
         <div className={styles.gridOverlay} aria-hidden="true" />
 
         <div className={styles.menuContent}>
-          {/* Top Studio Header Bar */}
+          {/* Top Status Header Bar */}
           <div className={styles.topTelemetryBar}>
             <div className={styles.telemetryTag}>
               <span className={styles.livePulse} />
-              <span>13 UTOPIA · CREATIVE STUDIO &amp; LAB</span>
+              <span>ACCEPTING COMMISSIONS &amp; PROJECTS</span>
             </div>
             <div className={styles.clockTelemetry}>
-              <span>DELHI {studioTimes.delhi || "03:30 PM"}</span>
-              <span className={styles.telemetryDivider}>·</span>
-              <span>TORONTO {studioTimes.toronto || "06:00 AM"}</span>
+              <span>INDEPENDENT CREATIVE TECHNOLOGY</span>
             </div>
           </div>
 

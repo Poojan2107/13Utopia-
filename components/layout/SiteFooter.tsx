@@ -98,35 +98,6 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {/* Center: Global Studio Hubs (India & Canada) */}
-          <div className={styles.hubsBlock}>
-            {/* India Studio */}
-            <div className={styles.hubCard}>
-              <span className={styles.hubCountry}>INDIA // HEADQUARTERS</span>
-              <p className={styles.hubAddress}>
-                1123, Iconic Shyamal, Shyamal Cross Roads,<br />
-                132 Feet Ring Rd, Ahmedabad, Gujarat 380015
-              </p>
-              <div className={styles.hubContact}>
-                <a href="tel:+919924131397" className={styles.hubLink}>+91 9924131397</a>
-                <a href="mailto:info@13utopia.com" className={styles.hubLink}>info@13utopia.com</a>
-              </div>
-            </div>
-
-            {/* Canada Studio */}
-            <div className={styles.hubCard}>
-              <span className={styles.hubCountry}>CANADA // GLOBAL OPERATIONS</span>
-              <p className={styles.hubAddress}>
-                30 Kimbercroft Ct, Scarborough, ON M1S 4K9,<br />
-                Canada (Markham Corners)
-              </p>
-              <div className={styles.hubContact}>
-                <a href="tel:+14376039004" className={styles.hubLink}>+1 437-603-9004</a>
-                <a href="mailto:info@13utopia.com" className={styles.hubLink}>info@13utopia.com</a>
-              </div>
-            </div>
-          </div>
-
           {/* Center-Right: Navigation Directory */}
           <div className={styles.socialCol}>
             <span className={styles.socialTitle}>DIRECTORY</span>

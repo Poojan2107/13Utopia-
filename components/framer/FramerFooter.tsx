@@ -56,17 +56,17 @@ export function FramerFooter() {
           </div>
 
           <div className={styles.col}>
-            <span className={styles.colTitle}>STUDIO NODES</span>
-            <p className={styles.colText}>DELHI NCR, INDIA</p>
-            <p className={styles.colText}>TORONTO, CANADA</p>
-            <p className={styles.colText}>GLOBAL CONCIERGE</p>
+            <span className={styles.colTitle}>COMMISSIONS</span>
+            <a href="mailto:contact@13utopia.com" className={styles.footerLink}>contact@13utopia.com</a>
+            <p className={styles.colText}>INDEPENDENT CREATIVE LAB</p>
+            <p className={styles.colText}>GLOBAL PARTNERSHIPS</p>
           </div>
 
           <div className={styles.col}>
             <span className={styles.colTitle}>COLOPHON</span>
             <p className={styles.colText}>TYPESET IN PP NEUE MONTREAL</p>
-            <p className={styles.colText}>FRAMER MOTION & NEXT.JS</p>
-            <p className={styles.colText}>28.6139° N · 43.6532° W</p>
+            <p className={styles.colText}>DESIGNED &amp; ENGINEERED IN-HOUSE</p>
+            <p className={styles.colText}>NEXT.JS &amp; THREE.JS ARCHITECTURE</p>
           </div>
         </div>
 

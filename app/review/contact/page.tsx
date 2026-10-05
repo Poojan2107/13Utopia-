@@ -51,7 +51,7 @@ export default function ReviewContactPage() {
           </h1>
 
           <p className={styles.subtitle}>
-            Direct access to senior partners. Reach us directly at our Canadian headquarters or Indian engineering laboratory.
+            Direct access to senior partners. Transmit your project requirements and scope below to initiate an alliance.
           </p>
         </section>
 
@@ -147,39 +147,20 @@ export default function ReviewContactPage() {
           {/* Sidebar */}
           <aside className={styles.sidebar}>
             <div className={styles.infoBlock}>
-              <span className={styles.infoHeading}>VERIFIED DIRECT CONTACT</span>
-              <a href="mailto:info@13utopia.com" className={styles.directEmail}>
-                info@13utopia.com
+              <span className={styles.infoHeading}>DIRECT INQUIRIES</span>
+              <a href="mailto:contact@13utopia.com" className={styles.directEmail}>
+                contact@13utopia.com
               </a>
-              <a href="tel:+14376039004" className={styles.directEmail} style={{ fontSize: "1.2rem", marginTop: "4px" }}>
-                +1 (437) 603-9004
-              </a>
-              <p className={styles.faqA} style={{ marginTop: "6px" }}>
-                Direct client transmission channel for Canadian and international partners.
+              <p className={styles.faqA} style={{ marginTop: "12px" }}>
+                Direct transmission channel for client partnerships, custom web platforms, brand systems, and performance retainers worldwide.
               </p>
             </div>
 
             <div className={styles.infoBlock}>
-              <span className={styles.infoHeading}>OFFICIAL OFFICE ADDRESSES</span>
-              <div className={styles.hubList}>
-                <div className={styles.hubItem}>
-                  <span className={styles.hubCity}>Canada HQ</span>
-                  <p className={styles.faqA}>30 Kimbercroft Ct, Markham Corners, Scarborough, ON M1S 4K9, Canada</p>
-                  <div className={styles.hubTime}>
-                    <span className={styles.hubLiveDot} />
-                    <span>EST (UTC-5:00)</span>
-                  </div>
-                </div>
-
-                <div className={styles.hubItem}>
-                  <span className={styles.hubCity}>India Engineering Hub</span>
-                  <p className={styles.faqA}>1123 Iconic Shyamal, Shyamal Cross Roads, 132 Feet Ring Rd, Ahmedabad, Gujarat 380015, India</p>
-                  <div className={styles.hubTime}>
-                    <span className={styles.hubLiveDot} />
-                    <span>IST (UTC+5:30)</span>
-                  </div>
-                </div>
-              </div>
+              <span className={styles.infoHeading}>ENGAGEMENT TERMS</span>
+              <p className={styles.faqA}>
+                All engagements include senior partner direction, 100% intellectual property transfer, and dedicated sprint delivery cycles.
+              </p>
             </div>
           </aside>
         </div>
