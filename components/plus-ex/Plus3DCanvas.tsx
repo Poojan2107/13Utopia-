@@ -162,16 +162,16 @@ export function Plus3DCanvas({
       bevelThickness: 0.075,
       bevelSize: 0.065,
       bevelOffset: 0,
-      bevelSegments: 5,
+      bevelSegments: 2,
     };
 
-    // ── TENBIN HIGH-FREQUENCY MINERAL GRAIN BUMP MAP ──
+    // ── TENBIN HIGH-FREQUENCY MINERAL GRAIN BUMP MAP (64x64 micro-texture) ──
     const bCanvas = document.createElement("canvas");
-    bCanvas.width = 256;
-    bCanvas.height = 256;
+    bCanvas.width = 64;
+    bCanvas.height = 64;
     const bCtx = bCanvas.getContext("2d");
     if (bCtx) {
-      const imgData = bCtx.createImageData(256, 256);
+      const imgData = bCtx.createImageData(64, 64);
       for (let i = 0; i < imgData.data.length; i += 4) {
         const noise = Math.floor(Math.random() * 255);
         imgData.data[i] = noise;
@@ -184,76 +184,32 @@ export function Plus3DCanvas({
     const bumpTexture = new THREE.CanvasTexture(bCanvas);
     bumpTexture.wrapS = THREE.RepeatWrapping;
     bumpTexture.wrapT = THREE.RepeatWrapping;
-    bumpTexture.repeat.set(3.5, 3.5);
+    bumpTexture.repeat.set(4.0, 4.0);
 
-    // ── CUSTOM SHADER UNIFORMS & FX INJECTION ──
-    const shaderUniforms = {
-      uTime: { value: 0 },
-      uMouse: { value: new THREE.Vector2(0, 0) },
-    };
-
-    const attachCustomShaders = (mat: THREE.MeshPhysicalMaterial) => {
-      mat.onBeforeCompile = (shader) => {
-        shader.uniforms.uTime = shaderUniforms.uTime;
-        shader.uniforms.uMouse = shaderUniforms.uMouse;
-
-        shader.fragmentShader = `
-          uniform float uTime;
-          uniform vec2 uMouse;
-        ` + shader.fragmentShader;
-
-        shader.fragmentShader = shader.fragmentShader.replace(
-          "#include <dithering_fragment>",
-          `
-          #include <dithering_fragment>
-          
-          // Tenbin Exact Noir Razor Top Grazing & Dark Obsidian Shadows
-          vec3 vNormalNorm = normalize(vNormal);
-          vec3 vViewDir = normalize(vViewPosition);
-          
-          // Razor top rim highlight (exactly matching reference images 2 & 3)
-          float topGlint = pow(max(0.0, vNormalNorm.y), 5.0) * 1.8;
-          float razorRim = pow(1.0 - max(0.0, dot(vNormalNorm, vViewDir)), 5.0) * 1.2;
-          
-          vec3 specularWhite = vec3(1.0, 1.0, 1.0);
-          gl_FragColor.rgb += specularWhite * (topGlint + razorRim * 0.4);
-          `
-        );
-      };
-    };
-
-    // 13 Utopia Exact Tenbin Pitch-Black Obsidian Stone
-    const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x020203),
-      roughness: 0.32,
-      metalness: 0.85,
-      clearcoat: 0.85,
-      clearcoatRoughness: 0.12,
-      reflectivity: 0.95,
+    // 13 Utopia Exact Tenbin Pitch-Black Obsidian Stone (High-Efficiency MeshStandardMaterial)
+    const matTitaniumOne = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0x060608),
+      roughness: 0.28,
+      metalness: 0.92,
       bumpMap: bumpTexture,
-      bumpScale: 0.018,
+      bumpScale: 0.012,
       emissive: new THREE.Color(0x000000),
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
-    attachCustomShaders(matTitaniumOne);
 
-    const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x010102),
-      roughness: 0.32,
-      metalness: 0.85,
-      clearcoat: 0.85,
-      clearcoatRoughness: 0.12,
-      reflectivity: 0.95,
+    const matTitaniumThree = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0x040406),
+      roughness: 0.28,
+      metalness: 0.92,
       bumpMap: bumpTexture,
-      bumpScale: 0.018,
+      bumpScale: 0.012,
       emissive: new THREE.Color(0x000000),
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
     });
-    attachCustomShaders(matTitaniumThree);
 
     // ── 01. SUB-GROUP: "13" EMBLEM ─────────────────────────────
     const thirteenGroup = new THREE.Group();
@@ -318,7 +274,7 @@ export function Plus3DCanvas({
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
     // ── 03. TENBIN EXACT ORBITING MODEL PARTICLES (Surrounding 3D Crystalline Stardust Halo) ──
-    const auraParticleCount = 140;
+    const auraParticleCount = 45;
     const auraParticleGeo = new THREE.BufferGeometry();
     const auraPositions = new Float32Array(auraParticleCount * 3);
     const auraData: Array<{ radius: number; theta: number; vr: number; vtheta: number; z: number; phase: number }> = [];

@@ -242,12 +242,11 @@ export function Continuous3DStory() {
                           
                           // Smooth optical cosine opacity curve
                           const opacity = Math.max(
-                            0.08,
+                            0.06,
                             Math.pow(Math.cos(Math.min(Math.PI / 2.05, absDelta * 0.42)), 2.2)
                           );
                           
-                          const scale = isCenter ? 1.05 : Math.max(0.88, 1 - absDelta * 0.045);
-                          const blurAmount = Math.min(4.5, absDelta * 1.8);
+                          const scale = isCenter ? 1.04 : Math.max(0.88, 1 - absDelta * 0.045);
 
                           return (
                             <div
@@ -256,9 +255,8 @@ export function Continuous3DStory() {
                                 isCenter ? styles.drumItemActive : styles.drumItemDimmed
                               }`}
                               style={{
-                                transform: `translate3d(0, ${translateY.toFixed(2)}px, ${translateZ.toFixed(2)}px) rotateX(${rotateX.toFixed(2)}deg) scale(${scale.toFixed(3)})`,
-                                opacity: opacity.toFixed(3),
-                                filter: blurAmount > 0.3 ? `blur(${blurAmount.toFixed(1)}px)` : "none",
+                                transform: `translate3d(0, ${translateY.toFixed(1)}px, ${translateZ.toFixed(1)}px) rotateX(${rotateX.toFixed(1)}deg) scale(${scale.toFixed(2)})`,
+                                opacity: opacity.toFixed(2),
                               }}
                             >
                               <div className={styles.drumItemContent}>

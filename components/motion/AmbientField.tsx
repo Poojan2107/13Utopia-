@@ -109,16 +109,10 @@ export function AmbientField() {
         return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
       }
 
-      // Optimized 3-octave fbm: identical fluid quality, 40% less GPU load
+      // High-performance 2-octave fbm: silky organic fluid smoke with minimal GPU fill cost
       float fbm(vec3 p) {
-        float v = 0.0;
-        float a = 0.52;
-        vec3 shift = vec3(80.0);
-        for (int i = 0; i < 3; ++i) {
-          v += a * snoise(p);
-          p = p * 2.08 + shift;
-          a *= 0.48;
-        }
+        float v = 0.55 * snoise(p);
+        v += 0.32 * snoise(p * 2.12 + vec3(45.0));
         return v;
       }
 
@@ -142,22 +136,19 @@ export function AmbientField() {
       void main() {
         vec2 centeredUv = (gl_FragCoord.xy - 0.5 * uResolution.xy) / min(uResolution.x, uResolution.y);
 
-        vec2 p = centeredUv * 1.35 + uMouse * 0.10;
+        vec2 p = centeredUv * 1.35 + uMouse * 0.08;
         p.y += uScroll * 0.00025;
 
         float t = uTime * 0.035;
 
-        // Domain Warping
-        vec3 coord1 = vec3(p * 1.15, t);
+        // High-Efficiency Single-Warp Liquid Nebula
+        vec3 coord1 = vec3(p * 1.20, t);
         float q1 = fbm(coord1);
 
-        vec3 coord2 = vec3(p * 1.65 + vec2(q1 * 0.65, -q1 * 0.45), t * 1.12);
-        float q2 = fbm(coord2);
+        vec3 coord2 = vec3(p * 1.85 + vec2(q1 * 0.75, -q1 * 0.55), t * 1.20);
+        float smoke = fbm(coord2);
 
-        vec3 coord3 = vec3(p * 2.20 + vec2(-q2 * 0.55, q2 * 0.75), t * 1.35);
-        float smoke = fbm(coord3);
-
-        float density = smoothstep(-0.15, 0.75, smoke + q2 * 0.35);
+        float density = smoothstep(-0.10, 0.80, smoke + q1 * 0.30);
 
         // Pure Monochrome Palette
         vec3 spaceVoid = vec3(0.0, 0.0, 0.0);
