@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import styles from "@/styles/review/BackgroundLab.module.css";
+import { fullscreenVertexShader, trailFragmentShader } from "@/components/review/TrailShaders";
+import { nebulaFragmentShader } from "@/components/review/NebulaShaders";
 
 export function BackgroundLab() {
   const [enableMouseTrail, setEnableMouseTrail] = useState<boolean>(true);
@@ -15,11 +17,11 @@ export function BackgroundLab() {
   const canvasContainerRef = useRef<HTMLDivElement | null>(null);
   const cursorRef = useRef<HTMLDivElement | null>(null);
 
-  // Exact 13 Utopia Main Monochrome Color Values
+  // 13 Utopia Exact Signature Monochrome Palette (Space Void, Graphite, Liquid Silver, Titanium)
   const baseColor: [number, number, number] = [0.0, 0.0, 0.0];        // #000000 Space Void
-  const darkColor: [number, number, number] = [0.03, 0.03, 0.03];     // Graphite Plume
-  const brightColor: [number, number, number] = [0.22, 0.22, 0.24];   // Titanium Highlights
-  const midColor: [number, number, number] = [0.09, 0.09, 0.095];     // Liquid Silver
+  const darkColor: [number, number, number] = [0.03, 0.03, 0.03];     // #080808 Graphite Plume
+  const midColor: [number, number, number] = [0.09, 0.09, 0.09];      // #171717 Liquid Silver
+  const brightColor: [number, number, number] = [0.35, 0.35, 0.35];   // #595959 Titanium Highlight
   const cursorColor = "#FFFFFF";
 
   // ── 01. WebGL Volumetric Raymarch Nebula Shader Engine ──
@@ -36,202 +38,90 @@ export function BackgroundLab() {
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
     const renderer = new THREE.WebGLRenderer({
-      alpha: true,
+      alpha: false,
       antialias: false,
       powerPreference: "high-performance",
     });
-    // Valeran uses half-resolution scale for filmic blur + efficient render
-    renderer.setPixelRatio(0.65);
+    // Valeran renders at half resolution for filmic softness + cheap frames
+    renderer.setPixelRatio(0.5);
     renderer.setSize(width, height);
-    renderer.setClearColor(0x000000, 1);
+    renderer.setClearColor(0x090703, 1);
     container.appendChild(renderer.domElement);
+
+    const gl = renderer.getContext();
+    const hasFloat = !!gl.getExtension("EXT_color_buffer_float");
+    const rtType = hasFloat ? THREE.HalfFloatType : THREE.UnsignedByteType;
+
+    const rtSize = new THREE.Vector2(
+      Math.max(2, Math.round(width * 0.5)),
+      Math.max(2, Math.round(height * 0.5))
+    );
+    const makeTarget = () =>
+      new THREE.WebGLRenderTarget(rtSize.x, rtSize.y, {
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearFilter,
+        type: rtType,
+        depthBuffer: false,
+        stencilBuffer: false,
+      });
+
+    let trailA = makeTarget();
+    let trailB = makeTarget();
 
     const uniforms = {
       uTime: { value: 0 },
       uResolution: { value: new THREE.Vector2(width, height) },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
-      uMouseTrailWeight: { value: enableMouseTrail ? 1.0 : 0.0 },
+      uMouseStrength: { value: 0.0 },
+      uTrail: { value: trailB.texture as THREE.Texture },
+      uTrailMix: { value: 1.0 },
       uBaseColor: { value: new THREE.Vector3(...baseColor) },
       uDarkColor: { value: new THREE.Vector3(...darkColor) },
       uBrightColor: { value: new THREE.Vector3(...brightColor) },
       uMidColor: { value: new THREE.Vector3(...midColor) },
     };
 
-    const vertexShader = `
-      varying vec2 vUv;
-      void main() {
-        vUv = uv;
-        gl_Position = vec4(position.xy, 0.0, 1.0);
-      }
-    `;
+    const trailUniforms = {
+      uPrev: { value: trailA.texture as THREE.Texture },
+      uTexel: { value: new THREE.Vector2(1 / rtSize.x, 1 / rtSize.y) },
+      uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+      uPrevMouse: { value: new THREE.Vector2(0.5, 0.5) },
+      uAspect: { value: width / height },
+      uDecay: { value: 0.955 },
+      uRadius: { value: 0.085 },
+      uStrength: { value: 0.0 },
+    };
 
-    const fragmentShader = `
-      precision highp float;
-      uniform float uTime;
-      uniform vec2 uResolution;
-      uniform vec2 uMouse;
-      uniform float uMouseTrailWeight;
-      uniform vec3 uBaseColor;
-      uniform vec3 uDarkColor;
-      uniform vec3 uBrightColor;
-      uniform vec3 uMidColor;
-      varying vec2 vUv;
-
-      // ── OKLab Color Mixing Math ──
-      vec3 rgb_to_oklab(vec3 c) {
-        float l = 0.4122214708 * c.r + 0.5363325363 * c.g + 0.0514459929 * c.b;
-        float m = 0.2119034982 * c.r + 0.6806995451 * c.g + 0.1073969566 * c.b;
-        float s = 0.0883024619 * c.r + 0.2817188376 * c.g + 0.6299787005 * c.b;
-
-        float l_ = pow(max(0.0, l), 1.0/3.0);
-        float m_ = pow(max(0.0, m), 1.0/3.0);
-        float s_ = pow(max(0.0, s), 1.0/3.0);
-
-        return vec3(
-          0.2104542553*l_ + 0.7936177850*m_ - 0.0040720468*s_,
-          1.9779984951*l_ - 2.4285922050*m_ + 0.4505937099*s_,
-          0.0259040371*l_ + 0.7827717662*m_ - 0.8086757660*s_
-        );
-      }
-
-      vec3 oklab_to_rgb(vec3 c) {
-        float l_ = c.x + 0.3963377774 * c.y + 0.2158037573 * c.z;
-        float m_ = c.x - 0.1055613458 * c.y - 0.0638541728 * c.z;
-        float s_ = c.x - 0.0894841775 * c.y - 1.2914855480 * c.z;
-
-        float l = l_*l_*l_;
-        float m = m_*m_*m_;
-        float s = s_*s_*s_;
-
-        return vec3(
-          +4.0767434754 * l - 3.3077115913 * m + 0.2309699292 * s,
-          -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
-          -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s
-        );
-      }
-
-      vec3 oklab_mix(vec3 c1, vec3 c2, float t) {
-        vec3 lab1 = rgb_to_oklab(c1);
-        vec3 lab2 = rgb_to_oklab(c2);
-        return oklab_to_rgb(mix(lab1, lab2, t));
-      }
-
-      // ── ACES Filmic Tone Mapping ──
-      vec3 aces_filmic(vec3 x) {
-        float a = 2.51;
-        float b = 0.03;
-        float c = 2.43;
-        float d = 0.59;
-        float e = 0.14;
-        return clamp((x*(a*x+b))/(x*(c*x+d)+e), 0.0, 1.0);
-      }
-
-      // ── PCG2D Hash Film Grain ──
-      float hash_grain(vec2 p, float seed) {
-        p = fract(p * vec2(5.3983, 5.4427) + seed);
-        p += dot(p.yx, p.xy + vec2(21.5351, 14.3137));
-        return fract(p.x * p.y * 95.4337);
-      }
-
-      // ── Valeran 3D Dot-Product Noise Field ──
-      float densityField(vec3 p, float t) {
-        mat3 rot1 = mat3(
-          0.8000,  0.6000,  0.0000,
-         -0.4800,  0.6400,  0.6000,
-          0.3600, -0.4800,  0.8000
-        );
-
-        float d = 0.0;
-        float amp = 1.0;
-        vec3 q = p;
-
-        for (int i = 0; i < 3; i++) {
-          q = rot1 * q * 1.62 + vec3(0.0, t * 0.15, t * 0.08);
-          d += (dot(cos(q * 1.4), sin(q.yzx * 1.6))) * amp;
-          amp *= 0.52;
-        }
-
-        return d;
-      }
-
-      void main() {
-        vec2 uv = gl_FragCoord.xy / uResolution.xy;
-        vec2 p = (gl_FragCoord.xy - 0.5 * uResolution.xy) / min(uResolution.x, uResolution.y);
-
-        float t = uTime * 0.18;
-
-        // Interactive Mouse Gravitational Warp (when enabled)
-        vec2 mNorm = (uMouse - 0.5) * 2.0;
-        float mDist = length(p - mNorm * 0.5);
-        vec2 mWarp = (p - mNorm * 0.5) * exp(-mDist * 2.2) * 0.28 * uMouseTrailWeight;
-        p -= mWarp;
-
-        // Valeran Elliptical SDF Mask
-        vec2 maskP = p;
-        maskP.x *= 0.85;
-        maskP.y *= 1.45;
-        maskP += vec2(maskP.y * 0.48, 0.0);
-        float ellipseMask = smoothstep(1.6, 0.15, length(maskP));
-
-        // 40-Step Volumetric Raymarch
-        vec3 ro = vec3(0.0, 0.0, 2.5);
-        vec3 rd = normalize(vec3(p * 1.2, -1.0));
-
-        float transmittance = 1.0;
-        vec3 accumulatedLight = vec3(0.0);
-        float stepSize = 0.075;
-
-        for (int i = 0; i < 38; i++) {
-          float dist = float(i) * stepSize;
-          vec3 pos = ro + rd * dist;
-
-          float d = densityField(pos * 0.95, t);
-          d = clamp(d * 0.45 + 0.35, 0.0, 1.0);
-
-          if (d > 0.01) {
-            float density = d * ellipseMask * 0.18;
-
-            // OKLab Color Grading across density
-            vec3 colorStep = oklab_mix(uDarkColor, uMidColor, clamp(d * 1.2, 0.0, 1.0));
-            colorStep = oklab_mix(colorStep, uBrightColor, clamp((d - 0.5) * 2.2, 0.0, 1.0));
-
-            accumulatedLight += colorStep * density * transmittance;
-            transmittance *= exp(-density * 1.8);
-
-            if (transmittance < 0.05) break;
-          }
-        }
-
-        // Composite over Base Layer (#000000 Space Void)
-        vec3 finalColor = uBaseColor * transmittance + accumulatedLight;
-
-        // ACES Filmic Tonemap
-        finalColor = aces_filmic(finalColor);
-
-        // PCG2D Animated Film Grain
-        float grainSeed = floor(uTime * 24.0);
-        float grain = hash_grain(gl_FragCoord.xy, grainSeed);
-        finalColor += (grain - 0.5) * 0.038;
-
-        gl_FragColor = vec4(finalColor, 1.0);
-      }
-    `;
-
+    const vertexShader = fullscreenVertexShader;
     const mat = new THREE.ShaderMaterial({
       uniforms,
-      vertexShader,
-      fragmentShader,
+      vertexShader: fullscreenVertexShader,
+      fragmentShader: nebulaFragmentShader,
+      depthWrite: false,
+      depthTest: false,
+    });
+
+    const trailMat = new THREE.ShaderMaterial({
+      uniforms: trailUniforms,
+      vertexShader: fullscreenVertexShader,
+      fragmentShader: trailFragmentShader,
       depthWrite: false,
       depthTest: false,
     });
 
     const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
     scene.add(quad);
+    const trailQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), trailMat);
+    const trailScene = new THREE.Scene();
+    trailScene.add(trailQuad);
 
     let mouseX = 0.5;
     let mouseY = 0.5;
     let targetMouseX = 0.5;
     let targetMouseY = 0.5;
+    let prevTrailX = 0.5;
+    let prevTrailY = 0.5;
+    let wakeEnergy = 0.0;
 
     const onPointerMove = (e: MouseEvent) => {
       targetMouseX = e.clientX / window.innerWidth;
@@ -254,20 +144,58 @@ export function BackgroundLab() {
       mouseX += (targetMouseX - mouseX) * 0.12;
       mouseY += (targetMouseY - mouseY) * 0.12;
 
+      // Pointer speed feeds the wake energy.
+      const speed = Math.hypot(targetMouseX - prevTrailX, targetMouseY - prevTrailY);
+      wakeEnergy += (Math.min(speed * 9.0, 1.0) - wakeEnergy) * 0.16;
+
+      const trailOn = enableMouseTrail;
+
+      trailUniforms.uPrevMouse.value.set(prevTrailX, prevTrailY);
+      trailUniforms.uMouse.value.set(mouseX, mouseY);
+      trailUniforms.uStrength.value = trailOn ? 0.42 + 0.58 * wakeEnergy : 0.0;
+      trailUniforms.uDecay.value = trailOn ? 0.958 : 0.86;
+      trailUniforms.uPrev.value = trailA.texture;
+
+      renderer.setRenderTarget(trailB);
+      renderer.render(trailScene, camera);
+      renderer.setRenderTarget(null);
+
+      const swap = trailA;
+      trailA = trailB;
+      trailB = swap;
+      prevTrailX = mouseX;
+      prevTrailY = mouseY;
+
       uniforms.uTime.value = currentTime * 0.001;
       uniforms.uMouse.value.set(mouseX, mouseY);
-      uniforms.uMouseTrailWeight.value = enableMouseTrail ? 1.0 : 0.0;
+      uniforms.uMouseStrength.value = wakeEnergy;
+      uniforms.uTrailMix.value = trailOn ? 1.0 : 0.0;
+      uniforms.uTrail.value = trailA.texture;
 
       renderer.render(scene, camera);
     };
 
     rafId = requestAnimationFrame(animate);
 
+    const rebuildTrailTargets = () => {
+      trailA.dispose();
+      trailB.dispose();
+      rtSize.set(
+        Math.max(2, Math.round(window.innerWidth * 0.5)),
+        Math.max(2, Math.round(window.innerHeight * 0.5))
+      );
+      trailA = makeTarget();
+      trailB = makeTarget();
+      trailUniforms.uTexel.value.set(1 / rtSize.x, 1 / rtSize.y);
+    };
+
     const onResize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
       renderer.setSize(w, h);
       uniforms.uResolution.value.set(w, h);
+      trailUniforms.uAspect.value = w / h;
+      rebuildTrailTargets();
     };
     window.addEventListener("resize", onResize);
 
@@ -276,7 +204,11 @@ export function BackgroundLab() {
       window.removeEventListener("mousemove", onPointerMove);
       window.removeEventListener("resize", onResize);
       quad.geometry.dispose();
+      trailQuad.geometry.dispose();
       mat.dispose();
+      trailMat.dispose();
+      trailA.dispose();
+      trailB.dispose();
       renderer.dispose();
     };
   }, [enableMouseTrail, fpsCap]);

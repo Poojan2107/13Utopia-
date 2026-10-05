@@ -33,7 +33,7 @@
 .cDot {
   width: 10px;
   height: 10px;
-  background: #C8B89A;
+  background: #FFFFFF;
   transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
               height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
               opacity 0.25s ease,
@@ -48,16 +48,16 @@
 
 .cDrag {
   display: none;
-  color: #C8B89A;
+  color: #FFFFFF;
   font-family: var(--font-mono, monospace);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
-  background: rgba(26, 20, 16, 0.75);
+  background: rgba(10, 10, 10, 0.85);
   padding: 6px 12px;
   border-radius: 4px;
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(200, 184, 154, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   white-space: nowrap;
 }
 
