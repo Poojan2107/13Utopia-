@@ -1,22 +1,30 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .item {
-  border-radius: 8px;
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.005) 100%);
-  padding: 0.5rem 1.8rem;
-  transition: all 0.35s ease;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 0.5rem 2.2rem;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .item:hover {
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
 }
 
 .itemOpen {
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.015) 100%);
+  background: rgba(255, 255, 255, 0.055);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
 }
 
 .trigger {
@@ -24,8 +32,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.25rem;
-  padding: 1.2rem 0;
+  gap: 1.5rem;
+  padding: 1.4rem 0;
   border: 0;
   background: transparent;
   color: inherit;
@@ -39,7 +47,7 @@
 
 .q {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  font-size: clamp(1.1rem, 1.45vw, 1.35rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: rgba(255, 255, 255, 0.85);
@@ -53,15 +61,18 @@
 
 .mark {
   position: relative;
-  width: 1rem;
-  height: 1rem;
+  width: 1.25rem;
+  height: 1.25rem;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .markH,
 .markV {
   position: absolute;
-  background: var(--svc-accent, #ffffff);
+  background: #ffffff;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
 }
 
@@ -91,13 +102,20 @@
 }
 
 .a {
-  margin: 0 0 1.5rem;
-  max-width: 46rem;
+  margin: 0 0 1.75rem;
+  max-width: 52rem;
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 0.98rem;
-  line-height: 1.65;
-  color: rgba(255, 255, 255, 0.65);
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
 }
+
+@media (max-width: 560px) {
+  .item {
+    padding: 0.25rem 1.25rem;
+  }
+}
+
 
 @media (prefers-reduced-motion: reduce) {
   .item,
