@@ -46,6 +46,7 @@ const OVERVIEW_FAQS = [
 export function ServicesOverview() {
   return (
     <SmoothScrollProvider>
+      <AmbientField />
       <SiteHeader />
       <main className={styles.page}>
         <div className={styles.topBar}>
@@ -78,7 +79,7 @@ export function ServicesOverview() {
           >
             We know what we&apos;re
             <br />
-            <span className={styles.titleGold}>unreasonably good at.</span>
+            <span className={styles.titleHighlight}>unreasonably good at.</span>
           </motion.h1>
           <motion.p
             className={styles.lead}

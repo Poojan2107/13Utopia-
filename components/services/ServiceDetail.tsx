@@ -40,6 +40,7 @@ export function ServiceDetail({ world }: Props) {
 
   return (
     <SmoothScrollProvider>
+      <AmbientField />
       <SiteHeader />
       <main
         className={styles.page}
