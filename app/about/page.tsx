@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { SiteHeader, SiteFooter } from "@/components/layout";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { FramerFooter } from "@/components/framer/FramerFooter";
+import { FramerSectionCTA } from "@/components/framer/FramerSectionCTA";
 import { AmbientField, SmoothScrollProvider } from "@/components/motion";
 import { Hero3DCanvas } from "@/components/home/Hero3DCanvas";
 import styles from "@/styles/about/About.module.css";
@@ -148,52 +149,11 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Global Studio Hubs */}
-        <section className={styles.hubsSection}>
-          <div className={styles.sectionHeaderGroup}>
-            <span className={styles.sectionHeading}>STUDIO HUBS // GLOBAL CAPABILITY</span>
-            <h2 className={styles.sectionLead}>Active operation across timezones.</h2>
-          </div>
-
-          <div className={styles.hubsGrid}>
-            <div className={styles.hubCard}>
-              <h3 className={styles.hubCity}>Delhi, India</h3>
-              <p className={styles.hubDesc}>
-                Core engineering laboratory, full-stack product development, AI agent systems, and technical performance infrastructure.
-              </p>
-              <div className={styles.hubTimezone}>
-                <span className={styles.hubLiveDot} />
-                <span>IST (UTC+5:30) · ACTIVE ENGINEERING</span>
-              </div>
-            </div>
-
-            <div className={styles.hubCard}>
-              <h3 className={styles.hubCity}>Toronto, Canada</h3>
-              <p className={styles.hubDesc}>
-                Creative direction, brand positioning, spatial UI architecture, and North American commercial client partnerships.
-              </p>
-              <div className={styles.hubTimezone}>
-                <span className={styles.hubLiveDot} />
-                <span>EST (UTC-5:00) · ACTIVE STRATEGY</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Initiation CTA */}
-        <section className={styles.aboutCta}>
-          <h2 className={styles.ctaTitle}>
-            READY TO BUILD SOMETHING<br />
-            THAT OWNS THE CATEGORY?
-          </h2>
-          <Link href="/contact" className={styles.ctaButton}>
-            <span>Initiate a Commission</span>
-            <span>→</span>
-          </Link>
-        </section>
+        <FramerSectionCTA />
       </main>
 
-      <SiteFooter />
+      <FramerFooter />
     </SmoothScrollProvider>
   );
 }
+
