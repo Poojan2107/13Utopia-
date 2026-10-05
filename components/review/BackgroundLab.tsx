@@ -77,6 +77,7 @@ export function BackgroundLab() {
   const [activeTheme, setActiveTheme] = useState<ValeranTheme>("valeran-terracotta");
   const [spotlightRadius, setSpotlightRadius] = useState<number>(750);
   const [enableCursor, setEnableCursor] = useState<boolean>(true);
+  const [isHoveringInteractive, setIsHoveringInteractive] = useState<boolean>(false);
   const [grainOpacity, setGrainOpacity] = useState<number>(0.065);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
@@ -97,10 +98,27 @@ export function BackgroundLab() {
       targetY = e.clientY;
     };
 
+    // Track hovered elements for cursor expansion
+    const onMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "A" ||
+        target.tagName === "BUTTON" ||
+        target.closest("a") ||
+        target.closest("button") ||
+        target.getAttribute("role") === "button" ||
+        target.getAttribute("data-cursor") === "hover"
+      ) {
+        setIsHoveringInteractive(true);
+      } else {
+        setIsHoveringInteractive(false);
+      }
+    };
+
     // Smooth Lerping Loop for 120fps fluid cursor spotlight
     const loop = () => {
-      mouseX += (targetX - mouseX) * 0.14;
-      mouseY += (targetY - mouseY) * 0.14;
+      mouseX += (targetX - mouseX) * 0.12;
+      mouseY += (targetY - mouseY) * 0.12;
 
       if (ambientBgRef.current) {
         ambientBgRef.current.style.setProperty("--mouse-x", `${mouseX}px`);
@@ -115,13 +133,23 @@ export function BackgroundLab() {
     };
 
     window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("mouseover", onMouseOver, { passive: true });
     animId = requestAnimationFrame(loop);
+
+    // Hide native cursor on body when custom cursor is active
+    if (enableCursor) {
+      document.documentElement.classList.add("valeran-custom-cursor");
+    } else {
+      document.documentElement.classList.remove("valeran-custom-cursor");
+    }
 
     return () => {
       window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("mouseover", onMouseOver);
+      document.documentElement.classList.remove("valeran-custom-cursor");
       cancelAnimationFrame(animId);
     };
-  }, []);
+  }, [enableCursor]);
 
   return (
     <>
@@ -147,7 +175,9 @@ export function BackgroundLab() {
       {enableCursor && (
         <div
           ref={customCursorRef}
-          className={styles.valeranCursor}
+          className={`${styles.valeranCursor} ${
+            isHoveringInteractive ? styles.cursorHovered : ""
+          }`}
           style={{ backgroundColor: currentTheme.cursorColor }}
           aria-hidden="true"
         />
