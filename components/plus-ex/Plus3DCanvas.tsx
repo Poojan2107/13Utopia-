@@ -413,10 +413,6 @@ export function Plus3DCanvas({
       mouseX += (targetMouseX - mouseX) * 0.06;
       mouseY += (targetMouseY - mouseY) * 0.06;
 
-      // Update custom shader FX uniforms
-      shaderUniforms.uTime.value = elapsedTime;
-      shaderUniforms.uMouse.value.set(mouseX, mouseY);
-
       // Soft studio key light parallax (Natural, diffused edge sheen & dynamic chamfer reflections)
       frontKeyLight.position.x = mouseX * 4.0;
       frontKeyLight.position.y = 3 + mouseY * 3.0;
