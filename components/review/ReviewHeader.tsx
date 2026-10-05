@@ -13,6 +13,7 @@ export function ReviewHeader() {
     { href: "/review/services", label: "02 SERVICES (6 OFFERINGS)" },
     { href: "/review/about", label: "03 ABOUT" },
     { href: "/review/contact", label: "04 CONTACT" },
+    { href: "/review/backgrounds", label: "05 BG LAB (5 CONCEPTS)" },
   ];
 
   return (

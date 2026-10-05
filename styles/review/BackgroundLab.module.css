@@ -1,0 +1,302 @@
+/* =========================================================
+   13 UTOPIA // BACKGROUND REVIEW LAB (AESTHETIC DIRECTOR HUD)
+   ========================================================= */
+
+.labContainer {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: #000000;
+  color: #ffffff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.canvasHost {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Floating Director Control HUD */
+.directorHUD {
+  position: fixed;
+  top: 90px;
+  right: clamp(16px, 2.5vw, 40px);
+  z-index: 50;
+  width: min(380px, 92vw);
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  background: rgba(10, 10, 12, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: clamp(18px, 2vw, 24px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 1px rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.hudHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
+}
+
+.hudTag {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+.hudTitle {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.hudSub {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.buttonList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hudBtn {
+  width: 100%;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hudBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateX(-2px);
+}
+
+.hudBtnActive {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
+}
+
+.btnMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.btnName {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.btnTag {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+}
+
+.btnDesc {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+.hudFooter {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 10px;
+}
+
+.vibeBox {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vibeLabel {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+}
+
+.vibeValue {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+/* Stage Preview (Real 3D Monolith and Sample Scene) */
+.stagePreview {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.emblemWrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.contentLayer {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(1rem, 2vh, 1.8rem);
+  padding: 0 clamp(20px, 4vw, 80px);
+  max-width: 1200px;
+  pointer-events: none;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.6875rem, 0.8vw, 0.8rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+}
+
+.heroTitle {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(2.4rem, 5.5vw, 5.8rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1.5vw, 1.8rem);
+  line-height: 1;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.95);
+}
+
+.dot {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.thesis {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.95rem, 1.2vw, 1.3rem);
+  font-weight: 500;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 780px;
+  margin: 0;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.95);
+}
+
+.cardRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.2rem, 2.5vw, 2.8rem);
+  width: 100%;
+  margin-top: 0.8rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 0.4rem;
+}
+
+.cardIdx {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+.cardH {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.05rem, 1.25vw, 1.25rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.cardP {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.78rem, 0.88vw, 0.9rem);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .directorHUD {
+    top: auto;
+    bottom: 20px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+    max-height: 38vh;
+  }
+  .cardRow {
+    grid-template-columns: 1fr;
+    display: none; /* Keep preview clear on mobile */
+  }
+}

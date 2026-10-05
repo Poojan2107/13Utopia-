@@ -117,6 +117,15 @@ export default function ReviewHubPage() {
                 Real company phone number (+1 437-603-9004), official address (30 Kimbercroft Ct, Scarborough, ON M1S 4K9), verified email (`info@13utopia.com`), and interactive commission scope generator.
               </p>
             </Link>
+
+            <Link href="/review/backgrounds" className={styles.principleBlock} style={{ textDecoration: "none", color: "inherit" }}>
+              <span className={styles.principleWatermark}>05</span>
+              <span className={styles.principleNum}>SECTION 05 // VISUAL LAB</span>
+              <h3 className={styles.principleTitle}>5 Background Concepts Review Lab →</h3>
+              <p className={styles.principleDesc}>
+                Live interactive testing ground for 5 luxury background directions (Liquid Obsidian, Spatial Architecture, Studio Darkroom, Optical Glass, Crystalline Stardust) behind the real 3D emblem.
+              </p>
+            </Link>
           </div>
         </section>
 
