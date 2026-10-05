@@ -14,7 +14,7 @@ import {
 export default function HomePage() {
   return (
     <SmoothScrollProvider>
-      <AmbientField />
+      <AmbientField showEmblem={false} />
 
       {/* Site Header (Top Right Logo & Menu Toggle) */}
       <SiteHeader />

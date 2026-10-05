@@ -4,7 +4,6 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { FramerFooter } from "@/components/framer/FramerFooter";
 import { FramerSectionCTA } from "@/components/framer/FramerSectionCTA";
 import { AmbientField, SmoothScrollProvider } from "@/components/motion";
-import { Hero3DCanvas } from "@/components/home/Hero3DCanvas";
 import styles from "@/styles/about/About.module.css";
 
 export default function AboutPage() {
@@ -16,10 +15,6 @@ export default function AboutPage() {
       <main className={styles.aboutPage}>
         {/* Full Viewport Hero Block */}
         <section className={styles.heroBlock}>
-          <div className={styles.heroCanvasStage}>
-            <Hero3DCanvas />
-          </div>
-
           <div className={styles.heroContent}>
             <div className={styles.heroCopy}>
               <div className={styles.topMeta}>

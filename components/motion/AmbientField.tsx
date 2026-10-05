@@ -4,13 +4,17 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import styles from "@/styles/motion/AmbientField.module.css";
 
+interface AmbientFieldProps {
+  showEmblem?: boolean;
+}
+
 /**
  * 13 UTOPIA Signature Atmosphere:
- * 1. Volumetric Cosmic Smoke & Nebula Shader (Ultra-optimized domain-warped simplex noise)
- * 2. Stardust Grain Field (Micro-dust motes with 3D depth)
- * 3. Low-overhead, high-performance rendering for 120Hz ProMotion MacBooks & mobile devices
+ * 1. Volumetric Cosmic Smoke & Nebula Shader
+ * 2. Stardust Grain Field
+ * 3. Centered Liquid Titanium "13" Emblem with continuous scroll & idle motion across all inner pages
  */
-export function AmbientField() {
+export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -21,23 +25,22 @@ export function AmbientField() {
     let height = window.innerHeight;
     const isMobile = width < 768;
 
-    // Perspective Camera for 3D Stardust Particulates
+    // Perspective Camera for 3D Emblem & Stardust
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
-    camera.position.set(0, 0, 10);
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
+    camera.position.set(0, 0, 11.2);
 
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
-      antialias: false, // Fullscreen quad doesn't need MSAA, saves 2x GPU bandwidth
+      antialias: true,
       powerPreference: "high-performance",
-      depth: false,
-      stencil: false,
     });
-    
-    // Balanced pixel ratio: crisp visuals on Retina/MacBook while preserving 120fps
-    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.0 : 1.25);
+
+    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.0 : 1.5);
     renderer.setPixelRatio(dpr);
     renderer.setSize(width, height);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.35;
     renderer.setClearColor(0x000000, 1);
     container.appendChild(renderer.domElement);
 
@@ -109,7 +112,6 @@ export function AmbientField() {
         return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
       }
 
-      // High-performance 2-octave fbm: silky organic fluid smoke with minimal GPU fill cost
       float fbm(vec3 p) {
         float v = 0.55 * snoise(p);
         v += 0.32 * snoise(p * 2.12 + vec3(45.0));
@@ -141,7 +143,6 @@ export function AmbientField() {
 
         float t = uTime * 0.035;
 
-        // High-Efficiency Single-Warp Liquid Nebula
         vec3 coord1 = vec3(p * 1.20, t);
         float q1 = fbm(coord1);
 
@@ -150,7 +151,6 @@ export function AmbientField() {
 
         float density = smoothstep(-0.10, 0.80, smoke + q1 * 0.30);
 
-        // Pure Monochrome Palette
         vec3 spaceVoid = vec3(0.0, 0.0, 0.0);
         vec3 graphitePlume = vec3(0.03, 0.03, 0.03);
         vec3 liquidSilver = vec3(0.09, 0.09, 0.09);
@@ -162,7 +162,6 @@ export function AmbientField() {
         col = mix(col, liquidSilver, smoothstep(0.30, 0.72, density));
         col = mix(col, titaniumLight, smoothstep(0.62, 1.02, density) * 0.80);
 
-        // Stardust & Grain
         float dust1 = stardust(centeredUv + uMouse * 0.03, 220.0, 0.10, uTime);
         float stardustIntensity = (0.05 + 0.18 * density) * dust1;
         col += crystalGlint * stardustIntensity * 0.35;
@@ -215,7 +214,7 @@ export function AmbientField() {
     }
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
-    const deepDustCount = isMobile ? 80 : 180;
+    const deepDustCount = isMobile ? 80 : 160;
     const deepDustGeo = new THREE.BufferGeometry();
     const deepDustPositions = new Float32Array(deepDustCount * 3);
     const deepDustVelocities: Array<{ vx: number; vy: number; vz: number }> = [];
@@ -246,11 +245,132 @@ export function AmbientField() {
     const deepDustSystem = new THREE.Points(deepDustGeo, deepDustMat);
     scene.add(deepDustSystem);
 
-    // ── 03. TRACKERS & RENDER LOOP ──
+    // ── 03. CENTERED 3D "13" EMBLEM IN CONTINUOUS MOTION ──
+    let emblemGroup: THREE.Group | null = null;
+    let oneGeo: THREE.ExtrudeGeometry | null = null;
+    let threeGeo: THREE.ExtrudeGeometry | null = null;
+    let matOne: THREE.MeshPhysicalMaterial | null = null;
+    let matThree: THREE.MeshPhysicalMaterial | null = null;
+    let mouseLight: THREE.PointLight | null = null;
+
+    if (showEmblem) {
+      emblemGroup = new THREE.Group();
+
+      const createOneShape = () => {
+        const shape = new THREE.Shape();
+        const topR = 0.44;
+        const botR = 0.68;
+        const topY = 2.62;
+        const botY = -2.42;
+
+        shape.moveTo(-botR, botY);
+        shape.lineTo(-topR, topY);
+        shape.absarc(0, topY, topR, Math.PI, 0, true);
+        shape.lineTo(botR, botY);
+        shape.absarc(0, botY, botR, 0, Math.PI, true);
+        shape.closePath();
+        return shape;
+      };
+
+      const createThreeShape = () => {
+        const shape = new THREE.Shape();
+        shape.moveTo(-0.45, 2.82);
+        shape.bezierCurveTo(0.30, 3.12, 1.30, 3.08, 1.88, 2.48);
+        shape.bezierCurveTo(2.38, 1.95, 2.28, 1.12, 1.72, 0.52);
+        shape.bezierCurveTo(1.32, 0.12, 1.12, 0.02, 1.18, -0.02);
+        shape.bezierCurveTo(1.38, -0.22, 2.18, -0.68, 2.32, -1.38);
+        shape.bezierCurveTo(2.46, -2.18, 1.78, -3.12, 0.62, -3.12);
+        shape.bezierCurveTo(-0.18, -3.12, -0.65, -2.82, -0.92, -2.32);
+        shape.bezierCurveTo(-1.18, -1.82, -1.02, -1.32, -0.52, -1.38);
+        shape.bezierCurveTo(0.18, -1.42, 0.88, -1.68, 1.28, -1.32);
+        shape.bezierCurveTo(1.58, -1.02, 1.48, -0.42, 0.98, -0.12);
+        shape.bezierCurveTo(0.58, 0.12, 0.22, 0.18, 0.18, 0.08);
+        shape.bezierCurveTo(0.12, -0.02, 0.38, 0.58, 0.78, 0.98);
+        shape.bezierCurveTo(1.32, 1.48, 1.28, 1.98, 0.88, 2.18);
+        shape.bezierCurveTo(0.38, 2.38, -0.12, 2.18, -0.48, 1.88);
+        shape.bezierCurveTo(-0.95, 1.92, -0.95, 2.78, -0.45, 2.82);
+        shape.closePath();
+        return shape;
+      };
+
+      const extrudeSettings = {
+        steps: 1,
+        depth: 0.95,
+        bevelEnabled: true,
+        bevelThickness: 0.045,
+        bevelSize: 0.045,
+        bevelOffset: 0,
+        bevelSegments: 4,
+      };
+
+      matOne = new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(0x3a3a3a),
+        roughness: 0.16,
+        metalness: 0.88,
+        clearcoat: 0.85,
+        clearcoatRoughness: 0.12,
+        reflectivity: 0.9,
+      });
+
+      matThree = new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(0x323232),
+        roughness: 0.18,
+        metalness: 0.85,
+        clearcoat: 0.85,
+        clearcoatRoughness: 0.12,
+        reflectivity: 0.9,
+      });
+
+      oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
+      oneGeo.center();
+      const oneMesh = new THREE.Mesh(oneGeo, matOne);
+      oneMesh.position.set(-1.85, 0, 0);
+      emblemGroup.add(oneMesh);
+
+      threeGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
+      threeGeo.center();
+      const threeMesh = new THREE.Mesh(threeGeo, matThree);
+      threeMesh.position.set(0.95, 0, 0);
+      emblemGroup.add(threeMesh);
+
+      // Dead center in screen
+      emblemGroup.position.set(0, 0, 0);
+      const initialScale = isMobile ? 0.72 : 0.95;
+      emblemGroup.scale.set(initialScale, initialScale, initialScale);
+      scene.add(emblemGroup);
+
+      // Studio Lighting for 3D Emblem
+      const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
+      scene.add(ambientLight);
+
+      const keyLight = new THREE.DirectionalLight(0xffffff, 5.0);
+      keyLight.position.set(6, 8, 7);
+      scene.add(keyLight);
+
+      const fillLight = new THREE.DirectionalLight(0xd0d0d0, 3.2);
+      fillLight.position.set(-6, 3, 5);
+      scene.add(fillLight);
+
+      const rimLight = new THREE.DirectionalLight(0xffffff, 4.5);
+      rimLight.position.set(3, -5, -2);
+      scene.add(rimLight);
+
+      const topLight = new THREE.DirectionalLight(0xffffff, 2.5);
+      topLight.position.set(0, 8, 2);
+      scene.add(topLight);
+
+      mouseLight = new THREE.PointLight(0xffffff, 8.0, 18);
+      mouseLight.position.set(0, 0, 4);
+      scene.add(mouseLight);
+    }
+
+    // ── 04. TRACKERS & RENDER LOOP ──
     let mouseX = 0;
     let mouseY = 0;
     let targetMouseX = 0;
     let targetMouseY = 0;
+    let smoothScrollY = 0;
+    let currentScrollY = 0;
 
     const onPointerMove = (e: MouseEvent) => {
       targetMouseX = (e.clientX / window.innerWidth) * 2 - 1;
@@ -266,9 +386,8 @@ export function AmbientField() {
     };
     window.addEventListener("touchmove", onTouchMove, { passive: true });
 
-    let scrollY = 0;
     const onScroll = () => {
-      scrollY = window.scrollY || document.documentElement.scrollTop;
+      currentScrollY = window.scrollY || document.documentElement.scrollTop;
     };
     window.addEventListener("scroll", onScroll, { passive: true });
 
@@ -280,8 +399,13 @@ export function AmbientField() {
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
       nebulaUniforms.uResolution.value.set(width, height);
+
+      if (emblemGroup) {
+        const resScale = width < 768 ? 0.72 : 0.95;
+        emblemGroup.scale.set(resScale, resScale, resScale);
+      }
     };
-    window.addEventListener("resize", onResize, { passive: true });
+    window.addEventListener("resize", onResize);
 
     let rafId: number;
     let isRunning = true;
@@ -294,11 +418,13 @@ export function AmbientField() {
 
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;
+      smoothScrollY += (currentScrollY - smoothScrollY) * 0.06;
 
       nebulaUniforms.uTime.value = elapsedTime;
       nebulaUniforms.uMouse.value.set(mouseX, mouseY);
-      nebulaUniforms.uScroll.value = scrollY;
+      nebulaUniforms.uScroll.value = smoothScrollY;
 
+      // Dust particulate float
       const deepPosAttr = deepDustGeo.attributes.position as THREE.BufferAttribute;
       const deepArr = deepPosAttr.array as Float32Array;
 
@@ -312,8 +438,33 @@ export function AmbientField() {
       deepPosAttr.needsUpdate = true;
 
       deepDustSystem.rotation.y = elapsedTime * 0.012 + mouseX * 0.06;
-      deepDustSystem.rotation.x = mouseY * 0.04 + scrollY * 0.00015;
-      deepDustSystem.position.y = -(scrollY * 0.0008);
+      deepDustSystem.rotation.x = mouseY * 0.04 + smoothScrollY * 0.00015;
+      deepDustSystem.position.y = -(smoothScrollY * 0.0008);
+
+      // Centered 3D Emblem Continuous Motion (Idle + Scroll + Mouse)
+      if (emblemGroup) {
+        const idleFloatY = Math.sin(elapsedTime * 0.75) * 0.08;
+        const idleRotY = Math.sin(elapsedTime * 0.35) * 0.06;
+        const idleRotX = Math.cos(elapsedTime * 0.45) * 0.04;
+
+        // Dynamic 3D rotation driven by continuous time, mouse, and scroll progression
+        const targetRotY = idleRotY + mouseX * 0.22 + smoothScrollY * 0.0016;
+        const targetRotX = idleRotX - mouseY * 0.16 + smoothScrollY * 0.0006;
+        const targetRotZ = mouseX * 0.06 + Math.sin(smoothScrollY * 0.0012) * 0.08;
+
+        emblemGroup.rotation.y += (targetRotY - emblemGroup.rotation.y) * 0.06;
+        emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.06;
+        emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.06;
+
+        // Dynamic Y translation with scroll depth
+        const targetPosY = idleFloatY - Math.sin(smoothScrollY * 0.0008) * 0.35;
+        emblemGroup.position.y += (targetPosY - emblemGroup.position.y) * 0.06;
+
+        if (mouseLight) {
+          mouseLight.position.x = mouseX * 6;
+          mouseLight.position.y = mouseY * 6;
+        }
+      }
 
       renderer.autoClear = false;
       renderer.clear();
@@ -350,9 +501,13 @@ export function AmbientField() {
       deepDustGeo.dispose();
       deepDustMat.dispose();
       particleTexture.dispose();
+      if (oneGeo) oneGeo.dispose();
+      if (threeGeo) threeGeo.dispose();
+      if (matOne) matOne.dispose();
+      if (matThree) matThree.dispose();
       renderer.dispose();
     };
-  }, []);
+  }, [showEmblem]);
 
   return (
     <div
