@@ -1,54 +1,78 @@
 /* =========================================================
-   13 UTOPIA // VALERAN VISUAL LAB (STAGING REVIEW ONLY)
+   13 UTOPIA // EXACT VALERAN.EU WEBGL NEBULA & CURSOR LAB
    ========================================================= */
 
-/* ── 01. Fullscreen Ambient Mouse-Responsive Spotlight ──── */
-.ambientSpotlight {
+/* ── 01. Fixed Fullscreen WebGL Nebula Canvas Host ──────── */
+.canvasHost {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
   z-index: 0;
   pointer-events: none;
-  transition: background-color 0.4s ease;
-  will-change: background-image;
+  background: #050505;
 }
 
-/* ── 02. Analog Film Grain Noise Overlay ────────────────── */
-.filmGrain {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 140px 140px;
+.canvasHost canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
 }
 
-/* ── 03. Valeran Minimalist Square Dot Cursor ───────────── */
-.valeranCursor {
+/* ── 02. Exact Valeran `.cursor-square` System ──────────── */
+.cursorSquare {
   position: fixed;
   top: 0;
   left: 0;
-  width: 7px;
-  height: 7px;
-  pointer-events: none;
   z-index: 9999999;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
   will-change: transform;
-  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.2s ease,
-              box-shadow 0.25s ease;
 }
 
-.cursorHovered {
-  width: 15px;
-  height: 15px;
-  opacity: 0.92;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+.cDot {
+  width: 10px;
+  height: 10px;
+  background: #C8B89A;
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.25s ease,
+              background-color 0.3s ease;
+}
+
+.cursorSquare.hovered .cDot {
+  width: 20px;
+  height: 20px;
+  opacity: 0.45;
+}
+
+.cDrag {
+  display: none;
+  color: #C8B89A;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  background: rgba(26, 20, 16, 0.75);
+  padding: 6px 12px;
+  border-radius: 4px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(200, 184, 154, 0.3);
+  white-space: nowrap;
+}
+
+.cursorSquare.dragMode .cDot {
+  display: none;
+}
+
+.cursorSquare.dragMode .cDrag {
+  display: block;
+}
+
+@media (hover: none) {
+  .cursorSquare {
+    display: none !important;
+  }
 }
 
 :global(.valeran-custom-cursor),
@@ -56,13 +80,13 @@
   cursor: none !important;
 }
 
-/* ── 04. Floating Collapsible Director Control HUD ──────── */
+/* ── 03. Floating Collapsible Director Control HUD ──────── */
 .directorHUD {
   position: fixed;
   top: 90px;
   right: clamp(16px, 2.5vw, 40px);
   z-index: 999999;
-  width: min(420px, 92vw);
+  width: min(440px, 92vw);
   max-height: calc(100vh - 120px);
   overflow-y: auto;
   background: rgba(10, 10, 14, 0.94);
@@ -249,7 +273,7 @@
 .controlRow {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .controlLabel {
@@ -261,16 +285,9 @@
   text-transform: uppercase;
 }
 
-.rangeInput {
-  width: 100%;
-  accent-color: #ffffff;
-  cursor: pointer;
-}
-
 .toggleRow {
   display: flex;
   align-items: center;
-  margin-top: 2px;
 }
 
 .toggleLabel {
@@ -286,6 +303,37 @@
 .checkboxInput {
   accent-color: #ffffff;
   cursor: pointer;
+}
+
+.fpsGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.fpsBtn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.75);
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fpsBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.fpsBtnActive {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700;
 }
 
 .hudFooter {
