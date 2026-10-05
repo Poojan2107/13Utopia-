@@ -3,8 +3,8 @@
    ========================================================= */
 
 .root {
-  --echo-ink: #f3f1ea;
-  --echo-stroke: color-mix(in srgb, var(--color-gold, #e8c56a) 42%, transparent);
+  --echo-ink: #ffffff;
+  --echo-stroke: rgba(255, 255, 255, 0.35);
 
   position: relative;
   display: block;

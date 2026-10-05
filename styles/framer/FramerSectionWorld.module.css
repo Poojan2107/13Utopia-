@@ -4,7 +4,7 @@
    ========================================================= */
 
 .section {
-  --world-accent: var(--color-gold, #e8c56a);
+  --world-accent: #ffffff;
 
   position: relative;
   width: 100%;

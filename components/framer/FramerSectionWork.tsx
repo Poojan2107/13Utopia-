@@ -16,7 +16,7 @@ const FEATURED = PROJECTS.slice(0, 4).map((p, i) => ({
   description: p.description,
   year: p.year,
   image: p.image,
-  accent: "#e8c56a",
+  accent: "#ffffff",
   url: p.url,
 }));
 

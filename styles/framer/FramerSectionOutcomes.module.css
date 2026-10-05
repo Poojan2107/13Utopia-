@@ -5,9 +5,9 @@
    ========================================================= */
 
 .section {
-  --ink: #f3f1ea;
-  --gold: var(--color-gold, #e8c56a);
-  --rule: rgba(243, 241, 234, 0.1);
+  --ink: #ffffff;
+  --gold: #ffffff;
+  --rule: rgba(255, 255, 255, 0.1);
 
   position: relative;
   width: 100%;

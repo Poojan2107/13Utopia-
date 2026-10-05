@@ -38,7 +38,7 @@ export const WORLDS: Record<"create" | "build" | "grow", WorldConfig> = {
       "We reject the sea of digital sameness. Every identity, spatial interface, and motion language is built to demand visceral attention and refuse to blend into corporate noise.",
     heroImage: "/images/world-create.jpg",
     specimenLabel: "SPECIMEN // 03.1 — FORM BEFORE NOISE",
-    accent: "#e8c56a",
+    accent: "#ffffff",
     services: [
       {
         num: "01",
@@ -89,7 +89,7 @@ export const WORLDS: Record<"create" | "build" | "grow", WorldConfig> = {
       "We don't build standard websites. We engineer high-velocity digital architectures, bespoke SaaS platforms, and intelligent automation systems that scale without breaking under pressure.",
     heroImage: "/images/world-build.jpg",
     specimenLabel: "SPECIMEN // 04.1 — STRUCTURE BEFORE SCALE",
-    accent: "#f3c35b",
+    accent: "#ffffff",
     services: [
       {
         num: "01",
@@ -140,7 +140,7 @@ export const WORLDS: Record<"create" | "build" | "grow", WorldConfig> = {
       "Attention without conversion is vanity. We construct organic search dominance, high-conversion acquisition funnels, and retention flywheels that compound your bottom line automatically.",
     heroImage: "/images/world-grow.jpg",
     specimenLabel: "SPECIMEN // 05.1 — MOMENTUM BEFORE VANITY",
-    accent: "#dfc17b",
+    accent: "#ffffff",
     services: [
       {
         num: "01",

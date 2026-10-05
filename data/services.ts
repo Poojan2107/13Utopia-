@@ -64,7 +64,7 @@ export const SERVICE_WORLDS: Record<"create" | "build" | "grow", ServiceWorld> =
     manifestoBody:
       "A brand is how people understand you, remember you, and decide to trust you. We bind positioning to feeling — so every surface speaks one unreasonable language.",
     heroImage: "/images/world-create.jpg",
-    accent: "#e8c56a",
+    accent: "#ffffff",
     proof: [
       { value: "100%", label: "Bespoke Brand Systems" },
       { value: "60", label: "FPS motion systems locked" },
@@ -189,7 +189,7 @@ export const SERVICE_WORLDS: Record<"create" | "build" | "grow", ServiceWorld> =
     manifestoBody:
       "The best products don’t just explain what a company does. They make people feel the brand, understand the value, and know what to do next — at locked performance.",
     heroImage: "/images/world-build.jpg",
-    accent: "#f3c35b",
+    accent: "#ffffff",
     proof: [
       { value: "60", label: "FPS rendering pipelines" },
       { value: "<1s", label: "Target interaction latency" },
@@ -314,7 +314,7 @@ export const SERVICE_WORLDS: Record<"create" | "build" | "grow", ServiceWorld> =
     manifestoBody:
       "Growth is a system — technical SEO, conversion science, authority, and attribution as one engine. We design the loops that keep compounding after launch week.",
     heroImage: "/images/world-grow.jpg",
-    accent: "#dfc17b",
+    accent: "#ffffff",
     proof: [
       { value: "SEO", label: "Technical dominance first" },
       { value: "CRO", label: "Experiment-led conversion" },
