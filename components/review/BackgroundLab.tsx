@@ -6,12 +6,11 @@ import { Plus3DCanvas } from "@/components/plus-ex/Plus3DCanvas";
 import styles from "@/styles/review/BackgroundLab.module.css";
 
 export type BackgroundMode =
-  | "liquid-obsidian"
-  | "spatial-architecture"
-  | "studio-spotlight"
-  | "optical-glass"
-  | "crystalline-stardust"
-  | "baseline-smoke";
+  | "glyph-matrix"
+  | "lidar-topography"
+  | "kinetic-marquee"
+  | "cyber-blueprint"
+  | "minimal-glass-void";
 
 interface BackgroundOption {
   id: BackgroundMode;
@@ -23,58 +22,51 @@ interface BackgroundOption {
 
 const BACKGROUND_OPTIONS: BackgroundOption[] = [
   {
-    id: "liquid-obsidian",
-    name: "01. Liquid Obsidian",
-    tag: "FLUID MERCURY",
-    description: "Deep, dark liquid mercury waves with subtle specular metallic ripples reacting to mouse motion.",
-    vibe: "Tactile, luxury-tech, liquid metallic weight.",
+    id: "glyph-matrix",
+    name: "01. Magnetic Glyph Matrix",
+    tag: "INTERACTIVE ASCII",
+    description: "Grid of architectural symbols & brand glyphs reacting like magnetic iron filings to your mouse.",
+    vibe: "Creative-tech, bespoke computational aesthetics.",
   },
   {
-    id: "spatial-architecture",
-    name: "02. Spatial Architecture",
-    tag: "TADAO ANDO VOID",
-    description: "Architectural 3D perspective lines and subtle volumetric light pillars shifting in deep parallax.",
-    vibe: "Monumental, brutalist, structural authority.",
+    id: "lidar-topography",
+    name: "02. LiDAR 3D Terrain Scan",
+    tag: "POINT-CLOUD MESH",
+    description: "Undulating 3D topographic wireframe with laser scan pulses sweeping across contour ridges.",
+    vibe: "Spatial depth, architectural scale, cinematic 3D.",
   },
   {
-    id: "studio-spotlight",
-    name: "03. Studio Darkroom",
-    tag: "EDITORIAL FOCUS",
-    description: "Pure #000000 void with an organic, soft studio spotlight tracking your cursor to reveal micro-textures.",
-    vibe: "High contrast, editorial photoshoot, zero clutter.",
+    id: "kinetic-marquee",
+    name: "03. Kinetic Typographic Ribbon",
+    tag: "DEEP PARALLAX",
+    description: "Massive hollow-outline typographic ribbons floating in 3D multi-layered depth planes.",
+    vibe: "High-fashion editorial, structural, bold identity.",
   },
   {
-    id: "optical-glass",
-    name: "04. Optical Cryo-Glass",
-    tag: "REFRACTIVE VAPOR",
-    description: "A dark slate with subtle, heavy optical distortion waves like thick architectural glass.",
-    vibe: "Futuristic, clinical, high-budget studio finish.",
+    id: "cyber-blueprint",
+    name: "04. Cybernetic Blueprint HUD",
+    tag: "TECHNICAL TELEMETRY",
+    description: "Vector coordinate reticles, target calipers, and live telemetry tracking the 3D model.",
+    vibe: "Senior engineering authority, precision CAD aesthetic.",
   },
   {
-    id: "crystalline-stardust",
-    name: "05. Crystalline Stardust",
-    tag: "COSMIC NOIR",
-    description: "Ultra-clean obsidian void layered with multi-depth crystalline micro-dust motes and subtle glints.",
-    vibe: "Pure contrast, infinite depth, 120fps ultra-light.",
-  },
-  {
-    id: "baseline-smoke",
-    name: "06. Baseline Nebula",
-    tag: "CURRENT SMOKE",
-    description: "The current 2-octave volumetric monochrome smoke cloud background for direct comparison.",
-    vibe: "Atmospheric, misty, organic smoke.",
+    id: "minimal-glass-void",
+    name: "05. Pure Obsidian Void",
+    tag: "CORNER RETICLES",
+    description: "Pitch black #000000 with razor corner crosshairs and a crystal refraction puck. Zero noise.",
+    vibe: "Extreme luxury, 100% typography & 3D focus.",
   },
 ];
 
 export function BackgroundLab() {
-  const [activeMode, setActiveMode] = useState<BackgroundMode>("liquid-obsidian");
+  const [activeMode, setActiveMode] = useState<BackgroundMode>("glyph-matrix");
   const canvasContainerRef = useRef<HTMLDivElement | null>(null);
+  const [hudTelemetry, setHudTelemetry] = useState({ x: 0, y: 0, fps: 120, time: 0 });
 
   useEffect(() => {
     const container = canvasContainerRef.current;
     if (!container) return;
 
-    // Clear previous canvases
     container.innerHTML = "";
 
     const width = window.innerWidth;
@@ -87,18 +79,13 @@ export function BackgroundLab() {
 
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
-      antialias: false,
+      antialias: true,
       powerPreference: "high-performance",
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.0 : 1.25));
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 1);
     container.appendChild(renderer.domElement);
-
-    let uniforms: Record<string, THREE.IUniform> = {};
-    let mesh: THREE.Object3D | null = null;
-    let particleSystem: THREE.Points | null = null;
-    let gridHelper: THREE.Group | null = null;
 
     let mouseX = 0;
     let mouseY = 0;
@@ -119,355 +106,342 @@ export function BackgroundLab() {
     };
     window.addEventListener("touchmove", onTouchMove, { passive: true });
 
-    // ── BUILD SELECTED BACKGROUND SHADER / GEOMETRY ──
-    if (activeMode === "liquid-obsidian") {
-      // Liquid Dark Mercury / Obsidian Caustics
-      uniforms = {
-        uTime: { value: 0 },
-        uResolution: { value: new THREE.Vector2(width, height) },
-        uMouse: { value: new THREE.Vector2(0, 0) },
+    let activeCleanup = () => {};
+    let customTick: ((time: number) => void) | null = null;
+
+    // ── BUILD SELECTED RADICAL CONCEPT ──
+    if (activeMode === "glyph-matrix") {
+      // 01. INTERACTIVE MAGNETIC ASCII / GLYPH MATRIX
+      const glyphCanvas = document.createElement("canvas");
+      glyphCanvas.width = width;
+      glyphCanvas.height = height;
+      glyphCanvas.style.position = "absolute";
+      glyphCanvas.style.inset = "0";
+      glyphCanvas.style.width = "100%";
+      glyphCanvas.style.height = "100%";
+      glyphCanvas.style.pointerEvents = "none";
+      container.appendChild(glyphCanvas);
+
+      const ctx = glyphCanvas.getContext("2d");
+      const glyphs = ["1", "3", "U", "T", "O", "P", "I", "A", "+", "·", "/", "[", "]", "▲", "■", "░"];
+      
+      const cols = isMobile ? 22 : 44;
+      const rows = isMobile ? 16 : 28;
+      const cellW = width / cols;
+      const cellH = height / rows;
+
+      interface GridCell {
+        baseX: number;
+        baseY: number;
+        char: string;
+        vx: number;
+        vy: number;
+        x: number;
+        y: number;
+        scale: number;
+      }
+
+      const grid: GridCell[] = [];
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const bx = c * cellW + cellW * 0.5;
+          const by = r * cellH + cellH * 0.5;
+          grid.push({
+            baseX: bx,
+            baseY: by,
+            char: glyphs[(r * cols + c) % glyphs.length],
+            x: bx,
+            y: by,
+            vx: 0,
+            vy: 0,
+            scale: 1,
+          });
+        }
+      }
+
+      let mPx = width * 0.5;
+      let mPy = height * 0.5;
+
+      const trackMousePx = (e: MouseEvent) => {
+        mPx = e.clientX;
+        mPy = e.clientY;
+      };
+      window.addEventListener("mousemove", trackMousePx, { passive: true });
+
+      customTick = (elapsed: number) => {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, width, height);
+        ctx.font = `600 ${isMobile ? 10 : 12}px monospace`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        for (let i = 0; i < grid.length; i++) {
+          const cell = grid[i];
+          const dx = cell.x - mPx;
+          const dy = cell.y - mPy;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const maxDist = 220;
+
+          if (dist < maxDist) {
+            const force = (1 - dist / maxDist) * 35;
+            const angle = Math.atan2(dy, dx);
+            cell.vx += Math.cos(angle) * force * 0.12;
+            cell.vy += Math.sin(angle) * force * 0.12;
+            cell.scale = 1 + (1 - dist / maxDist) * 0.8;
+          }
+
+          // Spring back to base position
+          cell.vx += (cell.baseX - cell.x) * 0.08;
+          cell.vy += (cell.baseY - cell.y) * 0.08;
+          cell.vx *= 0.78;
+          cell.vy *= 0.78;
+          cell.x += cell.vx;
+          cell.y += cell.vy;
+          cell.scale += (1 - cell.scale) * 0.1;
+
+          const proximity = Math.max(0, 1 - dist / 320);
+          const alpha = 0.12 + proximity * 0.75;
+          ctx.fillStyle = proximity > 0.4 ? `rgba(255, 255, 255, ${alpha})` : `rgba(180, 190, 205, ${alpha})`;
+          ctx.fillText(cell.char, cell.x, cell.y);
+        }
       };
 
-      const mat = new THREE.ShaderMaterial({
-        uniforms,
-        vertexShader: `
-          varying vec2 vUv;
-          void main() {
-            vUv = uv;
-            gl_Position = vec4(position.xy, 0.0, 1.0);
-          }
-        `,
-        fragmentShader: `
-          precision mediump float;
-          uniform float uTime;
-          uniform vec2 uResolution;
-          uniform vec2 uMouse;
-          varying vec2 vUv;
+      activeCleanup = () => {
+        window.removeEventListener("mousemove", trackMousePx);
+        glyphCanvas.remove();
+      };
+    } else if (activeMode === "lidar-topography") {
+      // 02. LIDAR 3D TERRAIN SCAN & POINT-CLOUD MESH
+      const terrainGroup = new THREE.Group();
+      const gridX = 55;
+      const gridZ = 55;
+      const geo = new THREE.PlaneGeometry(32, 32, gridX, gridZ);
+      geo.rotateX(-Math.PI / 2.35);
+      geo.translate(0, -3.8, -4.5);
 
-          void main() {
-            vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution.xy) / min(uResolution.x, uResolution.y);
-            float t = uTime * 0.45;
-            vec2 m = uMouse * 0.15;
-            
-            // Heavy liquid wave displacement
-            vec2 p = uv * 2.2 + m;
-            for(int i = 1; i < 4; i++) {
-              float fi = float(i);
-              p.x += 0.25 / fi * sin(fi * 2.2 * p.y + t * 0.6 + fi * 1.5) + m.x * 0.1;
-              p.y += 0.25 / fi * cos(fi * 2.2 * p.x + t * 0.5 + fi * 2.0) + m.y * 0.1;
-            }
+      const pos = geo.attributes.position;
+      const initialY: number[] = [];
 
-            // High-refraction specular grazing highlight
-            float wave = sin(p.x * 3.5 + p.y * 2.8 + t * 0.4);
-            float specular = pow(max(0.0, wave), 14.0) * 0.85;
-            float diffuse = smoothstep(-0.8, 0.9, wave) * 0.12;
+      for (let i = 0; i < pos.count; i++) {
+        const u = pos.getX(i);
+        const v = pos.getY(i);
+        const elevation =
+          Math.sin(u * 0.35) * Math.cos(v * 0.35) * 1.6 +
+          Math.sin(u * 0.8 + v * 0.6) * 0.6;
+        pos.setZ(i, elevation);
+        initialY.push(elevation);
+      }
+      geo.computeVertexNormals();
 
-            vec3 col = vec3(0.0, 0.0, 0.0);
-            vec3 obsidianGrey = vec3(0.06, 0.065, 0.075);
-            vec3 mercuryHighlight = vec3(0.75, 0.78, 0.82);
-
-            col += obsidianGrey * diffuse;
-            col += mercuryHighlight * specular;
-
-            // Subtle darkroom vignette
-            float d = length(uv);
-            col *= smoothstep(1.4, 0.35, d);
-
-            gl_FragColor = vec4(col, 1.0);
-          }
-        `,
-        depthWrite: false,
-        depthTest: false,
-      });
-
-      const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
-      scene.add(quad);
-      mesh = quad;
-    } else if (activeMode === "spatial-architecture") {
-      // Tadao Ando Spatial Perspective Lines & Volumetric Beams
-      const group = new THREE.Group();
-
-      // Receding 3D Perspective Lines
-      const lineCount = 18;
-      const linesMat = new THREE.LineBasicMaterial({
-        color: 0x444850,
+      // Wireframe contour lines
+      const wireMat = new THREE.MeshBasicMaterial({
+        color: 0x333842,
+        wireframe: true,
         transparent: true,
-        opacity: 0.28,
+        opacity: 0.35,
       });
+      const wireMesh = new THREE.Mesh(geo, wireMat);
+      terrainGroup.add(wireMesh);
 
-      for (let i = 0; i < lineCount; i++) {
-        const xOffset = (i / lineCount - 0.5) * 40;
-        const pts = [
-          new THREE.Vector3(xOffset * 0.15, -15, -25),
-          new THREE.Vector3(xOffset * 2.2, 15, 10),
-        ];
-        const geo = new THREE.BufferGeometry().setFromPoints(pts);
-        const line = new THREE.Line(geo, linesMat);
-        group.add(line);
-      }
-
-      // Horizontal Architectural Planes
-      for (let j = 0; j < 8; j++) {
-        const y = -6 + j * 2.2;
-        const pts = [
-          new THREE.Vector3(-25, y, -15),
-          new THREE.Vector3(25, y, -15),
-        ];
-        const geo = new THREE.BufferGeometry().setFromPoints(pts);
-        const line = new THREE.Line(geo, linesMat);
-        group.add(line);
-      }
-
-      scene.add(group);
-      gridHelper = group;
-    } else if (activeMode === "studio-spotlight") {
-      // Pure #000000 with interactive diffused studio spotlight & micro-grain
-      uniforms = {
-        uResolution: { value: new THREE.Vector2(width, height) },
-        uMouse: { value: new THREE.Vector2(0, 0) },
-        uTime: { value: 0 },
-      };
-
-      const mat = new THREE.ShaderMaterial({
-        uniforms,
-        vertexShader: `
-          varying vec2 vUv;
-          void main() {
-            vUv = uv;
-            gl_Position = vec4(position.xy, 0.0, 1.0);
-          }
-        `,
-        fragmentShader: `
-          precision mediump float;
-          uniform vec2 uResolution;
-          uniform vec2 uMouse;
-          uniform float uTime;
-          varying vec2 vUv;
-
-          float hash(vec2 p) {
-            return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
-          }
-
-          void main() {
-            vec2 uv = gl_FragCoord.xy / uResolution.xy;
-            vec2 m = uMouse * 0.5 + 0.5;
-
-            // Dynamic diffused spotlight distance
-            float d = distance(uv, m);
-            float spot = smoothstep(0.75, 0.0, d);
-            spot = pow(spot, 1.8) * 0.22;
-
-            // Micro-film grain
-            float grain = (hash(gl_FragCoord.xy + fract(uTime * 0.01)) - 0.5) * 0.025;
-
-            vec3 col = vec3(0.0);
-            col += vec3(0.85, 0.88, 0.92) * spot;
-            col += vec3(grain);
-
-            gl_FragColor = vec4(max(vec3(0.0), col), 1.0);
-          }
-        `,
-        depthWrite: false,
-        depthTest: false,
-      });
-
-      const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
-      scene.add(quad);
-      mesh = quad;
-    } else if (activeMode === "optical-glass") {
-      // Refractive Optical Glass Waves
-      uniforms = {
-        uResolution: { value: new THREE.Vector2(width, height) },
-        uMouse: { value: new THREE.Vector2(0, 0) },
-        uTime: { value: 0 },
-      };
-
-      const mat = new THREE.ShaderMaterial({
-        uniforms,
-        vertexShader: `
-          varying vec2 vUv;
-          void main() {
-            vUv = uv;
-            gl_Position = vec4(position.xy, 0.0, 1.0);
-          }
-        `,
-        fragmentShader: `
-          precision mediump float;
-          uniform vec2 uResolution;
-          uniform vec2 uMouse;
-          uniform float uTime;
-          varying vec2 vUv;
-
-          void main() {
-            vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution.xy) / min(uResolution.x, uResolution.y);
-            float t = uTime * 0.5;
-
-            // Architectural glass fluting / refraction waves
-            float glassWave = sin(uv.x * 12.0 + cos(uv.y * 8.0 + t * 0.6) * 1.5 + uMouse.x * 2.0);
-            float caustics = pow(max(0.0, glassWave), 8.0) * 0.16;
-            float ambientDepth = smoothstep(0.0, 1.0, sin(uv.y * 4.0 + t * 0.3)) * 0.04;
-
-            vec3 col = vec3(0.015, 0.018, 0.022);
-            col += vec3(0.70, 0.74, 0.80) * caustics;
-            col += vec3(0.12, 0.13, 0.15) * ambientDepth;
-
-            float d = length(uv);
-            col *= smoothstep(1.5, 0.4, d);
-
-            gl_FragColor = vec4(col, 1.0);
-          }
-        `,
-        depthWrite: false,
-        depthTest: false,
-      });
-
-      const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
-      scene.add(quad);
-      mesh = quad;
-    } else if (activeMode === "crystalline-stardust") {
-      // Pure Void with 3-tier 3D Crystalline Stardust Motes
-      const count = 350;
-      const pos = new Float32Array(count * 3);
-      const scales = new Float32Array(count);
-
-      for (let i = 0; i < count; i++) {
-        pos[i * 3] = (Math.random() - 0.5) * 35;
-        pos[i * 3 + 1] = (Math.random() - 0.5) * 25;
-        pos[i * 3 + 2] = (Math.random() - 0.5) * 20;
-        scales[i] = 0.02 + Math.random() * 0.06;
-      }
-
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-
-      // Circular glint texture
-      const pCanvas = document.createElement("canvas");
-      pCanvas.width = 32;
-      pCanvas.height = 32;
-      const pCtx = pCanvas.getContext("2d");
-      if (pCtx) {
-        const grad = pCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
-        grad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
-        grad.addColorStop(0.35, "rgba(200, 220, 255, 0.6)");
-        grad.addColorStop(1, "rgba(0, 0, 0, 0)");
-        pCtx.fillStyle = grad;
-        pCtx.fillRect(0, 0, 32, 32);
-      }
-      const tex = new THREE.CanvasTexture(pCanvas);
-
-      const pMat = new THREE.PointsMaterial({
-        size: 0.15,
-        map: tex,
+      // LiDAR points
+      const pointMat = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.045,
         transparent: true,
-        opacity: 0.55,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
+        opacity: 0.7,
       });
+      const points = new THREE.Points(geo, pointMat);
+      terrainGroup.add(points);
 
-      const points = new THREE.Points(geo, pMat);
-      scene.add(points);
-      particleSystem = points;
-    } else {
-      // Baseline 2-octave smoke
-      uniforms = {
-        uResolution: { value: new THREE.Vector2(width, height) },
-        uMouse: { value: new THREE.Vector2(0, 0) },
-        uTime: { value: 0 },
+      scene.add(terrainGroup);
+
+      customTick = (time: number) => {
+        terrainGroup.rotation.y = mouseX * 0.14;
+        terrainGroup.position.x = mouseX * 0.8;
+        terrainGroup.position.y = -3.8 + mouseY * 0.4;
+
+        // Dynamic laser scan line wave
+        const p = geo.attributes.position;
+        for (let i = 0; i < p.count; i++) {
+          const u = p.getX(i);
+          const v = p.getY(i);
+          const wave = Math.sin(u * 0.35 + time * 0.8) * Math.cos(v * 0.35 + time * 0.5);
+          p.setZ(i, initialY[i] + wave * 0.45);
+        }
+        p.needsUpdate = true;
       };
 
-      const mat = new THREE.ShaderMaterial({
-        uniforms,
-        vertexShader: `
-          varying vec2 vUv;
-          void main() {
-            vUv = uv;
-            gl_Position = vec4(position.xy, 0.0, 1.0);
-          }
-        `,
-        fragmentShader: `
-          precision mediump float;
-          uniform vec2 uResolution;
-          uniform vec2 uMouse;
-          uniform float uTime;
-          varying vec2 vUv;
+      activeCleanup = () => {
+        geo.dispose();
+        wireMat.dispose();
+        pointMat.dispose();
+        scene.remove(terrainGroup);
+      };
+    } else if (activeMode === "kinetic-marquee") {
+      // 03. KINETIC TYPOGRAPHIC RIBBON IN DEEP PARALLAX
+      const canvasMarquee = document.createElement("canvas");
+      canvasMarquee.width = width;
+      canvasMarquee.height = height;
+      canvasMarquee.style.position = "absolute";
+      canvasMarquee.style.inset = "0";
+      canvasMarquee.style.width = "100%";
+      canvasMarquee.style.height = "100%";
+      canvasMarquee.style.pointerEvents = "none";
+      container.appendChild(canvasMarquee);
 
-          // Simple simplex noise
-          vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-          vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-          vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
-          vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+      const ctx = canvasMarquee.getContext("2d");
+      const lines = [
+        { text: "13 UTOPIA · ARCHITECTURAL REASONING · FULL-SPECTRUM ENGINEERING · BRAND · CGI · ", y: 0.22, speed: 45, size: 74, outline: true },
+        { text: "BE UNREAL · BE UNREASONABLE · OWN THE CATEGORY · NO TEMPLATES · PURE BESPOKE · ", y: 0.48, speed: -55, size: 110, outline: true },
+        { text: "CREATE · BUILD · GROW · NEXT.JS · THREE.JS · AI WORKFLOWS · CLOUD ARCHITECTURE · ", y: 0.78, speed: 40, size: 82, outline: true },
+      ];
 
-          float snoise(vec3 v) {
-            const vec2 C = vec2(1.0/6.0, 1.0/3.0);
-            const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
-            vec3 i  = floor(v + dot(v, C.yyy));
-            vec3 x0 = v - i + dot(i, C.xxx);
-            vec3 g = step(x0.yzx, x0.xyz);
-            vec3 l = 1.0 - g;
-            vec3 i1 = min(g.xyz, l.zxy);
-            vec3 i2 = max(g.xyz, l.zxy);
-            vec3 x1 = x0 - i1 + C.xxx;
-            vec3 x2 = x0 - i2 + C.yyy;
-            vec3 x3 = x0 - D.yyy;
-            i = mod289(i);
-            vec4 p = permute(permute(permute(
-                       i.z + vec4(0.0, i1.z, i2.z, 1.0))
-                     + i.y + vec4(0.0, i1.y, i2.y, 1.0))
-                     + i.x + vec4(0.0, i1.x, i2.x, 1.0));
-            float n_ = 0.142857142857;
-            vec3  ns = n_ * D.wyz - D.xzx;
-            vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
-            vec4 x_ = floor(j * ns.z);
-            vec4 y_ = floor(j - 7.0 * x_);
-            vec4 x = x_ *ns.x + ns.yyyy;
-            vec4 y = y_ *ns.x + ns.yyyy;
-            vec4 h = 1.0 - abs(x) - abs(y);
-            vec4 b0 = vec4(x.xy, y.xy);
-            vec4 b1 = vec4(x.zw, y.zw);
-            vec4 s0 = floor(b0)*2.0 + 1.0;
-            vec4 s1 = floor(b1)*2.0 + 1.0;
-            vec4 sh = -step(h, vec4(0.0));
-            vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
-            vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
-            vec3 p0 = vec3(a0.xy, h.x);
-            vec3 p1 = vec3(a0.zw, h.y);
-            vec3 p2 = vec3(a1.xy, h.z);
-            vec3 p3 = vec3(a1.zw, h.w);
-            vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
-            p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
-            vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
-            m = m * m;
-            return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
-          }
+      let offsets = [0, 0, 0];
 
-          float fbm(vec3 p) {
-            return 0.55 * snoise(p) + 0.32 * snoise(p * 2.12 + vec3(45.0));
-          }
+      customTick = (time: number) => {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, width, height);
 
-          void main() {
-            vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution.xy) / min(uResolution.x, uResolution.y);
-            vec2 p = uv * 1.35 + uMouse * 0.08;
-            float t = uTime * 0.035;
+        lines.forEach((line, idx) => {
+          ctx.font = `800 ${isMobile ? line.size * 0.5 : line.size}px "PP Neue Montreal", sans-serif`;
+          ctx.letterSpacing = "-0.04em";
 
-            vec3 coord1 = vec3(p * 1.20, t);
-            float q1 = fbm(coord1);
+          offsets[idx] += (line.speed * 0.016);
+          const textW = ctx.measureText(line.text).width;
+          const x = (offsets[idx] % textW) - textW;
 
-            vec3 coord2 = vec3(p * 1.85 + vec2(q1 * 0.75, -q1 * 0.55), t * 1.20);
-            float smoke = fbm(coord2);
+          const yPos = line.y * height + mouseY * (idx === 1 ? -25 : 20);
 
-            float density = smoothstep(-0.10, 0.80, smoke + q1 * 0.30);
-            vec3 col = mix(vec3(0.0), vec3(0.18), density * 0.8);
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.14)";
+          ctx.lineWidth = 1.2;
+          ctx.strokeText(line.text + line.text + line.text, x + mouseX * (idx * 30), yPos);
+        });
+      };
 
-            gl_FragColor = vec4(col, 1.0);
-          }
-        `,
-        depthWrite: false,
-        depthTest: false,
-      });
+      activeCleanup = () => {
+        canvasMarquee.remove();
+      };
+    } else if (activeMode === "cyber-blueprint") {
+      // 04. CYBERNETIC BLUEPRINT & SPATIAL TELEMETRY HUD
+      const canvasHud = document.createElement("canvas");
+      canvasHud.width = width;
+      canvasHud.height = height;
+      canvasHud.style.position = "absolute";
+      canvasHud.style.inset = "0";
+      canvasHud.style.width = "100%";
+      canvasHud.style.height = "100%";
+      canvasHud.style.pointerEvents = "none";
+      container.appendChild(canvasHud);
 
-      const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
-      scene.add(quad);
-      mesh = quad;
+      const ctx = canvasHud.getContext("2d");
+
+      customTick = (time: number) => {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, width, height);
+
+        const cx = width * 0.5 + mouseX * 30;
+        const cy = height * 0.5 + -mouseY * 30;
+
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.16)";
+        ctx.lineWidth = 1;
+
+        // Rotating target reticles around center monolith
+        ctx.save();
+        ctx.translate(cx, cy);
+
+        // Reticle 1: Outer dashed circle
+        ctx.beginPath();
+        ctx.setLineDash([8, 14]);
+        ctx.arc(0, 0, isMobile ? 160 : 260, time * 0.2, time * 0.2 + Math.PI * 2);
+        ctx.stroke();
+
+        // Reticle 2: Inner counter-rotating bracket
+        ctx.beginPath();
+        ctx.setLineDash([24, 40]);
+        ctx.arc(0, 0, isMobile ? 120 : 190, -time * 0.35, -time * 0.35 + Math.PI * 2);
+        ctx.stroke();
+
+        // Crosshairs
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(-320, 0);
+        ctx.lineTo(-200, 0);
+        ctx.moveTo(200, 0);
+        ctx.lineTo(320, 0);
+        ctx.moveTo(0, -320);
+        ctx.lineTo(0, -200);
+        ctx.moveTo(0, 200);
+        ctx.lineTo(0, 320);
+        ctx.stroke();
+        ctx.restore();
+
+        // Telemetry Data Readouts in Corners
+        ctx.font = "600 10px monospace";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
+        ctx.fillText(`SYS.COORD [X: ${(mouseX * 100).toFixed(2)} // Y: ${(mouseY * 100).toFixed(2)}]`, 32, height - 32);
+        ctx.fillText(`TARGET_LOCK: 13_UTOPIA_MONOLITH [RAD: 260PX]`, 32, height - 48);
+        ctx.fillText(`RENDER_PIPELINE: WEBGL2_CORE // 120HZ_SYNC`, width - 320, height - 32);
+      };
+
+      activeCleanup = () => {
+        canvasHud.remove();
+      };
+    } else if (activeMode === "minimal-glass-void") {
+      // 05. PURE OBSIDIAN VOID WITH CORNER RETICLES
+      const canvasReticles = document.createElement("canvas");
+      canvasReticles.width = width;
+      canvasReticles.height = height;
+      canvasReticles.style.position = "absolute";
+      canvasReticles.style.inset = "0";
+      canvasReticles.style.width = "100%";
+      canvasReticles.style.height = "100%";
+      canvasReticles.style.pointerEvents = "none";
+      container.appendChild(canvasReticles);
+
+      const ctx = canvasReticles.getContext("2d");
+
+      customTick = () => {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, width, height);
+
+        const pad = isMobile ? 20 : 36;
+        const arm = 18;
+
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+        ctx.lineWidth = 1.2;
+
+        // Top Left Crosshair
+        ctx.beginPath();
+        ctx.moveTo(pad, pad + arm);
+        ctx.lineTo(pad, pad);
+        ctx.lineTo(pad + arm, pad);
+        ctx.stroke();
+
+        // Top Right Crosshair
+        ctx.beginPath();
+        ctx.moveTo(width - pad, pad + arm);
+        ctx.lineTo(width - pad, pad);
+        ctx.lineTo(width - pad - arm, pad);
+        ctx.stroke();
+
+        // Bottom Left Crosshair
+        ctx.beginPath();
+        ctx.moveTo(pad, height - pad - arm);
+        ctx.lineTo(pad, height - pad);
+        ctx.lineTo(pad + arm, height - pad);
+        ctx.stroke();
+
+        // Bottom Right Crosshair
+        ctx.beginPath();
+        ctx.moveTo(width - pad, height - pad - arm);
+        ctx.lineTo(width - pad, height - pad);
+        ctx.lineTo(width - pad - arm, height - pad);
+        ctx.stroke();
+      };
+
+      activeCleanup = () => {
+        canvasReticles.remove();
+      };
     }
 
     const onResize = () => {
@@ -476,13 +450,10 @@ export function BackgroundLab() {
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
-      if (uniforms.uResolution) {
-        uniforms.uResolution.value.set(w, h);
-      }
     };
     window.addEventListener("resize", onResize);
 
-    // Animation Loop
+    // Master Render Loop
     let rafId: number;
     const startTime = performance.now();
 
@@ -491,25 +462,11 @@ export function BackgroundLab() {
       if (document.hidden) return;
 
       const elapsed = (performance.now() - startTime) * 0.001;
-      mouseX += (targetMouseX - mouseX) * 0.05;
-      mouseY += (targetMouseY - mouseY) * 0.05;
+      mouseX += (targetMouseX - mouseX) * 0.06;
+      mouseY += (targetMouseY - mouseY) * 0.06;
 
-      if (uniforms.uTime) {
-        uniforms.uTime.value = elapsed;
-      }
-      if (uniforms.uMouse) {
-        uniforms.uMouse.value.set(mouseX, mouseY);
-      }
-
-      if (gridHelper) {
-        gridHelper.rotation.y = mouseX * 0.15;
-        gridHelper.rotation.x = -mouseY * 0.10;
-        gridHelper.position.x = mouseX * 1.2;
-      }
-
-      if (particleSystem) {
-        particleSystem.rotation.y = elapsed * 0.02 + mouseX * 0.12;
-        particleSystem.rotation.x = mouseY * 0.08;
+      if (customTick) {
+        customTick(elapsed);
       }
 
       renderer.render(scene, camera);
@@ -521,6 +478,7 @@ export function BackgroundLab() {
       window.removeEventListener("resize", onResize);
       window.removeEventListener("mousemove", onPointerMove);
       window.removeEventListener("touchmove", onTouchMove);
+      activeCleanup();
       if (renderer.domElement) {
         renderer.domElement.remove();
       }
@@ -538,12 +496,12 @@ export function BackgroundLab() {
       {/* Floating Interactive Director HUD Switcher */}
       <aside className={styles.directorHUD} aria-label="Background Concept Selector">
         <div className={styles.hudHeader}>
-          <span className={styles.hudTag}>13 UTOPIA // LAB</span>
-          <span className={styles.hudTitle}>BACKGROUND CONCEPT REVIEW</span>
+          <span className={styles.hudTag}>13 UTOPIA // CONCEPT LAB</span>
+          <span className={styles.hudTitle}>RADICAL BACKGROUND DIRECTIONS</span>
         </div>
 
         <p className={styles.hudSub}>
-          Click any concept to swap the live atmospheric engine instantly.
+          Click each concept to test distinct aesthetic architectures behind the live 3D emblem.
         </p>
 
         <div className={styles.buttonList}>
@@ -565,7 +523,7 @@ export function BackgroundLab() {
 
         <div className={styles.hudFooter}>
           <div className={styles.vibeBox}>
-            <span className={styles.vibeLabel}>ACTIVE VIBE</span>
+            <span className={styles.vibeLabel}>CREATIVE IDENTITY</span>
             <span className={styles.vibeValue}>{currentConfig.vibe}</span>
           </div>
         </div>
