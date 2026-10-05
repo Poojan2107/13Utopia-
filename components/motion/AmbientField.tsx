@@ -446,9 +446,9 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
       deepDustSystem.rotation.x = mouseY * 0.04 + smoothScrollY * 0.00015;
       deepDustSystem.position.y = -(smoothScrollY * 0.0008);
 
-      // Centered 3D Emblem: Rotate on Scroll, parallax drift & smooth fade as user scrolls into content
+      // 3D Liquid Titanium Emblem: Continuously visible across all pages and sections, rotates on scroll with subtle mouse tilt
       if (emblemGroup && matOne && matThree) {
-        // Measure real footer and CTA position relative to viewport
+        // Measure real footer position relative to viewport
         const footerEl = document.querySelector("footer");
         let footerProximityFactor = 1.0;
         if (footerEl) {
@@ -462,20 +462,18 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
           }
         }
 
-        // Hero-focused scroll fade: smoothly ascends with parallax and fades as user scrolls down
-        const heroFadeOut = Math.max(0, Math.min(1, 1.0 - (smoothScrollY / (height * 0.75))));
-        const combinedFade = Math.min(footerProximityFactor, heroFadeOut);
+        const footerFade = footerProximityFactor;
 
-        if (combinedFade <= 0.01) {
+        if (footerFade <= 0.01) {
           emblemGroup.visible = false;
         } else {
           emblemGroup.visible = true;
-          const baseScale = (width < 768 ? 0.72 : 0.95) * Math.max(combinedFade, 0.4);
+          const baseScale = (width < 768 ? 0.72 : 0.95);
           emblemGroup.scale.set(baseScale, baseScale, baseScale);
-          matOne.opacity = combinedFade;
-          matThree.opacity = combinedFade;
+          matOne.opacity = footerFade;
+          matThree.opacity = footerFade;
 
-          // Parallax ascend on scroll + subtle responsive tilt
+          // Continuous scroll rotation + subtle responsive pointer tilt
           const targetRotY = (smoothScrollY * 0.0022) + (mouseX * 0.18);
           const targetRotX = -(mouseY * 0.12) + (smoothScrollY * 0.0003);
           const targetRotZ = mouseX * 0.03;
@@ -484,9 +482,9 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
           emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.08;
           emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.08;
 
-          // Natural parallax upward drift
-          const targetPosY = (smoothScrollY * 0.0035);
-          emblemGroup.position.y += (targetPosY - emblemGroup.position.y) * 0.08;
+          // Ambient idle breathing + scroll tracking
+          const idleBob = Math.sin(elapsedTime * 1.2) * 0.08;
+          emblemGroup.position.y += (idleBob - emblemGroup.position.y) * 0.06;
 
           if (mouseLight) {
             mouseLight.position.x = mouseX * 5.5;

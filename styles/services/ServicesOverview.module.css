@@ -256,24 +256,25 @@
   margin-top: 1.25rem;
   width: fit-content;
   text-decoration: none;
-  color: #ffffff;
   font-family: var(--font-mono, monospace);
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  padding: 12px 28px;
+  padding: 14px 28px;
   background: #ffffff;
-  color: #000000;
+  color: #000000 !important;
   border-radius: 999px;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
 }
 
 .worldLink:hover,
 .worldLink:focus-visible {
   background: #f0f0f0;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.25);
+  color: #000000 !important;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.35);
   gap: 1rem;
   outline: none;
 }
