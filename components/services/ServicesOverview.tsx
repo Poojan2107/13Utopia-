@@ -15,7 +15,7 @@ import {
   viewportOnce,
 } from "@/components/services/svcMotion";
 import { SERVICE_WORLDS } from "@/data/services";
-import { MagneticCursor, SmoothScrollProvider } from "@/components/motion";
+import { SmoothScrollProvider } from "@/components/motion";
 import styles from "@/styles/services/ServicesOverview.module.css";
 
 const WORLDS = [
@@ -34,19 +34,18 @@ const OVERVIEW_FAQS = [
     a: "CREATE when positioning or identity is unclear. BUILD when the brand is strong but the surface underperforms. GROW when the offer is ready to compound demand.",
   },
   {
-    q: "How many alliances at once?",
-    a: "Six. Hard maximum. Scarcity protects craft, speed, and attention.",
+    q: "How does 13 Utopia collaborate with our team?",
+    a: "Direct access to senior craft and engineering leads. Strategy, design, and development happen in the same room with zero handoff friction.",
   },
   {
     q: "What does the work feel like day to day?",
-    a: "Direct access. High standards. No template theater — strategy and execution in the same room until the system holds.",
+    a: "Fast, transparent, and iterative. We embed directly with your team to ship production-ready assets and systems rapidly.",
   },
 ];
 
 export function ServicesOverview() {
   return (
     <SmoothScrollProvider>
-      <MagneticCursor />
       <SiteHeader />
       <main className={styles.page}>
         <div className={styles.topBar}>

@@ -36,8 +36,8 @@ const SOLUTIONS: CapabilityDomain[] = [
     ],
     techStack: [
       "Figma", "After Effects", "Blender", "Cinema 4D",
-      "Spline", "Rive", "Adobe Creative Suite", "Midjourney",
-      "Three.js", "GSAP", "Lottie", "WebGL",
+      "Spline", "Rive", "Adobe Creative Suite", "Three.js",
+      "GSAP", "WebGL", "Lottie",
     ],
     metricValue: "100%",
     metricLabel: "BESPOKE. ZERO TEMPLATES.",
@@ -60,8 +60,8 @@ const SOLUTIONS: CapabilityDomain[] = [
     techStack: [
       "Next.js", "React", "React Native", "TypeScript",
       "Node.js", "PostgreSQL", "Prisma", "Supabase",
-      "Vercel", "Stripe", "Redis", "REST & GraphQL",
-      "iOS / Swift", "Android / Kotlin", "Tailwind CSS",
+      "Redis", "REST & GraphQL", "iOS / Swift",
+      "Android / Kotlin", "Stripe", "Tailwind CSS",
     ],
     metricValue: "FULL-STACK",
     metricLabel: "FRONT TO BACK",
@@ -72,7 +72,7 @@ const SOLUTIONS: CapabilityDomain[] = [
     title: "AI & AUTOMATION",
     subhead: "AI Agents, Workflow Automation & Machine Learning",
     category: "AI & AUTOMATION",
-    industryVs: "Shallow ChatGPT wrappers and disconnected SaaS tools that create more process debt than they solve.",
+    industryVs: "Shallow wrappers and disconnected tools that create more process debt than they solve.",
     utopiaStandard: "Custom AI agents, automated workflows, and machine learning solutions that reduce manual overhead and scale operations.",
     deliverables: [
       "AI Strategy & Consulting",
@@ -83,9 +83,9 @@ const SOLUTIONS: CapabilityDomain[] = [
       "Machine Learning Solutions",
     ],
     techStack: [
-      "OpenAI", "Anthropic Claude", "Google Gemini", "LangChain",
-      "LangGraph", "LlamaIndex", "Python", "FastAPI",
-      "Pinecone", "Weaviate", "Temporal.io", "n8n", "Make",
+      "Python", "FastAPI", "LangChain", "LangGraph",
+      "LlamaIndex", "Pinecone", "Weaviate", "Qdrant",
+      "Temporal.io", "n8n", "PyTorch", "Vector Search & RAG",
     ],
     metricValue: "OPERATIONAL",
     metricLabel: "NOT EXPERIMENTAL",
@@ -108,9 +108,9 @@ const SOLUTIONS: CapabilityDomain[] = [
       "Infrastructure & Security",
     ],
     techStack: [
-      "AWS", "Google Cloud (GCP)", "Azure", "Docker",
-      "Kubernetes", "Terraform", "GitHub Actions", "Next.js",
-      "Node.js", "Go", "TypeScript", "PostgreSQL", "MongoDB",
+      "AWS", "Google Cloud (GCP)", "Docker", "Kubernetes",
+      "Terraform", "GitHub Actions", "Go", "TypeScript",
+      "Node.js", "PostgreSQL", "Redis", "CI/CD Pipelines",
     ],
     metricValue: "BUILT TO SCALE",
     metricLabel: "NOT JUST LAUNCH",
@@ -132,9 +132,9 @@ const SOLUTIONS: CapabilityDomain[] = [
       "Conversion Rate Optimization (CRO)",
     ],
     techStack: [
-      "Google Ads", "Meta Ads", "LinkedIn Ads", "TikTok Ads",
-      "Ahrefs", "SEMrush", "Screaming Frog", "Search Console",
-      "PostHog", "Mixpanel", "GA4", "HubSpot", "Klaviyo",
+      "Google Ads", "Meta Ads", "LinkedIn Ads", "Ahrefs",
+      "SEMrush", "Screaming Frog", "Google Search Console", "GA4",
+      "PostHog", "Mixpanel", "HubSpot", "Klaviyo", "Technical SEO",
     ],
     metricValue: "PIPELINE",
     metricLabel: "NOT JUST TRAFFIC",
@@ -291,25 +291,8 @@ export function HomeSectionSolutions() {
           })}
         </div>
 
-        {/* Section Bottom Telemetry & Navigation */}
+        {/* Section Bottom Navigation */}
         <div className={styles.solutionsFooter}>
-          <div className={styles.footerTelemetry}>
-            <div className={styles.telemetryCard}>
-              <span className={styles.telemetryVal}>13</span>
-              <span className={styles.telemetryLbl}>COMMISSIONS ACCEPTED ANNUALLY</span>
-            </div>
-            <div className={styles.telemetryDivider} />
-            <div className={styles.telemetryCard}>
-              <span className={styles.telemetryVal}>100%</span>
-              <span className={styles.telemetryLbl}>CUSTOM CODE. ZERO TEMPLATES</span>
-            </div>
-            <div className={styles.telemetryDivider} />
-            <div className={styles.telemetryCard}>
-              <span className={styles.telemetryVal}>&lt; 48H</span>
-              <span className={styles.telemetryLbl}>RESPONSE TO PROJECT INQUIRY</span>
-            </div>
-          </div>
-
           <div className={styles.footerActions}>
             <a href="mailto:contact@13utopia.com" className={styles.fullStackCta}>
               <span>Start a Project</span>

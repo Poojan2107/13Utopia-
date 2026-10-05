@@ -513,14 +513,12 @@
   transform: translate(2px, -2px);
 }
 
-/* Footer Telemetry & Navigation */
+/* Footer Navigation */
 .solutionsFooter {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 28px;
-  padding-top: 32px;
+  padding-top: 24px;
   border: none;
 }
 

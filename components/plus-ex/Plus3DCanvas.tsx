@@ -68,7 +68,9 @@ export function Plus3DCanvas({
       antialias: true,
       powerPreference: "high-performance",
     });
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // Balanced DPR for smooth 120Hz ProMotion on MacBook and mobile devices
+    const isMobile = (container.clientWidth || window.innerWidth) < 768;
+    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.0 : 1.35);
     renderer.setPixelRatio(dpr);
     renderer.setSize(width, height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -343,10 +345,10 @@ export function Plus3DCanvas({
     auraParticleGeo.setAttribute("position", new THREE.BufferAttribute(auraPositions, 3));
 
     const auraParticleMat = new THREE.PointsMaterial({
-      size: 0.10,
+      size: 0.05,
       map: particleTexture,
       transparent: true,
-      opacity: 0.75,
+      opacity: 0.25,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -383,7 +385,7 @@ export function Plus3DCanvas({
     sideGrazingLight.position.set(12, 6, -4);
     scene.add(sideGrazingLight);
 
-    // Mouse Parallax Trackers
+    // Mouse & Touch Parallax Trackers
     let mouseX = 0;
     let mouseY = 0;
     let targetMouseX = 0;
@@ -397,6 +399,14 @@ export function Plus3DCanvas({
     };
     window.addEventListener("mousemove", onPointerMove, { passive: true });
 
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        targetMouseX = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+        targetMouseY = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+      }
+    };
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+
     // Resize
     const onResize = () => {
       if (!container) return;
@@ -406,10 +416,11 @@ export function Plus3DCanvas({
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", onResize, { passive: true });
 
     // Render loop — 3D deep spatial kinematics & organic momentum
     let rafId: number;
+    let isVisible = true;
     let currentX = 0;
     let currentY = 0;
     let currentZ = -1.0;
@@ -418,7 +429,16 @@ export function Plus3DCanvas({
     let currentRotZ = 0;
     let currentScale = 0.88;
     let currentMorph = 0; // 0 = "13", 1.0 = "BE"
-    let clock = new THREE.Clock();
+    const startTime = performance.now();
+
+    // IntersectionObserver to pause RAF when out of view
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(container);
 
     const smoothstep = (min: number, max: number, value: number) => {
       const x = Math.max(0, Math.min(1, (value - min) / (max - min)));
@@ -427,7 +447,9 @@ export function Plus3DCanvas({
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
+      if (!isVisible || document.hidden) return;
+
+      const elapsedTime = (performance.now() - startTime) * 0.001;
       const p = Math.max(0, Math.min(1, progressRef.current));
       const entryP = Math.max(0, Math.min(1, entryProgressRef.current));
 
@@ -469,10 +491,6 @@ export function Plus3DCanvas({
       }
       auraAttr.needsUpdate = true;
       auraParticleSystem.rotation.y = elapsedTime * 0.04 + mouseX * 0.05;
-
-
-
-
 
       if (emblemGroup) {
         const entryFade = smoothstep(0.05, 0.65, entryP);
@@ -653,8 +671,10 @@ export function Plus3DCanvas({
 
     return () => {
       cancelAnimationFrame(rafId);
+      observer.disconnect();
       window.removeEventListener("resize", onResize);
       window.removeEventListener("mousemove", onPointerMove);
+      window.removeEventListener("touchmove", onTouchMove);
       if (renderer.domElement) {
         renderer.domElement.remove();
       }

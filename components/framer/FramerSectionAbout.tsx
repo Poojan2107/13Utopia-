@@ -56,31 +56,8 @@ export function FramerSectionAbout() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className={styles.bodyText}
           >
-            Traditional agencies operate on billable hours, safe committee consensus, and generic recycled frameworks. We operate on sovereign conviction. We take on a maximum of six client alliances at any given moment, guaranteeing that senior architects and creative directors touch every single pixel and line of code.
+            Traditional agencies operate on billable hours, safe committee consensus, and generic recycled frameworks. We operate on sovereign conviction — guaranteeing that senior architects, engineers, and creative directors work directly on your brand, product, and growth systems with zero dilution.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className={styles.metricsBar}
-          >
-            <div className={styles.metricItem}>
-              <span className={styles.metricVal}>06</span>
-              <span className={styles.metricKey}>MAX ACTIVE ALLIANCES</span>
-            </div>
-            <div className={styles.metricDivider} />
-            <div className={styles.metricItem}>
-              <span className={styles.metricVal}>100%</span>
-              <span className={styles.metricKey}>BESPOKE CODE (ZERO THEMES)</span>
-            </div>
-            <div className={styles.metricDivider} />
-            <div className={styles.metricItem}>
-              <span className={styles.metricVal}>24/7</span>
-              <span className={styles.metricKey}>DELHI · TORONTO TELEMETRY</span>
-            </div>
-          </motion.div>
         </div>
 
         {/* Right Column: 4 Core Principles */}

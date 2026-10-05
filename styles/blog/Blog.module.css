@@ -1,0 +1,267 @@
+.blogPage {
+  position: relative;
+  min-height: 100vh;
+  background: transparent;
+  color: #ffffff;
+  padding: clamp(120px, 16vh, 160px) clamp(1.5rem, 5vw, 6rem) 140px;
+  max-width: 1600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+/* Atmospheric Ambient Glow */
+.blogPage::before {
+  content: "";
+  position: absolute;
+  top: 12%;
+  left: 40%;
+  width: clamp(500px, 60vw, 900px);
+  height: clamp(300px, 45vh, 600px);
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 50%, transparent 75%);
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(70px);
+}
+
+.heroBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: clamp(3.5rem, 7vh, 5.5rem);
+}
+
+.topMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+}
+
+.metaTag {
+  color: #ffffff;
+}
+
+.metaDot {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.title {
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(2.8rem, 6.2vw, 6.2rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  margin: 0;
+  color: #ffffff;
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
+}
+
+.subtitle {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.1rem, 1.45vw, 1.35rem);
+  font-weight: 400;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 820px;
+  margin: 0;
+}
+
+/* Category Filter Bar */
+.categoryFilterBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 4rem;
+}
+
+.filterBtn {
+  background: rgba(255, 255, 255, 0.04);
+  border: none;
+  color: rgba(255, 255, 255, 0.70);
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.filterBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.filterBtnActive {
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+}
+
+.filterBtnActive:hover {
+  background: #f3f4f6;
+  color: #000000;
+}
+
+/* Post Cards */
+.postsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
+}
+
+.postCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(2.5rem, 3.5vw, 3.8rem);
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.005) 100%);
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.postCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.06) 0%, transparent 65%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.postCard:hover {
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.015) 100%);
+  transform: translateY(-6px);
+}
+
+.postCard:hover::before {
+  opacity: 1;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 1.8rem;
+  position: relative;
+  z-index: 1;
+}
+
+.cardCategory {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+}
+
+.cardReadTime {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+}
+
+.cardTitle {
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  margin: 0 0 1.2rem;
+  position: relative;
+  z-index: 1;
+  transition: color 0.25s ease;
+}
+
+.postCard:hover .cardTitle {
+  color: #ffffff;
+}
+
+.cardExcerpt {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0 0 2.5rem;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.cardAuthor {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.authorName {
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.authorRole {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+}
+
+.readLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.readArrow {
+  transition: transform 0.25s ease;
+}
+
+.postCard:hover .readArrow {
+  transform: translate(3px, -3px);
+}
+
+@media (max-width: 900px) {
+  .postsGrid {
+    grid-template-columns: 1fr;
+  }
+}

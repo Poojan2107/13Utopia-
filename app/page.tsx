@@ -8,7 +8,6 @@ import { Continuous3DStory } from "@/components/plus-ex";
 import { SiteHeader, SiteFooter } from "@/components/layout";
 import {
   AmbientField,
-  MagneticCursor,
   SmoothScrollProvider,
 } from "@/components/motion";
 
@@ -16,7 +15,6 @@ export default function HomePage() {
   return (
     <SmoothScrollProvider>
       <AmbientField />
-      <MagneticCursor />
 
       {/* Site Header (Top Right Logo & Menu Toggle) */}
       <SiteHeader />

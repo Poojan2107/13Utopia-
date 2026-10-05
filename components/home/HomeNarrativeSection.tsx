@@ -31,19 +31,27 @@ export function HomeNarrativeSection() {
       {/* Minimal Bottom Metric Ticker */}
       <div className={styles.bottomBar}>
         <div className={styles.bottomItem}>
-          <span className={styles.itemValue}>100%</span>
+          <div className={styles.valueContainer}>
+            <span className={styles.itemValue}>100%</span>
+          </div>
           <span className={styles.itemLabel}>Custom-Built</span>
         </div>
         <div className={styles.bottomItem}>
-          <span className={styles.itemValue}>6</span>
+          <div className={styles.valueContainer}>
+            <span className={styles.itemValue}>6</span>
+          </div>
           <span className={styles.itemLabel}>Capability Areas</span>
         </div>
         <div className={styles.bottomItem}>
-          <span className={styles.itemValue}>2</span>
+          <div className={styles.valueContainer}>
+            <span className={styles.itemValue}>2</span>
+          </div>
           <span className={styles.itemLabel}>Global Offices</span>
         </div>
         <div className={styles.bottomItem}>
-          <span className={styles.itemValueSmall}>CREATE · BUILD · GROW</span>
+          <div className={styles.valueContainer}>
+            <span className={styles.itemValueSmall}>CREATE · BUILD · GROW</span>
+          </div>
           <span className={styles.itemLabel}>How We Work</span>
         </div>
       </div>

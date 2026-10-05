@@ -19,7 +19,7 @@ import {
 } from "@/components/services/svcMotion";
 import type { ServiceWorld } from "@/data/services";
 import { SERVICE_WORLDS } from "@/data/services";
-import { MagneticCursor, SmoothScrollProvider } from "@/components/motion";
+import { SmoothScrollProvider } from "@/components/motion";
 import styles from "@/styles/services/ServiceDetail.module.css";
 
 const ORDER: Array<"create" | "build" | "grow"> = ["create", "build", "grow"];
@@ -40,7 +40,6 @@ export function ServiceDetail({ world }: Props) {
 
   return (
     <SmoothScrollProvider>
-      <MagneticCursor />
       <SiteHeader />
       <main
         className={styles.page}

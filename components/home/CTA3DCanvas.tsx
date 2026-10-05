@@ -27,13 +27,14 @@ export function CTA3DCanvas() {
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
     camera.position.set(0, 0, 11.2);
 
+    const isMobile = (container.clientWidth || window.innerWidth) < 768;
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
       powerPreference: "high-performance",
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.0 : 1.35));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.35;
     container.appendChild(renderer.domElement);
@@ -157,10 +158,10 @@ export function CTA3DCanvas() {
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
     const particleMat = new THREE.PointsMaterial({
-      size: 0.13,
+      size: 0.06,
       map: particleTexture,
       transparent: true,
-      opacity: 0.50,
+      opacity: 0.22,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -192,12 +193,20 @@ export function CTA3DCanvas() {
     topSpecularLight.position.set(0, 12, 1);
     scene.add(topSpecularLight);
 
-    // Mouse Interaction
+    // Mouse & Touch Interaction
     const handleMouseMove = (e: MouseEvent) => {
       mouseRef.current.targetX = (e.clientX / window.innerWidth - 0.5) * 0.35;
       mouseRef.current.targetY = (e.clientY / window.innerHeight - 0.5) * 0.35;
     };
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        mouseRef.current.targetX = (e.touches[0].clientX / window.innerWidth - 0.5) * 0.35;
+        mouseRef.current.targetY = (e.touches[0].clientY / window.innerHeight - 0.5) * 0.35;
+      }
+    };
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
 
     // ScrollTrigger across CTA Section
     const sectionEl = container.closest("section") || container;
@@ -214,7 +223,17 @@ export function CTA3DCanvas() {
     }, container);
 
     let rafId: number;
-    let clock = new THREE.Clock();
+    let isVisible = true;
+    const startTime = performance.now();
+
+    // IntersectionObserver to pause rendering when out of viewport
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(container);
 
     let currentY = -3.5;
     let currentZ = -4.0;
@@ -229,7 +248,9 @@ export function CTA3DCanvas() {
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
+      if (!isVisible || document.hidden) return;
+
+      const elapsedTime = (performance.now() - startTime) * 0.001;
       const entry = smoothstep(0.0, 1.0, scrollEntryRef.current);
 
       mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
@@ -279,12 +300,14 @@ export function CTA3DCanvas() {
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
 
     return () => {
       ctx.revert();
       cancelAnimationFrame(rafId);
+      observer.disconnect();
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("resize", handleResize);
       if (renderer.domElement && container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);

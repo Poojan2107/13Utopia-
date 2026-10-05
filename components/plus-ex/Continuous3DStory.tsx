@@ -169,9 +169,9 @@ export function Continuous3DStory() {
                   13 UTOPIA BRINGS CREATIVE,
                 </span>
                 <span className={styles.subLines}>
-                  TECHNOLOGY AND GROWTH<br />
-                  TOGETHER UNDER ONE ROOF.<br />
-                  SO NOTHING GETS LOST IN TRANSLATION.
+                  <span className={styles.subLineItem}>TECHNOLOGY AND GROWTH</span>
+                  <span className={styles.subLineItem}>TOGETHER UNDER ONE ROOF.</span>
+                  <span className={styles.subLineItem}>SO NOTHING GETS LOST IN TRANSLATION.</span>
                 </span>
               </h2>
             </div>

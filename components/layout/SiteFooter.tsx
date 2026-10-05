@@ -127,6 +127,29 @@ export function SiteFooter() {
             </div>
           </div>
 
+          {/* Center-Right: Navigation Directory */}
+          <div className={styles.socialCol}>
+            <span className={styles.socialTitle}>DIRECTORY</span>
+            <Link href="/" className={styles.socialLink}>
+              01 // Home
+            </Link>
+            <Link href="/about" className={styles.socialLink}>
+              02 // About
+            </Link>
+            <Link href="/services" className={styles.socialLink}>
+              03 // Services
+            </Link>
+            <Link href="/work" className={styles.socialLink}>
+              04 // Work
+            </Link>
+            <Link href="/blog" className={styles.socialLink}>
+              05 // Journal
+            </Link>
+            <Link href="/contact" className={styles.socialLink}>
+              06 // Contact
+            </Link>
+          </div>
+
           {/* Right: Vertical Transmission Channels */}
           <div className={styles.socialCol}>
             <span className={styles.socialTitle}>TRANSMISSION</span>

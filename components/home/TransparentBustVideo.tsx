@@ -13,9 +13,11 @@ void main() {
 `;
 
 const FS = `
-precision highp float;
+precision mediump float;
 uniform sampler2D u_video;
 uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform float u_time;
 varying vec2 v_uv;
 
 void main() {
@@ -23,7 +25,6 @@ void main() {
   float videoAspect = 2400.0 / 1792.0; // Exact source aspect ratio (1.339286)
   
   // Height coverage: spans 0.78 of the 1792px video height, with center at y=0.64
-  // Head crown is at y=0.328, chest base is at y=0.998
   float scaleY = 0.78;
   float centerY = 0.64;
   
@@ -31,9 +32,13 @@ void main() {
   float scaleX = scaleY * (canvasAspect / videoAspect);
   float centerX = 0.486;
   
+  // 3D Anatomical Neck-to-Head Yaw:
+  float headWeight = smoothstep(0.92, 0.32, v_uv.y);
+  vec2 headTurn = u_mouse * vec2(0.045, -0.035) * headWeight;
+  
   vec2 uv;
-  uv.x = (v_uv.x - 0.5) * scaleX + centerX;
-  uv.y = (v_uv.y - 0.5) * scaleY + centerY;
+  uv.x = (v_uv.x - 0.5) * scaleX + centerX - headTurn.x;
+  uv.y = (v_uv.y - 0.5) * scaleY + centerY - headTurn.y;
   
   if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {
     discard;
@@ -52,17 +57,23 @@ void main() {
   // Crisp anti-aliased edge mask at the dark contour
   float alpha = smoothstep(0.008, 0.035, luma);
   
-  // 13 Utopia Signature Pure Monochrome Architectural Chrome & Obsidian Palette:
-  vec3 obsidianDark   = vec3(0.04, 0.04, 0.04); // Deep shadow void
-  vec3 titaniumBody   = vec3(0.22, 0.22, 0.22); // Monochrome titanium midtones
-  vec3 titaniumSheen  = vec3(0.65, 0.65, 0.65); // Polished silver wireframe ribs
-  vec3 platinumGlint  = vec3(0.92, 0.92, 0.92); // Crisp pure platinum reflection
-  vec3 specularWhite  = vec3(1.00, 1.00, 1.00); // Pure crisp white specular gleam
+  // 13 Utopia Pure Monochrome Architectural Chrome & Obsidian Palette:
+  vec3 obsidianDark   = vec3(0.04, 0.04, 0.04);
+  vec3 titaniumBody   = vec3(0.22, 0.22, 0.22);
+  vec3 titaniumSheen  = vec3(0.65, 0.65, 0.65);
+  vec3 platinumGlint  = vec3(0.92, 0.92, 0.92);
+  vec3 specularWhite  = vec3(1.00, 1.00, 1.00);
   
   vec3 color = mix(obsidianDark, titaniumBody, smoothstep(0.01, 0.35, luma));
   color = mix(color, titaniumSheen, smoothstep(0.30, 0.72, luma));
   color = mix(color, platinumGlint, smoothstep(0.68, 0.90, luma));
   color = mix(color, specularWhite, pow(clamp(luma, 0.0, 1.0), 3.0));
+  
+  // Dynamic gaze gleam that tracks where the face is looking
+  vec2 gazeOrigin = vec2(0.5, 0.40) + u_mouse * vec2(0.38, -0.28);
+  float gazeDist = length(v_uv - gazeOrigin);
+  float gazeGlint = exp(-gazeDist * 2.4) * 0.40;
+  color += specularWhite * gazeGlint * smoothstep(0.22, 0.85, luma);
   
   // Modulate with micro-detail texture highlights
   color *= (tex.rgb / max(luma, 0.001)) * 0.04 + 0.96;
@@ -76,29 +87,30 @@ export function TransparentBustVideo({
   variant = "default",
 }: {
   className?: string;
-  /** `edge` — right-locked, shorter stage for Belief */
   variant?: "default" | "edge";
 }) {
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
+    const wrapper = wrapperRef.current;
     const canvas = canvasRef.current;
     const video = videoRef.current;
-    if (!canvas || !video) return;
+    if (!canvas || !video || !wrapper) return;
 
     const gl =
       canvas.getContext("webgl", {
         alpha: true,
         premultipliedAlpha: true,
-        preserveDrawingBuffer: true,
-        antialias: true,
+        preserveDrawingBuffer: false,
+        antialias: false,
+        powerPreference: "high-performance",
       }) ||
       (canvas.getContext("experimental-webgl", {
         alpha: true,
         premultipliedAlpha: true,
-        preserveDrawingBuffer: true,
       }) as WebGLRenderingContext | null);
 
     if (!gl) return;
@@ -144,6 +156,8 @@ export function TransparentBustVideo({
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
     const uRes = gl.getUniformLocation(prog, "u_resolution");
+    const uMouse = gl.getUniformLocation(prog, "u_mouse");
+    const uTime = gl.getUniformLocation(prog, "u_time");
 
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -152,8 +166,9 @@ export function TransparentBustVideo({
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
+    const isMobile = window.innerWidth < 768;
     const updateSize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2.0);
+      const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.0 : 1.35);
       const w = Math.floor((canvas.clientWidth || window.innerWidth) * dpr);
       const h = Math.floor((canvas.clientHeight || window.innerHeight) * dpr);
       if (w > 0 && h > 0 && (canvas.width !== w || canvas.height !== h)) {
@@ -163,7 +178,28 @@ export function TransparentBustVideo({
       }
     };
     updateSize();
-    window.addEventListener("resize", updateSize);
+    window.addEventListener("resize", updateSize, { passive: true });
+
+    // Mouse & Touch tracking for 3D reactive head turning
+    let targetMouseX = 0;
+    let targetMouseY = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+    const startTime = performance.now();
+
+    const onPointerMove = (e: MouseEvent) => {
+      targetMouseX = (e.clientX / window.innerWidth) * 2.0 - 1.0;
+      targetMouseY = -(e.clientY / window.innerHeight) * 2.0 + 1.0;
+    };
+    window.addEventListener("mousemove", onPointerMove, { passive: true });
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        targetMouseX = (e.touches[0].clientX / window.innerWidth) * 2.0 - 1.0;
+        targetMouseY = -(e.touches[0].clientY / window.innerHeight) * 2.0 + 1.0;
+      }
+    };
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
 
     const playVideo = () => {
       video.muted = true;
@@ -180,19 +216,50 @@ export function TransparentBustVideo({
     playVideo();
 
     let animId: number;
-    let isRunning = true;
+    let isVisible = true;
+    let isTabActive = true;
+
+    // IntersectionObserver to pause video & WebGL rendering when scrolled offscreen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (!isVisible) {
+          video.pause();
+        } else if (isTabActive) {
+          video.play().catch(() => {});
+        }
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(wrapper);
 
     const render = () => {
-      if (!isRunning) return;
+      if (!isVisible || !isTabActive) {
+        animId = requestAnimationFrame(render);
+        return;
+      }
+
+      const elapsed = (performance.now() - startTime) * 0.001;
+      const idleRot = Math.sin(elapsed * 0.6) * 0.04;
+      const idleFloatY = Math.sin(elapsed * 0.8) * 0.03;
+
+      mouseX += (targetMouseX - mouseX) * 0.055;
+      mouseY += (targetMouseY - mouseY) * 0.055;
+
+      const tiltY = mouseX * 22.0 + idleRot * 10.0;
+      const tiltX = -mouseY * 16.0;
+      const transX = mouseX * 36.0;
+      const transY = -mouseY * 24.0 + idleFloatY * 80.0;
+
+      canvas.style.transform = `perspective(1100px) rotateY(${tiltY.toFixed(2)}deg) rotateX(${tiltX.toFixed(2)}deg) translate3d(${transX.toFixed(1)}px, ${transY.toFixed(1)}px, 0)`;
 
       if (video.readyState >= video.HAVE_CURRENT_DATA) {
-        updateSize();
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
 
-        if (uRes) {
-          gl.uniform2f(uRes, canvas.width, canvas.height);
-        }
+        if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+        if (uMouse) gl.uniform2f(uMouse, mouseX, mouseY);
+        if (uTime) gl.uniform1f(uTime, elapsed);
 
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(
@@ -213,20 +280,21 @@ export function TransparentBustVideo({
     animId = requestAnimationFrame(render);
 
     const onVis = () => {
-      if (document.hidden) {
-        isRunning = false;
-        cancelAnimationFrame(animId);
-      } else {
-        isRunning = true;
-        animId = requestAnimationFrame(render);
+      isTabActive = !document.hidden;
+      if (!isTabActive) {
+        video.pause();
+      } else if (isVisible) {
+        video.play().catch(() => {});
       }
     };
     document.addEventListener("visibilitychange", onVis);
 
     return () => {
-      isRunning = false;
       cancelAnimationFrame(animId);
+      observer.disconnect();
       window.removeEventListener("resize", updateSize);
+      window.removeEventListener("mousemove", onPointerMove);
+      window.removeEventListener("touchmove", onTouchMove);
       document.removeEventListener("visibilitychange", onVis);
       video.removeEventListener("canplay", playVideo);
       gl.deleteTexture(texture);
@@ -239,6 +307,7 @@ export function TransparentBustVideo({
 
   return (
     <div
+      ref={wrapperRef}
       className={[
         styles.wrapper,
         variant === "edge" ? styles.wrapperEdge : "",

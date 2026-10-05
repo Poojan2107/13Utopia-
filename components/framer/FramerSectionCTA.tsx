@@ -102,7 +102,7 @@ export function FramerSectionCTA() {
         >
           <div className={styles.nodeStatus}>
             <span className={styles.statusDot} />
-            <span className={styles.statusLabel}>ACCEPTING Q1/Q2 ALLIANCES</span>
+            <span className={styles.statusLabel}>ACCEPTING COMMISSIONS & PROJECTS</span>
           </div>
 
           <div className={styles.timeNodes}>

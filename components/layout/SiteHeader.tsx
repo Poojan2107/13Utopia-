@@ -1,13 +1,81 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import styles from "@/styles/layout/SiteHeader.module.css";
 
+interface NavItem {
+  index: string;
+  title: string;
+  href: string;
+  tagline: string;
+  category: string;
+  previewImage: string;
+  subtags: string[];
+}
+
+const NAV_ITEMS: NavItem[] = [
+  {
+    index: "01",
+    title: "HOME",
+    href: "/",
+    tagline: "Sovereign Digital Dominance & WebGL Architecture",
+    category: "INDEX // 01",
+    previewImage: "/images/world-create.jpg",
+    subtags: ["WebGL Core", "Digital Sovereign", "Real-Time 3D"],
+  },
+  {
+    index: "02",
+    title: "ABOUT",
+    href: "/about",
+    tagline: "Creative Technology, Product Engineering & Growth Alliance",
+    category: "MANIFESTO // 02",
+    previewImage: "/images/specimen-02-belief.jpg",
+    subtags: ["The Standard", "Philosophy", "Global Unit"],
+  },
+  {
+    index: "03",
+    title: "SERVICES",
+    href: "/services",
+    tagline: "Three Disciplines: Create, Build & Grow under One Standard",
+    category: "CAPABILITIES // 03",
+    previewImage: "/images/world-build.jpg",
+    subtags: ["Create (Brand & 3D)", "Build (Code & AI)", "Grow (SEO & Ads)"],
+  },
+  {
+    index: "04",
+    title: "WORK",
+    href: "/work",
+    tagline: "3D Ribbon WebGL Portfolio & Selected Client Commissions",
+    category: "ARCHIVE // 04",
+    previewImage: "/images/case-01.jpg",
+    subtags: ["WebGL Ribbon", "Commercial Films", "12 Case Studies"],
+  },
+  {
+    index: "05",
+    title: "JOURNAL",
+    href: "/blog",
+    tagline: "Engineering, Brand Strategy & Autonomous AI Perspectives",
+    category: "ESSAYS // 05",
+    previewImage: "/images/specimen-04-build.jpg",
+    subtags: ["Brand Architecture", "SEO Engineering", "10 Essays"],
+  },
+  {
+    index: "06",
+    title: "CONTACT",
+    href: "/contact",
+    tagline: "Direct Partner Access & Immediate Commission Initiation",
+    category: "INITIATION // 06",
+    previewImage: "/images/world-grow.jpg",
+    subtags: ["contact@13utopia.com", "Encrypted Channel", "Direct Line"],
+  },
+];
+
 /**
- * SiteHeader — 13 UTOPIA Signature Navigation & Minimal Stealth Transmission
+ * SiteHeader — 13 UTOPIA Signature Award-Calibre Dynamic Navigation
  */
 export function SiteHeader() {
   const pathname = usePathname();
@@ -15,6 +83,10 @@ export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [lastPathname, setLastPathname] = useState(pathname);
+  const [hoveredIdx, setHoveredIdx] = useState<number>(0);
+  const [timeString, setTimeString] = useState<string>("");
+  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   const closeMenu = useCallback(() => {
     setOpen(false);
@@ -72,6 +144,29 @@ export function SiteHeader() {
     };
   }, [open]);
 
+  // Live real-time studio telemetry clock
+  useEffect(() => {
+    if (!open) return;
+    const updateTime = () => {
+      const now = new Date();
+      const utc = now.toISOString().substring(11, 19);
+      const ms = String(Math.floor(now.getMilliseconds() / 10)).padStart(2, "0");
+      setTimeString(`${utc}.${ms} UTC`);
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 40);
+    return () => clearInterval(timer);
+  }, [open]);
+
+  // Track mouse coordinates over menu for dynamic ambient reactive glow
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!overlayRef.current) return;
+    const rect = overlayRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    setMousePos({ x, y });
+  };
+
   // Handle Escape key to close menu
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -83,12 +178,13 @@ export function SiteHeader() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open, closeMenu]);
 
-  // Close the menu on navigation. Adjusted during render (not in an effect)
-  // so navigation never schedules a cascading setState from the effect body.
+  // Close the menu on navigation
   if (lastPathname !== pathname) {
     setLastPathname(pathname);
     closeMenu();
   }
+
+  const activeItem = NAV_ITEMS[hoveredIdx] || NAV_ITEMS[0];
 
   return (
     <header
@@ -133,26 +229,129 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {/* Full-Screen Pure Minimal Overlay */}
+      {/* Full-Screen Minimal Overlay with Navigation */}
       <div
         id="awwwards-primary-menu"
+        ref={overlayRef}
         className={`${styles.menu} ${open ? styles.menuActive : ""}`}
         aria-hidden={!open}
+        onMouseMove={handleMouseMove}
       >
-        <div className={styles.menuContent}>
-          <div className={styles.anonymousContainer} data-menu-body>
-            <div className={styles.transmissionBody}>
-              <h2 className={styles.transHeadline}>
-                SOMETHING UNREAL &amp;<br />
-                <span className={styles.transHeadlineGold}>UNREASONABLE</span><br />
-                IS BEING CRAFTED IN SILENCE.
-              </h2>
+        {/* Dynamic cursor-following ambient laser sweep */}
+        <div
+          className={styles.menuAmbientGlow}
+          style={{
+            transform: `translate(${mousePos.x * 60 - 30}px, ${mousePos.y * 60 - 30}px)`,
+          }}
+          aria-hidden="true"
+        />
 
-              <p className={styles.transManifesto}>
-                The default was never an option. We question inherited assumptions,
-                strip away generic noise, and engineer what comes next in the dark.
-                You are not looking at an agency. You are standing inside an anomaly.
-              </p>
+        {/* Subtle holographic grid lines */}
+        <div className={styles.gridOverlay} aria-hidden="true" />
+
+        <div className={styles.menuContent}>
+          {/* Top Telemetry Header Bar */}
+          <div className={styles.topTelemetryBar}>
+            <div className={styles.telemetryTag}>
+              <span className={styles.livePulse} />
+              <span>13 UTOPIA SYSTEM ARCHITECTURE</span>
+            </div>
+            <div className={styles.clockTelemetry}>
+              <span>SYS_TICK: {timeString || "00:00:00.00 UTC"}</span>
+              <span className={styles.telemetryDivider}>|</span>
+              <span>NODE: GLOBAL_SYNAPSE</span>
+            </div>
+          </div>
+
+          <div className={styles.menuGrid} data-menu-body>
+            {/* Left Column: Primary Navigation Links */}
+            <nav className={styles.navLinksList} aria-label="Main Navigation">
+              {NAV_ITEMS.map((item, idx) => {
+                const isHovered = hoveredIdx === idx;
+                const isCurrentPage = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+
+                return (
+                  <div
+                    key={item.href}
+                    className={`${styles.navItemWrapper} ${isHovered ? styles.navItemWrapperActive : ""}`}
+                    onMouseEnter={() => setHoveredIdx(idx)}
+                    onFocus={() => setHoveredIdx(idx)}
+                  >
+                    <Link
+                      href={item.href}
+                      className={`${styles.navLinkItem} ${isHovered ? styles.navLinkItemHovered : ""} ${isCurrentPage ? styles.navLinkItemCurrent : ""}`}
+                      onClick={closeMenu}
+                    >
+                      <span className={styles.navIndex}>{item.index}</span>
+                      <span className={styles.navTitleWrap}>
+                        <span className={styles.navTitle}>{item.title}</span>
+                        <span className={styles.navGlitchTitle} aria-hidden="true">{item.title}</span>
+                      </span>
+                      <span className={styles.navArrowIndicator} aria-hidden="true">→</span>
+                    </Link>
+
+                    {/* Interactive Sub-Tag Pills on Hover */}
+                    <div className={styles.subtagsRow}>
+                      {item.subtags.map((tag, tIdx) => (
+                        <span key={tIdx} className={styles.subtagPill}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </nav>
+
+            {/* Right Column: Visual Specimen Viewport & Creative Transmission */}
+            <div className={styles.menuSidebar}>
+              {/* Dynamic Visual Specimen Viewport */}
+              <div className={styles.visualViewport}>
+                <div className={styles.viewportMediaFrame}>
+                  {NAV_ITEMS.map((item, idx) => (
+                    <div
+                      key={item.href}
+                      className={`${styles.specimenImageWrap} ${hoveredIdx === idx ? styles.specimenActive : ""}`}
+                    >
+                      <Image
+                        src={item.previewImage}
+                        alt={item.title}
+                        fill
+                        sizes="(max-width: 900px) 100vw, 45vw"
+                        className={styles.specimenImage}
+                        priority={idx < 2}
+                      />
+                    </div>
+                  ))}
+                  <div className={styles.viewportScanline} />
+                  <div className={styles.viewportCornerTL} />
+                  <div className={styles.viewportCornerBR} />
+                </div>
+
+                <div className={styles.previewMetaRow}>
+                  <span className={styles.previewCategory}>
+                    {activeItem.category}
+                  </span>
+                  <span className={styles.previewCoordinates}>
+                    LOC: [{(hoveredIdx + 1) * 13}.00°N / 13.13°E]
+                  </span>
+                </div>
+
+                <p className={styles.previewTagline}>
+                  {activeItem.tagline}
+                </p>
+              </div>
+
+              {/* Direct Transmission Footer */}
+              <div className={styles.menuMetaFooter}>
+                <div className={styles.metaCol}>
+                  <span className={styles.metaLabel}>DIRECT INITIATION</span>
+                  <a href="mailto:contact@13utopia.com" className={styles.metaValLink}>
+                    <span>contact@13utopia.com</span>
+                    <span className={styles.mailArrow}>↗</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -160,7 +359,3 @@ export function SiteHeader() {
     </header>
   );
 }
-
-
-
-

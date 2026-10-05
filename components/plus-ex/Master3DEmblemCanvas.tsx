@@ -159,7 +159,7 @@ export function Master3DEmblemCanvas() {
 
     // 6. Master Render & Transformation Loop
     let rafId: number;
-    const clock = new THREE.Clock();
+    const startTime = performance.now();
 
     // Color interpolation targets
     const darkColOne = new THREE.Color(0x323232);
@@ -169,7 +169,7 @@ export function Master3DEmblemCanvas() {
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);
-      const elapsed = clock.getElapsedTime();
+      const elapsed = (performance.now() - startTime) * 0.001;
       const isMobile = window.innerWidth <= 900;
 
       // Smooth scroll interpolation

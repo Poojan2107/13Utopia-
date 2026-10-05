@@ -171,10 +171,10 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
     const pTexture = new THREE.CanvasTexture(pCanvas);
 
     const particleMat = new THREE.PointsMaterial({
-      size: 0.07,
+      size: 0.04,
       map: pTexture,
       transparent: true,
-      opacity: 0.50,
+      opacity: 0.22,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -231,11 +231,11 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
     let currentRotX = 0.06;
     let currentRotY = 0;
     let currentRotZ = 0;
-    const clock = new THREE.Clock();
+    const startTime = performance.now();
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
+      const elapsedTime = (performance.now() - startTime) * 0.001;
 
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;

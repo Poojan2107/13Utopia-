@@ -178,11 +178,11 @@ function LightMonolithCanvas({ activeIdx }: { activeIdx: number }) {
     window.addEventListener("resize", onResize);
 
     let rafId: number;
-    const clock = new THREE.Clock();
+    const startTime = performance.now();
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);
-      const elapsed = clock.getElapsedTime();
+      const elapsed = (performance.now() - startTime) * 0.001;
       const active = activeRef.current;
 
       mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;

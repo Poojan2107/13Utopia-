@@ -247,7 +247,7 @@
   transform: translateX(4px);
 }
 
-/* Act 0: Plus-X 1:1 Editorial Statement (Monumental Full-Screen Horizontal Span) */
+/* Act 0: Plus-X 1:1 Editorial Statement (1 Title + 3 Lines Underneath) */
 .manifestoContent {
   width: 100%;
   max-width: 100vw;
@@ -257,19 +257,19 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0 clamp(1.5rem, 4vw, 5rem);
+  padding: 0 clamp(1rem, 3.5vw, 4.5rem);
   box-sizing: border-box;
 }
 
 .manifestoHeading {
   width: 100%;
-  max-width: 1600px;
+  max-width: 1560px;
   margin: 0 auto;
   text-align: center;
   font-family: var(--font-neue-montreal, "PP Neue Montreal", "Inter", -apple-system, sans-serif);
-  font-size: clamp(2.2rem, 4.2vw, 5.0rem);
+  font-size: clamp(1.6rem, 3.1vw, 3.65rem);
   font-weight: 800;
-  line-height: 1.10;
+  line-height: 1.14;
   letter-spacing: -0.035em;
   color: #ffffff;
   text-transform: uppercase;
@@ -277,7 +277,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.15em;
+  gap: 0.12em;
   text-shadow: 0 4px 40px rgba(0, 0, 0, 0.98), 0 0 60px rgba(0, 0, 0, 0.95);
 }
 
@@ -290,25 +290,35 @@
 }
 
 .subLines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 0.08em;
+}
+
+.subLineItem {
   display: block;
   color: #ffffff;
   text-align: center;
   width: 100%;
-  white-space: normal;
+  white-space: nowrap;
 }
 
 @media (max-width: 1200px) {
   .manifestoHeading {
-    font-size: clamp(1.8rem, 3.8vw, 3.6rem);
+    font-size: clamp(1.35rem, 2.75vw, 2.75rem);
   }
 }
 
 @media (max-width: 768px) {
   .manifestoHeading {
-    font-size: clamp(1.3rem, 5.5vw, 2.2rem);
+    font-size: clamp(1.15rem, 4.8vw, 1.85rem);
     line-height: 1.25;
   }
-  .leadLine {
+  .leadLine,
+  .subLineItem {
     white-space: normal;
   }
 }

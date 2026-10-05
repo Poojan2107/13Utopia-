@@ -1,12 +1,12 @@
 .section {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-bg, #0a0a0a);
-  color: var(--color-text-primary, #f3f1ea);
+  background-color: transparent;
+  color: var(--color-text-primary, #ffffff);
   padding: clamp(6rem, 14vh, 12rem) clamp(2rem, 5vw, 6rem);
   box-sizing: border-box;
 }
@@ -26,14 +26,14 @@
   align-items: center;
   gap: 0.6rem;
   font-family: var(--font-mono, monospace);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #dfc17b;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .eyebrowNum {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .eyebrowDot {
@@ -43,24 +43,24 @@
 .headline {
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
   font-size: clamp(3.2rem, 7.5vw, 7.5rem);
-  font-weight: 300;
+  font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 0.95;
   margin: 0;
-  color: #f3f1ea;
+  color: #ffffff;
   max-width: 1100px;
 }
 
 .subBox {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.5rem;
 }
 
 .intentLine {
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
   font-size: clamp(1.2rem, 2vw, 1.8rem);
-  color: rgba(243, 241, 234, 0.45);
+  color: rgba(255, 255, 255, 0.6);
   margin: 0;
   letter-spacing: -0.01em;
 }
@@ -68,17 +68,18 @@
 .intentLineHighlight {
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
   font-size: clamp(1.2rem, 2vw, 1.8rem);
-  color: #e8c56a;
+  color: #ffffff;
   margin: 0;
   letter-spacing: -0.01em;
-  font-weight: 500;
+  font-weight: 700;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
 .actions {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2rem;
+  gap: 1.5rem;
   margin-top: 1rem;
 }
 
@@ -86,23 +87,23 @@
   display: inline-flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.1rem 2.6rem;
+  padding: 16px 38px;
   border-radius: 999px;
-  background: #f3f1ea;
-  color: #0a0a0a;
+  background: #ffffff;
+  color: #000000;
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-decoration: none;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 10px 30px rgba(243, 241, 234, 0.15);
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
 }
 
 .primaryButton:hover {
-  background: #e8c56a;
+  background: #f3f4f6;
   transform: scale(1.04);
-  box-shadow: 0 15px 40px rgba(232, 197, 106, 0.3);
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.4);
 }
 
 .arrowIcon {
@@ -119,25 +120,22 @@
   align-items: center;
   gap: 0.6rem;
   font-family: var(--font-mono, monospace);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
 }
 
 .contactLabel {
-  color: rgba(243, 241, 234, 0.4);
+  color: rgba(255, 255, 255, 0.45);
   letter-spacing: 0.12em;
 }
 
 .emailLink {
-  color: #f3f1ea;
+  color: #ffffff;
   text-decoration: none;
-  border-bottom: 1px solid rgba(243, 241, 234, 0.3);
-  padding-bottom: 1px;
-  transition: all 0.25s ease;
+  transition: opacity 0.25s ease;
 }
 
 .emailLink:hover {
-  color: #e8c56a;
-  border-bottom-color: #e8c56a;
+  opacity: 0.75;
 }
 
 .telemetryBar {
@@ -146,8 +144,7 @@
   justify-content: space-between;
   width: 100%;
   max-width: 680px;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1.5rem;
   margin-top: 1.5rem;
   flex-wrap: wrap;
   gap: 1rem;
@@ -158,17 +155,17 @@
   align-items: center;
   gap: 0.5rem;
   font-family: var(--font-mono, monospace);
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.12em;
-  color: rgba(243, 241, 234, 0.6);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .statusDot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #38ef7d;
-  box-shadow: 0 0 10px #38ef7d;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
 }
 
 .timeNodes {
@@ -176,9 +173,9 @@
   align-items: center;
   gap: 0.55rem;
   font-family: var(--font-mono, monospace);
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.12em;
-  color: rgba(243, 241, 234, 0.45);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .nodeDot {

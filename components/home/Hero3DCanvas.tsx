@@ -158,11 +158,11 @@ export function Hero3DCanvas() {
 
     // 7. Animation loop
     let rafId: number;
-    const clock = new THREE.Clock();
+    const startTime = performance.now();
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);
-      const elapsed = clock.getElapsedTime();
+      const elapsed = (performance.now() - startTime) * 0.001;
 
       // Smooth cursor inertia
       mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
