@@ -19,7 +19,7 @@ import {
 } from "@/components/services/svcMotion";
 import type { ServiceWorld } from "@/data/services";
 import { SERVICE_WORLDS } from "@/data/services";
-import { SmoothScrollProvider } from "@/components/motion";
+import { AmbientField, SmoothScrollProvider } from "@/components/motion";
 import styles from "@/styles/services/ServiceDetail.module.css";
 
 const ORDER: Array<"create" | "build" | "grow"> = ["create", "build", "grow"];

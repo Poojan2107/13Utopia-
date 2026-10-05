@@ -15,7 +15,7 @@ import {
   viewportOnce,
 } from "@/components/services/svcMotion";
 import { SERVICE_WORLDS } from "@/data/services";
-import { SmoothScrollProvider } from "@/components/motion";
+import { AmbientField, SmoothScrollProvider } from "@/components/motion";
 import styles from "@/styles/services/ServicesOverview.module.css";
 
 const WORLDS = [
