@@ -57,9 +57,15 @@ export function FramerFooter() {
 
           <div className={styles.col}>
             <span className={styles.colTitle}>STUDIO HUBS</span>
-            <p className={styles.colText}>AHMEDABAD, INDIA</p>
-            <p className={styles.colText}>SCARBOROUGH, CANADA</p>
-            <a href="mailto:contact@13utopia.com" className={styles.footerLink} style={{ marginTop: "0.5rem" }}>contact@13utopia.com</a>
+            <p className={styles.colText} style={{ fontWeight: 700, color: "#fff" }}>AHMEDABAD, INDIA</p>
+            <p className={styles.colText} style={{ fontSize: "0.75rem", opacity: 0.6, marginBottom: "0.5rem" }}>
+              1123 Iconic Shyamal, Shyamal Cross Roads, 132 Feet Ring Rd, Ahmedabad, Gujarat 380015
+            </p>
+            <p className={styles.colText} style={{ fontWeight: 700, color: "#fff" }}>SCARBOROUGH, CANADA</p>
+            <p className={styles.colText} style={{ fontSize: "0.75rem", opacity: 0.6, marginBottom: "0.5rem" }}>
+              30 Kimbercroft Ct, Markham Corners, Scarborough, ON M1S 4K9
+            </p>
+            <a href="mailto:contact@13utopia.com" className={styles.footerLink} style={{ marginTop: "0.25rem" }}>contact@13utopia.com</a>
           </div>
 
           <div className={styles.col}>

@@ -122,14 +122,20 @@ export function SiteFooter() {
           </div>
 
           {/* Studio Hubs */}
-          <div className={styles.socialCol}>
+          <div className={styles.hubsBlock}>
             <span className={styles.socialTitle}>STUDIO HUBS</span>
-            <span className={styles.socialLink} style={{ cursor: "default", opacity: 0.9 }}>
-              Ahmedabad, India
-            </span>
-            <span className={styles.socialLink} style={{ cursor: "default", opacity: 0.9 }}>
-              Scarborough, Canada
-            </span>
+            <div className={styles.hubCard}>
+              <span className={styles.hubCountry}>Ahmedabad, India</span>
+              <p className={styles.hubAddress}>
+                1123 Iconic Shyamal, Shyamal Cross Roads, 132 Feet Ring Rd, Ahmedabad, Gujarat 380015
+              </p>
+            </div>
+            <div className={styles.hubCard}>
+              <span className={styles.hubCountry}>Scarborough, Canada</span>
+              <p className={styles.hubAddress}>
+                30 Kimbercroft Ct, Markham Corners, Scarborough, ON M1S 4K9
+              </p>
+            </div>
           </div>
 
           {/* Right: Vertical Transmission Channels */}
