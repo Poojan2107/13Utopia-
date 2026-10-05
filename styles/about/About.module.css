@@ -18,10 +18,12 @@
   min-height: 100dvh;
   display: flex;
   align-items: center;
+  justify-content: center;
   overflow: hidden;
   padding-top: 4.75rem;
   box-sizing: border-box;
   margin-bottom: clamp(6rem, 12vh, 10rem);
+  text-align: center;
 }
 
 .heroCanvasStage {
@@ -37,23 +39,32 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 1600px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: clamp(2rem, 5vh, 4rem) clamp(1.5rem, 5vw, 6rem);
   pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .heroCopy {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  max-width: 840px;
+  align-items: center;
+  text-align: center;
+  gap: 1.75rem;
+  max-width: 1200px;
+  width: 100%;
   pointer-events: auto;
+  margin: 0 auto;
 }
 
 .topMeta {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   font-family: var(--font-mono, monospace);
   font-size: 0.75rem;
@@ -69,31 +80,35 @@
 
 .title {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
-  font-size: clamp(2.8rem, 5.8vw, 5.8rem);
+  font-size: clamp(3rem, 6.8vw, 6.8rem);
   font-weight: 800;
   line-height: 0.96;
   letter-spacing: -0.045em;
   text-transform: uppercase;
-  margin: 0;
+  margin: 0 auto;
   color: #ffffff;
+  text-align: center;
+  max-width: 20ch;
 }
 
 .thesis {
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1.1rem, 1.45vw, 1.35rem);
+  font-size: clamp(1.15rem, 1.5vw, 1.4rem);
   font-weight: 400;
-  line-height: 1.65;
-  color: rgba(255, 255, 255, 0.75);
-  max-width: 820px;
-  margin: 0;
+  line-height: 1.68;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 880px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .heroActions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 1.25rem 1.75rem;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 
 .ctaPrimary {

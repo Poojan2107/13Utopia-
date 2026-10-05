@@ -441,37 +441,20 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
       deepDustSystem.rotation.x = mouseY * 0.04 + smoothScrollY * 0.00015;
       deepDustSystem.position.y = -(smoothScrollY * 0.0008);
 
-      // Centered 3D Emblem Curated Studio Motion (Always front-facing, bounded, majestic)
+      // Centered 3D Emblem Continuous Rotation & Studio Physics
       if (emblemGroup) {
-        // Document scroll progress normalized (0 to 1)
-        const docHeight = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        const scrollNorm = Math.min(Math.max(smoothScrollY / docHeight, 0), 1);
+        // Continuous smooth 360 rotation + interactive mouse & scroll response
+        const targetRotY = elapsedTime * 0.42 + (mouseX * 0.35) + (smoothScrollY * 0.0008);
+        const targetRotX = Math.sin(elapsedTime * 0.55) * 0.08 - (mouseY * 0.22);
+        const targetRotZ = Math.sin(elapsedTime * 0.4) * 0.05 + (mouseX * 0.06);
 
-        // Organic idle breath & micro-oscillation
-        const idleFloatY = Math.sin(elapsedTime * 0.75) * 0.08;
-        const idleYaw = Math.sin(elapsedTime * 0.38) * 0.06;
-        const idlePitch = Math.cos(elapsedTime * 0.48) * 0.04;
+        emblemGroup.rotation.y = targetRotY;
+        emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.06;
+        emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.06;
 
-        // Controlled, bounded 3D angles: always keeps the "13" face clearly readable
-        // Max Y-rotation: ~22 degrees, Max X-rotation: ~12 degrees
-        const scrollYaw = Math.sin(scrollNorm * Math.PI * 2.0) * 0.32;
-        const scrollPitch = Math.cos(scrollNorm * Math.PI * 2.0) * 0.14;
-        const scrollRoll = Math.sin(scrollNorm * Math.PI * 1.5) * 0.06;
-
-        const targetRotY = idleYaw + (mouseX * 0.28) + scrollYaw;
-        const targetRotX = idlePitch - (mouseY * 0.20) + scrollPitch;
-        const targetRotZ = (mouseX * 0.05) + scrollRoll;
-
-        emblemGroup.rotation.y += (targetRotY - emblemGroup.rotation.y) * 0.05;
-        emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.05;
-        emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.05;
-
-        // Subtle organic depth and elevation drift
-        const targetPosY = idleFloatY - Math.sin(scrollNorm * Math.PI * 2.0) * 0.22;
-        const targetPosZ = Math.cos(scrollNorm * Math.PI * 2.0) * 0.35;
-
-        emblemGroup.position.y += (targetPosY - emblemGroup.position.y) * 0.05;
-        emblemGroup.position.z += (targetPosZ - emblemGroup.position.z) * 0.05;
+        // Gentle floating breath
+        const targetPosY = Math.sin(elapsedTime * 0.8) * 0.12 - (smoothScrollY * 0.0004);
+        emblemGroup.position.y += (targetPosY - emblemGroup.position.y) * 0.06;
 
         if (mouseLight) {
           mouseLight.position.x = mouseX * 5.5;
