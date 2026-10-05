@@ -27,27 +27,6 @@
   gap: clamp(1.75rem, 3.5vh, 2.75rem);
 }
 
-/* ── Editorial Eyebrow ──────────────────────────────────── */
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.6);
-  text-transform: uppercase;
-}
-
-.liveDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-}
-
 /* ── Monumental Headline ────────────────────────────────── */
 .headline {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);

@@ -7,18 +7,6 @@ export function FramerSectionCTA() {
   return (
     <section className={styles.section} aria-label="Initiation" id="contact">
       <div className={styles.container}>
-        {/* Editorial Sub-Eyebrow */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className={styles.eyebrow}
-        >
-          <span className={styles.liveDot} />
-          <span>ACCEPTING SELECT CLIENT COMMISSIONS</span>
-        </motion.div>
-
         {/* Monumental Headline */}
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
