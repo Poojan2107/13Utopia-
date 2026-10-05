@@ -113,8 +113,9 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
       }
 
       float fbm(vec3 p) {
-        float v = 0.55 * snoise(p);
-        v += 0.32 * snoise(p * 2.12 + vec3(45.0));
+        float v = 0.52 * snoise(p);
+        v += 0.30 * snoise(p * 2.05 + vec3(17.3));
+        v += 0.14 * snoise(p * 4.12 + vec3(43.8));
         return v;
       }
 
@@ -124,57 +125,57 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
         return fract(p.x * p.y);
       }
 
-      float stardust(vec2 uv, float scale, float density, float t) {
-        vec2 gv = fract(uv * scale) - 0.5;
-        vec2 id = floor(uv * scale);
-        float n = hash(id);
-        if (n > density) return 0.0;
-        vec2 offset = (vec2(hash(id + 1.3), hash(id + 7.1)) - 0.5) * 0.7;
-        float d = length(gv - offset);
-        float sparkle = 0.7 + 0.3 * sin(t * 3.5 + n * 6.28);
-        return smoothstep(0.04, 0.005, d) * sparkle;
-      }
-
       void main() {
         vec2 centeredUv = (gl_FragCoord.xy - 0.5 * uResolution.xy) / min(uResolution.x, uResolution.y);
+        vec2 mouseP = uMouse * 0.5;
 
-        vec2 p = centeredUv * 1.35 + uMouse * 0.08;
-        p.y += uScroll * 0.00025;
+        vec2 p = centeredUv * 1.30 + uMouse * 0.08;
+        p.y += uScroll * 0.00022;
 
-        float t = uTime * 0.035;
+        float t = uTime * 0.038;
 
-        vec3 coord1 = vec3(p * 1.20, t);
-        float q1 = fbm(coord1);
+        // 4-octave curl-noise fluid advection & domain warping (Prototype 03)
+        float q1 = fbm(vec3(p * 1.15, t));
+        float q2 = fbm(vec3(p * 1.75 + vec2(q1 * 0.65, -q1 * 0.45), t * 1.15));
+        float smoke = fbm(vec3(p * 2.10 + vec2(q2 * 0.50, q1 * 0.50), t * 1.30));
 
-        vec3 coord2 = vec3(p * 1.85 + vec2(q1 * 0.75, -q1 * 0.55), t * 1.20);
-        float smoke = fbm(coord2);
-
-        float density = smoothstep(-0.10, 0.80, smoke + q1 * 0.30);
+        float density = smoothstep(-0.15, 0.78, smoke + q1 * 0.25 + q2 * 0.15);
 
         vec3 spaceVoid = vec3(0.0, 0.0, 0.0);
-        vec3 graphitePlume = vec3(0.03, 0.03, 0.03);
-        vec3 liquidSilver = vec3(0.09, 0.09, 0.09);
-        vec3 titaniumLight = vec3(0.20, 0.20, 0.20);
-        vec3 crystalGlint = vec3(0.90, 0.90, 0.90);
+        vec3 graphitePlume = vec3(0.035, 0.035, 0.038);
+        vec3 liquidSilver = vec3(0.11, 0.11, 0.12);
+        vec3 titaniumLight = vec3(0.32, 0.32, 0.34);
+        vec3 crystalGlint = vec3(0.92, 0.92, 0.95);
 
         vec3 col = spaceVoid;
-        col = mix(col, graphitePlume, smoothstep(0.0, 0.40, density));
-        col = mix(col, liquidSilver, smoothstep(0.30, 0.72, density));
-        col = mix(col, titaniumLight, smoothstep(0.62, 1.02, density) * 0.80);
+        col = mix(col, graphitePlume, smoothstep(0.0, 0.35, density));
+        col = mix(col, liquidSilver, smoothstep(0.28, 0.70, density));
+        col = mix(col, titaniumLight, smoothstep(0.60, 1.00, density) * 0.85);
 
-        float dust1 = stardust(centeredUv + uMouse * 0.03, 220.0, 0.10, uTime);
-        float stardustIntensity = (0.05 + 0.18 * density) * dust1;
-        col += crystalGlint * stardustIntensity * 0.35;
+        // Stardust Sparkles
+        vec2 sUv = (centeredUv + uMouse * 0.03) * 75.0;
+        vec2 sId = floor(sUv);
+        vec2 sGv = fract(sUv) - 0.5;
+        float sH = hash(sId);
+        if (sH > 0.84) {
+          float d = length(sGv);
+          float sparkle = smoothstep(0.05, 0.008, d) * (0.4 + 0.6 * sin(uTime * 3.5 + sH * 6.28));
+          col += crystalGlint * sparkle * 0.35;
+        }
 
-        float d = length(centeredUv);
-        float vignette = smoothstep(1.45, 0.30, d);
-        col *= (0.75 + 0.25 * vignette);
+        // Pointer Bloom
+        float mDist = length(centeredUv - mouseP);
+        col += titaniumLight * exp(-mDist * 2.8) * 0.12;
 
-        float filmGrain = (hash(gl_FragCoord.xy + fract(uTime * 8.71)) - 0.5) * 0.012;
-        col += vec3(filmGrain);
-        col = max(vec3(0.0), col);
+        // Luxury Grain
+        float grain = (hash(gl_FragCoord.xy + fract(uTime * 11.3)) - 0.5) * 0.012;
+        col += vec3(grain);
 
-        gl_FragColor = vec4(col, 1.0);
+        // Vignette
+        float vig = smoothstep(1.4, 0.3, length(centeredUv));
+        col *= (0.75 + 0.25 * vig);
+
+        gl_FragColor = vec4(max(vec3(0.0), col), 1.0);
       }
     `;
 
