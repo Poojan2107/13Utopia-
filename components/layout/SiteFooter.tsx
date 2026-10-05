@@ -125,10 +125,10 @@ export function SiteFooter() {
           <div className={styles.socialCol}>
             <span className={styles.socialTitle}>STUDIO HUBS</span>
             <span className={styles.socialLink} style={{ cursor: "default", opacity: 0.9 }}>
-              Scarborough, Canada
+              Ahmedabad, India
             </span>
             <span className={styles.socialLink} style={{ cursor: "default", opacity: 0.9 }}>
-              Ahmedabad, India
+              Scarborough, Canada
             </span>
           </div>
 

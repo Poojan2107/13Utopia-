@@ -57,8 +57,8 @@ export function FramerFooter() {
 
           <div className={styles.col}>
             <span className={styles.colTitle}>STUDIO HUBS</span>
-            <p className={styles.colText}>SCARBOROUGH, CANADA</p>
             <p className={styles.colText}>AHMEDABAD, INDIA</p>
+            <p className={styles.colText}>SCARBOROUGH, CANADA</p>
             <a href="mailto:contact@13utopia.com" className={styles.footerLink} style={{ marginTop: "0.5rem" }}>contact@13utopia.com</a>
           </div>
 
