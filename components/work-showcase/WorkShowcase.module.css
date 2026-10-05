@@ -184,7 +184,7 @@
   inset: 0;
   z-index: 30;
   overflow-y: auto;
-  padding: 8rem clamp(1.75rem, 5.5vw, 6.5rem) 9rem;
+  padding: clamp(9.5rem, 16vh, 12rem) clamp(1.75rem, 5.5vw, 6.5rem) 10rem;
   background: transparent;
 }
 

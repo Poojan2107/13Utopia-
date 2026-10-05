@@ -21,48 +21,48 @@ const NAV_ITEMS: NavItem[] = [
     index: "01",
     title: "HOME",
     href: "/",
-    tagline: "Sovereign Digital Dominance & WebGL Architecture",
-    category: "INDEX // 01",
+    tagline: "Independent Creative Technology & Growth Company",
+    category: "01 // OVERVIEW",
     previewImage: "/images/world-create.jpg",
   },
   {
     index: "02",
     title: "ABOUT",
     href: "/about",
-    tagline: "Creative Technology, Product Engineering & Growth Alliance",
-    category: "MANIFESTO // 02",
+    tagline: "Brand Strategy, High-End Engineering & Direct Builder Access",
+    category: "02 // STUDIO",
     previewImage: "/images/specimen-02-belief.jpg",
   },
   {
     index: "03",
     title: "SERVICES",
     href: "/services",
-    tagline: "Three Disciplines: Create, Build & Grow under One Standard",
-    category: "CAPABILITIES // 03",
+    tagline: "Three Connected Disciplines: Create, Build & Grow",
+    category: "03 // SERVICES",
     previewImage: "/images/world-build.jpg",
   },
   {
     index: "04",
     title: "WORK",
     href: "/work",
-    tagline: "3D Ribbon WebGL Portfolio & Selected Client Commissions",
-    category: "ARCHIVE // 04",
+    tagline: "Interactive 3D WebGL Portfolio & Selected Commissions",
+    category: "04 // SELECTED WORK",
     previewImage: "/images/case-01.jpg",
   },
   {
     index: "05",
     title: "JOURNAL",
     href: "/blog",
-    tagline: "Engineering, Brand Strategy & Autonomous AI Perspectives",
-    category: "ESSAYS // 05",
+    tagline: "Essays & Perspectives on Technology, Design & Systems",
+    category: "05 // JOURNAL",
     previewImage: "/images/specimen-04-build.jpg",
   },
   {
     index: "06",
     title: "CONTACT",
     href: "/contact",
-    tagline: "Direct Partner Access & Immediate Commission Initiation",
-    category: "INITIATION // 06",
+    tagline: "Direct Partner Access & Project Inquiries",
+    category: "06 // CONTACT",
     previewImage: "/images/world-grow.jpg",
   },
 ];
@@ -77,7 +77,10 @@ export function SiteHeader() {
   const [hidden, setHidden] = useState(false);
   const [lastPathname, setLastPathname] = useState(pathname);
   const [hoveredIdx, setHoveredIdx] = useState<number>(0);
-  const [timeString, setTimeString] = useState<string>("");
+  const [studioTimes, setStudioTimes] = useState<{ delhi: string; toronto: string }>({
+    delhi: "",
+    toronto: "",
+  });
   const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -137,17 +140,27 @@ export function SiteHeader() {
     };
   }, [open]);
 
-  // Live real-time studio telemetry clock
+  // Live real-time studio clocks (Delhi & Toronto)
   useEffect(() => {
     if (!open) return;
     const updateTime = () => {
       const now = new Date();
-      const utc = now.toISOString().substring(11, 19);
-      const ms = String(Math.floor(now.getMilliseconds() / 10)).padStart(2, "0");
-      setTimeString(`${utc}.${ms} UTC`);
+      const delhi = now.toLocaleTimeString("en-US", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+      const toronto = now.toLocaleTimeString("en-US", {
+        timeZone: "America/Toronto",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+      setStudioTimes({ delhi, toronto });
     };
     updateTime();
-    const timer = setInterval(updateTime, 40);
+    const timer = setInterval(updateTime, 1000);
     return () => clearInterval(timer);
   }, [open]);
 
@@ -243,16 +256,16 @@ export function SiteHeader() {
         <div className={styles.gridOverlay} aria-hidden="true" />
 
         <div className={styles.menuContent}>
-          {/* Top Telemetry Header Bar */}
+          {/* Top Studio Header Bar */}
           <div className={styles.topTelemetryBar}>
             <div className={styles.telemetryTag}>
               <span className={styles.livePulse} />
-              <span>13 UTOPIA SYSTEM ARCHITECTURE</span>
+              <span>13 UTOPIA · CREATIVE STUDIO &amp; LAB</span>
             </div>
             <div className={styles.clockTelemetry}>
-              <span>SYS_TICK: {timeString || "00:00:00.00 UTC"}</span>
-              <span className={styles.telemetryDivider}>|</span>
-              <span>NODE: GLOBAL_SYNAPSE</span>
+              <span>DELHI {studioTimes.delhi || "03:30 PM"}</span>
+              <span className={styles.telemetryDivider}>·</span>
+              <span>TORONTO {studioTimes.toronto || "06:00 AM"}</span>
             </div>
           </div>
 
@@ -317,7 +330,7 @@ export function SiteHeader() {
                     {activeItem.category}
                   </span>
                   <span className={styles.previewCoordinates}>
-                    LOC: [{(hoveredIdx + 1) * 13}.00°N / 13.13°E]
+                    DISCIPLINE // 0{hoveredIdx + 1}
                   </span>
                 </div>
 
@@ -326,10 +339,10 @@ export function SiteHeader() {
                 </p>
               </div>
 
-              {/* Direct Transmission Footer */}
+              {/* Direct Inquiries Footer */}
               <div className={styles.menuMetaFooter}>
                 <div className={styles.metaCol}>
-                  <span className={styles.metaLabel}>DIRECT INITIATION</span>
+                  <span className={styles.metaLabel}>DIRECT INQUIRIES</span>
                   <a href="mailto:contact@13utopia.com" className={styles.metaValLink}>
                     <span>contact@13utopia.com</span>
                     <span className={styles.mailArrow}>↗</span>

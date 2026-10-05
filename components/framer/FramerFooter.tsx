@@ -47,11 +47,12 @@ export function FramerFooter() {
 
           <div className={styles.col}>
             <span className={styles.colTitle}>INDEX</span>
-            <Link href="/services" className={styles.footerLink}>All Services</Link>
-            <Link href="/work" className={styles.footerLink}>Selected Work</Link>
-            <Link href="/#outcomes" className={styles.footerLink}>Client Objectives</Link>
-            <Link href="/#about" className={styles.footerLink}>The Anomaly</Link>
-            <Link href="/#contact" className={styles.footerLink}>Initiate Alliance</Link>
+            <Link href="/" className={styles.footerLink}>01 Overview</Link>
+            <Link href="/about" className={styles.footerLink}>02 About</Link>
+            <Link href="/services" className={styles.footerLink}>03 Services</Link>
+            <Link href="/work" className={styles.footerLink}>04 Work</Link>
+            <Link href="/blog" className={styles.footerLink}>05 Journal</Link>
+            <Link href="/contact" className={styles.footerLink}>06 Contact</Link>
           </div>
 
           <div className={styles.col}>
