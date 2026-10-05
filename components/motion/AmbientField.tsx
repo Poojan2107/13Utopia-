@@ -446,16 +446,15 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
       deepDustSystem.rotation.x = mouseY * 0.04 + smoothScrollY * 0.00015;
       deepDustSystem.position.y = -(smoothScrollY * 0.0008);
 
-      // Centered 3D Emblem: Rotate on Scroll Only & Vanish completely before Footer
+      // Centered 3D Emblem: Rotate on Scroll, parallax drift & smooth fade as user scrolls into content
       if (emblemGroup && matOne && matThree) {
-        // Measure real footer position relative to viewport
+        // Measure real footer and CTA position relative to viewport
         const footerEl = document.querySelector("footer");
         let footerProximityFactor = 1.0;
         if (footerEl) {
           const footerRect = footerEl.getBoundingClientRect();
-          // Fade out as footer approaches viewport from below
-          const fadeStart = height * 1.35; // begins fading when footer is 35% below viewport bottom
-          const fadeEnd = height * 0.85;   // completely hidden when footer enters lower 15% of viewport
+          const fadeStart = height * 1.35;
+          const fadeEnd = height * 0.85;
           if (footerRect.top <= fadeEnd) {
             footerProximityFactor = 0.0;
           } else if (footerRect.top < fadeStart) {
@@ -463,23 +462,20 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
           }
         }
 
-        // Fallback document scroll normalization
-        const docHeight = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        const scrollNorm = Math.min(Math.max(smoothScrollY / docHeight, 0), 1);
-        const scrollNormFactor = 1.0 - Math.min(Math.max((scrollNorm - 0.68) / 0.16, 0), 1);
+        // Hero-focused scroll fade: smoothly ascends with parallax and fades as user scrolls down
+        const heroFadeOut = Math.max(0, Math.min(1, 1.0 - (smoothScrollY / (height * 0.75))));
+        const combinedFade = Math.min(footerProximityFactor, heroFadeOut);
 
-        const footerFade = Math.min(footerProximityFactor, scrollNormFactor);
-
-        if (footerFade <= 0.01) {
+        if (combinedFade <= 0.01) {
           emblemGroup.visible = false;
         } else {
           emblemGroup.visible = true;
-          const baseScale = (width < 768 ? 0.72 : 0.95) * Math.max(footerFade, 0.2);
+          const baseScale = (width < 768 ? 0.72 : 0.95) * Math.max(combinedFade, 0.4);
           emblemGroup.scale.set(baseScale, baseScale, baseScale);
-          matOne.opacity = footerFade;
-          matThree.opacity = footerFade;
+          matOne.opacity = combinedFade;
+          matThree.opacity = combinedFade;
 
-          // ROTATE ON SCROLL ONLY (no idle auto-spin) + subtle responsive tilt
+          // Parallax ascend on scroll + subtle responsive tilt
           const targetRotY = (smoothScrollY * 0.0022) + (mouseX * 0.18);
           const targetRotX = -(mouseY * 0.12) + (smoothScrollY * 0.0003);
           const targetRotZ = mouseX * 0.03;
@@ -488,8 +484,9 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
           emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.08;
           emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.08;
 
-          const targetPosY = -(smoothScrollY * 0.0003);
-          emblemGroup.position.y += (targetPosY - emblemGroup.position.y) * 0.06;
+          // Natural parallax upward drift
+          const targetPosY = (smoothScrollY * 0.0035);
+          emblemGroup.position.y += (targetPosY - emblemGroup.position.y) * 0.08;
 
           if (mouseLight) {
             mouseLight.position.x = mouseX * 5.5;
