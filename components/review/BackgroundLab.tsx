@@ -5,8 +5,8 @@ import * as THREE from "three";
 import styles from "@/styles/review/BackgroundLab.module.css";
 
 export type ValeranTheme =
-  | "valeran-original"
-  | "13u-obsidian"
+  | "13u-signature-monochrome"
+  | "valeran-original-amber"
   | "cosmic-amethyst"
   | "champagne-gold";
 
@@ -25,28 +25,28 @@ interface ThemeConfig {
 
 const THEMES: ThemeConfig[] = [
   {
-    id: "valeran-original",
-    name: "Exact Valeran.eu (Bronze / Beige / Amber)",
-    badge: "1:1 VALERAN",
-    tag: "VOLUMETRIC RAYMARCH",
-    description: "Exact 1:1 WebGL volumetric raymarched nebula cloud with golden-ratio dot-product noise, OKLab color blending (#533506 + #EADFCD + #986300), Beer-Lambert absorption, ACES tonemap, and 24fps stepped render.",
+    id: "13u-signature-monochrome",
+    name: "13 Utopia Signature (Exact Main Background Colors)",
+    badge: "13U EXACT MAIN",
+    tag: "OBSIDIAN & TITANIUM",
+    description: "Exact color palette from 13 Utopia's main background (#000000 space void + graphite plume + liquid silver + titanium highlights) powered by the Valeran volumetric raymarch nebula engine.",
+    baseColor: [0.0, 0.0, 0.0],
+    darkColor: [0.03, 0.03, 0.03],
+    brightColor: [0.22, 0.22, 0.24],
+    amberColor: [0.09, 0.09, 0.095],
+    cursorColor: "#FFFFFF",
+  },
+  {
+    id: "valeran-original-amber",
+    name: "Valeran Original (Bronze / Beige / Amber)",
+    badge: "VALERAN ARCHIVE",
+    tag: "WARM EDITORIAL",
+    description: "Original warm bronze-amber color grading from valeran.eu (#533506 + #EADFCD + #986300) for comparison.",
     baseColor: [0.0353, 0.0275, 0.0118], // #090703
     darkColor: [0.3255, 0.2078, 0.0235], // #533506
     brightColor: [0.9176, 0.8745, 0.8039], // #EADFCD
     amberColor: [0.5961, 0.3882, 0.0], // #986300
     cursorColor: "#C8B89A",
-  },
-  {
-    id: "13u-obsidian",
-    name: "13 Utopia Obsidian Chrome (Platinum / Void)",
-    badge: "13U SIGNATURE",
-    tag: "MONOCHROME NOIR",
-    description: "Deep obsidian pitch void with volumetric platinum and liquid mercury smoke wisps specifically tuned to frame 13 Utopia's 3D chrome emblem.",
-    baseColor: [0.012, 0.012, 0.014], // #030303
-    darkColor: [0.15, 0.15, 0.18],
-    brightColor: [0.92, 0.94, 0.98],
-    amberColor: [0.45, 0.48, 0.55],
-    cursorColor: "#FFFFFF",
   },
   {
     id: "cosmic-amethyst",
@@ -75,7 +75,7 @@ const THEMES: ThemeConfig[] = [
 ];
 
 export function BackgroundLab() {
-  const [activeTheme, setActiveTheme] = useState<ValeranTheme>("valeran-original");
+  const [activeTheme, setActiveTheme] = useState<ValeranTheme>("13u-signature-monochrome");
   const [enableMouseTrail, setEnableMouseTrail] = useState<boolean>(true);
   const [enableCursor, setEnableCursor] = useState<boolean>(true);
   const [isHovered, setIsHovered] = useState<boolean>(false);
