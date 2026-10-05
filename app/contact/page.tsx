@@ -6,18 +6,18 @@ import { AmbientField, SmoothScrollProvider } from "@/components/motion";
 import styles from "@/styles/contact/Contact.module.css";
 
 const CAPABILITY_OPTIONS = [
-  "CREATE · Brand Strategy & Identity",
+  "CREATE · Brand & Spatial Identity",
   "BUILD · Web, Mobile & SaaS",
   "AI · Autonomous Workflows",
-  "GROW · SEO & Growth Architecture",
-  "FULL-SPECTRUM ALLIANCE",
+  "GROW · Search & Scale Engines",
+  "FULL-SPECTRUM COMMISSION",
 ] as const;
 
 const TIMELINE_OPTIONS = [
-  "Within 1 Month",
-  "1-3 Months",
-  "3-6 Months",
-  "Long-Term Partnership",
+  "Immediate (< 1 Month)",
+  "1 — 3 Months",
+  "3 — 6 Months",
+  "Long-Term Alliance",
 ] as const;
 
 export default function ContactPage() {
@@ -60,172 +60,178 @@ export default function ContactPage() {
             </h1>
 
             <p className={styles.subtitle}>
-              Direct access to senior partners. Tell us what you&apos;re building, and we&apos;ll outline technical feasibility, architectural milestones, and delivery scope.
+              Tell us what you want to bring into the world. We collaborate directly with founders and ambitious teams to engineer sovereign brand identities, production web systems, and high-velocity growth engines.
             </p>
           </div>
         </section>
 
         <div className={styles.contentContainer}>
           <div className={styles.contactLayout}>
-          {/* Commission Form */}
-          <form className={styles.formCard} onSubmit={handleSubmit}>
-            {/* Capability Area */}
-            <div className={styles.formGroup}>
-              <label className={styles.fieldLabel}>
-                <span className={styles.fieldLabelTag}>01 //</span> CAPABILITY FOCUS
-              </label>
-              <div className={styles.pillSelector}>
-                {CAPABILITY_OPTIONS.map((cap) => (
-                  <button
-                    key={cap}
-                    type="button"
-                    className={`${styles.pillBtn} ${
-                      selectedCapability === cap ? styles.pillBtnActive : ""
-                    }`}
-                    onClick={() => setSelectedCapability(cap)}
-                  >
-                    {cap}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Target Timeline */}
-            <div className={styles.formGroup}>
-              <label className={styles.fieldLabel}>
-                <span className={styles.fieldLabelTag}>02 //</span> TARGET HORIZON
-              </label>
-              <div className={styles.pillSelector}>
-                {TIMELINE_OPTIONS.map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    className={`${styles.pillBtn} ${
-                      selectedTimeline === t ? styles.pillBtnActive : ""
-                    }`}
-                    onClick={() => setSelectedTimeline(t)}
-                  >
-                    {t}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Client Info Grid */}
-            <div className={styles.inputGrid}>
+            {/* Commission Form */}
+            <form className={styles.formCard} onSubmit={handleSubmit}>
+              {/* Capability Area */}
               <div className={styles.formGroup}>
-                <label className={styles.fieldLabel} htmlFor="contact-name">
-                  <span className={styles.fieldLabelTag}>//</span> YOUR NAME
+                <label className={styles.fieldLabel}>
+                  <span className={styles.fieldLabelTag}>01 //</span> DISCIPLINE FOCUS
+                </label>
+                <div className={styles.pillSelector}>
+                  {CAPABILITY_OPTIONS.map((cap) => (
+                    <button
+                      key={cap}
+                      type="button"
+                      className={`${styles.pillBtn} ${
+                        selectedCapability === cap ? styles.pillBtnActive : ""
+                      }`}
+                      onClick={() => setSelectedCapability(cap)}
+                    >
+                      {cap}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Target Timeline */}
+              <div className={styles.formGroup}>
+                <label className={styles.fieldLabel}>
+                  <span className={styles.fieldLabelTag}>02 //</span> TARGET TIMELINE
+                </label>
+                <div className={styles.pillSelector}>
+                  {TIMELINE_OPTIONS.map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      className={`${styles.pillBtn} ${
+                        selectedTimeline === t ? styles.pillBtnActive : ""
+                      }`}
+                      onClick={() => setSelectedTimeline(t)}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Client Info Grid */}
+              <div className={styles.inputGrid}>
+                <div className={styles.formGroup}>
+                  <label className={styles.fieldLabel} htmlFor="contact-name">
+                    <span className={styles.fieldLabelTag}>//</span> YOUR NAME
+                  </label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    required
+                    placeholder="Alex Vance"
+                    className={styles.textInput}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.fieldLabel} htmlFor="contact-email">
+                    <span className={styles.fieldLabelTag}>//</span> WORK EMAIL
+                  </label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    required
+                    placeholder="alex@company.com"
+                    className={styles.textInput}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.fieldLabel} htmlFor="contact-company">
+                  <span className={styles.fieldLabelTag}>//</span> COMPANY OR WEBSITE
                 </label>
                 <input
-                  id="contact-name"
+                  id="contact-company"
                   type="text"
-                  required
-                  placeholder="e.g. Alex Vance"
+                  placeholder="Company name or URL"
                   className={styles.textInput}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
                 />
               </div>
 
+              {/* Project Details */}
               <div className={styles.formGroup}>
-                <label className={styles.fieldLabel} htmlFor="contact-email">
-                  <span className={styles.fieldLabelTag}>//</span> WORK EMAIL
+                <label className={styles.fieldLabel} htmlFor="contact-scope">
+                  <span className={styles.fieldLabelTag}>03 //</span> PROJECT BRIEF &amp; AMBITION
                 </label>
-                <input
-                  id="contact-email"
-                  type="email"
+                <textarea
+                  id="contact-scope"
                   required
-                  placeholder="alex@company.com"
-                  className={styles.textInput}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Tell us about what you are looking to build, design, or scale..."
+                  className={styles.textareaInput}
+                  value={scope}
+                  onChange={(e) => setScope(e.target.value)}
                 />
               </div>
-            </div>
 
-            <div className={styles.formGroup}>
-              <label className={styles.fieldLabel} htmlFor="contact-company">
-                <span className={styles.fieldLabelTag}>//</span> COMPANY / ORGANIZATION / URL
-              </label>
-              <input
-                id="contact-company"
-                type="text"
-                placeholder="Company Name or Website URL"
-                className={styles.textInput}
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-              />
-            </div>
+              <button type="submit" className={styles.submitBtn}>
+                <span>Initiate Commission</span>
+                <span>→</span>
+              </button>
+            </form>
 
-            {/* Project Details */}
-            <div className={styles.formGroup}>
-              <label className={styles.fieldLabel} htmlFor="contact-scope">
-                <span className={styles.fieldLabelTag}>03 //</span> PROJECT SCOPE &amp; OBJECTIVES
-              </label>
-              <textarea
-                id="contact-scope"
-                required
-                placeholder="Briefly describe what you are looking to build, solve, or scale..."
-                className={styles.textareaInput}
-                value={scope}
-                onChange={(e) => setScope(e.target.value)}
-              />
-            </div>
+            {/* Direct Studio Sidebar */}
+            <aside className={styles.sidebar}>
+              <div className={styles.infoBlock}>
+                <span className={styles.infoHeading}>DIRECT INQUIRIES</span>
+                <a href="mailto:contact@13utopia.com" className={styles.directEmail}>
+                  contact@13utopia.com
+                </a>
+                <p className={styles.faqA}>
+                  For direct project commissions, studio collaborations, and press.
+                </p>
+              </div>
 
-            <button type="submit" className={styles.submitBtn}>
-              <span>Send Commission Inquiry</span>
-              <span>→</span>
-            </button>
-          </form>
-
-          {/* Direct Telemetry & Studio Sidebar */}
-          <aside className={styles.sidebar}>
-            <div className={styles.infoBlock}>
-              <span className={styles.infoHeading}>DIRECT EXECUTIVE TRANSMISSION</span>
-              <a href="mailto:contact@13utopia.com" className={styles.directEmail}>
-                contact@13utopia.com
-              </a>
-              <p className={styles.faqA}>
-                For RFPs, partnership opportunities, and direct executive correspondence.
-              </p>
-            </div>
-
-            <div className={styles.infoBlock}>
-              <span className={styles.infoHeading}>LOCATIONS</span>
-              <div className={styles.hubList}>
-                <div className={styles.hubItem}>
-                  <span className={styles.hubCity}>Ahmedabad, India</span>
-                  <p className={styles.faqA}>1123 Iconic Shyamal, Shyamal Cross Roads, 132 Feet Ring Rd, Ahmedabad, Gujarat 380015</p>
-                </div>
-                <div className={styles.hubItem}>
-                  <span className={styles.hubCity}>Scarborough, Canada</span>
-                  <p className={styles.faqA}>30 Kimbercroft Ct, Markham Corners, Scarborough, ON M1S 4K9</p>
+              <div className={styles.infoBlock}>
+                <span className={styles.infoHeading}>STUDIO HUBS</span>
+                <div className={styles.hubList}>
+                  <div className={styles.hubItem}>
+                    <span className={styles.hubCity}>Ahmedabad // Studio</span>
+                    <p className={styles.faqA}>1123 Iconic Shyamal, 132 Feet Ring Rd, Ahmedabad, Gujarat 380015</p>
+                  </div>
+                  <div className={styles.hubItem}>
+                    <span className={styles.hubCity}>Toronto // Studio</span>
+                    <p className={styles.faqA}>30 Kimbercroft Ct, Markham Corners, Scarborough, ON M1S 4K9</p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className={styles.infoBlock}>
-              <span className={styles.infoHeading}>FAQ // ENGAGEMENT PROCESS</span>
-              <div className={styles.faqBlock}>
-                <div className={styles.faqItem}>
-                  <h4 className={styles.faqQ}>How quickly do you respond?</h4>
-                  <p className={styles.faqA}>
-                    Every inquiry is reviewed directly by a principal architect and responded to promptly.
-                  </p>
-                </div>
-                <div className={styles.faqItem}>
-                  <h4 className={styles.faqQ}>Who owns the IP and source code?</h4>
-                  <p className={styles.faqA}>
-                    100% client ownership. All source code, Figma files, 3D assets, and deployment keys are transferred upon delivery.
-                  </p>
+              <div className={styles.infoBlock}>
+                <span className={styles.infoHeading}>ENGAGEMENT ETHOS</span>
+                <div className={styles.faqBlock}>
+                  <div className={styles.faqItem}>
+                    <h4 className={styles.faqQ}>How quickly do we start?</h4>
+                    <p className={styles.faqA}>
+                      We review every brief directly within 24 hours. If there is mutual alignment, we schedule a direct discovery session to define the creative vision, architecture, and roadmap.
+                    </p>
+                  </div>
+                  <div className={styles.faqItem}>
+                    <h4 className={styles.faqQ}>Who works on my project?</h4>
+                    <p className={styles.faqA}>
+                      Zero outsourcing and zero layers. You collaborate directly with the senior designers, creative technologists, and software engineers who build every asset from scratch.
+                    </p>
+                  </div>
+                  <div className={styles.faqItem}>
+                    <h4 className={styles.faqQ}>What do you deliver?</h4>
+                    <p className={styles.faqA}>
+                      Complete, unconditional ownership. Every line of code, design system, 3D asset, and deployment key is transferred entirely to your team.
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </aside>
+            </aside>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
 
       <SiteFooter />
     </SmoothScrollProvider>
