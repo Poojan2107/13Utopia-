@@ -30,7 +30,7 @@ const NAV_ITEMS: NavItem[] = [
     title: "ABOUT",
     href: "/about",
     tagline: "Brand Strategy, High-End Engineering & Direct Builder Access",
-    category: "02 // STUDIO",
+    category: "02 // COMPANY",
     previewImage: "/images/specimen-02-belief.jpg",
   },
   {

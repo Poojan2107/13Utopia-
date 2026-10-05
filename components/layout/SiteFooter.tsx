@@ -121,9 +121,9 @@ export function SiteFooter() {
             </Link>
           </div>
 
-          {/* Studio Hubs */}
+          {/* Locations */}
           <div className={styles.hubsBlock}>
-            <span className={styles.socialTitle}>STUDIO HUBS</span>
+            <span className={styles.socialTitle}>LOCATIONS</span>
             <div className={styles.hubCard}>
               <span className={styles.hubCountry}>Ahmedabad, India</span>
               <p className={styles.hubAddress}>

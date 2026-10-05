@@ -186,15 +186,15 @@ export default function ContactPage() {
             </div>
 
             <div className={styles.infoBlock}>
-              <span className={styles.infoHeading}>STUDIO HUBS</span>
+              <span className={styles.infoHeading}>LOCATIONS</span>
               <div className={styles.hubList}>
                 <div className={styles.hubItem}>
                   <span className={styles.hubCity}>Ahmedabad, India</span>
-                  <p className={styles.faqA}>Full-stack product engineering &amp; growth systems lab.</p>
+                  <p className={styles.faqA}>1123 Iconic Shyamal, Shyamal Cross Roads, 132 Feet Ring Rd, Ahmedabad, Gujarat 380015</p>
                 </div>
                 <div className={styles.hubItem}>
                   <span className={styles.hubCity}>Scarborough, Canada</span>
-                  <p className={styles.faqA}>North American client partnerships &amp; brand positioning.</p>
+                  <p className={styles.faqA}>30 Kimbercroft Ct, Markham Corners, Scarborough, ON M1S 4K9</p>
                 </div>
               </div>
             </div>

@@ -56,7 +56,7 @@ export function FramerFooter() {
           </div>
 
           <div className={styles.col}>
-            <span className={styles.colTitle}>STUDIO HUBS</span>
+            <span className={styles.colTitle}>LOCATIONS</span>
             <p className={styles.colText} style={{ fontWeight: 700, color: "#fff" }}>AHMEDABAD, INDIA</p>
             <p className={styles.colText} style={{ fontSize: "0.75rem", opacity: 0.6, marginBottom: "0.5rem" }}>
               1123 Iconic Shyamal, Shyamal Cross Roads, 132 Feet Ring Rd, Ahmedabad, Gujarat 380015
