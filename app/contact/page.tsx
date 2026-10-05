@@ -43,9 +43,9 @@ export default function ContactPage() {
       <SiteHeader />
 
       <main className={styles.contactPage}>
-        {/* Editorial Fullscreen Hero Stage */}
-        <section className={styles.heroBlock}>
-          <div className={styles.heroContent}>
+        <div className={styles.contentContainer}>
+          {/* Header Section */}
+          <header className={styles.headerBlock}>
             <div className={styles.topMeta}>
               <span className={styles.metaLiveDot} />
               <span>06 // CONTACT</span>
@@ -54,18 +54,14 @@ export default function ContactPage() {
             </div>
 
             <h1 className={styles.title}>
-              START A
-              <br />
-              <span className={styles.titleHighlight}>PROJECT.</span>
+              START A <span className={styles.titleHighlight}>PROJECT.</span>
             </h1>
 
             <p className={styles.subtitle}>
               Have a project in mind? Reach out to start a conversation with our team.
             </p>
-          </div>
-        </section>
+          </header>
 
-        <div className={styles.contentContainer}>
           <div className={styles.contactLayout}>
             {/* Contact Form */}
             <form className={styles.formCard} onSubmit={handleSubmit}>
