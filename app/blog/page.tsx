@@ -93,7 +93,7 @@ export default function BlogIndexPage() {
                 </div>
 
                 <span className={styles.readLink}>
-                  <span>Read Essay</span>
+                  <span>Read Perspective</span>
                   <span className={styles.readArrow}>↗</span>
                 </span>
               </div>

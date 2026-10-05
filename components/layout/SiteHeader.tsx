@@ -162,8 +162,6 @@ export function SiteHeader() {
     closeMenu();
   }
 
-  const activeItem = NAV_ITEMS[hoveredIdx] || NAV_ITEMS[0];
-
   return (
     <header
       className={`${styles.header} ${scrolled ? styles.scrolled : ""} ${
@@ -283,19 +281,6 @@ export function SiteHeader() {
                   <div className={styles.viewportCornerTL} />
                   <div className={styles.viewportCornerBR} />
                 </div>
-
-                <div className={styles.previewMetaRow}>
-                  <span className={styles.previewCategory}>
-                    {activeItem.category}
-                  </span>
-                  <span className={styles.previewCoordinates}>
-                    DISCIPLINE // 0{hoveredIdx + 1}
-                  </span>
-                </div>
-
-                <p className={styles.previewTagline}>
-                  {activeItem.tagline}
-                </p>
               </div>
 
               {/* Direct Inquiries Footer */}
