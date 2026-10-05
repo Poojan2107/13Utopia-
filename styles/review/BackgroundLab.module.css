@@ -1,28 +1,56 @@
 /* =========================================================
-   13 UTOPIA // AWWWARDS-TIER BACKGROUND LAB (COLLAPSIBLE HUD)
+   13 UTOPIA // VALERAN VISUAL LAB (STAGING REVIEW ONLY)
    ========================================================= */
 
-.canvasHost {
+/* ── 01. Fullscreen Ambient Mouse-Responsive Spotlight ──── */
+.ambientSpotlight {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
   z-index: 0;
   pointer-events: none;
-  background: #000000;
+  transition: background-color 0.4s ease;
+  will-change: background-image;
 }
 
-/* Floating Collapsible Director Control HUD */
+/* ── 02. Analog Film Grain Noise Overlay ────────────────── */
+.filmGrain {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 140px 140px;
+}
+
+/* ── 03. Valeran Minimalist Square Dot Cursor ───────────── */
+.valeranCursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  pointer-events: none;
+  z-index: 9999999;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  will-change: transform;
+}
+
+/* ── 04. Floating Collapsible Director Control HUD ──────── */
 .directorHUD {
   position: fixed;
   top: 90px;
   right: clamp(16px, 2.5vw, 40px);
   z-index: 999999;
-  width: min(400px, 92vw);
+  width: min(420px, 92vw);
   max-height: calc(100vh - 120px);
   overflow-y: auto;
-  background: rgba(8, 9, 12, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 10, 14, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 18px;
   padding: clamp(16px, 1.8vw, 22px);
   backdrop-filter: blur(28px);
@@ -32,6 +60,7 @@
   flex-direction: column;
   gap: 12px;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #ffffff;
 }
 
 .hudCollapsed {
@@ -39,7 +68,7 @@
   max-height: auto !important;
   padding: 8px 14px !important;
   border-radius: 9999px !important;
-  background: rgba(12, 14, 18, 0.92) !important;
+  background: rgba(14, 14, 18, 0.92) !important;
   border-color: rgba(255, 255, 255, 0.35) !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
 }
@@ -61,8 +90,8 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 0 10px #ffffff;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
   animation: pulseDot 2s infinite ease-in-out;
 }
 
@@ -119,8 +148,8 @@
 
 .hudSub {
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 0.76rem;
-  line-height: 1.4;
+  font-size: 0.8rem;
+  line-height: 1.45;
   color: rgba(255, 255, 255, 0.65);
   margin: 0;
 }
@@ -128,116 +157,139 @@
 .buttonList {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  max-height: 48vh;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.buttonList::-webkit-scrollbar {
-  width: 4px;
-}
-.buttonList::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  gap: 8px;
+  margin-top: 4px;
 }
 
 .hudBtn {
-  width: 100%;
-  text-align: left;
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 10px;
   padding: 10px 12px;
+  text-align: left;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
+  transition: all 0.2s ease;
+  color: inherit;
 }
 
 .hudBtn:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.25);
-  transform: translateX(-2px);
+  transform: translateX(2px);
 }
 
 .hudBtnActive {
   background: rgba(255, 255, 255, 0.12) !important;
-  border-color: rgba(255, 255, 255, 0.6) !important;
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.55) !important;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
 }
 
 .btnMeta {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  gap: 8px;
 }
 
 .btnName {
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: #ffffff;
 }
 
 .btnBadge {
   font-family: var(--font-mono, monospace);
-  font-size: 0.54rem;
+  font-size: 0.55rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.5);
-  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
 }
 
 .btnDesc {
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 0.70rem;
-  line-height: 1.35;
-  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.55);
   margin: 0;
 }
 
-.btnFidelity {
+/* Controls Section */
+.controlsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.controlRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.controlLabel {
   font-family: var(--font-mono, monospace);
-  font-size: 0.58rem;
+  font-size: 0.65rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.4);
   letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+}
+
+.rangeInput {
+  width: 100%;
+  accent-color: #ffffff;
+  cursor: pointer;
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
   margin-top: 2px;
 }
 
+.toggleLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+}
+
+.checkboxInput {
+  accent-color: #ffffff;
+  cursor: pointer;
+}
+
 .hudFooter {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 8px;
   display: flex;
   flex-direction: column;
   gap: 2px;
+  margin-top: 4px;
 }
 
 .footerTag {
   font-family: var(--font-mono, monospace);
-  font-size: 0.625rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  color: #ffffff;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
+  color: #ffffff;
 }
 
 .footerSub {
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-@media (max-width: 900px) {
-  .directorHUD {
-    top: auto;
-    bottom: 20px;
-    right: 14px;
-    left: 14px;
-    width: auto;
-    max-height: 48vh;
-  }
+  font-family: var(--font-mono, monospace);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.45);
 }
