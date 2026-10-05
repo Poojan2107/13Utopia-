@@ -14,7 +14,6 @@ interface NavItem {
   tagline: string;
   category: string;
   previewImage: string;
-  subtags: string[];
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -25,7 +24,6 @@ const NAV_ITEMS: NavItem[] = [
     tagline: "Sovereign Digital Dominance & WebGL Architecture",
     category: "INDEX // 01",
     previewImage: "/images/world-create.jpg",
-    subtags: ["WebGL Core", "Digital Sovereign", "Real-Time 3D"],
   },
   {
     index: "02",
@@ -34,7 +32,6 @@ const NAV_ITEMS: NavItem[] = [
     tagline: "Creative Technology, Product Engineering & Growth Alliance",
     category: "MANIFESTO // 02",
     previewImage: "/images/specimen-02-belief.jpg",
-    subtags: ["The Standard", "Philosophy", "Global Unit"],
   },
   {
     index: "03",
@@ -43,7 +40,6 @@ const NAV_ITEMS: NavItem[] = [
     tagline: "Three Disciplines: Create, Build & Grow under One Standard",
     category: "CAPABILITIES // 03",
     previewImage: "/images/world-build.jpg",
-    subtags: ["Create (Brand & 3D)", "Build (Code & AI)", "Grow (SEO & Ads)"],
   },
   {
     index: "04",
@@ -52,7 +48,6 @@ const NAV_ITEMS: NavItem[] = [
     tagline: "3D Ribbon WebGL Portfolio & Selected Client Commissions",
     category: "ARCHIVE // 04",
     previewImage: "/images/case-01.jpg",
-    subtags: ["WebGL Ribbon", "Commercial Films", "12 Case Studies"],
   },
   {
     index: "05",
@@ -61,7 +56,6 @@ const NAV_ITEMS: NavItem[] = [
     tagline: "Engineering, Brand Strategy & Autonomous AI Perspectives",
     category: "ESSAYS // 05",
     previewImage: "/images/specimen-04-build.jpg",
-    subtags: ["Brand Architecture", "SEO Engineering", "10 Essays"],
   },
   {
     index: "06",
@@ -70,7 +64,6 @@ const NAV_ITEMS: NavItem[] = [
     tagline: "Direct Partner Access & Immediate Commission Initiation",
     category: "INITIATION // 06",
     previewImage: "/images/world-grow.jpg",
-    subtags: ["contact@13utopia.com", "Encrypted Channel", "Direct Line"],
   },
 ];
 
@@ -289,15 +282,6 @@ export function SiteHeader() {
                       </span>
                       <span className={styles.navArrowIndicator} aria-hidden="true">→</span>
                     </Link>
-
-                    {/* Interactive Sub-Tag Pills on Hover */}
-                    <div className={styles.subtagsRow}>
-                      {item.subtags.map((tag, tIdx) => (
-                        <span key={tIdx} className={styles.subtagPill}>
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
                   </div>
                 );
               })}
