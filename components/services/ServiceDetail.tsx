@@ -46,16 +46,6 @@ export function ServiceDetail({ world }: Props) {
         className={styles.page}
         style={{ "--svc-accent": world.accent } as React.CSSProperties}
       >
-        <div className={styles.topBar}>
-          <div className={styles.topMeta}>
-            <span className={styles.topNum}>{world.indexNum}</span>
-            <span className={styles.topSep}>·</span>
-            <span className={styles.topTag}>{world.worldTag}</span>
-            <span className={styles.topHint}>SERVICE ARCHITECTURE</span>
-          </div>
-          <ServiceNav />
-        </div>
-
         {/* HERO */}
         <section className={styles.hero} aria-labelledby={`svc-hero-${world.slug}`}>
           <motion.div
@@ -64,9 +54,6 @@ export function ServiceDetail({ world }: Props) {
             initial="hidden"
             animate="show"
           >
-            <motion.p className={styles.heroEyebrow} variants={fadeUp} transition={{ duration: 0.7, ease: EASE }}>
-              {world.label} · DISCIPLINE
-            </motion.p>
             <EchoTitle text={world.echoTitle} className={styles.heroEcho} />
             <motion.h1
               id={`svc-hero-${world.slug}`}

@@ -49,29 +49,12 @@ export function ServicesOverview() {
       <AmbientField />
       <SiteHeader />
       <main className={styles.page}>
-        <div className={styles.topBar}>
-          <div className={styles.topMeta}>
-            <span className={styles.topNum}>00 // 03</span>
-            <span className={styles.topSep}>·</span>
-            <span className={styles.topTag}>SERVICES</span>
-            <span className={styles.topHint}>THREE WORLDS</span>
-          </div>
-          <ServiceNav />
-        </div>
-
         <motion.section
           className={styles.hero}
           variants={staggerParent}
           initial="hidden"
           animate="show"
         >
-          <motion.p
-            className={styles.eyebrow}
-            variants={fadeUp}
-            transition={{ duration: 0.7, ease: EASE }}
-          >
-            THREE WORLDS · ONE STANDARD
-          </motion.p>
           <motion.h1
             className={styles.title}
             variants={fadeUp}
@@ -124,10 +107,6 @@ export function ServicesOverview() {
               transition={{ duration: 0.95, delay: idx * 0.06, ease: EASE }}
             >
               <div className={styles.worldCopy}>
-                <div className={styles.worldMeta}>
-                  <span>{w.worldTag}</span>
-                  <span>{w.indexNum}</span>
-                </div>
                 <h2 className={styles.worldLabel}>{w.label}.</h2>
                 <p className={styles.worldTitle}>{w.title}</p>
                 <p className={styles.worldBody}>{w.heroBody}</p>
