@@ -95,14 +95,17 @@ export function Continuous3DStory() {
     if (!section || !stage) return;
 
     const ctx = gsap.context(() => {
-      // Continuous pinned 3D narrative journey from Hero -> Manifesto -> CREATE -> BUILD -> GROW
+      // Continuous pinned 3D narrative journey with seamless fluid unpinning
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: "+=7500",
+        end: () => `+=${Math.round(Math.max(2600, Math.min(3800, window.innerHeight * 3.4)))}`,
         pin: stage,
         pinSpacing: true,
-        scrub: 0.6,
+        scrub: 0.4,
+        anticipatePin: 1,
+        fastScrollEnd: true,
+        invalidateOnRefresh: true,
         onUpdate: (self) => {
           const p = Math.max(0, Math.min(1, self.progress));
           setScrollProgress(p);
