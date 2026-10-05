@@ -118,8 +118,8 @@ export function Hero3DCanvas() {
     threeMesh.position.set(0.95, 0, 0);
     emblemGroup.add(threeMesh);
 
-    // Perfectly centered in stage
-    emblemGroup.position.set(0, 0, 0);
+    let baseOffsetX = width > 980 ? 2.5 : 0;
+    emblemGroup.position.set(baseOffsetX, 0, 0);
     scene.add(emblemGroup);
 
     // 4. Exact Studio Lighting Rig
@@ -161,6 +161,7 @@ export function Hero3DCanvas() {
       if (!container) return;
       width = container.clientWidth || window.innerWidth;
       height = container.clientHeight || window.innerHeight;
+      baseOffsetX = width > 980 ? 2.5 : 0;
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
@@ -180,7 +181,7 @@ export function Hero3DCanvas() {
       mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
 
       // Update dynamic mouse specular highlight
-      mouseLight.position.x = mouseRef.current.x * 6;
+      mouseLight.position.x = baseOffsetX + mouseRef.current.x * 6;
       mouseLight.position.y = -mouseRef.current.y * 6;
 
       // Subtle organic breath & slight 3D angle
@@ -193,7 +194,7 @@ export function Hero3DCanvas() {
       emblemGroup.rotation.y += (targetRotY - emblemGroup.rotation.y) * 0.08;
       emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.08;
 
-      const targetPosX = mouseRef.current.x * 0.2;
+      const targetPosX = baseOffsetX + mouseRef.current.x * 0.25;
       const targetPosY = -mouseRef.current.y * 0.15 + idleFloat;
 
       emblemGroup.position.x += (targetPosX - emblemGroup.position.x) * 0.06;

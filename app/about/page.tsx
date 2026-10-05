@@ -14,9 +14,13 @@ export default function AboutPage() {
       <SiteHeader />
 
       <main className={styles.aboutPage}>
-        {/* Hero Block */}
+        {/* Full Viewport Hero Block */}
         <section className={styles.heroBlock}>
-          <div className={styles.heroGrid}>
+          <div className={styles.heroCanvasStage}>
+            <Hero3DCanvas />
+          </div>
+
+          <div className={styles.heroContent}>
             <div className={styles.heroCopy}>
               <div className={styles.topMeta}>
                 <span>02 // ABOUT 13 UTOPIA</span>
@@ -55,10 +59,6 @@ export default function AboutPage() {
                   Initiate Alliance
                 </a>
               </div>
-            </div>
-
-            <div className={styles.heroCanvasStage}>
-              <Hero3DCanvas />
             </div>
           </div>
         </section>
