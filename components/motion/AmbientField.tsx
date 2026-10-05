@@ -310,6 +310,8 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
         clearcoat: 0.85,
         clearcoatRoughness: 0.12,
         reflectivity: 0.9,
+        transparent: true,
+        opacity: 1.0,
       });
 
       matThree = new THREE.MeshPhysicalMaterial({
@@ -319,6 +321,8 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
         clearcoat: 0.85,
         clearcoatRoughness: 0.12,
         reflectivity: 0.9,
+        transparent: true,
+        opacity: 1.0,
       });
 
       oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
@@ -441,24 +445,55 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
       deepDustSystem.rotation.x = mouseY * 0.04 + smoothScrollY * 0.00015;
       deepDustSystem.position.y = -(smoothScrollY * 0.0008);
 
-      // Centered 3D Emblem Continuous Rotation & Studio Physics
-      if (emblemGroup) {
-        // Continuous smooth 360 rotation + interactive mouse & scroll response
-        const targetRotY = elapsedTime * 0.42 + (mouseX * 0.35) + (smoothScrollY * 0.0008);
-        const targetRotX = Math.sin(elapsedTime * 0.55) * 0.08 - (mouseY * 0.22);
-        const targetRotZ = Math.sin(elapsedTime * 0.4) * 0.05 + (mouseX * 0.06);
+      // Centered 3D Emblem: Rotate on Scroll Only & Vanish completely before Footer
+      if (emblemGroup && matOne && matThree) {
+        // Measure real footer position relative to viewport
+        const footerEl = document.querySelector("footer");
+        let footerProximityFactor = 1.0;
+        if (footerEl) {
+          const footerRect = footerEl.getBoundingClientRect();
+          // Fade out as footer approaches viewport from below
+          const fadeStart = height * 1.35; // begins fading when footer is 35% below viewport bottom
+          const fadeEnd = height * 0.85;   // completely hidden when footer enters lower 15% of viewport
+          if (footerRect.top <= fadeEnd) {
+            footerProximityFactor = 0.0;
+          } else if (footerRect.top < fadeStart) {
+            footerProximityFactor = (footerRect.top - fadeEnd) / (fadeStart - fadeEnd);
+          }
+        }
 
-        emblemGroup.rotation.y = targetRotY;
-        emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.06;
-        emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.06;
+        // Fallback document scroll normalization
+        const docHeight = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const scrollNorm = Math.min(Math.max(smoothScrollY / docHeight, 0), 1);
+        const scrollNormFactor = 1.0 - Math.min(Math.max((scrollNorm - 0.68) / 0.16, 0), 1);
 
-        // Gentle floating breath
-        const targetPosY = Math.sin(elapsedTime * 0.8) * 0.12 - (smoothScrollY * 0.0004);
-        emblemGroup.position.y += (targetPosY - emblemGroup.position.y) * 0.06;
+        const footerFade = Math.min(footerProximityFactor, scrollNormFactor);
 
-        if (mouseLight) {
-          mouseLight.position.x = mouseX * 5.5;
-          mouseLight.position.y = mouseY * 5.5;
+        if (footerFade <= 0.01) {
+          emblemGroup.visible = false;
+        } else {
+          emblemGroup.visible = true;
+          const baseScale = (width < 768 ? 0.72 : 0.95) * Math.max(footerFade, 0.2);
+          emblemGroup.scale.set(baseScale, baseScale, baseScale);
+          matOne.opacity = footerFade;
+          matThree.opacity = footerFade;
+
+          // ROTATE ON SCROLL ONLY (no idle auto-spin) + subtle responsive tilt
+          const targetRotY = (smoothScrollY * 0.0022) + (mouseX * 0.18);
+          const targetRotX = -(mouseY * 0.12) + (smoothScrollY * 0.0003);
+          const targetRotZ = mouseX * 0.03;
+
+          emblemGroup.rotation.y += (targetRotY - emblemGroup.rotation.y) * 0.08;
+          emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.08;
+          emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.08;
+
+          const targetPosY = -(smoothScrollY * 0.0003);
+          emblemGroup.position.y += (targetPosY - emblemGroup.position.y) * 0.06;
+
+          if (mouseLight) {
+            mouseLight.position.x = mouseX * 5.5;
+            mouseLight.position.y = mouseY * 5.5;
+          }
         }
       }
 
