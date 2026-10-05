@@ -4,78 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import styles from "@/styles/review/BackgroundLab.module.css";
 
-export type ValeranTheme =
-  | "13u-signature-monochrome"
-  | "valeran-original-amber"
-  | "cosmic-amethyst"
-  | "champagne-gold";
-
-interface ThemeConfig {
-  id: ValeranTheme;
-  name: string;
-  badge: string;
-  tag: string;
-  description: string;
-  baseColor: [number, number, number]; // RGB 0..1
-  darkColor: [number, number, number]; // RGB 0..1
-  brightColor: [number, number, number]; // RGB 0..1
-  amberColor: [number, number, number]; // RGB 0..1
-  cursorColor: string;
-}
-
-const THEMES: ThemeConfig[] = [
-  {
-    id: "13u-signature-monochrome",
-    name: "13 Utopia Signature (Exact Main Background Colors)",
-    badge: "13U EXACT MAIN",
-    tag: "OBSIDIAN & TITANIUM",
-    description: "Exact color palette from 13 Utopia's main background (#000000 space void + graphite plume + liquid silver + titanium highlights) powered by the Valeran volumetric raymarch nebula engine.",
-    baseColor: [0.0, 0.0, 0.0],
-    darkColor: [0.03, 0.03, 0.03],
-    brightColor: [0.22, 0.22, 0.24],
-    amberColor: [0.09, 0.09, 0.095],
-    cursorColor: "#FFFFFF",
-  },
-  {
-    id: "valeran-original-amber",
-    name: "Valeran Original (Bronze / Beige / Amber)",
-    badge: "VALERAN ARCHIVE",
-    tag: "WARM EDITORIAL",
-    description: "Original warm bronze-amber color grading from valeran.eu (#533506 + #EADFCD + #986300) for comparison.",
-    baseColor: [0.0353, 0.0275, 0.0118], // #090703
-    darkColor: [0.3255, 0.2078, 0.0235], // #533506
-    brightColor: [0.9176, 0.8745, 0.8039], // #EADFCD
-    amberColor: [0.5961, 0.3882, 0.0], // #986300
-    cursorColor: "#C8B89A",
-  },
-  {
-    id: "cosmic-amethyst",
-    name: "Deep Cosmic Amethyst (Ultraviolet / Indigo)",
-    badge: "ATMOSPHERIC",
-    tag: "SPATIAL SPECTRUM",
-    description: "Volumetric ultraviolet interstellar cloud with deep indigo shadows and cyan highlights, raymarched over 40 steps.",
-    baseColor: [0.015, 0.012, 0.025],
-    darkColor: [0.18, 0.08, 0.32],
-    brightColor: [0.85, 0.80, 0.98],
-    amberColor: [0.35, 0.22, 0.65],
-    cursorColor: "#E2D9F8",
-  },
-  {
-    id: "champagne-gold",
-    name: "Champagne & Liquid Bronze",
-    badge: "HIGH LUXURY",
-    tag: "WARM BRONZE",
-    description: "High-contrast golden atmospheric nebula with warm cream crests and rich mahogany shadows.",
-    baseColor: [0.025, 0.020, 0.015],
-    darkColor: [0.38, 0.26, 0.08],
-    brightColor: [0.96, 0.92, 0.82],
-    amberColor: [0.72, 0.52, 0.15],
-    cursorColor: "#F2E8D2",
-  },
-];
-
 export function BackgroundLab() {
-  const [activeTheme, setActiveTheme] = useState<ValeranTheme>("13u-signature-monochrome");
   const [enableMouseTrail, setEnableMouseTrail] = useState<boolean>(true);
   const [enableCursor, setEnableCursor] = useState<boolean>(true);
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -86,7 +15,12 @@ export function BackgroundLab() {
   const canvasContainerRef = useRef<HTMLDivElement | null>(null);
   const cursorRef = useRef<HTMLDivElement | null>(null);
 
-  const currentTheme = THEMES.find((t) => t.id === activeTheme) || THEMES[0];
+  // Exact 13 Utopia Main Monochrome Color Values
+  const baseColor: [number, number, number] = [0.0, 0.0, 0.0];        // #000000 Space Void
+  const darkColor: [number, number, number] = [0.03, 0.03, 0.03];     // Graphite Plume
+  const brightColor: [number, number, number] = [0.22, 0.22, 0.24];   // Titanium Highlights
+  const midColor: [number, number, number] = [0.09, 0.09, 0.095];     // Liquid Silver
+  const cursorColor = "#FFFFFF";
 
   // ── 01. WebGL Volumetric Raymarch Nebula Shader Engine ──
   useEffect(() => {
@@ -106,7 +40,7 @@ export function BackgroundLab() {
       antialias: false,
       powerPreference: "high-performance",
     });
-    // Valeran uses half-resolution scale 0.5 for filmic blur + cheap render
+    // Valeran uses half-resolution scale for filmic blur + efficient render
     renderer.setPixelRatio(0.65);
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 1);
@@ -117,10 +51,10 @@ export function BackgroundLab() {
       uResolution: { value: new THREE.Vector2(width, height) },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
       uMouseTrailWeight: { value: enableMouseTrail ? 1.0 : 0.0 },
-      uBaseColor: { value: new THREE.Vector3(...currentTheme.baseColor) },
-      uDarkColor: { value: new THREE.Vector3(...currentTheme.darkColor) },
-      uBrightColor: { value: new THREE.Vector3(...currentTheme.brightColor) },
-      uAmberColor: { value: new THREE.Vector3(...currentTheme.amberColor) },
+      uBaseColor: { value: new THREE.Vector3(...baseColor) },
+      uDarkColor: { value: new THREE.Vector3(...darkColor) },
+      uBrightColor: { value: new THREE.Vector3(...brightColor) },
+      uMidColor: { value: new THREE.Vector3(...midColor) },
     };
 
     const vertexShader = `
@@ -140,7 +74,7 @@ export function BackgroundLab() {
       uniform vec3 uBaseColor;
       uniform vec3 uDarkColor;
       uniform vec3 uBrightColor;
-      uniform vec3 uAmberColor;
+      uniform vec3 uMidColor;
       varying vec2 vUv;
 
       // ── OKLab Color Mixing Math ──
@@ -201,7 +135,6 @@ export function BackgroundLab() {
 
       // ── Valeran 3D Dot-Product Noise Field ──
       float densityField(vec3 p, float t) {
-        // Golden Ratio 3D Rotation Matrix
         mat3 rot1 = mat3(
           0.8000,  0.6000,  0.0000,
          -0.4800,  0.6400,  0.6000,
@@ -233,11 +166,11 @@ export function BackgroundLab() {
         vec2 mWarp = (p - mNorm * 0.5) * exp(-mDist * 2.2) * 0.28 * uMouseTrailWeight;
         p -= mWarp;
 
-        // Valeran Elliptical SDF Mask (Squashed circle, scale 2.0, skew 0.48)
+        // Valeran Elliptical SDF Mask
         vec2 maskP = p;
         maskP.x *= 0.85;
         maskP.y *= 1.45;
-        maskP += vec2(maskP.y * 0.48, 0.0); // Skew
+        maskP += vec2(maskP.y * 0.48, 0.0);
         float ellipseMask = smoothstep(1.6, 0.15, length(maskP));
 
         // 40-Step Volumetric Raymarch
@@ -259,7 +192,7 @@ export function BackgroundLab() {
             float density = d * ellipseMask * 0.18;
 
             // OKLab Color Grading across density
-            vec3 colorStep = oklab_mix(uDarkColor, uAmberColor, clamp(d * 1.2, 0.0, 1.0));
+            vec3 colorStep = oklab_mix(uDarkColor, uMidColor, clamp(d * 1.2, 0.0, 1.0));
             colorStep = oklab_mix(colorStep, uBrightColor, clamp((d - 0.5) * 2.2, 0.0, 1.0));
 
             accumulatedLight += colorStep * density * transmittance;
@@ -269,16 +202,16 @@ export function BackgroundLab() {
           }
         }
 
-        // Composite over Base Layer (#090703)
+        // Composite over Base Layer (#000000 Space Void)
         vec3 finalColor = uBaseColor * transmittance + accumulatedLight;
 
         // ACES Filmic Tonemap
         finalColor = aces_filmic(finalColor);
 
-        // PCG2D Animated Film Grain (Overlay Blend at 0.30 strength)
-        float grainSeed = floor(uTime * 24.0); // 24fps stepped grain
+        // PCG2D Animated Film Grain
+        float grainSeed = floor(uTime * 24.0);
         float grain = hash_grain(gl_FragCoord.xy, grainSeed);
-        finalColor += (grain - 0.5) * 0.045;
+        finalColor += (grain - 0.5) * 0.038;
 
         gl_FragColor = vec4(finalColor, 1.0);
       }
@@ -306,7 +239,6 @@ export function BackgroundLab() {
     };
     window.addEventListener("mousemove", onPointerMove, { passive: true });
 
-    // Capped 24fps / 60fps render loop
     let rafId: number;
     let lastRenderTime = performance.now();
     const frameInterval = 1000 / fpsCap;
@@ -325,10 +257,6 @@ export function BackgroundLab() {
       uniforms.uTime.value = currentTime * 0.001;
       uniforms.uMouse.value.set(mouseX, mouseY);
       uniforms.uMouseTrailWeight.value = enableMouseTrail ? 1.0 : 0.0;
-      uniforms.uBaseColor.value.set(...currentTheme.baseColor);
-      uniforms.uDarkColor.value.set(...currentTheme.darkColor);
-      uniforms.uBrightColor.value.set(...currentTheme.brightColor);
-      uniforms.uAmberColor.value.set(...currentTheme.amberColor);
 
       renderer.render(scene, camera);
     };
@@ -351,7 +279,7 @@ export function BackgroundLab() {
       mat.dispose();
       renderer.dispose();
     };
-  }, [activeTheme, enableMouseTrail, fpsCap]);
+  }, [enableMouseTrail, fpsCap]);
 
   // ── 02. Valeran Exact `.cursor-square` Cursor System ──
   useEffect(() => {
@@ -384,7 +312,6 @@ export function BackgroundLab() {
       setIsDragMode(!!isDraggable);
     };
 
-    // 0.85 per-frame lerp (15% spring lag)
     const cursorLoop = () => {
       mouseX += (targetX - mouseX) * 0.85;
       mouseY += (targetY - mouseY) * 0.85;
@@ -430,13 +357,13 @@ export function BackgroundLab() {
         >
           <div
             className={styles.cDot}
-            style={{ backgroundColor: currentTheme.cursorColor }}
+            style={{ backgroundColor: cursorColor }}
           />
           <div className={styles.cDrag}>[ GLISSER ]</div>
         </div>
       )}
 
-      {/* Floating Director HUD (Staging Lab Controls) */}
+      {/* Minimal Floating Staging HUD */}
       <aside
         className={`${styles.directorHUD} ${isCollapsed ? styles.hudCollapsed : ""}`}
         aria-label="Valeran Shader Lab"
@@ -444,43 +371,25 @@ export function BackgroundLab() {
         <div className={styles.hudTopRow}>
           <div className={styles.hudBadgeGroup}>
             <span className={styles.hudLiveDot} />
-            <span className={styles.hudTag}>VALERAN UNICORN WEBGL LAB</span>
+            <span className={styles.hudTag}>VALERAN WEBGL EFFECT // 13U EXACT PALETTE</span>
           </div>
 
           <button
             type="button"
             onClick={() => setIsCollapsed(!isCollapsed)}
             className={styles.collapseToggleBtn}
-            title={isCollapsed ? "Expand Selection Table" : "Collapse for Full Screen View"}
+            title={isCollapsed ? "Expand Controls" : "Collapse Fullscreen"}
           >
-            {isCollapsed ? "✦ EXPAND LAB" : "— COLLAPSE FULLSCREEN"}
+            {isCollapsed ? "✦ CONTROLS" : "— COLLAPSE"}
           </button>
         </div>
 
         {!isCollapsed && (
           <div className={styles.hudBody}>
-            <h2 className={styles.hudTitle}>Exact Valeran.eu WebGL Engine</h2>
+            <h2 className={styles.hudTitle}>13 Utopia × Valeran WebGL</h2>
             <p className={styles.hudSub}>
-              1:1 WebGL volumetric raymarch nebula shader (OKLab mixing + ACES tonemapping + 24fps stepped grain).
+              13 Utopia&apos;s exact monochrome palette rendered via Valeran&apos;s 40-step volumetric raymarch nebula shader &amp; custom square cursor.
             </p>
-
-            {/* Theme Selectors */}
-            <div className={styles.buttonList}>
-              {THEMES.map((theme) => (
-                <button
-                  key={theme.id}
-                  type="button"
-                  onClick={() => setActiveTheme(theme.id)}
-                  className={`${styles.hudBtn} ${activeTheme === theme.id ? styles.hudBtnActive : ""}`}
-                >
-                  <div className={styles.btnMeta}>
-                    <span className={styles.btnName}>{theme.name}</span>
-                    <span className={styles.btnBadge}>{theme.badge}</span>
-                  </div>
-                  <p className={styles.btnDesc}>{theme.description}</p>
-                </button>
-              ))}
-            </div>
 
             {/* Fine-Tuning Switches */}
             <div className={styles.controlsSection}>
@@ -492,7 +401,7 @@ export function BackgroundLab() {
                     onChange={(e) => setEnableMouseTrail(e.target.checked)}
                     className={styles.checkboxInput}
                   />
-                  <span>Enable Interactive Fluid Mouse Warp (Gravitational Wake)</span>
+                  <span>Interactive Fluid Mouse Wake</span>
                 </label>
               </div>
 
@@ -504,34 +413,34 @@ export function BackgroundLab() {
                     onChange={(e) => setEnableCursor(e.target.checked)}
                     className={styles.checkboxInput}
                   />
-                  <span>Enable 1:1 Valeran Square Cursor (10px → 20px on hover)</span>
+                  <span>Valeran Square Cursor (10px → 20px)</span>
                 </label>
               </div>
 
               <div className={styles.controlRow}>
-                <span className={styles.controlLabel}>Renderer Framerate ({fpsCap} FPS)</span>
+                <span className={styles.controlLabel}>Framerate ({fpsCap} FPS)</span>
                 <div className={styles.fpsGroup}>
                   <button
                     type="button"
                     onClick={() => setFpsCap(24)}
                     className={`${styles.fpsBtn} ${fpsCap === 24 ? styles.fpsBtnActive : ""}`}
                   >
-                    24 FPS (Filmic Valeran Exact)
+                    24 FPS (Filmic Stepped)
                   </button>
                   <button
                     type="button"
                     onClick={() => setFpsCap(60)}
                     className={`${styles.fpsBtn} ${fpsCap === 60 ? styles.fpsBtnActive : ""}`}
                   >
-                    60 FPS (Ultra Fluid)
+                    60 FPS (Fluid)
                   </button>
                 </div>
               </div>
             </div>
 
             <div className={styles.hudFooter}>
-              <span className={styles.footerTag}>ACTIVE: {currentTheme.name}</span>
-              <span className={styles.footerSub}>STAGING ONLY · MAIN PRODUCTION HOMEPAGE UNTOUCHED</span>
+              <span className={styles.footerTag}>PALETTE: 13U EXACT (OBSIDIAN / SILVER / TITANIUM)</span>
+              <span className={styles.footerSub}>STAGING LAB ONLY · PRODUCTION UNTOUCHED</span>
             </div>
           </div>
         )}
