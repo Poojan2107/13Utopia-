@@ -34,6 +34,27 @@ export default function AboutPage() {
                 high-performance product engineering, and category-defining growth systems under one roof
                 — eliminating agency translation loss and delivering sovereign digital dominance.
               </p>
+
+              <div className={styles.heroActions}>
+                <a
+                  href="/services"
+                  className={styles.ctaPrimary}
+                  data-magnetic
+                  data-cursor="hover"
+                >
+                  <span>Explore Capabilities</span>
+                  <span className={styles.ctaArrow} aria-hidden="true">
+                    →
+                  </span>
+                </a>
+                <a
+                  href="mailto:poojan@13utopia.com?subject=Initiate%20Alliance%20%E2%80%94%2013%20UTOPIA"
+                  className={styles.ctaGhost}
+                  data-cursor="hover"
+                >
+                  Initiate Alliance
+                </a>
+              </div>
             </div>
 
             <div className={styles.heroCanvasStage}>

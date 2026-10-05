@@ -88,16 +88,22 @@ export function Hero3DCanvas() {
     };
 
     // Exact architectural graphite & titanium materiality matching the continuous narrative sections
-    const matOne = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x2d2d2d),
-      roughness: 0.35,
-      metalness: 0.72,
+    const matOne = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x3a3a3a),
+      roughness: 0.16,
+      metalness: 0.88,
+      clearcoat: 0.85,
+      clearcoatRoughness: 0.12,
+      reflectivity: 0.9,
     });
 
-    const matThree = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x242424),
-      roughness: 0.38,
-      metalness: 0.68,
+    const matThree = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x323232),
+      roughness: 0.18,
+      metalness: 0.85,
+      clearcoat: 0.85,
+      clearcoatRoughness: 0.12,
+      reflectivity: 0.9,
     });
 
     const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
@@ -117,24 +123,29 @@ export function Hero3DCanvas() {
     scene.add(emblemGroup);
 
     // 4. Exact Studio Lighting Rig
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.4);
-    keyLight.position.set(7, 9, 8);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 5.0);
+    keyLight.position.set(6, 8, 7);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xbbbbbb, 1.8);
-    fillLight.position.set(-7, 2, 5);
+    const fillLight = new THREE.DirectionalLight(0xd0d0d0, 3.2);
+    fillLight.position.set(-6, 3, 5);
     scene.add(fillLight);
 
-    const rimLight = new THREE.DirectionalLight(0xffffff, 2.6);
-    rimLight.position.set(4, -6, -3);
+    const rimLight = new THREE.DirectionalLight(0xffffff, 4.5);
+    rimLight.position.set(3, -5, -2);
     scene.add(rimLight);
 
-    const topLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    topLight.position.set(0, 10, -1);
+    const topLight = new THREE.DirectionalLight(0xffffff, 2.5);
+    topLight.position.set(0, 8, 2);
     scene.add(topLight);
+
+    // Mouse follow specular light
+    const mouseLight = new THREE.PointLight(0xffffff, 8.0, 15);
+    mouseLight.position.set(0, 0, 4);
+    scene.add(mouseLight);
 
     // 5. Mouse Interaction
     const onMouseMove = (e: MouseEvent) => {
@@ -167,6 +178,10 @@ export function Hero3DCanvas() {
       // Smooth cursor inertia
       mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
       mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
+
+      // Update dynamic mouse specular highlight
+      mouseLight.position.x = mouseRef.current.x * 6;
+      mouseLight.position.y = -mouseRef.current.y * 6;
 
       // Subtle organic breath & slight 3D angle
       const idleFloat = Math.sin(elapsed * 0.6) * 0.025;

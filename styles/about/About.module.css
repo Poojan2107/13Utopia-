@@ -75,6 +75,67 @@
   margin: 0;
 }
 
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem 1.75rem;
+  margin-top: 1rem;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  padding: 16px 36px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #000000;
+  text-decoration: none;
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ctaPrimary:hover,
+.ctaPrimary:focus-visible {
+  background: #f0f0f0;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 36px rgba(255, 255, 255, 0.25);
+  outline: none;
+}
+
+.ctaPrimary:hover .ctaArrow {
+  transform: translateX(5px);
+}
+
+.ctaArrow {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ctaGhost {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.85rem 0.5rem;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+}
+
+.ctaGhost:hover,
+.ctaGhost:focus-visible {
+  color: #ffffff;
+  outline: none;
+}
+
 @media (max-width: 960px) {
   .heroGrid {
     grid-template-columns: 1fr;
