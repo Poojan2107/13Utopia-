@@ -43,24 +43,30 @@ export default function ContactPage() {
       <SiteHeader />
 
       <main className={styles.contactPage}>
-        {/* Hero Lockup */}
+        {/* Editorial Fullscreen Hero Stage */}
         <section className={styles.heroBlock}>
-          <div className={styles.topMeta}>
-            <span>06 // INITIATION</span>
-            <span>·</span>
-            <span className={styles.topMetaTag}>START A PROJECT COMMISSION</span>
+          <div className={styles.heroContent}>
+            <div className={styles.topMeta}>
+              <span className={styles.metaLiveDot} />
+              <span>06 // INITIATION</span>
+              <span className={styles.metaDot}>·</span>
+              <span className={styles.metaTag}>START A PROJECT COMMISSION</span>
+            </div>
+
+            <h1 className={styles.title}>
+              START A
+              <br />
+              <span className={styles.titleHighlight}>PROJECT.</span>
+            </h1>
+
+            <p className={styles.subtitle}>
+              Direct access to senior partners. Tell us what you&apos;re building, and we&apos;ll outline technical feasibility, architectural milestones, and delivery scope.
+            </p>
           </div>
-
-          <h1 className={styles.title}>
-            START A PROJECT.
-          </h1>
-
-          <p className={styles.subtitle}>
-            Direct access to senior partners. Tell us what you&apos;re building, and we&apos;ll outline technical feasibility, architectural milestones, and delivery scope.
-          </p>
         </section>
 
-        <div className={styles.contactLayout}>
+        <div className={styles.contentContainer}>
+          <div className={styles.contactLayout}>
           {/* Commission Form */}
           <form className={styles.formCard} onSubmit={handleSubmit}>
             {/* Capability Area */}
@@ -218,7 +224,8 @@ export default function ContactPage() {
             </div>
           </aside>
         </div>
-      </main>
+      </div>
+    </main>
 
       <SiteFooter />
     </SmoothScrollProvider>
