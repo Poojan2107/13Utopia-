@@ -415,15 +415,22 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
     let rafId: number;
     let isRunning = true;
     const startTime = performance.now();
+    let lastSmoothScrollY = 0;
+    let scrollVelocitySmoothed = 0;
+    let continuousAngleY = 0;
 
     const animate = () => {
       if (!isRunning) return;
       rafId = requestAnimationFrame(animate);
       const elapsedTime = (performance.now() - startTime) * 0.001;
 
-      mouseX += (targetMouseX - mouseX) * 0.05;
-      mouseY += (targetMouseY - mouseY) * 0.05;
+      mouseX += (targetMouseX - mouseX) * 0.06;
+      mouseY += (targetMouseY - mouseY) * 0.06;
       smoothScrollY += (currentScrollY - smoothScrollY) * 0.06;
+
+      const scrollDelta = smoothScrollY - lastSmoothScrollY;
+      lastSmoothScrollY = smoothScrollY;
+      scrollVelocitySmoothed += (scrollDelta - scrollVelocitySmoothed) * 0.12;
 
       nebulaUniforms.uTime.value = elapsedTime;
       nebulaUniforms.uMouse.value.set(mouseX, mouseY);
@@ -446,7 +453,7 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
       deepDustSystem.rotation.x = mouseY * 0.04 + smoothScrollY * 0.00015;
       deepDustSystem.position.y = -(smoothScrollY * 0.0008);
 
-      // 3D Liquid Titanium Emblem: Continuously visible across all pages and sections, rotates on scroll with subtle mouse tilt
+      // 3D Liquid Titanium Emblem: Continuous cinematic rotation, scroll inertia, and harmonic depth
       if (emblemGroup && matOne && matThree) {
         // Measure real footer position relative to viewport
         const footerEl = document.querySelector("footer");
@@ -473,22 +480,31 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
           matOne.opacity = footerFade;
           matThree.opacity = footerFade;
 
-          // Continuous scroll rotation + subtle responsive pointer tilt
-          const targetRotY = (smoothScrollY * 0.0022) + (mouseX * 0.18);
-          const targetRotX = -(mouseY * 0.12) + (smoothScrollY * 0.0003);
-          const targetRotZ = mouseX * 0.03;
+          // Continuous orbital drift accelerated by scroll velocity
+          continuousAngleY += 0.004 + Math.abs(scrollVelocitySmoothed) * 0.003;
 
-          emblemGroup.rotation.y += (targetRotY - emblemGroup.rotation.y) * 0.08;
-          emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.08;
-          emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.08;
+          // Organic rotational physics with scroll inertia & pointer tilt
+          const targetRotY = continuousAngleY + (smoothScrollY * 0.0014) + (mouseX * 0.24);
+          const targetRotX = -(mouseY * 0.20) + (scrollVelocitySmoothed * 0.0012) + Math.sin(elapsedTime * 0.7) * 0.04;
+          const targetRotZ = (mouseX * 0.06) + Math.cos(elapsedTime * 0.5) * 0.03;
 
-          // Ambient idle breathing + scroll tracking
-          const idleBob = Math.sin(elapsedTime * 1.2) * 0.08;
-          emblemGroup.position.y += (idleBob - emblemGroup.position.y) * 0.06;
+          emblemGroup.rotation.y += (targetRotY - emblemGroup.rotation.y) * 0.065;
+          emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.065;
+          emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.065;
 
+          // Harmonic multi-axis floating float with subtle scroll parallax
+          const idleBobY = Math.sin(elapsedTime * 1.2) * 0.14;
+          const scrollParallaxY = -Math.sin(smoothScrollY * 0.0006) * 0.20;
+          emblemGroup.position.y += ((idleBobY + scrollParallaxY) - emblemGroup.position.y) * 0.06;
+
+          const idleBobZ = Math.cos(elapsedTime * 0.8) * 0.12;
+          emblemGroup.position.z += (idleBobZ - emblemGroup.position.z) * 0.05;
+
+          // Dynamic sweeping specular point light
           if (mouseLight) {
-            mouseLight.position.x = mouseX * 5.5;
-            mouseLight.position.y = mouseY * 5.5;
+            mouseLight.position.x += (mouseX * 6.5 - mouseLight.position.x) * 0.08;
+            mouseLight.position.y += (mouseY * 6.5 - mouseLight.position.y) * 0.08;
+            mouseLight.position.z = 4.2 + Math.sin(elapsedTime * 1.4) * 0.6;
           }
         }
       }
