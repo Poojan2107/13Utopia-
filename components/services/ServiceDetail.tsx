@@ -4,9 +4,8 @@ import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { EchoTitle } from "@/components/framer/EchoTitle";
-import { FramerFooter } from "@/components/framer/FramerFooter";
 import { FramerSectionCTA } from "@/components/framer/FramerSectionCTA";
-import { SiteHeader } from "@/components/layout/SiteHeader";
+import { SiteFooter, SiteHeader } from "@/components/layout";
 import { ServiceFaq } from "@/components/services/ServiceFaq";
 import { ServiceNav } from "@/components/services/ServiceNav";
 import {
@@ -315,7 +314,7 @@ export function ServiceDetail({ world }: Props) {
 
         <FramerSectionCTA />
       </main>
-      <FramerFooter />
+      <SiteFooter />
     </SmoothScrollProvider>
   );
 }

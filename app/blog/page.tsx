@@ -31,23 +31,27 @@ export default function BlogIndexPage() {
       <SiteHeader />
 
       <main className={styles.blogPage}>
-        {/* Editorial Hero Lockup */}
+        {/* Editorial Hero Stage */}
         <section className={styles.heroBlock}>
-          <div className={styles.topMeta}>
-            <span>05 // JOURNAL</span>
-            <span className={styles.metaDot}>·</span>
-            <span className={styles.metaTag}>PERSPECTIVES &amp; ARCHITECTURAL ESSAYS</span>
+          <div className={styles.heroContent}>
+            <div className={styles.topMeta}>
+              <span className={styles.metaLiveDot} />
+              <span>05 // JOURNAL</span>
+              <span className={styles.metaDot}>·</span>
+              <span className={styles.metaTag}>PERSPECTIVES &amp; ARCHITECTURAL ESSAYS</span>
+            </div>
+
+            <h1 className={styles.title}>
+              PERSPECTIVES &amp;
+              <br />
+              <span className={styles.titleHighlight}>ESSAYS.</span>
+            </h1>
+
+            <p className={styles.subtitle}>
+              Deep dives into sovereign brand strategy, full-stack systems engineering, autonomous AI workflows,
+              and category growth mechanics from 13 Utopia practitioners.
+            </p>
           </div>
-
-          <h1 className={styles.title}>
-            PERSPECTIVES &amp;<br />
-            ARCHITECTURAL ESSAYS
-          </h1>
-
-          <p className={styles.subtitle}>
-            Deep dives into brand strategy, full-stack systems engineering, autonomous AI workflows,
-            and growth mechanics from 13 Utopia practitioners.
-          </p>
         </section>
 
         {/* Category Filter Bar */}

@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { FramerFooter } from "@/components/framer/FramerFooter";
+import { SiteFooter, SiteHeader } from "@/components/layout";
 import { FramerSectionCTA } from "@/components/framer/FramerSectionCTA";
-import { SiteHeader } from "@/components/layout/SiteHeader";
 import { ServiceFaq } from "@/components/services/ServiceFaq";
-import { ServiceNav } from "@/components/services/ServiceNav";
 import {
   EASE,
   fadeUp,
@@ -55,44 +53,34 @@ export function ServicesOverview() {
           initial="hidden"
           animate="show"
         >
-          <motion.h1
-            className={styles.title}
-            variants={fadeUp}
-            transition={{ duration: 0.95, ease: EASE }}
-          >
-            We know what we&apos;re
-            <br />
-            <span className={styles.titleHighlight}>unreasonably good at.</span>
-          </motion.h1>
-          <motion.p
-            className={styles.lead}
-            variants={fadeUp}
-            transition={{ duration: 0.85, ease: EASE }}
-          >
-            CREATE builds brands people remember. BUILD engineers products that
-            perform. GROW compounds attention into outcomes. Enter one world —
-            or the full alliance.
-          </motion.p>
-          <motion.div
-            className={styles.heroActions}
-            variants={fadeUp}
-            transition={{ duration: 0.75, ease: EASE }}
-          >
-            <a
-              href="mailto:poojan@13utopia.com?subject=Initiate%20Alliance%20%E2%80%94%2013%20UTOPIA"
-              className={styles.ctaPrimary}
-              data-magnetic
-              data-cursor="hover"
+          <div className={styles.heroContent}>
+            <div className={styles.topMeta}>
+              <span className={styles.metaLiveDot} />
+              <span>03 // SERVICES</span>
+              <span className={styles.metaSep}>·</span>
+              <span className={styles.topMetaTag}>THREE WORLDS ALLIANCE</span>
+            </div>
+
+            <motion.h1
+              className={styles.title}
+              variants={fadeUp}
+              transition={{ duration: 0.95, ease: EASE }}
             >
-              <span>Initiate alliance</span>
-              <span className={styles.ctaArrow} aria-hidden="true">
-                →
-              </span>
-            </a>
-            <Link href="/work" className={styles.ctaGhost} data-cursor="hover">
-              Selected work
-            </Link>
-          </motion.div>
+              We know what we&apos;re
+              <br />
+              <span className={styles.titleHighlight}>unreasonably good at.</span>
+            </motion.h1>
+
+            <motion.p
+              className={styles.lead}
+              variants={fadeUp}
+              transition={{ duration: 0.85, ease: EASE }}
+            >
+              CREATE builds brands people remember. BUILD engineers products that
+              perform. GROW compounds attention into outcomes. Enter one world —
+              or the full alliance.
+            </motion.p>
+          </div>
         </motion.section>
 
         <section className={styles.worlds} aria-label="Service worlds">
@@ -176,7 +164,7 @@ export function ServicesOverview() {
 
         <FramerSectionCTA />
       </main>
-      <FramerFooter />
+      <SiteFooter />
     </SmoothScrollProvider>
   );
 }

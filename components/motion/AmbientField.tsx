@@ -424,6 +424,14 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
       rafId = requestAnimationFrame(animate);
       const elapsedTime = (performance.now() - startTime) * 0.001;
 
+      // Always read the live scroll position
+      const liveScrollY =
+        window.scrollY ||
+        document.documentElement.scrollTop ||
+        window.pageYOffset ||
+        0;
+      currentScrollY = liveScrollY;
+
       mouseX += (targetMouseX - mouseX) * 0.06;
       mouseY += (targetMouseY - mouseY) * 0.06;
       smoothScrollY += (currentScrollY - smoothScrollY) * 0.06;
@@ -453,39 +461,86 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
       deepDustSystem.rotation.x = mouseY * 0.04 + smoothScrollY * 0.00015;
       deepDustSystem.position.y = -(smoothScrollY * 0.0008);
 
-      // 3D Liquid Titanium Emblem: Continuously visible across all pages, sections, and footer
+      // 3D Liquid Titanium Emblem: Continuously visible across all pages and sections, smoothly fades out BEFORE footer
       if (emblemGroup && matOne && matThree) {
-        emblemGroup.visible = true;
-        const baseScale = (width < 768 ? 0.72 : 0.95);
-        emblemGroup.scale.set(baseScale, baseScale, baseScale);
-        matOne.opacity = 0.92;
-        matThree.opacity = 0.92;
+        // Measure real footer position relative to viewport
+        const footerEl =
+          document.querySelector("footer") ||
+          document.getElementById("site-footer") ||
+          document.querySelector("[data-footer]");
 
-        // Continuous orbital drift accelerated by scroll velocity
-        continuousAngleY += 0.004 + Math.abs(scrollVelocitySmoothed) * 0.003;
+        let footerProximityFactor = 1.0;
+        if (footerEl) {
+          const footerRect = footerEl.getBoundingClientRect();
+          // Begin fading when footer top is within 1.65x viewport height
+          // Fully invisible (factor = 0) when footer top is within 1.10x viewport height (well before entering screen)
+          const fadeStart = height * 1.65;
+          const fadeEnd = height * 1.10;
+          if (footerRect.top <= fadeEnd) {
+            footerProximityFactor = 0.0;
+          } else if (footerRect.top < fadeStart) {
+            footerProximityFactor = (footerRect.top - fadeEnd) / (fadeStart - fadeEnd);
+          } else {
+            footerProximityFactor = 1.0;
+          }
+        } else {
+          // Document height fallback
+          const docHeight = Math.max(
+            document.body.scrollHeight,
+            document.documentElement.scrollHeight,
+            document.body.offsetHeight,
+            document.documentElement.offsetHeight
+          );
+          const scrollBottom = liveScrollY + height;
+          const distToBottom = docHeight - scrollBottom;
+          const fadeStart = 900;
+          const fadeEnd = 450;
+          if (distToBottom <= fadeEnd) {
+            footerProximityFactor = 0.0;
+          } else if (distToBottom < fadeStart) {
+            footerProximityFactor = (distToBottom - fadeEnd) / (fadeStart - fadeEnd);
+          }
+        }
 
-        // Organic rotational physics with scroll inertia & pointer tilt
-        const targetRotY = continuousAngleY + (smoothScrollY * 0.0014) + (mouseX * 0.24);
-        const targetRotX = -(mouseY * 0.20) + (scrollVelocitySmoothed * 0.0012) + Math.sin(elapsedTime * 0.7) * 0.04;
-        const targetRotZ = (mouseX * 0.06) + Math.cos(elapsedTime * 0.5) * 0.03;
+        const footerFade = Math.max(0.0, Math.min(1.0, footerProximityFactor));
 
-        emblemGroup.rotation.y += (targetRotY - emblemGroup.rotation.y) * 0.065;
-        emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.065;
-        emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.065;
+        if (footerFade <= 0.005) {
+          emblemGroup.visible = false;
+          if (mouseLight) mouseLight.intensity = 0;
+        } else {
+          emblemGroup.visible = true;
+          const baseScale = width < 768 ? 0.72 : 0.95;
+          emblemGroup.scale.set(baseScale, baseScale, baseScale);
+          matOne.opacity = footerFade;
+          matThree.opacity = footerFade;
+          if (mouseLight) mouseLight.intensity = 8.0 * footerFade;
 
-        // Harmonic multi-axis floating float with subtle scroll parallax
-        const idleBobY = Math.sin(elapsedTime * 1.2) * 0.14;
-        const scrollParallaxY = -Math.sin(smoothScrollY * 0.0006) * 0.20;
-        emblemGroup.position.y += ((idleBobY + scrollParallaxY) - emblemGroup.position.y) * 0.06;
+          // Continuous orbital drift accelerated by scroll velocity
+          continuousAngleY += 0.004 + Math.abs(scrollVelocitySmoothed) * 0.003;
 
-        const idleBobZ = Math.cos(elapsedTime * 0.8) * 0.12;
-        emblemGroup.position.z += (idleBobZ - emblemGroup.position.z) * 0.05;
+          // Organic rotational physics with scroll inertia & pointer tilt
+          const targetRotY = continuousAngleY + (smoothScrollY * 0.0014) + (mouseX * 0.24);
+          const targetRotX = -(mouseY * 0.20) + (scrollVelocitySmoothed * 0.0012) + Math.sin(elapsedTime * 0.7) * 0.04;
+          const targetRotZ = (mouseX * 0.06) + Math.cos(elapsedTime * 0.5) * 0.03;
 
-        // Dynamic sweeping specular point light
-        if (mouseLight) {
-          mouseLight.position.x += (mouseX * 6.5 - mouseLight.position.x) * 0.08;
-          mouseLight.position.y += (mouseY * 6.5 - mouseLight.position.y) * 0.08;
-          mouseLight.position.z = 4.2 + Math.sin(elapsedTime * 1.4) * 0.6;
+          emblemGroup.rotation.y += (targetRotY - emblemGroup.rotation.y) * 0.065;
+          emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.065;
+          emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.065;
+
+          // Harmonic multi-axis floating float with subtle scroll parallax
+          const idleBobY = Math.sin(elapsedTime * 1.2) * 0.14;
+          const scrollParallaxY = -Math.sin(smoothScrollY * 0.0006) * 0.20;
+          emblemGroup.position.y += ((idleBobY + scrollParallaxY) - emblemGroup.position.y) * 0.06;
+
+          const idleBobZ = Math.cos(elapsedTime * 0.8) * 0.12;
+          emblemGroup.position.z += (idleBobZ - emblemGroup.position.z) * 0.05;
+
+          // Dynamic sweeping specular point light
+          if (mouseLight) {
+            mouseLight.position.x += (mouseX * 6.5 - mouseLight.position.x) * 0.08;
+            mouseLight.position.y += (mouseY * 6.5 - mouseLight.position.y) * 0.08;
+            mouseLight.position.z = 4.2 + Math.sin(elapsedTime * 1.4) * 0.6;
+          }
         }
       }
 
