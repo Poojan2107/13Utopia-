@@ -6,18 +6,18 @@ import { AmbientField, SmoothScrollProvider } from "@/components/motion";
 import styles from "@/styles/contact/Contact.module.css";
 
 const CAPABILITY_OPTIONS = [
-  "CREATE · Brand & Spatial Identity",
-  "BUILD · Web, Mobile & SaaS",
-  "AI · Autonomous Workflows",
-  "GROW · Search & Scale Engines",
-  "FULL-SPECTRUM COMMISSION",
+  "Brand Strategy & Design",
+  "Web & Mobile Engineering",
+  "AI & Automation Systems",
+  "SEO & Growth Architecture",
+  "End-to-End Build",
 ] as const;
 
 const TIMELINE_OPTIONS = [
-  "Immediate (< 1 Month)",
+  "< 1 Month",
   "1 — 3 Months",
   "3 — 6 Months",
-  "Long-Term Alliance",
+  "Long-Term Ongoing",
 ] as const;
 
 export default function ContactPage() {
@@ -30,9 +30,9 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Commission Inquiry: ${selectedCapability} — ${company || name}`);
+    const subject = encodeURIComponent(`Project Inquiry: ${selectedCapability} — ${company || name}`);
     const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nCompany: ${company}\nCapability: ${selectedCapability}\nTimeline: ${selectedTimeline}\n\nProject Scope:\n${scope}`
+      `Name: ${name}\nEmail: ${email}\nCompany: ${company}\nCapability: ${selectedCapability}\nTimeline: ${selectedTimeline}\n\nProject Details:\n${scope}`
     );
     window.location.href = `mailto:contact@13utopia.com?subject=${subject}&body=${body}`;
   };
@@ -48,9 +48,9 @@ export default function ContactPage() {
           <div className={styles.heroContent}>
             <div className={styles.topMeta}>
               <span className={styles.metaLiveDot} />
-              <span>06 // INITIATION</span>
+              <span>06 // CONTACT</span>
               <span className={styles.metaDot}>·</span>
-              <span className={styles.metaTag}>START A PROJECT COMMISSION</span>
+              <span className={styles.metaTag}>GET IN TOUCH</span>
             </div>
 
             <h1 className={styles.title}>
@@ -60,19 +60,19 @@ export default function ContactPage() {
             </h1>
 
             <p className={styles.subtitle}>
-              Tell us what you want to bring into the world. We collaborate directly with founders and ambitious teams to engineer sovereign brand identities, production web systems, and high-velocity growth engines.
+              Have a project in mind? Reach out to start a conversation with our team.
             </p>
           </div>
         </section>
 
         <div className={styles.contentContainer}>
           <div className={styles.contactLayout}>
-            {/* Commission Form */}
+            {/* Contact Form */}
             <form className={styles.formCard} onSubmit={handleSubmit}>
               {/* Capability Area */}
               <div className={styles.formGroup}>
                 <label className={styles.fieldLabel}>
-                  <span className={styles.fieldLabelTag}>01 //</span> DISCIPLINE FOCUS
+                  <span className={styles.fieldLabelTag}>01 //</span> WHAT DO YOU NEED?
                 </label>
                 <div className={styles.pillSelector}>
                   {CAPABILITY_OPTIONS.map((cap) => (
@@ -93,7 +93,7 @@ export default function ContactPage() {
               {/* Target Timeline */}
               <div className={styles.formGroup}>
                 <label className={styles.fieldLabel}>
-                  <span className={styles.fieldLabelTag}>02 //</span> TARGET TIMELINE
+                  <span className={styles.fieldLabelTag}>02 //</span> ESTIMATED TIMELINE
                 </label>
                 <div className={styles.pillSelector}>
                   {TIMELINE_OPTIONS.map((t) => (
@@ -121,7 +121,7 @@ export default function ContactPage() {
                     id="contact-name"
                     type="text"
                     required
-                    placeholder="Alex Vance"
+                    placeholder="Your name"
                     className={styles.textInput}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -130,13 +130,13 @@ export default function ContactPage() {
 
                 <div className={styles.formGroup}>
                   <label className={styles.fieldLabel} htmlFor="contact-email">
-                    <span className={styles.fieldLabelTag}>//</span> WORK EMAIL
+                    <span className={styles.fieldLabelTag}>//</span> EMAIL ADDRESS
                   </label>
                   <input
                     id="contact-email"
                     type="email"
                     required
-                    placeholder="alex@company.com"
+                    placeholder="name@company.com"
                     className={styles.textInput}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -146,12 +146,12 @@ export default function ContactPage() {
 
               <div className={styles.formGroup}>
                 <label className={styles.fieldLabel} htmlFor="contact-company">
-                  <span className={styles.fieldLabelTag}>//</span> COMPANY OR WEBSITE
+                  <span className={styles.fieldLabelTag}>//</span> COMPANY OR WEBSITE (OPTIONAL)
                 </label>
                 <input
                   id="contact-company"
                   type="text"
-                  placeholder="Company name or URL"
+                  placeholder="company.com"
                   className={styles.textInput}
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
@@ -161,12 +161,12 @@ export default function ContactPage() {
               {/* Project Details */}
               <div className={styles.formGroup}>
                 <label className={styles.fieldLabel} htmlFor="contact-scope">
-                  <span className={styles.fieldLabelTag}>03 //</span> PROJECT BRIEF &amp; AMBITION
+                  <span className={styles.fieldLabelTag}>03 //</span> ABOUT THE PROJECT
                 </label>
                 <textarea
                   id="contact-scope"
                   required
-                  placeholder="Tell us about what you are looking to build, design, or scale..."
+                  placeholder="Tell us about what you want to build, design, or solve..."
                   className={styles.textareaInput}
                   value={scope}
                   onChange={(e) => setScope(e.target.value)}
@@ -174,57 +174,30 @@ export default function ContactPage() {
               </div>
 
               <button type="submit" className={styles.submitBtn}>
-                <span>Initiate Commission</span>
+                <span>Send Inquiry</span>
                 <span>→</span>
               </button>
             </form>
 
-            {/* Direct Studio Sidebar */}
+            {/* Direct Sidebar */}
             <aside className={styles.sidebar}>
               <div className={styles.infoBlock}>
-                <span className={styles.infoHeading}>DIRECT INQUIRIES</span>
+                <span className={styles.infoHeading}>DIRECT CONTACT</span>
                 <a href="mailto:contact@13utopia.com" className={styles.directEmail}>
                   contact@13utopia.com
                 </a>
-                <p className={styles.faqA}>
-                  For direct project commissions, studio collaborations, and press.
-                </p>
               </div>
 
               <div className={styles.infoBlock}>
-                <span className={styles.infoHeading}>STUDIO HUBS</span>
+                <span className={styles.infoHeading}>LOCATIONS</span>
                 <div className={styles.hubList}>
                   <div className={styles.hubItem}>
-                    <span className={styles.hubCity}>Ahmedabad // Studio</span>
-                    <p className={styles.faqA}>1123 Iconic Shyamal, 132 Feet Ring Rd, Ahmedabad, Gujarat 380015</p>
+                    <span className={styles.hubCity}>Ahmedabad, India</span>
+                    <p className={styles.hubAddress}>1123 Iconic Shyamal, 132 Feet Ring Rd, Ahmedabad, Gujarat 380015</p>
                   </div>
                   <div className={styles.hubItem}>
-                    <span className={styles.hubCity}>Toronto // Studio</span>
-                    <p className={styles.faqA}>30 Kimbercroft Ct, Markham Corners, Scarborough, ON M1S 4K9</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className={styles.infoBlock}>
-                <span className={styles.infoHeading}>ENGAGEMENT ETHOS</span>
-                <div className={styles.faqBlock}>
-                  <div className={styles.faqItem}>
-                    <h4 className={styles.faqQ}>How quickly do we start?</h4>
-                    <p className={styles.faqA}>
-                      We review every brief directly within 24 hours. If there is mutual alignment, we schedule a direct discovery session to define the creative vision, architecture, and roadmap.
-                    </p>
-                  </div>
-                  <div className={styles.faqItem}>
-                    <h4 className={styles.faqQ}>Who works on my project?</h4>
-                    <p className={styles.faqA}>
-                      Zero outsourcing and zero layers. You collaborate directly with the senior designers, creative technologists, and software engineers who build every asset from scratch.
-                    </p>
-                  </div>
-                  <div className={styles.faqItem}>
-                    <h4 className={styles.faqQ}>What do you deliver?</h4>
-                    <p className={styles.faqA}>
-                      Complete, unconditional ownership. Every line of code, design system, 3D asset, and deployment key is transferred entirely to your team.
-                    </p>
+                    <span className={styles.hubCity}>Toronto, Canada</span>
+                    <p className={styles.hubAddress}>30 Kimbercroft Ct, Markham Corners, Scarborough, ON M1S 4K9</p>
                   </div>
                 </div>
               </div>

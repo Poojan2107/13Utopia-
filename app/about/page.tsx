@@ -17,9 +17,9 @@ export default function AboutPage() {
           <div className={styles.heroContent}>
             <div className={styles.topMeta}>
               <span className={styles.metaLiveDot} />
-              <span>02 // STUDIO PROFILE</span>
+              <span>02 // COMPANY PROFILE</span>
               <span className={styles.metaSep}>·</span>
-              <span className={styles.topMetaTag}>13 UTOPIA STUDIO</span>
+              <span className={styles.topMetaTag}>13 UTOPIA</span>
             </div>
 
             <h1 className={styles.heroTitle}>
@@ -31,7 +31,7 @@ export default function AboutPage() {
             </h1>
 
             <p className={styles.heroThesis}>
-              13 Utopia is an independent creative technology and growth studio. We operate at the intersection of brand architecture, production software engineering, and category dominance.
+              13 Utopia is an independent creative technology and growth company. We operate at the intersection of brand architecture, production software engineering, and category dominance.
             </p>
           </div>
         </section>
