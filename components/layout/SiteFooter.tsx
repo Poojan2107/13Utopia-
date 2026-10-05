@@ -121,6 +121,17 @@ export function SiteFooter() {
             </Link>
           </div>
 
+          {/* Studio Hubs */}
+          <div className={styles.socialCol}>
+            <span className={styles.socialTitle}>STUDIO HUBS</span>
+            <span className={styles.socialLink} style={{ cursor: "default", opacity: 0.9 }}>
+              Scarborough, Canada
+            </span>
+            <span className={styles.socialLink} style={{ cursor: "default", opacity: 0.9 }}>
+              Ahmedabad, India
+            </span>
+          </div>
+
           {/* Right: Vertical Transmission Channels */}
           <div className={styles.socialCol}>
             <span className={styles.socialTitle}>TRANSMISSION</span>

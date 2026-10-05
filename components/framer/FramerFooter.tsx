@@ -56,10 +56,10 @@ export function FramerFooter() {
           </div>
 
           <div className={styles.col}>
-            <span className={styles.colTitle}>COMMISSIONS</span>
-            <a href="mailto:contact@13utopia.com" className={styles.footerLink}>contact@13utopia.com</a>
-            <p className={styles.colText}>INDEPENDENT CREATIVE LAB</p>
-            <p className={styles.colText}>GLOBAL PARTNERSHIPS</p>
+            <span className={styles.colTitle}>STUDIO HUBS</span>
+            <p className={styles.colText}>SCARBOROUGH, CANADA</p>
+            <p className={styles.colText}>AHMEDABAD, INDIA</p>
+            <a href="mailto:contact@13utopia.com" className={styles.footerLink} style={{ marginTop: "0.5rem" }}>contact@13utopia.com</a>
           </div>
 
           <div className={styles.col}>

@@ -186,6 +186,20 @@ export default function ContactPage() {
             </div>
 
             <div className={styles.infoBlock}>
+              <span className={styles.infoHeading}>STUDIO HUBS</span>
+              <div className={styles.hubList}>
+                <div className={styles.hubItem}>
+                  <span className={styles.hubCity}>Scarborough, Canada</span>
+                  <p className={styles.faqA}>North American client partnerships &amp; brand positioning.</p>
+                </div>
+                <div className={styles.hubItem}>
+                  <span className={styles.hubCity}>Ahmedabad, India</span>
+                  <p className={styles.faqA}>Full-stack product engineering &amp; growth systems lab.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.infoBlock}>
               <span className={styles.infoHeading}>FAQ // ENGAGEMENT PROCESS</span>
               <div className={styles.faqBlock}>
                 <div className={styles.faqItem}>
