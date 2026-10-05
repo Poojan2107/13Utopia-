@@ -4,10 +4,10 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import dynamic from "next/dynamic";
 import { PROJECTS, Project, RepeatedProject } from "./projects";
 import Navigation from "./Navigation";
-import ProfileModal from "./ProfileModal";
-import NewsletterModal from "./NewsletterModal";
 import ProjectModal from "./ProjectModal";
 import { CardMetric } from "./ThreeCanvas";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { AmbientField } from "@/components/motion";
 import styles from "./WorkShowcase.module.css";
 
 // Client-only dynamic WebGL Three.js Canvas
@@ -36,8 +36,6 @@ function ArrowUpRight({ className = "" }: { className?: string }) {
 
 export default function WorkShowcase() {
   const [activeView, setActiveView] = useState<"featured" | "full">("featured");
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   // Repeat the 8 projects 3 times for seamless wrapping
@@ -258,6 +256,12 @@ export default function WorkShowcase() {
 
   return (
     <main ref={mainRef} className={styles.main}>
+      {/* Background Volumetric Liquid Smoke & Stardust */}
+      <AmbientField showEmblem={false} />
+
+      {/* Global Brand Header */}
+      <SiteHeader />
+
       {/* Three.js WebGL Layer: 3D Ribbon S-Curve + Floor Grid + Specular Normal Sheen */}
       {activeView === "featured" && (
         <ThreeCanvas
@@ -269,26 +273,10 @@ export default function WorkShowcase() {
         />
       )}
 
-      {/* Floating Header & Navigation */}
+      {/* Bottom Floating HUD Dock */}
       <Navigation
-        isProfileOpen={isProfileOpen}
-        setIsProfileOpen={setIsProfileOpen}
-        isNewsletterOpen={isNewsletterOpen}
-        setIsNewsletterOpen={setIsNewsletterOpen}
         activeView={activeView}
         setActiveView={setActiveView}
-      />
-
-      {/* Profile Modal */}
-      <ProfileModal
-        isOpen={isProfileOpen}
-        onClose={() => setIsProfileOpen(false)}
-      />
-
-      {/* Newsletter Modal */}
-      <NewsletterModal
-        isOpen={isNewsletterOpen}
-        onClose={() => setIsNewsletterOpen(false)}
       />
 
       {/* Project Detail Modal */}
@@ -312,19 +300,28 @@ export default function WorkShowcase() {
         </div>
       )}
 
-      {/* Full View: Clean Project Index List */}
+      {/* Full View: Clean Editorial Project Index List */}
       {activeView === "full" && (
         <div className={styles.fullContainer}>
           <div className={styles.fullInner}>
+            <div className={styles.fullMeta}>
+              <span>04 // WORK INDEX</span>
+              <span>·</span>
+              <span className={styles.fullMetaTag}>THE ARCHIVE</span>
+            </div>
             <h1 className={styles.fullHeader}>
-              The Archive — Every Project by Name
+              SELECTED COMMISSIONS &amp; ARCHIVE
             </h1>
+            <p className={styles.fullSubtitle}>
+              Curated client commissions spanning brand identities, high-scale digital platforms, 3D spatial experiences, and growth engines.
+            </p>
             <ul className={styles.projectList}>
               {PROJECTS.map((project) => (
                 <li
                   key={project.slug}
                   onClick={() => setSelectedProject(project)}
                   className={styles.projectRow}
+                  data-cursor="hover"
                 >
                   <span className={styles.projectRowTitle}>
                     {project.title}

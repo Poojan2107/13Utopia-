@@ -9,7 +9,7 @@
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  background-color: #000000;
+  background-color: transparent;
   color: #ffffff;
   user-select: none;
   font-family: var(--font-display, "PP Neue Montreal", "Neue Montreal", sans-serif);
@@ -36,278 +36,35 @@
 }
 
 /* =========================================================
-   Top & Bottom Navigation Chrome
+   Bottom Floating HUD Dock
    ========================================================= */
 
-.navShell {
-  pointer-events: none;
+.bottomDock {
   position: fixed;
-  inset: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 45;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: space-between;
-  padding: clamp(1.5rem, 3.5vh, 2.5rem) clamp(1.75rem, 5.5vw, 6.5rem);
-  color: #ffffff;
-  user-select: none;
+  padding: clamp(1.25rem, 2.5vh, 2rem) clamp(1.5rem, 4vw, 5rem);
+  pointer-events: none;
   box-sizing: border-box;
 }
 
-.navHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1720px;
-  margin-inline: auto;
-  pointer-events: auto;
-}
-
-.brandGroup {
-  display: inline-flex;
-  align-items: center;
-  gap: 1.25rem;
-}
-
-.brandLink {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.brandLink:hover {
-  transform: translateY(-1px);
-}
-
-.brandSubtitle {
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #ffffff;
-  opacity: 0.85;
-  border-left: 1px solid rgba(255, 255, 255, 0.35);
-  padding-left: 1rem;
-}
-
-@media (max-width: 650px) {
-  .brandSubtitle {
-    display: none;
-  }
-}
-
-.headerRight {
-  display: inline-flex;
-  align-items: center;
-  gap: clamp(1rem, 2.5vw, 1.75rem);
-}
-
-.agencyMainLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(243, 241, 234, 0.65);
-  text-decoration: none;
-  transition: color 0.25s ease;
-}
-
-.agencyMainLink:hover {
-  color: #ffffff;
-}
-
-.agencyMainLinkDisabled {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(243, 241, 234, 0.28);
-  cursor: not-allowed;
-  user-select: none;
-}
-
-.agencySoon {
-  font-size: 0.62rem;
-  letter-spacing: 0.16em;
-  color: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 9999px;
-  padding: 0.15rem 0.5rem;
-}
-
-.arrowIcon {
-  font-size: 0.85rem;
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.agencyMainLink:hover .arrowIcon {
-  transform: translate(2px, -2px);
-}
-
-/* =========================================================
-   Signature 13 UTOPIA "1 & 3" Luxury Menu Toggle
-   ========================================================= */
-
-.menuToggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  padding: 0.6rem 1.15rem;
-  height: 2.75rem;
-  background: rgba(8, 7, 5, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 9999px;
-  cursor: pointer;
-  color: #f3f1ea;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 4px 20px rgba(0, 0, 0, 0.6);
-  transition:
-    border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.menuToggle:hover,
-.menuToggleActive {
-  border-color: #ffffff;
-  background: rgba(25, 25, 25, 0.98);
-  box-shadow:
-    0 0 28px rgba(255, 255, 255, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.menuToggleLabel {
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #f3f1ea;
-}
-
-/* 13 UTOPIA Signature "1 & 3" Easter Egg Icon (| ☰) */
-.easterEggIcon {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  height: 16px;
-}
-
-/* The "1" — Vertical Monolith Pillar */
-.lineOne {
-  display: block;
-  width: 2px;
-  height: 16px;
-  background: #ffffff;
-  border-radius: 2px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-  transition:
-    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.3s ease;
-}
-
-/* The "3" — Trio of Horizontal Hamburger Filaments */
-.linesThree {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 15px;
-  height: 16px;
-  position: relative;
-}
-
-.barTop,
-.barMid,
-.barBot {
-  display: block;
-  width: 100%;
-  height: 1.5px;
-  background: #ffffff;
-  border-radius: 1px;
-  transition:
-    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.3s ease,
-    background 0.3s ease;
-}
-
-/* Morph State: "1 and 3" morphs into an avant-garde luxury Cross mark */
-.easterEggOpen .lineOne {
-  transform: rotate(45deg);
-  height: 18px;
-}
-
-.easterEggOpen .linesThree {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  margin-top: -9px;
-  justify-content: center;
-  align-items: center;
-  gap: 2.5px;
-  transform: rotate(-45deg);
-}
-
-.easterEggOpen .barTop {
-  height: 1px;
-  width: 14px;
-  background: rgba(255, 245, 220, 0.75);
-}
-
-.easterEggOpen .barMid {
-  height: 1.5px;
-  width: 18px;
-  background: #ffffff;
-}
-
-.easterEggOpen .barBot {
-  height: 1px;
-  width: 14px;
-  background: rgba(255, 255, 255, 0.75);
-}
-
-/* =========================================================
-   Bottom Bar Navigation Controls
-   ========================================================= */
-
-.navFooter {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1720px;
-  margin-inline: auto;
-  pointer-events: auto;
-  padding-bottom: clamp(0.5rem, 2vh, 1rem);
-}
-
 .viewSelectorCapsule {
+  pointer-events: auto;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.45rem 1rem;
-  background: rgba(8, 7, 5, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.5rem 1.1rem;
+  background: rgba(10, 10, 10, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 9999px;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-  margin-left: clamp(0rem, 1.5vw, 1rem);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
 }
 
 .viewPill {
@@ -317,15 +74,18 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.75rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.4);
-  padding: 0.25rem 0.5rem;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.45);
+  padding: 0.2rem 0.4rem;
   border-radius: 9999px;
   transition: all 0.25s ease;
+}
+
+.viewPill:hover {
+  color: #ffffff;
 }
 
 .viewPillActive {
@@ -335,45 +95,69 @@
 
 .viewDot {
   display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #ffffff;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
 }
 
 .viewDivider {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.7rem;
+}
+
+.dockTelemetry {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+}
+
+.dockTelemetryTag {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.dockTelemetryDivider {
   color: rgba(255, 255, 255, 0.25);
-  font-size: 0.75rem;
+}
+
+.dockTelemetryHint {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .inquireCapsule {
+  pointer-events: auto;
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  padding: 0.6rem 1.25rem;
-  background: rgba(8, 7, 5, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 0.6rem 1.35rem;
+  background: rgba(10, 10, 10, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 9999px;
-  cursor: pointer;
+  text-decoration: none;
   color: #ffffff;
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.72rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 4px 20px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .inquireCapsule:hover {
   background: #ffffff;
-  color: #050505;
-  box-shadow: 0 0 28px rgba(255, 255, 255, 0.3);
+  color: #000000;
+  border-color: #ffffff;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
 }
 
 .inquireArrow {
@@ -385,252 +169,14 @@
   transform: translate(2px, -2px);
 }
 
-/* =========================================================
-   13 UTOPIA Signature Full-Screen Profile Cover
-   ========================================================= */
-
-.coverMenu {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  background: #030303;
-  pointer-events: none;
-  overflow-y: auto;
-  opacity: 0;
-  transform: scale(1.02);
-  transition:
-    opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.coverMenuActive {
-  pointer-events: auto;
-  opacity: 1;
-  transform: scale(1);
-}
-
-.coverContent {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  min-height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(4rem, 8vh, 7rem) clamp(1.75rem, 5.5vw, 6.5rem);
-  box-sizing: border-box;
-}
-
-.coverInner {
-  max-width: 1040px;
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.08s,
-    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.08s;
-}
-
-.coverMenuActive .coverInner {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.transmissionBody {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.25rem, 3vh, 2.25rem);
-}
-
-.transHeadline {
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1.85rem, 3.8vw, 3.75rem);
-  font-weight: 400;
-  line-height: 1.06;
-  letter-spacing: -0.025em;
-  color: #ffffff;
-  margin: 0;
-  text-transform: uppercase;
-  word-break: break-word;
-}
-
-.transHeadlineGold {
-  color: #ffffff;
-  font-style: italic;
-  font-weight: 500;
-}
-
-.transManifesto {
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: clamp(0.95rem, 1.25vw, 1.1875rem);
-  line-height: 1.65;
-  color: rgba(243, 241, 234, 0.72);
-  max-width: 44rem;
-  margin: 0;
-  letter-spacing: -0.01em;
-}
-
-.profileDivider {
-  width: 100%;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.15);
-  margin: 1rem 0;
-}
-
-.profileMetaGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-}
-
-.profileCol {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.metaLabel {
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #ffffff;
-}
-
-.metaText {
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0;
-}
-
-.coverSocials {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1.75rem;
-  list-style: none;
-  padding: 1rem 0 0 0;
-  margin: 0;
-}
-
-.coverLink {
-  color: rgba(255, 255, 255, 0.65);
-  text-decoration: none;
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transition: color 0.25s ease;
-}
-
-.coverLink:hover {
-  color: #ffffff;
-}
-
-.coverLinkGold {
-  color: #ffffff;
-  text-decoration: none;
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transition: opacity 0.25s ease;
-}
-
-.coverLinkGold:hover {
-  opacity: 0.8;
-}
-
-.coverBackHome {
-  color: #ffffff;
-  text-decoration: none;
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.4rem 0.9rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  transition: all 0.25s ease;
-}
-
-.coverBackHome:hover {
-  border-color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.coverBackHomeDisabled {
-  color: rgba(255, 255, 255, 0.28);
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.4rem 0.9rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  cursor: not-allowed;
-  user-select: none;
-}
-
-.coverQuietLine {
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: clamp(1.15rem, 2.4vw, 1.65rem);
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  line-height: 1.35;
-  color: rgba(243, 241, 234, 0.72);
-  margin: 0 0 clamp(2rem, 5vh, 3.5rem);
-  max-width: 22ch;
-}
-
-.coverActionRow {
-  padding-top: 1.5rem;
-}
-
-.coverCloseBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  color: #ffffff;
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 0.65rem 1.4rem;
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.coverCloseBtn:hover {
-  background: #ffffff;
-  color: #050505;
-}
-
-.coverCloseX {
-  font-size: 1.1rem;
-  line-height: 1;
+@media (max-width: 900px) {
+  .dockTelemetry {
+    display: none;
+  }
 }
 
 /* =========================================================
-   Full Index View (Project Ledger)
+   Full Index View (Project Ledger / Archive)
    ========================================================= */
 
 .fullContainer {
@@ -638,22 +184,48 @@
   inset: 0;
   z-index: 30;
   overflow-y: auto;
-  padding: 7rem clamp(1.75rem, 5.5vw, 6.5rem) 9rem;
-  background: #000000;
+  padding: 8rem clamp(1.75rem, 5.5vw, 6.5rem) 9rem;
+  background: transparent;
 }
 
 .fullInner {
-  max-width: 1040px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-.fullHeader {
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
+.fullMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono, monospace);
   font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  margin-bottom: 1.25rem;
+}
+
+.fullMetaTag {
   color: #ffffff;
-  margin-bottom: 2.5rem;
+}
+
+.fullHeader {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  line-height: 1.05;
+  margin: 0 0 1rem;
+}
+
+.fullSubtitle {
+  font-family: var(--font-sans, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 680px;
+  margin: 0 0 3.5rem;
 }
 
 .projectList {
@@ -662,31 +234,32 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
 }
 
 .projectRow {
-  padding: 1.5rem 1.8rem;
+  padding: 1.75rem 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-radius: 8px;
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .projectRow:hover {
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
-  transform: translateX(8px);
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
 }
 
 .projectRowTitle {
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
   font-size: clamp(1.6rem, 2.8vw, 2.5rem);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.85);
   transition: color 0.25s ease;
 }
 
@@ -697,27 +270,30 @@
 .projectRowMeta {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.8125rem;
+  gap: 2rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
 }
 
 .projectRowYear {
   color: rgba(255, 255, 255, 0.45);
-  font-weight: 500;
+  letter-spacing: 0.08em;
 }
 
 .projectRowRole {
   color: rgba(255, 255, 255, 0.7);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 0.75rem;
+  letter-spacing: 0.08em;
 }
 
-@media (max-width: 768px) {
-  .projectRowRole {
-    display: none;
-  }
+.arrowIcon {
+  color: rgba(255, 255, 255, 0.5);
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.projectRow:hover .arrowIcon {
+  color: #ffffff;
+  transform: translate(3px, -3px);
 }
 
 /* =========================================================
@@ -829,11 +405,11 @@
 }
 
 .sheetDescription {
-  font-family: var(--font-sans, "IBM Plex Sans", -apple-system, sans-serif);
+  font-family: var(--font-sans, "PP Neue Montreal", sans-serif);
   font-size: clamp(0.95rem, 1.2vw, 1.0625rem);
-  line-height: 1.45;
-  letter-spacing: -0.03em;
-  color: #000000;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: #111111;
   margin: 1.5rem 0 0;
   max-width: 380px;
 }
@@ -873,8 +449,8 @@
   border-radius: 9999px;
   background: #eeeeee;
   color: #000000;
-  font-family: var(--font-sans, "IBM Plex Sans", sans-serif);
-  font-size: 0.75rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
