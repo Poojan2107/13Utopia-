@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { CTA3DCanvas } from "./CTA3DCanvas";
 import styles from "@/styles/home/HomeCTASection.module.css";
 
@@ -31,17 +32,17 @@ export function HomeCTASection() {
         </p>
 
         <div className={styles.actions}>
-          <a
-            href="mailto:contact@13utopia.com?subject=Project%20Commission%20Inquiry"
+          <Link
+            href="/contact"
             className={styles.primaryBtn}
             data-magnetic
           >
             <span>Start a Project</span>
-          </a>
+          </Link>
 
-          <a href="/work" className={styles.secondaryBtn} data-magnetic>
+          <Link href="/work" className={styles.secondaryBtn} data-magnetic>
             <span>View Portfolio</span>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

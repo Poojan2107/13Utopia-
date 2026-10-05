@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import styles from "@/styles/framer/FramerSectionCTA.module.css";
 
@@ -41,14 +42,14 @@ export function FramerSectionCTA() {
           transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className={styles.actions}
         >
-          <a
-            href="mailto:poojan@13utopia.com?subject=Initiate%20Alliance%20%E2%80%94%2013%20UTOPIA"
+          <Link
+            href="/contact"
             className={styles.primaryButton}
             data-cursor="hover"
           >
-            <span>Initiate Alliance</span>
+            <span>Start a Project</span>
             <span className={styles.arrowIcon} aria-hidden="true">→</span>
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

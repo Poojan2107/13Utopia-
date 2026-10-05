@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import Link from "next/link";
 import styles from "./WorkShowcase.module.css";
 
 interface ProfileModalProps {
@@ -34,20 +35,19 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
       <div className={styles.coverContent}>
         <div className={styles.coverInner}>
           <div className={styles.transmissionBody}>
-            {/* Portfolio-only cover: work speaks; no agency pitch */}
+            {/* Portfolio channels */}
             <p className={styles.coverQuietLine}>
               The work is the statement.
             </p>
 
             <ul className={styles.coverSocials}>
               <li>
-                <span
-                  className={styles.coverBackHomeDisabled}
-                  aria-disabled="true"
-                  title="Agency site coming soon"
+                <Link
+                  href="/"
+                  className={styles.coverLink}
                 >
                   ← 13utopia.com
-                </span>
+                </Link>
               </li>
               <li>
                 <a

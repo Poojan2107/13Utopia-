@@ -207,3 +207,20 @@
   background: #f3f4f6;
   box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
 }
+
+@media (max-width: 768px) {
+  .articlePage {
+    padding: clamp(90px, 12vh, 120px) 1.5rem 80px;
+  }
+  .backLink {
+    margin-bottom: 2rem;
+  }
+  .articleHeader {
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+  .articleFooterCta {
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+  }
+}

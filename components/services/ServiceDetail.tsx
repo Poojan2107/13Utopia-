@@ -81,8 +81,8 @@ export function ServiceDetail({ world }: Props) {
               variants={fadeUp}
               transition={{ duration: 0.75, ease: EASE }}
             >
-              <a
-                href="mailto:poojan@13utopia.com?subject=Initiate%20Alliance%20%E2%80%94%2013%20UTOPIA"
+              <Link
+                href="/contact"
                 className={styles.ctaPrimary}
                 data-magnetic
                 data-cursor="hover"
@@ -91,7 +91,7 @@ export function ServiceDetail({ world }: Props) {
                 <span className={styles.ctaArrow} aria-hidden="true">
                   →
                 </span>
-              </a>
+              </Link>
               <Link href="/work" className={styles.ctaGhost} data-cursor="hover">
                 View selected work
               </Link>
