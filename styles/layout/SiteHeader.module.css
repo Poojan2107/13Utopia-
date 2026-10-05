@@ -285,51 +285,6 @@
   box-sizing: border-box;
 }
 
-/* Top Telemetry Header Bar */
-.topTelemetryBar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding-bottom: clamp(1rem, 1.8vh, 1.5rem);
-  margin-bottom: clamp(0.75rem, 1.5vh, 2rem);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  font-family: var(--font-mono, monospace);
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.45);
-  text-transform: uppercase;
-}
-
-.telemetryTag {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.livePulse {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-  animation: pulseMonochrome 2s infinite ease-in-out;
-}
-
-@keyframes pulseMonochrome {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.3; transform: scale(0.85); }
-}
-
-.clockTelemetry {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.telemetryDivider {
-  opacity: 0.3;
-}
 
 .menuGrid {
   max-width: 1540px;
@@ -634,10 +589,6 @@
   }
 
   .visualViewport {
-    display: none;
-  }
-
-  .topTelemetryBar {
     display: none;
   }
 

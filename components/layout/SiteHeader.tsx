@@ -228,17 +228,6 @@ export function SiteHeader() {
         <div className={styles.gridOverlay} aria-hidden="true" />
 
         <div className={styles.menuContent}>
-          {/* Top Status Header Bar */}
-          <div className={styles.topTelemetryBar}>
-            <div className={styles.telemetryTag}>
-              <span className={styles.livePulse} />
-              <span>ACCEPTING COMMISSIONS &amp; PROJECTS</span>
-            </div>
-            <div className={styles.clockTelemetry}>
-              <span>INDEPENDENT CREATIVE TECHNOLOGY</span>
-            </div>
-          </div>
-
           <div className={styles.menuGrid} data-menu-body>
             {/* Left Column: Primary Navigation Links */}
             <nav className={styles.navLinksList} aria-label="Main Navigation">
