@@ -18,7 +18,7 @@
 
 .container {
   width: 100%;
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -27,49 +27,52 @@
   gap: clamp(1.75rem, 3.5vh, 2.75rem);
 }
 
-/* ── Monumental Headline ────────────────────────────────── */
+/* ── Monumental Headline in One Single Line ──────────────── */
 .headline {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
-  font-size: clamp(3rem, 7vw, 6.8rem);
+  font-size: clamp(2.2rem, 5.2vw, 5.8rem);
   font-weight: 850;
   letter-spacing: -0.04em;
-  line-height: 0.98;
+  line-height: 1.05;
   margin: 0;
   color: #ffffff;
   text-transform: uppercase;
-  text-wrap: balance;
+  white-space: nowrap;
 }
 
-.headlineSpan {
-  background: linear-gradient(135deg, #ffffff 40%, #888888 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+@media (max-width: 768px) {
+  .headline {
+    white-space: normal;
+    font-size: clamp(2.2rem, 7vw, 3.5rem);
+  }
 }
 
-/* ── Narrative ──────────────────────────────────────────── */
-.narrativeGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-top: 0.25rem;
-}
-
+/* ── Narrative in One Single Horizontal Line ─────────────── */
 .narrativeLine {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.2vw, 16px);
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+  font-size: clamp(1.05rem, 1.5vw, 1.4rem);
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.7);
   margin: 0;
   letter-spacing: -0.01em;
 }
 
-/* ── Action Cluster ─────────────────────────────────────── */
+.dotSep {
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 700;
+}
+
+/* ── Action Button ───────────────────────────────────────── */
 .actions {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
 }
 
 .primaryButton {
@@ -77,7 +80,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.85rem;
-  padding: 18px 42px;
+  padding: 18px 44px;
   border-radius: 999px;
   background: #ffffff;
   color: #000000 !important;
@@ -106,30 +109,4 @@
 
 .primaryButton:hover .arrowIcon {
   transform: translateX(4px);
-}
-
-.conciergeBlock {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.75rem;
-}
-
-.conciergeLabel {
-  color: rgba(255, 255, 255, 0.4);
-  letter-spacing: 0.12em;
-  font-weight: 600;
-}
-
-.emailLink {
-  color: rgba(255, 255, 255, 0.85);
-  text-decoration: none;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  transition: color 0.2s ease;
-}
-
-.emailLink:hover {
-  color: #ffffff;
 }

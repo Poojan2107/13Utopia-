@@ -7,7 +7,7 @@ export function FramerSectionCTA() {
   return (
     <section className={styles.section} aria-label="Initiation" id="contact">
       <div className={styles.container}>
-        {/* Monumental Headline */}
+        {/* Monumental Headline in One Single Line */}
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -15,24 +15,25 @@ export function FramerSectionCTA() {
           transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className={styles.headline}
         >
-          START SOMETHING <br />
-          <span className={styles.headlineSpan}>UNREASONABLE.</span>
+          START SOMETHING UNREASONABLE.
         </motion.h2>
 
-        {/* Elegant Editorial Manifesto */}
-        <motion.div
+        {/* Narrative Line in One Single Horizontal Line */}
+        <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className={styles.narrativeGroup}
+          className={styles.narrativeLine}
         >
-          <p className={styles.narrativeLine}>A brand to create.</p>
-          <p className={styles.narrativeLine}>A product to build.</p>
-          <p className={styles.narrativeLine}>A category to dominate.</p>
-        </motion.div>
+          <span>A brand to create.</span>
+          <span className={styles.dotSep}>·</span>
+          <span>A product to build.</span>
+          <span className={styles.dotSep}>·</span>
+          <span>A category to dominate.</span>
+        </motion.p>
 
-        {/* Action Cluster */}
+        {/* Action Button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -48,17 +49,6 @@ export function FramerSectionCTA() {
             <span>Initiate Alliance</span>
             <span className={styles.arrowIcon} aria-hidden="true">→</span>
           </a>
-
-          <div className={styles.conciergeBlock}>
-            <span className={styles.conciergeLabel}>DIRECT CONCIERGE:</span>
-            <a
-              href="mailto:poojan@13utopia.com"
-              className={styles.emailLink}
-              data-cursor="hover"
-            >
-              poojan@13utopia.com
-            </a>
-          </div>
         </motion.div>
       </div>
     </section>
