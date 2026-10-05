@@ -123,9 +123,9 @@ export default function AboutPage() {
             <div className={styles.principleBlock}>
               <span className={styles.principleWatermark}>02</span>
               <span className={styles.principleNum}>02 // ZERO TRANSLATION LOSS</span>
-              <h3 className={styles.principleTitle}>Direct Senior Craft</h3>
+              <h3 className={styles.principleTitle}>Direct Builder Access</h3>
               <p className={styles.principleDesc}>
-                No junior account handoffs or layered management silos. Clients work directly with senior architects, engineers, and creative directors through every phase.
+                No bloated account managers or bureaucratic middlemen. You collaborate directly with the core designers and engineers actually building the product.
               </p>
             </div>
 
