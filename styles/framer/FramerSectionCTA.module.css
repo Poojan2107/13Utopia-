@@ -1,5 +1,5 @@
 /* =========================================================
-   13 UTOPIA // ARCHITECTURAL CONVERSION CAPSULE (CTA SECTION)
+   13 UTOPIA // PURE TRANSPARENT EDITORIAL CLOSING CTA
    ========================================================= */
 
 .section {
@@ -8,247 +8,116 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: transparent;
+  background: transparent;
   color: #ffffff;
-  padding: clamp(5rem, 10vh, 9rem) clamp(1.5rem, 5vw, 6rem);
+  padding: clamp(6rem, 14vh, 12rem) clamp(1.5rem, 5vw, 6rem);
   box-sizing: border-box;
   z-index: 5;
+  text-align: center;
 }
 
 .container {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1100px;
   margin: 0 auto;
-}
-
-/* ── Monolithic Glass Architectural Capsule ──────────────── */
-.capsule {
-  position: relative;
-  width: 100%;
-  background: linear-gradient(180deg, rgba(16, 16, 20, 0.75) 0%, rgba(8, 8, 10, 0.90) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
-  padding: clamp(2rem, 4vw, 3.5rem);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 1px rgba(255, 255, 255, 0.2);
-  overflow: hidden;
-}
-
-.capsule::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 10%;
-  right: 10%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-}
-
-/* ── Top Architectural Meta Rail ─────────────────────────── */
-.capsuleHeader {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding-bottom: 2rem;
-  margin-bottom: 2.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  flex-wrap: wrap;
-  gap: 1rem;
+  justify-content: center;
+  gap: clamp(1.75rem, 3.5vh, 2.75rem);
 }
 
-.metaLeft {
+/* ── Editorial Eyebrow ──────────────────────────────────── */
+.eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   font-family: var(--font-mono, monospace);
   font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
-  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
 }
 
-.liveBeacon {
-  width: 7px;
-  height: 7px;
+.liveDot {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 10px #10b981;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
-.metaDivider {
-  color: rgba(255, 255, 255, 0.25);
-}
-
-.metaSub {
-  color: rgba(255, 255, 255, 0.45);
-}
-
-.statusTag {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 4px 12px;
-  border-radius: 999px;
-}
-
-/* ── Asymmetric Split Grid ───────────────────────────────── */
-.splitGrid {
-  display: grid;
-  grid-template-columns: 1.25fr 1fr;
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: center;
-}
-
-@media (max-width: 1024px) {
-  .splitGrid {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-}
-
-/* ── Left Column: Manifesto ──────────────────────────────── */
-.leftCol {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
+/* ── Monumental Headline ────────────────────────────────── */
 .headline {
   font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
-  font-size: clamp(2.4rem, 4.5vw, 4.5rem);
+  font-size: clamp(3rem, 7vw, 6.8rem);
   font-weight: 850;
   letter-spacing: -0.04em;
-  line-height: 1.02;
+  line-height: 0.98;
   margin: 0;
   color: #ffffff;
   text-transform: uppercase;
+  text-wrap: balance;
 }
 
-.headlineHighlight {
-  background: linear-gradient(135deg, #ffffff 30%, #888888 100%);
+.headlineSpan {
+  background: linear-gradient(135deg, #ffffff 40%, #888888 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.narrative {
-  font-size: clamp(1rem, 1.2vw, 1.15rem);
-  line-height: 1.65;
-  color: rgba(255, 255, 255, 0.7);
-  max-width: 540px;
+/* ── Narrative ──────────────────────────────────────────── */
+.narrativeGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.narrativeLine {
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.65);
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
-.scopeMatrix {
+/* ── Action Cluster ─────────────────────────────────────── */
+.actions {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  margin-top: 0.5rem;
-}
-
-.scopeItem {
-  display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 500;
-}
-
-.scopeBullet {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.05);
-  padding: 3px 8px;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-/* ── Right Column: Direct Conversion Console ─────────────── */
-.rightCol {
-  display: flex;
-  flex-direction: column;
-}
-
-.consoleCard {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 18px;
-  padding: clamp(1.75rem, 2.5vw, 2.5rem);
-  display: flex;
-  flex-direction: column;
   gap: 1.5rem;
-}
-
-.consoleHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.consoleTitle {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.slaBadge {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.6rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  padding: 3px 8px;
-  border-radius: 4px;
-}
-
-.consoleDesc {
-  font-size: 0.88rem;
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.6);
-  margin: 0;
-}
-
-.actionGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
+  margin-top: 1rem;
 }
 
 .primaryButton {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  padding: 16px 28px;
+  gap: 0.85rem;
+  padding: 18px 42px;
   border-radius: 999px;
   background: #ffffff;
-  color: #000000;
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  color: #000000 !important;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: 1rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 30px rgba(255, 255, 255, 0.25);
 }
 
-.primaryButton:hover {
+.primaryButton:hover,
+.primaryButton:focus-visible {
   background: #f0f0f0;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.35);
+  color: #000000 !important;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 45px rgba(255, 255, 255, 0.4);
+  outline: none;
 }
 
 .arrowIcon {
@@ -260,58 +129,28 @@
   transform: translateX(4px);
 }
 
-.directContactRow {
-  display: flex;
+.conciergeBlock {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
+  gap: 8px;
   font-family: var(--font-mono, monospace);
   font-size: 0.75rem;
 }
 
-.contactLabel {
-  color: rgba(255, 255, 255, 0.45);
+.conciergeLabel {
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.12em;
   font-weight: 600;
-  letter-spacing: 0.08em;
 }
 
 .emailLink {
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   font-weight: 700;
+  letter-spacing: 0.05em;
   transition: color 0.2s ease;
 }
 
 .emailLink:hover {
-  color: #10b981;
-}
-
-.locationFooter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.locNode {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.62rem;
-  color: rgba(255, 255, 255, 0.45);
-  letter-spacing: 0.08em;
-}
-
-.locDot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
 }

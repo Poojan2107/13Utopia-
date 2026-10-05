@@ -120,7 +120,7 @@
   padding: 16px 34px;
   border-radius: 999px;
   background: #ffffff;
-  color: #000000;
+  color: #000000 !important;
   text-decoration: none;
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
   font-size: 0.95rem;
@@ -130,8 +130,10 @@
   box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
 }
 
-.ctaPrimary:hover {
+.ctaPrimary:hover,
+.ctaPrimary:focus-visible {
   background: #f0f0f0;
+  color: #000000 !important;
   transform: translateY(-2px);
   box-shadow: 0 12px 40px rgba(255, 255, 255, 0.35);
 }
