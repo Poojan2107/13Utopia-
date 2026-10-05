@@ -186,26 +186,26 @@ export function Plus3DCanvas({
     bumpTexture.wrapT = THREE.RepeatWrapping;
     bumpTexture.repeat.set(4.0, 4.0);
 
-    // 13 Utopia Exact Tenbin Pitch-Black Obsidian Stone (High-Efficiency MeshStandardMaterial)
+    // 13 Utopia Signature Sculpted Titanium Monolith (Visible, Refined Architectural Sheen)
     const matTitaniumOne = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x060608),
-      roughness: 0.28,
-      metalness: 0.92,
+      color: new THREE.Color(0x282a30),
+      roughness: 0.24,
+      metalness: 0.85,
       bumpMap: bumpTexture,
-      bumpScale: 0.012,
-      emissive: new THREE.Color(0x000000),
+      bumpScale: 0.010,
+      emissive: new THREE.Color(0x050507),
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
 
     const matTitaniumThree = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x040406),
-      roughness: 0.28,
-      metalness: 0.92,
+      color: new THREE.Color(0x22242a),
+      roughness: 0.24,
+      metalness: 0.85,
       bumpMap: bumpTexture,
-      bumpScale: 0.012,
-      emissive: new THREE.Color(0x000000),
+      bumpScale: 0.010,
+      emissive: new THREE.Color(0x040406),
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
@@ -312,33 +312,33 @@ export function Plus3DCanvas({
     const auraParticleSystem = new THREE.Points(auraParticleGeo, auraParticleMat);
     scene.add(auraParticleSystem);
 
-    // Studio Lighting (Tenbin Exact Noir Overhead Grazing & Dark Shadows)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.25);
+    // Studio Lighting (Sculpted Metallic Sheen & Crisp Contours)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
     scene.add(ambientLight);
 
     // Overhead high-intensity grazing light for sharp top chamfer specular highlights
-    const topRimLight = new THREE.DirectionalLight(0xffffff, 16.0);
-    topRimLight.position.set(0, 20, 2);
+    const topRimLight = new THREE.DirectionalLight(0xffffff, 18.0);
+    topRimLight.position.set(0, 18, 2);
     scene.add(topRimLight);
 
-    // Gentle front camera key light
-    const frontKeyLight = new THREE.DirectionalLight(0xffffff, 0.6);
-    frontKeyLight.position.set(0, 2, 12);
+    // Gentle front camera key fill light
+    const frontKeyLight = new THREE.DirectionalLight(0xffffff, 1.8);
+    frontKeyLight.position.set(0, 3, 10);
     scene.add(frontKeyLight);
 
     // Primary studio key light
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
-    keyLight.position.set(8, 14, 10);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
+    keyLight.position.set(8, 12, 8);
     scene.add(keyLight);
 
     // Back-kicker rim light for crisp edge separation from dark stardust void
-    const backRimLight = new THREE.DirectionalLight(0xffffff, 6.0);
-    backRimLight.position.set(0, -6, -10);
+    const backRimLight = new THREE.DirectionalLight(0xffffff, 8.0);
+    backRimLight.position.set(0, -6, -8);
     scene.add(backRimLight);
 
     // Side grazing light for subtle razor edge glint
-    const sideGrazingLight = new THREE.DirectionalLight(0xffffff, 4.0);
-    sideGrazingLight.position.set(12, 6, -4);
+    const sideGrazingLight = new THREE.DirectionalLight(0xffffff, 5.0);
+    sideGrazingLight.position.set(-10, 4, 4);
     scene.add(sideGrazingLight);
 
     // Mouse & Touch Parallax Trackers
