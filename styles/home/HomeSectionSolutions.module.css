@@ -1,640 +1,260 @@
-.solutionsSection {
+/* ==========================================================
+   HomeSectionSolutions — Architectural Discipline Matrix
+   Non-Video Pure Typographic & Spatial Bridge
+   ========================================================== */
+
+.section {
   position: relative;
   width: 100%;
-  background-color: transparent;
-  color: #ffffff;
-  padding: clamp(80px, 12vh, 160px) clamp(24px, 5vw, 90px);
-  overflow: hidden;
-  z-index: 5;
-  border: none;
-}
-
-.ambientGlow {
-  display: none;
-}
-
-.gridOverlay {
-  display: none;
-}
-
-.container {
-  max-width: 1480px;
+  max-width: 1540px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(48px, 7vh, 84px);
-  position: relative;
-  z-index: 2;
+  padding: clamp(6rem, 12vh, 10rem) clamp(1.5rem, 5vw, 5rem);
+  box-sizing: border-box;
+  background: transparent;
+  z-index: 5;
+  color: #ffffff;
 }
 
-/* Header & Eyebrow */
-.headerBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 1.6rem;
-}
-
-.eyebrow {
+/* ── Top Header Rail ── */
+.topBar {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-mono, monospace);
-  font-size: clamp(0.72rem, 0.82vw, 0.86rem);
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.7);
-  text-transform: uppercase;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+  justify-content: space-between;
+  margin-bottom: clamp(2.5rem, 5vh, 4rem);
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.eyebrowNum {
-  color: #ffffff;
-  font-weight: 700;
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.eyebrowDot {
-  width: 5px;
-  height: 5px;
+.pulseDot {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #ffffff;
-  opacity: 0.6;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
-.titleRow {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: clamp(32px, 5vw, 80px);
-  align-items: flex-end;
-}
-
-.mainTitle {
-  font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
-  font-size: clamp(2.4rem, 4.8vw, 4.8rem);
-  font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.035em;
+.chapterTag {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.7rem, 0.75vw, 0.82rem);
+  font-weight: 700;
+  letter-spacing: 0.2em;
   color: #ffffff;
   text-transform: uppercase;
-  margin: 0;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.98), 0 0 40px rgba(0, 0, 0, 0.95);
 }
 
-.titleHighlight {
-  color: rgba(255, 255, 255, 0.60);
+.categoryTag {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.65rem, 0.7vw, 0.76rem);
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
 }
 
-.leadText {
-  font-family: var(--font-body, "PP Neue Montreal", "Inter", sans-serif);
-  font-size: clamp(1.05rem, 1.35vw, 1.35rem);
-  font-weight: 400;
-  line-height: 1.55;
+/* ── Main Intro ── */
+.introBlock {
+  margin-bottom: clamp(3.5rem, 7vh, 6rem);
+  max-width: 1040px;
+}
+
+.introTitle {
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  font-weight: 850;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
   color: #ffffff;
-  margin: 0;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.98), 0 0 25px rgba(0, 0, 0, 0.9);
+  margin: 0 0 1.25rem;
+  text-transform: uppercase;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
 }
 
-/* Accordion Container — 100% Transparent, No Box/Borders */
-.accordionContainer {
+.introDesc {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+  font-weight: 450;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+  max-width: 720px;
+  letter-spacing: -0.01em;
+}
+
+/* ── Monumental Discipline Rows ── */
+.disciplineList {
   display: flex;
   flex-direction: column;
-  gap: 36px;
   width: 100%;
 }
 
-.accordionItem {
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  overflow: visible;
-  transition: opacity 0.3s ease;
-}
-
-.accordionItem:hover {
-  background: transparent;
-  border: none;
-}
-
-.itemActive {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-}
-
-/* Trigger Header */
-.itemHeader {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 140px 1fr auto 48px;
-  align-items: center;
-  gap: clamp(16px, 3vw, 40px);
-  padding: clamp(16px, 2.5vh, 28px) 0;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  text-align: left;
+.disciplineRow {
+  position: relative;
+  display: block;
+  text-decoration: none;
   color: inherit;
-  font: inherit;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.indexCol {
+.rowDivider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.rowActive .rowDivider {
+  background: #ffffff;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.5);
+}
+
+.rowInner {
+  display: grid;
+  grid-template-columns: 80px 1.4fr 2fr 160px 60px;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  padding: clamp(2.2rem, 4vh, 3.2rem) 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              padding 0.4s ease;
+}
+
+.disciplineRow:hover .rowInner {
+  transform: translateX(8px);
+}
+
+.rowDimmed {
+  opacity: 0.35;
+}
+
+/* Index Number */
+.rowIndex {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.95rem, 1.1vw, 1.2rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.3s ease;
+}
+
+.disciplineRow:hover .rowIndex {
+  color: #ffffff;
+}
+
+/* Primary Discipline Title */
+.titleColumn {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.indexNumber {
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: clamp(2.2rem, 3.0vw, 3.2rem);
-  font-weight: 800;
+.disciplineName {
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", sans-serif);
+  font-size: clamp(2rem, 3.2vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: -0.035em;
   line-height: 1;
-  color: rgba(255, 255, 255, 0.40);
-  letter-spacing: -0.02em;
-  transition: color 0.3s ease;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95);
-}
-
-.itemActive .indexNumber,
-.accordionItem:hover .indexNumber {
   color: #ffffff;
-}
-
-.indexCategory {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.70rem;
-  letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.60);
-  text-transform: uppercase;
-  font-weight: 600;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
-}
-
-.titleCol {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.domainTitle {
-  font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
-  font-size: clamp(1.45rem, 2.4vw, 2.5rem);
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  color: #ffffff;
-  text-transform: uppercase;
   margin: 0;
-  line-height: 1.15;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease;
-  text-shadow: 0 4px 25px rgba(0, 0, 0, 0.98), 0 0 35px rgba(0, 0, 0, 0.9);
+  text-transform: uppercase;
+  transition: text-shadow 0.3s ease;
 }
 
-.accordionItem:hover .domainTitle,
-.itemActive .domainTitle {
-  transform: translateX(8px);
-  color: #ffffff;
+.disciplineRow:hover .disciplineName {
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
 }
 
-.domainSubhead {
-  font-family: var(--font-body, "PP Neue Montreal", "Inter", sans-serif);
-  font-size: clamp(0.92rem, 1.05vw, 1.15rem);
-  color: rgba(255, 255, 255, 0.80);
+.roleText {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.85rem, 0.95vw, 1rem);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: -0.01em;
+}
+
+/* Scope & Capabilities */
+.scopeColumn {
+  display: flex;
+  align-items: center;
+}
+
+.scopeText {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.92rem, 1.05vw, 1.1rem);
   font-weight: 400;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
-  transition: color 0.4s ease;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+  transition: color 0.3s ease;
 }
 
-.metricCol {
+.disciplineRow:hover .scopeText {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Metric Column */
+.metricColumn {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
   gap: 2px;
 }
 
 .metricVal {
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1.5rem, 2.2vw, 2.4rem);
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.95rem, 1.1vw, 1.25rem);
   font-weight: 800;
   color: #ffffff;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95);
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.itemActive .metricVal {
-  transform: scale(1.04);
+  letter-spacing: 0.04em;
 }
 
 .metricLbl {
   font-family: var(--font-mono, monospace);
-  font-size: 0.70rem;
+  font-size: 0.65rem;
   letter-spacing: 0.14em;
-  color: rgba(255, 255, 255, 0.60);
+  color: rgba(255, 255, 255, 0.4);
   text-transform: uppercase;
-  font-weight: 600;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
 }
 
-.toggleCol {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.toggleIcon {
-  position: relative;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.itemActive .toggleIcon {
-  transform: rotate(90deg);
-}
-
-.iconLineHorizontal,
-.iconLineVertical {
-  position: absolute;
-  background: #ffffff;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-}
-
-.iconLineHorizontal {
-  width: 14px;
-  height: 2px;
-}
-
-.iconLineVertical {
-  width: 2px;
-  height: 14px;
-}
-
-.toggleOpen .iconLineVertical {
-  opacity: 0;
-  transform: scaleY(0);
-}
-
-/* Expandable Body — Silky Smooth 60fps Grid Transition */
-.itemBody {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  visibility: hidden;
-  transition: grid-template-rows 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: grid-template-rows, opacity;
-}
-
-.bodyClosed {
-  grid-template-rows: 0fr;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.bodyOpen {
-  grid-template-rows: 1fr;
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-
-.bodyInner {
-  min-height: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  padding: 16px 0 32px;
-  border: none;
-  transform: translateY(0);
-  opacity: 1;
-  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.bodyClosed .bodyInner {
-  transform: translateY(-14px);
-  opacity: 0;
-}
-
-/* Comparison Grid: Antithesis — Transparent & Clean */
-.comparisonGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(24px, 4vw, 48px);
-  margin-top: 8px;
-}
-
-.industryBox {
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.boxTag {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  color: rgba(255, 255, 255, 0.55);
-  text-transform: uppercase;
-  font-weight: 600;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
-}
-
-.boxText {
-  font-family: var(--font-body, "PP Neue Montreal", sans-serif);
-  font-size: clamp(0.98rem, 1.15vw, 1.2rem);
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.6;
-  margin: 0;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
-}
-
-.utopiaBox {
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.boxTagUtopia {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  color: #ffffff;
-  text-transform: uppercase;
-  font-weight: 700;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
-}
-
-.boxTextUtopia {
-  font-family: var(--font-body, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1.02rem, 1.2vw, 1.25rem);
-  color: #ffffff;
-  line-height: 1.6;
-  margin: 0;
-  font-weight: 500;
-  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.98), 0 0 25px rgba(0, 0, 0, 0.9);
-}
-
-/* Details: Deliverables & Tech Stack */
-.detailsRow {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: clamp(24px, 4vw, 48px);
-  padding-top: 12px;
-}
-
-.deliverablesCol,
-.techCol {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.detailsHeading {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.74rem;
-  letter-spacing: 0.16em;
-  color: #ffffff;
-  text-transform: uppercase;
-  font-weight: 700;
-  margin: 0;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
-}
-
-.deliverablesList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.deliverableItem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-body, "PP Neue Montreal", sans-serif);
-  font-size: clamp(0.95rem, 1.1vw, 1.15rem);
-  color: #ffffff;
-  font-weight: 400;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
-}
-
-.bulletSymbol {
-  color: #ffffff;
-  font-size: 0.85rem;
-  opacity: 0.75;
-}
-
-.techPills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.techBadge {
-  padding: 4px 0;
-  background: transparent;
-  border: none;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.82rem;
-  letter-spacing: 0.08em;
-  color: #ffffff;
-  font-weight: 500;
-  margin-right: 12px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
-}
-
-.techBadge::after {
-  content: "·";
-  margin-left: 12px;
-  color: rgba(255, 255, 255, 0.40);
-}
-
-.techBadge:last-child::after {
-  content: "";
-}
-
-.actionWrap {
-  margin-top: 14px;
-}
-
-/* Elegant, Minimalist, Non-Blinding Link */
-.deepDiveLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 0;
-  background: transparent;
-  color: #ffffff;
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-decoration: none;
-  border: none;
-  box-shadow: none;
-  transition: transform 0.25s ease, color 0.25s ease;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
-}
-
-.deepDiveLink:hover {
-  background: transparent;
-  color: #e5e7eb;
-  transform: translateX(4px);
-  box-shadow: none;
-}
-
-.linkArrow {
-  font-size: 1.1rem;
-  line-height: 1;
-  transition: transform 0.25s ease;
-}
-
-.deepDiveLink:hover .linkArrow {
-  transform: translate(2px, -2px);
-}
-
-/* Footer Navigation */
-.solutionsFooter {
+/* Arrow Column */
+.actionColumn {
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  padding-top: 24px;
-  border: none;
 }
 
-.footerTelemetry {
-  display: flex;
-  align-items: center;
-  gap: clamp(20px, 3vw, 40px);
-  flex-wrap: wrap;
+.arrowIcon {
+  font-size: clamp(1.4rem, 2vw, 2.2rem);
+  color: rgba(255, 255, 255, 0.3);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.35s ease;
 }
 
-.telemetryCard {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.telemetryVal {
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1.6rem, 2.4vw, 2.4rem);
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 1;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95);
-}
-
-.telemetryLbl {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.70rem;
-  letter-spacing: 0.14em;
-  color: rgba(255, 255, 255, 0.60);
-  text-transform: uppercase;
-  font-weight: 600;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
-}
-
-.telemetryDivider {
-  display: none;
-}
-
-.footerActions {
-  display: flex;
-  align-items: center;
-}
-
-.fullStackCta {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 0;
-  background: transparent;
-  color: #ffffff;
-  border: none;
-  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: 1.05rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
-}
-
-.fullStackCta:hover {
-  color: #e5e7eb;
-  transform: translateX(4px);
-}
-
-.btnArrow {
-  font-size: 1.1rem;
-  transition: transform 0.3s ease;
-}
-
-.fullStackCta:hover .btnArrow {
+.disciplineRow:hover .arrowIcon {
   transform: translateX(6px);
+  color: #ffffff;
 }
 
-/* Responsive Styles */
-@media (max-width: 1080px) {
-  .titleRow {
-    grid-template-columns: 1fr;
-    gap: 16px;
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .rowInner {
+    grid-template-columns: 50px 1.3fr 1.8fr 40px;
+    gap: 1.5rem;
   }
-
-  .itemHeader {
-    grid-template-columns: 80px 1fr 36px;
-    gap: 16px;
-  }
-
-  .metricCol {
+  .metricColumn {
     display: none;
-  }
-
-  .comparisonGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .detailsRow {
-    grid-template-columns: 1fr;
-    gap: 24px;
   }
 }
 
 @media (max-width: 768px) {
-  .itemHeader {
-    grid-template-columns: 1fr 36px;
+  .rowInner {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 1.8rem 0;
   }
-
-  .indexCol {
+  .actionColumn {
     display: none;
-  }
-
-  .telemetryDivider {
-    display: none;
-  }
-
-  .footerTelemetry {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
   }
 }

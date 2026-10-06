@@ -5,6 +5,7 @@ export interface BlogPost {
   category: "BRAND & DESIGN" | "ENGINEERING" | "AI & AUTOMATION" | "GROWTH SYSTEMS" | "CGI & SPATIAL" | "REPUTATION";
   readTime: string;
   date: string;
+  image: string;
   author: {
     name: string;
     role: string;
@@ -27,6 +28,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "REPUTATION",
     readTime: "6 MIN READ",
     date: "OCTOBER 2026",
+    image: "/images/belief-monolith.jpg",
     author: {
       name: "13 Utopia Intelligence",
       role: "Reputation & Brand Protection Practice",
@@ -67,6 +69,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "CGI & SPATIAL",
     readTime: "7 MIN READ",
     date: "OCTOBER 2026",
+    image: "/images/world-create.jpg",
     author: {
       name: "13 Utopia Spatial Lab",
       role: "3D Art Direction & Motion Design",
@@ -105,6 +108,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "GROWTH SYSTEMS",
     readTime: "5 MIN READ",
     date: "OCTOBER 2026",
+    image: "/images/specimen-05-grow.jpg",
     author: {
       name: "13 Utopia Growth Team",
       role: "Retention & Lifecycle Engineering",
@@ -138,6 +142,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "ENGINEERING",
     readTime: "8 MIN READ",
     date: "OCTOBER 2026",
+    image: "/images/world-build.jpg",
     author: {
       name: "13 Utopia Engineering",
       role: "Creative Technology & Spatial Web",
@@ -170,6 +175,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "BRAND & DESIGN",
     readTime: "7 MIN READ",
     date: "OCTOBER 2026",
+    image: "/images/specimen-03-create.jpg",
     author: {
       name: "13 Utopia Creative Direction",
       role: "Brand Strategy & Visual Systems",
@@ -201,6 +207,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "GROWTH SYSTEMS",
     readTime: "6 MIN READ",
     date: "OCTOBER 2026",
+    image: "/images/case-01.jpg",
     author: {
       name: "13 Utopia Search Practice",
       role: "Technical SEO & Entity Graph",
@@ -226,6 +233,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "GROWTH SYSTEMS",
     readTime: "9 MIN READ",
     date: "OCTOBER 2026",
+    image: "/images/case-02.jpg",
     author: {
       name: "13 Utopia Search Practice",
       role: "SEO Architecture Lead",
@@ -252,6 +260,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "ENGINEERING",
     readTime: "8 MIN READ",
     date: "OCTOBER 2026",
+    image: "/images/case-03.jpg",
     author: {
       name: "13 Utopia Product Engineering",
       role: "Full-Stack Commerce Practice",
@@ -276,6 +285,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "ENGINEERING",
     readTime: "6 MIN READ",
     date: "MARCH 2026",
+    image: "/images/specimen-04-build.jpg",
     author: {
       name: "Engineering Principal",
       role: "13 Utopia Systems",
@@ -301,6 +311,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "AI & AUTOMATION",
     readTime: "7 MIN READ",
     date: "JANUARY 2026",
+    image: "/images/world-grow.jpg",
     author: {
       name: "AI & Systems Lead",
       role: "13 Utopia Lab",

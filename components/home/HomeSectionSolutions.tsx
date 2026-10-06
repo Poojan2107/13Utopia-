@@ -2,304 +2,136 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Solutions3DCanvas } from "./Solutions3DCanvas";
 import styles from "@/styles/home/HomeSectionSolutions.module.css";
 
-interface CapabilityDomain {
+interface DisciplineSpec {
   index: string;
-  title: string;
-  subhead: string;
-  category: string;
-  industryVs: string;
-  utopiaStandard: string;
-  deliverables: string[];
-  techStack: string[];
-  metricValue: string;
+  discipline: string;
+  role: string;
+  scope: string;
+  metric: string;
   metricLabel: string;
-  slug: string;
+  href: string;
 }
 
-const SOLUTIONS: CapabilityDomain[] = [
+const DISCIPLINES: DisciplineSpec[] = [
   {
     index: "01",
-    title: "BRAND & CREATIVE",
-    subhead: "Identity, Art Direction, Motion & Spatial Design",
-    category: "BRANDING & CREATIVE",
-    industryVs: "Generic brand refresh decks, stock templates, and visual systems that look like every other startup.",
-    utopiaStandard: "Original brand strategy, custom identity systems, 3D art direction, and motion design built to own a category.",
-    deliverables: [
-      "Brand Strategy & Identity",
-      "Creative Direction & Art Direction",
-      "Brand Experience & Spatial Design",
-      "UI/UX Design & Interaction Design",
-      "CGI, Motion Graphics & Visual Content",
-    ],
-    techStack: [
-      "Figma", "After Effects", "Blender", "Cinema 4D",
-      "Spline", "Rive", "Adobe Creative Suite", "Three.js",
-      "GSAP", "WebGL", "Lottie",
-    ],
-    metricValue: "100%",
-    metricLabel: "BESPOKE. ZERO TEMPLATES.",
-    slug: "brand",
+    discipline: "CREATE",
+    role: "Brand Architecture & Spatial Design",
+    scope: "Visual Identity · Photorealistic 3D CGI · Cinematic Motion · Design Systems",
+    metric: "100%",
+    metricLabel: "Bespoke Artifacts",
+    href: "/services",
   },
   {
     index: "02",
-    title: "DIGITAL PRODUCTS",
-    subhead: "Web, Mobile, SaaS & Custom Software",
-    category: "DIGITAL PRODUCTS",
-    industryVs: "Offshore dev shops delivering disposable prototypes with no long-term architecture or product thinking.",
-    utopiaStandard: "Full-stack product engineering from concept to launch. Web apps, mobile, SaaS, and custom software built to scale.",
-    deliverables: [
-      "Website & Web App Development",
-      "Mobile App Development (iOS & Android)",
-      "SaaS Development & Custom Software",
-      "Product Engineering & MVP Development",
-      "E-Commerce Solutions",
-    ],
-    techStack: [
-      "Next.js", "React", "React Native", "TypeScript",
-      "Node.js", "PostgreSQL", "Prisma", "Supabase",
-      "Redis", "REST & GraphQL", "iOS / Swift",
-      "Android / Kotlin", "Stripe", "Tailwind CSS",
-    ],
-    metricValue: "FULL-STACK",
-    metricLabel: "FRONT TO BACK",
-    slug: "products",
+    discipline: "BUILD",
+    role: "Full-Stack Software & WebGL",
+    scope: "Next.js & WebGL · Autonomous AI Agents · Distributed Cloud · Custom APIs",
+    metric: "< 500ms",
+    metricLabel: "Execution Velocity",
+    href: "/services",
   },
   {
     index: "03",
-    title: "AI & AUTOMATION",
-    subhead: "AI Agents, Workflow Automation & Machine Learning",
-    category: "AI & AUTOMATION",
-    industryVs: "Shallow wrappers and disconnected tools that create more process debt than they solve.",
-    utopiaStandard: "Custom AI agents, automated workflows, and machine learning solutions that reduce manual overhead and scale operations.",
-    deliverables: [
-      "AI Strategy & Consulting",
-      "AI Agent Development",
-      "Workflow & Business Process Automation",
-      "Generative AI & Custom Model Integration",
-      "AI Chatbots & Conversational Systems",
-      "Machine Learning Solutions",
-    ],
-    techStack: [
-      "Python", "FastAPI", "LangChain", "LangGraph",
-      "LlamaIndex", "Pinecone", "Weaviate", "Qdrant",
-      "Temporal.io", "n8n", "PyTorch", "Vector Search & RAG",
-    ],
-    metricValue: "OPERATIONAL",
-    metricLabel: "NOT EXPERIMENTAL",
-    slug: "ai",
-  },
-  {
-    index: "04",
-    title: "CLOUD & ENGINEERING",
-    subhead: "Full-Stack Engineering, DevOps & Infrastructure",
-    category: "CLOUD & ENGINEERING",
-    industryVs: "Outdated monolithic stacks, brittle deployment pipelines, and infrastructure that can't handle real traffic.",
-    utopiaStandard: "Modern full-stack engineering, cloud architecture, and DevOps pipelines designed for performance, reliability, and scale.",
-    deliverables: [
-      "Frontend & Backend Engineering",
-      "Full Stack Engineering",
-      "Cloud Architecture & Infrastructure",
-      "DevOps, CI/CD & Automated Pipelines",
-      "API Development & Microservices",
-      "Legacy Modernization & Migration",
-      "Infrastructure & Security",
-    ],
-    techStack: [
-      "AWS", "Google Cloud (GCP)", "Docker", "Kubernetes",
-      "Terraform", "GitHub Actions", "Go", "TypeScript",
-      "Node.js", "PostgreSQL", "Redis", "CI/CD Pipelines",
-    ],
-    metricValue: "BUILT TO SCALE",
-    metricLabel: "NOT JUST LAUNCH",
-    slug: "cloud",
-  },
-  {
-    index: "05",
-    title: "GROWTH & MARKETING",
-    subhead: "SEO, Performance Marketing & Lead Generation",
-    category: "GROWTH & MARKETING",
-    industryVs: "Spray-and-pray ad spend, declining ROAS, and marketing that doesn't compound or build long-term brand equity.",
-    utopiaStandard: "SEO architecture, paid acquisition, content strategy, and lead generation systems engineered to drive measurable pipeline.",
-    deliverables: [
-      "Search Engine Optimization (SEO)",
-      "Performance Marketing & Paid Acquisition",
-      "Social Media Marketing & Content Strategy",
-      "Lead Generation & Pipeline Strategy",
-      "Online Reputation Management",
-      "Conversion Rate Optimization (CRO)",
-    ],
-    techStack: [
-      "Google Ads", "Meta Ads", "LinkedIn Ads", "Ahrefs",
-      "SEMrush", "Screaming Frog", "Google Search Console", "GA4",
-      "PostHog", "Mixpanel", "HubSpot", "Klaviyo", "Technical SEO",
-    ],
-    metricValue: "PIPELINE",
-    metricLabel: "NOT JUST TRAFFIC",
-    slug: "growth",
+    discipline: "GROW",
+    role: "Compounding Growth & Retention",
+    scope: "Technical SEO · Programmatic Search · Paid Acquisition · Lifecycle Engines",
+    metric: "PERMANENT",
+    metricLabel: "Commercial Moat",
+    href: "/services",
   },
 ];
 
+/**
+ * HomeSectionSolutions — Chapter 03 (Capabilities)
+ * Minimal, Creative & Unique:
+ * Architectural Monolith Discipline Matrix (Non-Video).
+ * Clean, high-impact typographic rows with interactive titanium light tracings,
+ * generous luxury whitespace, and seamless bridging into the 3D Work Showcase.
+ */
 export function HomeSectionSolutions() {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-
-  const handleMouseEnter = (idx: number) => {
-    setActiveIndex(idx);
-  };
-
-  const toggleAccordion = (idx: number) => {
-    setActiveIndex((prev) => (prev === idx ? -1 : idx));
-  };
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   return (
     <section
-      id="solutions"
-      className={styles.solutionsSection}
-      aria-label="03: Capability Architecture & What We Solve"
+      className={styles.section}
+      id="capabilities"
+      aria-label="Capabilities Architecture"
     >
-      {/* 3D 13 Monolith Background Canvas */}
-      <Solutions3DCanvas activeIndex={activeIndex} />
-
-      <div className={styles.container}>
-        {/* Section Header */}
-        <div className={styles.headerBlock}>
-          <div className={styles.eyebrow}>
-            <span className={styles.eyebrowNum}>CAPABILITIES</span>
-            <span className={styles.eyebrowDot} />
-            <span>WHAT WE DO</span>
-          </div>
-
-          <div className={styles.titleRow}>
-            <h2 className={styles.mainTitle}>
-              WHAT WE DO.
-              <br />
-              <span className={styles.titleHighlight}>
-                BRAND, PRODUCT, GROWTH. FULLY INTEGRATED.
-              </span>
-            </h2>
-
-            <p className={styles.leadText}>
-              13 Utopia covers every layer of building a digital business: brand identity, digital products, AI systems, cloud infrastructure, and growth. Delivered as a unified engagement, not a patchwork of vendors.
-            </p>
-          </div>
+      {/* ── Top Header Rail ── */}
+      <div className={styles.topBar}>
+        <div className={styles.headerLeft}>
+          <span className={styles.pulseDot} />
+          <span className={styles.chapterTag}>CHAPTER 03 // CAPABILITIES</span>
         </div>
+        <div className={styles.headerRight}>
+          <span className={styles.categoryTag}>DISCIPLINES &amp; SYSTEMS</span>
+        </div>
+      </div>
 
-        {/* Interactive Architectural Accordion */}
-        <div className={styles.accordionContainer} role="region" aria-label="Solutions Matrix">
-          {SOLUTIONS.map((solution, idx) => {
-            const isOpen = activeIndex === idx;
+      {/* ── Main Architectural Intro ── */}
+      <div className={styles.introBlock}>
+        <h2 className={styles.introTitle}>
+          THREE INTERCONNECTED DISCIPLINES.
+        </h2>
+        <p className={styles.introDesc}>
+          We unify brand identity, high-performance software engineering, and programmatic acquisition into a single sovereign execution pipeline.
+        </p>
+      </div>
 
-            return (
-              <div
-                key={solution.index}
-                className={`${styles.accordionItem} ${isOpen ? styles.itemActive : ""}`}
-                onMouseEnter={() => handleMouseEnter(idx)}
-              >
-                {/* Accordion Trigger Header */}
-                <button
-                  type="button"
-                  onClick={() => toggleAccordion(idx)}
-                  className={styles.itemHeader}
-                  aria-expanded={isOpen}
-                  aria-controls={`solution-body-${solution.index}`}
-                >
-                  <div className={styles.indexCol}>
-                    <span className={styles.indexNumber}>{solution.index}</span>
-                    <span className={styles.indexCategory}>{solution.category}</span>
-                  </div>
+      {/* ── Monumental Discipline Rows ── */}
+      <div className={styles.disciplineList}>
+        {DISCIPLINES.map((item, idx) => {
+          const isHovered = hoveredIdx === idx;
+          const isAnyHovered = hoveredIdx !== null;
 
-                  <div className={styles.titleCol}>
-                    <h3 className={styles.domainTitle}>{solution.title}</h3>
-                    <span className={styles.domainSubhead}>{solution.subhead}</span>
-                  </div>
+          return (
+            <Link
+              key={item.index}
+              href={item.href}
+              className={`${styles.disciplineRow} ${
+                isHovered ? styles.rowActive : ""
+              } ${isAnyHovered && !isHovered ? styles.rowDimmed : ""}`}
+              onMouseEnter={() => setHoveredIdx(idx)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              data-cursor="hover"
+            >
+              {/* Hairline Divider with Active Glow */}
+              <div className={styles.rowDivider} />
 
-                  <div className={styles.metricCol}>
-                    <span className={styles.metricVal}>{solution.metricValue}</span>
-                    <span className={styles.metricLbl}>{solution.metricLabel}</span>
-                  </div>
+              <div className={styles.rowInner}>
+                {/* Index Number */}
+                <span className={styles.rowIndex}>{item.index}</span>
 
-                  <div className={styles.toggleCol}>
-                    <div className={`${styles.toggleIcon} ${isOpen ? styles.toggleOpen : ""}`}>
-                      <span className={styles.iconLineHorizontal} />
-                      <span className={styles.iconLineVertical} />
-                    </div>
-                  </div>
-                </button>
+                {/* Primary Discipline Title */}
+                <div className={styles.titleColumn}>
+                  <h3 className={styles.disciplineName}>{item.discipline}</h3>
+                  <span className={styles.roleText}>{item.role}</span>
+                </div>
 
-                {/* Accordion Expandable Body */}
-                <div
-                  id={`solution-body-${solution.index}`}
-                  className={`${styles.itemBody} ${isOpen ? styles.bodyOpen : styles.bodyClosed}`}
-                >
-                  <div className={styles.bodyInner}>
-                    {/* Antithesis Comparison: The Industry vs. 13 Utopia */}
-                    <div className={styles.comparisonGrid}>
-                      <div className={styles.industryBox}>
-                        <div className={styles.boxTag}>THE COMMON APPROACH</div>
-                        <p className={styles.boxText}>{solution.industryVs}</p>
-                      </div>
+                {/* Scope & Capabilities List */}
+                <div className={styles.scopeColumn}>
+                  <p className={styles.scopeText}>{item.scope}</p>
+                </div>
 
-                      <div className={styles.utopiaBox}>
-                        <div className={styles.boxTagUtopia}>
-                          WHAT WE DELIVER
-                        </div>
-                        <p className={styles.boxTextUtopia}>{solution.utopiaStandard}</p>
-                      </div>
-                    </div>
+                {/* Metric Pillar */}
+                <div className={styles.metricColumn}>
+                  <span className={styles.metricVal}>{item.metric}</span>
+                  <span className={styles.metricLbl}>{item.metricLabel}</span>
+                </div>
 
-                    {/* Deliverables & Stack Row */}
-                    <div className={styles.detailsRow}>
-                      <div className={styles.deliverablesCol}>
-                        <h4 className={styles.detailsHeading}>DELIVERABLES</h4>
-                        <ul className={styles.deliverablesList}>
-                          {solution.deliverables.map((item, dIdx) => (
-                            <li key={dIdx} className={styles.deliverableItem}>
-                              <span className={styles.bulletSymbol}>✦</span>
-                              <span>{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className={styles.techCol}>
-                        <h4 className={styles.detailsHeading}>TECH STACK</h4>
-                        <div className={styles.techPills}>
-                          {solution.techStack.map((tech) => (
-                            <span key={tech} className={styles.techBadge}>
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-
-                        <div className={styles.actionWrap}>
-                          <a
-                            href="mailto:contact@13utopia.com?subject=Commission%20Inquiry"
-                            className={styles.deepDiveLink}
-                          >
-                            <span>Start a Project</span>
-                            <span className={styles.linkArrow}>↗</span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                {/* Interactive Arrow Indicator */}
+                <div className={styles.actionColumn}>
+                  <span className={styles.arrowIcon} aria-hidden="true">→</span>
                 </div>
               </div>
-            );
-          })}
-        </div>
-
-        {/* Section Bottom Navigation */}
-        <div className={styles.solutionsFooter}>
-          <div className={styles.footerActions}>
-            <a href="mailto:contact@13utopia.com" className={styles.fullStackCta}>
-              <span>Start a Project</span>
-              <span className={styles.btnArrow}>→</span>
-            </a>
-          </div>
-        </div>
+            </Link>
+          );
+        })}
+        {/* Bottom Hairline */}
+        <div className={styles.rowDivider} />
       </div>
     </section>
   );

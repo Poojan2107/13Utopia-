@@ -217,13 +217,13 @@ export function Plus3DCanvas({
     const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
     oneGeo.center();
     const oneMesh = new THREE.Mesh(oneGeo, matTitaniumOne);
-    oneMesh.position.set(-1.35, 0, 0);
+    oneMesh.position.set(-1.22, 0, 0);
     thirteenGroup.add(oneMesh);
 
     const threeGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
     threeGeo.center();
     const threeMesh = new THREE.Mesh(threeGeo, matTitaniumThree);
-    threeMesh.position.set(0.65, 0, 0);
+    threeMesh.position.set(0.60, 0, 0);
     thirteenGroup.add(threeMesh);
 
     emblemGroup.add(thirteenGroup);
@@ -573,22 +573,24 @@ export function Plus3DCanvas({
           targetScale = 0.96 * (1 - 0.04 * t);
           targetMorph = 1.0 - t;
         } else {
-          // Act Finale: Core CREATE · BUILD · GROW Trilogy (Settled Center as 13)
+          // Act Finale: Core CREATE · BUILD · GROW Trilogy (Settled Center as 13 aligned with UTOPIA)
           targetX = 0;
-          targetY = idleFloatY;
+          targetY = 0.0 + idleFloatY * 0.2;
           targetZ = -0.92;
           targetRotY = Math.PI * 8.0;
-          targetRotX = 0.06 + idleRotX;
-          targetRotZ = idleRotZ;
-          targetScale = 0.92;
+          targetRotX = 0.0 + idleRotX * 0.2;
+          targetRotZ = idleRotZ * 0.2;
+          targetScale = 0.94;
           targetMorph = 0.0;
         }
 
-        // Apply Mouse Parallax Offsets
-        targetX += mouseX * 0.45;
-        targetY += mouseY * 0.35;
-        targetRotY += mouseX * 0.28;
-        targetRotX += -mouseY * 0.22;
+        // Apply Mouse Parallax Offsets (anchored in finale so 13 and UTOPIA stay perfectly aligned)
+        const isFinale = p >= 0.92;
+        const pScale = isFinale ? 0.14 : 1.0;
+        targetX += mouseX * 0.45 * pScale;
+        targetY += mouseY * 0.35 * pScale;
+        targetRotY += mouseX * 0.28 * pScale;
+        targetRotX += -mouseY * 0.22 * pScale;
 
         // Precision physics damping
         const dampFactor = 0.095;

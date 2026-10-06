@@ -59,6 +59,11 @@ export default function WorkShowcase() {
     ];
   }, []);
 
+  const selectedProjectRef = useRef(selectedProject);
+  useEffect(() => {
+    selectedProjectRef.current = selectedProject;
+  }, [selectedProject]);
+
   const handleCardClick = useCallback((project: Project) => {
     setSelectedProject(project);
   }, []);
@@ -123,6 +128,7 @@ export default function WorkShowcase() {
     const onWheel = (e: WheelEvent) => {
       if (!isInViewRef.current) return;
       if (activeView !== "featured") return;
+      if (selectedProjectRef.current) return;
       const factor =
         e.deltaMode === 1 ? 24 : e.deltaMode === 2 ? window.innerHeight : 1;
       const delta =
@@ -133,6 +139,7 @@ export default function WorkShowcase() {
     const onPointerDown = (e: PointerEvent) => {
       if (!isInViewRef.current) return;
       if (activeView !== "featured") return;
+      if (selectedProjectRef.current) return;
       const target = e.target as HTMLElement | null;
       if (target?.closest("button") || target?.closest("a")) return;
 

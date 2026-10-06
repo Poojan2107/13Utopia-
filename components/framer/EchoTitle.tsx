@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { useInView } from "framer-motion";
 import styles from "@/styles/framer/EchoTitle.module.css";
 
-const LAYERS = 14;
+const LAYERS = 6;
 
 type EchoTitleProps = {
   text: string;

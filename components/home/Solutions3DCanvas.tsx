@@ -223,6 +223,15 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
     };
     window.addEventListener("resize", onResize);
 
+    // Per-capability target rotations [rotY, rotX, posY, scale]
+    const CAP_TARGETS = [
+      { rotY: 0.0,            rotX: 0.05,  posY: 0.2,  scale: 0.50 }, // 01 Brand
+      { rotY: Math.PI * 0.4, rotX: -0.08, posY: -0.3, scale: 0.48 }, // 02 Products
+      { rotY: Math.PI * 0.9, rotX: 0.12,  posY: 0.5,  scale: 0.46 }, // 03 AI
+      { rotY: Math.PI * 1.4, rotX: -0.04, posY: -0.1, scale: 0.52 }, // 04 Cloud
+      { rotY: Math.PI * 1.8, rotX: 0.08,  posY: 0.3,  scale: 0.44 }, // 05 Growth
+    ];
+
     // Kinematics Loop
     let rafId: number;
     let currentX = 0;
@@ -240,34 +249,32 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;
 
+      const active = activeIndexRef.current;
+      const cap = CAP_TARGETS[Math.min(active, CAP_TARGETS.length - 1)];
       const idleFloatY = Math.sin(elapsedTime * 1.2) * 0.06;
 
-      // Calculate scroll progress through the Solutions section
-      const rect = container.getBoundingClientRect();
-      const windowH = typeof window !== "undefined" ? window.innerHeight : 800;
-      const totalTravel = rect.height + windowH;
-      const currentTravel = windowH - rect.top;
-      const sectionProgress = Math.max(0, Math.min(1, currentTravel / totalTravel));
-
-      // Model travels smoothly down through the viewport as you scroll down
-      const scrollYOffset = 2.2 - sectionProgress * 4.4;
-      const scrollRotY = sectionProgress * Math.PI * 1.6;
-
-      // Centered 13 only, moving with scroll
-      const targetX = mouseX * 0.30;
-      const targetY = scrollYOffset + idleFloatY + mouseY * 0.20;
+      // Per-capability target overrides scroll-based drift
+      const targetX = mouseX * 0.25;
+      const targetY = cap.posY + idleFloatY + mouseY * 0.15;
       const targetZ = -1.6;
-      const targetRotY = scrollRotY + mouseX * 0.15;
-      const targetRotX = 0.08 + Math.sin(elapsedTime * 0.8) * 0.03 - mouseY * 0.12;
-      const targetRotZ = mouseX * 0.02;
+      const targetRotY = cap.rotY + mouseX * 0.18 + elapsedTime * 0.04;
+      const targetRotX = cap.rotX + Math.sin(elapsedTime * 0.8) * 0.025 - mouseY * 0.10;
+      const targetRotZ = mouseX * 0.025;
 
-      const damp = 0.06;
+      // Slower damp for dramatic inter-capability transitions
+      const damp = 0.032;
       currentX += (targetX - currentX) * damp;
       currentY += (targetY - currentY) * damp;
       currentZ += (targetZ - currentZ) * damp;
       currentRotX += (targetRotX - currentRotX) * damp;
       currentRotY += (targetRotY - currentRotY) * damp;
       currentRotZ += (targetRotZ - currentRotZ) * damp;
+
+      // Scale per capability
+      const targetScale = cap.scale;
+      thirteenGroup.scale.x += (targetScale - thirteenGroup.scale.x) * 0.04;
+      thirteenGroup.scale.y = thirteenGroup.scale.x;
+      thirteenGroup.scale.z = thirteenGroup.scale.x;
 
       thirteenGroup.position.set(currentX, currentY, currentZ);
       thirteenGroup.rotation.set(currentRotX, currentRotY, currentRotZ);

@@ -180,26 +180,7 @@ export function TransparentBustVideo({
     updateSize();
     window.addEventListener("resize", updateSize, { passive: true });
 
-    // Mouse & Touch tracking for 3D reactive head turning
-    let targetMouseX = 0;
-    let targetMouseY = 0;
-    let mouseX = 0;
-    let mouseY = 0;
     const startTime = performance.now();
-
-    const onPointerMove = (e: MouseEvent) => {
-      targetMouseX = (e.clientX / window.innerWidth) * 2.0 - 1.0;
-      targetMouseY = -(e.clientY / window.innerHeight) * 2.0 + 1.0;
-    };
-    window.addEventListener("mousemove", onPointerMove, { passive: true });
-
-    const onTouchMove = (e: TouchEvent) => {
-      if (e.touches.length > 0) {
-        targetMouseX = (e.touches[0].clientX / window.innerWidth) * 2.0 - 1.0;
-        targetMouseY = -(e.touches[0].clientY / window.innerHeight) * 2.0 + 1.0;
-      }
-    };
-    window.addEventListener("touchmove", onTouchMove, { passive: true });
 
     const playVideo = () => {
       video.muted = true;
@@ -240,25 +221,16 @@ export function TransparentBustVideo({
       }
 
       const elapsed = (performance.now() - startTime) * 0.001;
-      const idleRot = Math.sin(elapsed * 0.6) * 0.04;
-      const idleFloatY = Math.sin(elapsed * 0.8) * 0.03;
+      const idleFloatY = Math.sin(elapsed * 0.8) * 0.015;
 
-      mouseX += (targetMouseX - mouseX) * 0.055;
-      mouseY += (targetMouseY - mouseY) * 0.055;
-
-      const tiltY = mouseX * 22.0 + idleRot * 10.0;
-      const tiltX = -mouseY * 16.0;
-      const transX = mouseX * 36.0;
-      const transY = -mouseY * 24.0 + idleFloatY * 80.0;
-
-      canvas.style.transform = `perspective(1100px) rotateY(${tiltY.toFixed(2)}deg) rotateX(${tiltX.toFixed(2)}deg) translate3d(${transX.toFixed(1)}px, ${transY.toFixed(1)}px, 0)`;
+      canvas.style.transform = `translate3d(0, ${(idleFloatY * 60).toFixed(1)}px, 0)`;
 
       if (video.readyState >= video.HAVE_CURRENT_DATA) {
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
 
         if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
-        if (uMouse) gl.uniform2f(uMouse, mouseX, mouseY);
+        if (uMouse) gl.uniform2f(uMouse, 0.0, 0.0);
         if (uTime) gl.uniform1f(uTime, elapsed);
 
         gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -293,8 +265,6 @@ export function TransparentBustVideo({
       cancelAnimationFrame(animId);
       observer.disconnect();
       window.removeEventListener("resize", updateSize);
-      window.removeEventListener("mousemove", onPointerMove);
-      window.removeEventListener("touchmove", onTouchMove);
       document.removeEventListener("visibilitychange", onVis);
       video.removeEventListener("canplay", playVideo);
       gl.deleteTexture(texture);

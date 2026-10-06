@@ -1,6 +1,6 @@
 import {
   HomeNarrativeSection,
-  HomeSectionSolutions,
+  HomeHorizontalStatement,
   HomeSectionWork,
   HomeCTASection,
 } from "@/components/home";
@@ -19,7 +19,7 @@ export default function HomePage() {
       {/* Site Header (Top Right Logo & Menu Toggle) */}
       <SiteHeader />
 
-      {/* Unified Continuous Architecture (Hero -> 3D Story -> Narrative Bust -> Solutions Matrix -> Portfolio Carousel -> CTA Ascent) */}
+      {/* Unified Continuous Architecture (Hero -> 3D Story -> Digital Bust Sculpture -> Kinetic Thesis Cinema -> Work Carousel -> CTA Monolith) */}
       <main
         id="main-content"
         style={{
@@ -28,14 +28,14 @@ export default function HomePage() {
           backgroundColor: "transparent",
         }}
       >
-        {/* 01 — 3D ARCHITECTURAL HERO & NARRATIVE CONTINUUM (HERO -> MANIFESTO -> CREATE -> BUILD -> GROW) */}
+        {/* 01 — 3D ARCHITECTURAL HERO & NARRATIVE CONTINUUM */}
         <Continuous3DStory />
 
         {/* 02 — IDENTITY & PHILOSOPHY: Transparent WebGL Metallic Digital Bust & Architectural Thesis */}
         <HomeNarrativeSection />
 
-        {/* 03 — CAPABILITY ARCHITECTURE: What We Solve (Launch · Scale · Automate · Modernize · Transform) */}
-        <HomeSectionSolutions />
+        {/* 03 — CHAPTER 03 // THE THESIS: Monumental Kinetic Horizontal Parallax Cinema */}
+        <HomeHorizontalStatement />
 
         {/* 04 — SELECTED COMMISSIONS: 3D Jesper Landberg Portfolio Carousel */}
         <HomeSectionWork />

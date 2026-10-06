@@ -258,9 +258,6 @@ export function HomeSectionWork() {
       <div className={styles.headerBlock}>
         <div className={styles.titleWrap}>
           <h2 className={styles.mainTitle}>SELECTED WORK</h2>
-          <p className={styles.workLead}>
-            A selection of recent commissions across brand, product, and digital experiences.
-          </p>
         </div>
         <div className={styles.interactionHint} aria-hidden="true">
           <span className={styles.hintDot} />

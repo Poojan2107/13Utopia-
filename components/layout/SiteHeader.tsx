@@ -53,7 +53,7 @@ const NAV_ITEMS: NavItem[] = [
     index: "05",
     title: "JOURNAL",
     href: "/blog",
-    tagline: "Essays & Perspectives on Technology, Design & Systems",
+    tagline: "Dispatches & Perspectives on Technology, Design & Systems",
     category: "05 // JOURNAL",
     previewImage: "/images/specimen-04-build.jpg",
   },

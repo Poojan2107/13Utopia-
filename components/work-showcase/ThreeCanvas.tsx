@@ -17,6 +17,7 @@ uniform float u_leanA;      // Door lean signed depth
 uniform float u_leanW;      // Frustum half-width for lean
 uniform float u_hover;      // Pointer hover strength (0..1)
 uniform float u_dent;       // Hover dent depth
+uniform float u_distNorm;   // Normalized distance from center (0 = center, 1 = peripheral)
 
 varying vec2 vUv;
 varying vec3 vWorld;
@@ -91,18 +92,13 @@ void main() {
     // 1. World space position
     vec4 w = modelMatrix * vec4(position, 1.0);
 
-    // 2. Cursor hover dent
-    if (u_hover > 0.0001) {
-        w.z -= u_hover * u_dent * sheetDome(uv);
-    }
-
-    // 3. Roll about centerline
+    // 2. Roll about centerline
     w = sheetWind(w);
 
-    // 4. S-Curve in depth (Z)
+    // 3. S-Curve in depth (Z)
     w.z += sheetZ(w.x) * u_sheetP;
 
-    // 5. Diagonal shear & velocity rear-up
+    // 4. Diagonal shear & velocity rear-up + dynamic elastic mesh flex
     if (u_sheetW > 0.001) {
         float qw = w.x / u_sheetW;
         w.y += SHEET_DIAG * w.x * u_sheetP;
@@ -111,10 +107,14 @@ void main() {
             float m = 1.0 - smoothstep(-1.0, 0.3, qw);
             w.y += SHEET_REAR_Y * u_sheetW * u_sheetV * m * u_sheetP;
             w.z += SHEET_REAR_Z * u_sheetW * u_sheetV * m * u_sheetP;
+
+            // Elastic mesh velocity flex on outer edges
+            float edgeDist = abs(uv.x - 0.5) * 2.0;
+            w.z -= u_sheetV * 0.08 * edgeDist * (1.0 - uv.y) * u_sheetP;
         }
     }
 
-    // 6. Smooth door lean
+    // 5. Smooth door lean
     w = lean(w, u_sheetP);
 
     vWorld = w.xyz;
@@ -122,7 +122,7 @@ void main() {
 }
 `;
 
-// Custom Fragment Shader with analytical normals & specular gloss
+// Custom Fragment Shader with analytical normals, backside glass refraction & clean Gaussian DOF
 const fragmentShader = `
 uniform sampler2D u_texture;
 uniform sampler2D u_chrome;
@@ -140,6 +140,7 @@ uniform float u_sheetP;
 uniform float u_sheetC;
 uniform float u_leanA;
 uniform float u_leanW;
+uniform float u_distNorm;   // Normalized distance from center (0 = sharp center, 1 = defocused peripheral)
 
 varying vec2 vUv;
 varying vec3 vWorld;
@@ -185,14 +186,6 @@ vec3 calculateSheetNormal(float wx, vec2 uv, vec2 res) {
         dzdx += (u_leanA / u_leanW) * leanSlope(wx / u_leanW) * u_sheetP;
     }
 
-    // 3. Derivative of hover dent
-    if (u_hover > 0.0001) {
-        vec2 q = uv * 2.0 - 1.0;
-        float a = u_hover * u_dent;
-        dzdx += 4.0 * a * res.y * q.x * (1.0 - q.y * q.y) / max(res.x, 0.0001);
-        dzdy += 4.0 * a * q.y * (1.0 - q.x * q.x);
-    }
-
     vec3 n = normalize(vec3(-dzdx, -dzdy, 1.0));
 
     // Rotate normal with the surface bank roll
@@ -213,12 +206,35 @@ float roundedBoxSDF(vec2 p, vec2 b, float r) {
 }
 
 void main() {
-    // Media (VideoTexture / still) + static chrome overlay (title / pill)
-    vec4 media = texture2D(u_texture, vUv);
+    // 1. Clean Isotropic Gaussian Optical Defocus Blur (Zero chromatic displacement)
+    // Center card (u_distNorm ~ 0) is 100% tack sharp; peripheral cards receive smooth lens bokeh
+    float blurRadius = smoothstep(0.18, 0.90, u_distNorm) * 0.0065;
+    
+    vec4 mediaG = texture2D(u_texture, vUv);
+    vec4 media;
+    if (blurRadius > 0.0003) {
+        vec4 accum = mediaG * 0.24;
+        accum += texture2D(u_texture, vUv + vec2(blurRadius, 0.0)) * 0.12;
+        accum += texture2D(u_texture, vUv - vec2(blurRadius, 0.0)) * 0.12;
+        accum += texture2D(u_texture, vUv + vec2(0.0, blurRadius)) * 0.12;
+        accum += texture2D(u_texture, vUv - vec2(0.0, blurRadius)) * 0.12;
+        accum += texture2D(u_texture, vUv + vec2(blurRadius * 0.707, blurRadius * 0.707)) * 0.07;
+        accum += texture2D(u_texture, vUv - vec2(blurRadius * 0.707, blurRadius * 0.707)) * 0.07;
+        accum += texture2D(u_texture, vUv + vec2(-blurRadius * 0.707, blurRadius * 0.707)) * 0.07;
+        accum += texture2D(u_texture, vUv + vec2(blurRadius * 0.707, -blurRadius * 0.707)) * 0.07;
+        media = mix(mediaG, accum, smoothstep(0.18, 0.85, u_distNorm));
+    } else {
+        media = mediaG;
+    }
+
     vec4 chromeN = texture2D(u_chrome, vUv);
     vec4 chromeH = texture2D(u_chromeHover, vUv);
     vec4 chrome = mix(chromeN, chromeH, u_hover);
     vec3 tex = mix(media.rgb, chrome.rgb, chrome.a);
+
+    // Peripheral depth luminance (gently dims peripheral cards to make center card pop)
+    float depthLuminance = 1.0 - smoothstep(0.18, 0.95, u_distNorm) * 0.28;
+    tex *= depthLuminance;
 
     // Rounded rectangle mask
     vec2 p = (vUv - 0.5) * u_res;
@@ -226,40 +242,34 @@ void main() {
     float d = roundedBoxSDF(p, u_res * 0.5, r);
     float edgeAlpha = 1.0 - smoothstep(0.0, 1.5 / max(u_res.y, 1.0), d);
 
-    // Analytical normal calculation for silky champagne specular sheen
+    // Analytical normal calculation for silky specular sheen
     vec3 n = calculateSheetNormal(vWorld.x, vUv, u_res);
     vec3 lightDir = normalize(vec3(0.20, 0.80, 0.60));
     vec3 viewDir = normalize(vec3(0.0, 0.0, 1.0));
     vec3 halfVec = normalize(lightDir + viewDir);
 
-    // 1. Physical Glass Specular Glint across curved S-sheet surface
-    float spec = pow(max(dot(n, halfVec), 0.0), 36.0) * (0.24 + 0.28 * u_hover);
-    vec3 specColor = vec3(1.0, 0.98, 0.92) * spec;
+    // Subtle specular highlight on crests
+    float spec = pow(max(dot(n, halfVec), 0.0), 32.0) * (0.16 + 0.14 * u_hover);
+    float rim = pow(1.0 - max(dot(n, viewDir), 0.0), 2.8) * 0.08;
+    vec3 sheen = vec3(1.0, 1.0, 1.0) * spec + vec3(0.9, 0.9, 0.9) * rim;
 
-    // 2. Physical Glass Fresnel Sheen (Translucent crystal rim reflection)
-    float fresnel = pow(1.0 - max(dot(n, viewDir), 0.0), 2.5);
-    vec3 glassSheen = vec3(0.96, 0.92, 0.86) * fresnel * (0.22 + 0.32 * u_hover);
-
-    // 3. Internal Frosted Glass Chamfer / Bevel Refraction Rim
-    float glassChamfer = smoothstep(0.0, 3.5 / max(u_res.y, 1.0), -d) * smoothstep(-14.0 / max(u_res.y, 1.0), -1.5 / max(u_res.y, 1.0), d);
-
-    // 4. Card border edge outline & bevel highlight (Crisp champagne crystal stroke)
+    // Subtle crisp border outline (frames dark video scenes against void)
+    float borderWidth = 1.6 / max(u_res.y, 1.0);
     float borderDist = abs(d);
-    float borderStroke = 1.0 - smoothstep(0.0, 2.2 / max(u_res.y, 1.0), borderDist);
-    vec3 borderColor = mix(vec3(0.95, 0.89, 0.82), vec3(1.0, 1.0, 1.0), u_hover);
+    float borderStroke = 1.0 - smoothstep(0.0, borderWidth, borderDist);
     
-    // 5. Inner vignette shadow to frame the video content and pop off dark background
-    float innerVignette = smoothstep(-16.0 / max(u_res.y, 1.0), 0.0, d);
-    vec3 surfaceColor = tex * (0.84 + 0.16 * (1.0 - innerVignette));
+    // Luxury titanium border color with directional top glint
+    vec3 baseBorder = mix(vec3(0.40, 0.40, 0.44), vec3(0.85, 0.85, 0.90), u_hover);
+    float topGlint = smoothstep(0.1, 0.8, n.y + (1.0 - vUv.y) * 0.3) * 0.28;
+    vec3 borderColor = baseBorder + vec3(topGlint);
+    
+    // Crisp, vibrant texture color with subtle border highlight
+    vec3 col = mix(tex, borderColor, borderStroke * (0.45 + 0.35 * u_hover)) + sheen;
 
-    // Combine glass layers
-    vec3 finalColor = mix(surfaceColor, borderColor, borderStroke * (0.45 + 0.45 * u_hover)) 
-                    + glassSheen 
-                    + specColor 
-                    + (vec3(1.0, 0.96, 0.90) * glassChamfer * 0.14);
-
-    gl_FragColor = vec4(finalColor, media.a * u_alpha * edgeAlpha);
+    gl_FragColor = vec4(col, media.a * u_alpha * edgeAlpha);
 }
+
+
 `;
 
 // Floor Grid Shader
@@ -339,26 +349,14 @@ const paintChrome = (
   ctx.clearRect(0, 0, w, h);
   const s = w / 1536;
 
-  // 1. Frosted Glass Chassis at bottom of card
-  const plateH = 200 * s;
-  const plateY = h - plateH;
-  const scrim = ctx.createLinearGradient(0, h * 0.45, 0, h);
+  // 1. Bottom shadow scrim for legibility
+  const scrim = ctx.createLinearGradient(0, h * 0.52, 0, h);
   scrim.addColorStop(0, "rgba(0, 0, 0, 0)");
-  scrim.addColorStop(0.35, "rgba(10, 10, 14, 0.25)");
-  scrim.addColorStop(0.70, "rgba(8, 8, 12, 0.72)");
-  scrim.addColorStop(1, "rgba(5, 5, 8, 0.94)");
+  scrim.addColorStop(0.50, "rgba(6, 6, 10, 0.35)");
+  scrim.addColorStop(1, "rgba(4, 4, 8, 0.78)");
   ctx.fillStyle = scrim;
-  ctx.fillRect(0, h * 0.45, w, h * 0.55);
+  ctx.fillRect(0, h * 0.52, w, h * 0.48);
 
-  // Subtle frosted glass hairline rim
-  ctx.save();
-  ctx.beginPath();
-  ctx.moveTo(32 * s, plateY + 20 * s);
-  ctx.lineTo(w - 32 * s, plateY + 20 * s);
-  ctx.strokeStyle = isHovered ? "rgba(244, 223, 200, 0.35)" : "rgba(255, 255, 255, 0.12)";
-  ctx.lineWidth = 1.5 * s;
-  ctx.stroke();
-  ctx.restore();
 
   const padX = 72 * s;
   const titleSize = Math.round(56 * s);
@@ -780,6 +778,8 @@ export default function ThreeCanvas({
             u_sheetV: { value: 0.0 },
             u_leanA: { value: -0.06 },
             u_leanW: { value: 1.0 },
+            u_distNorm: { value: 0.0 },
+            u_pointerUv: { value: new THREE.Vector2(0.5, 0.5) },
           },
           transparent: true,
           side: THREE.FrontSide,
@@ -954,6 +954,10 @@ export default function ThreeCanvas({
           u.u_leanA.value = sheet.A;
           u.u_leanW.value = sheet.W;
 
+          // Normalized distance from center (0 = center, 1 = peripheral)
+          const centerDistNorm = Math.min(1.0, Math.abs(worldX) / Math.max(sheet.W * 0.82, 0.001));
+          u.u_distNorm.value = centerDistNorm;
+
           const isHovered = hoveredSlugRef.current === slug;
           const targetHover = isHovered ? 1.0 : 0.0;
           u.u_hover.value += (targetHover - u.u_hover.value) * 0.16;
@@ -1033,6 +1037,12 @@ export default function ThreeCanvas({
         if (hits.length > 0) {
           const found = cardMeshes.find((c) => c.mesh === hits[0].object);
           hoveredSlugRef.current = found?.slug ?? null;
+          if (found && hits[0].uv) {
+            const u = (found.mesh.material as THREE.ShaderMaterial).uniforms;
+            if (u.u_pointerUv) {
+              u.u_pointerUv.value.copy(hits[0].uv);
+            }
+          }
         } else {
           hoveredSlugRef.current = null;
         }

@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "@/styles/plus-ex/Continuous3DStory.module.css";
 import { Plus3DCanvas } from "./Plus3DCanvas";
+
+import { UtopiaPaintReveal } from "./UtopiaPaintReveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -286,9 +289,6 @@ export function Continuous3DStory() {
                     <h2 className={styles.statementLead}>
                       {world.leadTitle}
                     </h2>
-                    <p className={styles.statementSub}>
-                      {world.subTitle}
-                    </p>
                     <div className={styles.statementPill}>
                       <span>{world.pill}</span>
                     </div>
@@ -298,53 +298,24 @@ export function Continuous3DStory() {
             );
           })}
 
-          {/* Act Finale: Core Trilogy Architecture (CREATE · BUILD · GROW) */}
-          <div
-            className={`${styles.act} ${styles.finaleAct} ${
-              scrollProgress >= 0.92 ? styles.actVisible : styles.actHidden
-            }`}
-          >
-            <div className={styles.finaleContent}>
-              <div className={styles.finaleEyebrow}>
-                <span className={styles.finaleTag}>13 UTOPIA</span>
-                <span className={styles.finaleTag}>FULL-SPECTRUM CAPABILITY</span>
-              </div>
+          {/* Act Finale: Utopia Brush Calligraphy Painting itself onto the 3D 13 Emblem */}
+          {(() => {
+            const isFinaleActive = scrollProgress >= 0.915;
+            const finaleP = Math.max(0, Math.min(1, (scrollProgress - 0.92) / 0.075));
 
-              <div className={styles.trilogyHeader}>
-                <h2 className={styles.trilogyTitle}>
-                  <span className={styles.trilogyWord}>CREATE</span>
-                  <span className={styles.trilogyDot}>·</span>
-                  <span className={styles.trilogyWord}>BUILD</span>
-                  <span className={styles.trilogyDot}>·</span>
-                  <span className={styles.trilogyWord}>GROW</span>
-                </h2>
-              </div>
-
-              <p className={styles.finaleThesis}>
-                Brand. Product. Growth. One company, end to end.
-              </p>
-
-              <div className={styles.trilogyColumns}>
-                <div className={styles.trilogyCard}>
-                  <span className={styles.cardIndex}>01 / CREATE</span>
-                  <h4 className={styles.cardTitle}>Brand &amp; Design</h4>
-                  <p className={styles.cardDesc}>Identity systems, art direction, UI/UX, and motion.</p>
-                </div>
-
-                <div className={styles.trilogyCard}>
-                  <span className={styles.cardIndex}>02 / BUILD</span>
-                  <h4 className={styles.cardTitle}>Engineering &amp; Product</h4>
-                  <p className={styles.cardDesc}>Websites, apps, SaaS, AI agents, and cloud infrastructure.</p>
-                </div>
-
-                <div className={styles.trilogyCard}>
-                  <span className={styles.cardIndex}>03 / GROW</span>
-                  <h4 className={styles.cardTitle}>Marketing &amp; Growth</h4>
-                  <p className={styles.cardDesc}>SEO, paid acquisition, content strategy, and lead generation.</p>
+            return (
+              <div
+                className={`${styles.act} ${styles.finaleAct} ${
+                  isFinaleActive ? styles.actVisible : styles.actHidden
+                }`}
+              >
+                <div className={styles.finaleContent}>
+                  {/* Pure 13 UTOPIA Mastermark Canvas */}
+                  <UtopiaPaintReveal progress={finaleP} />
                 </div>
               </div>
-            </div>
-          </div>
+            );
+          })()}
         </div>
       </div>
     </section>

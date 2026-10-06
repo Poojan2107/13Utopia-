@@ -41,12 +41,7 @@ export default function Navigation({
         </button>
       </div>
 
-      {/* Middle Telemetry / Interaction Hint */}
-      <div className={styles.dockTelemetry}>
-        <span className={styles.dockTelemetryTag}>04 // SELECTED COMMISSIONS</span>
-        <span className={styles.dockTelemetryDivider}>·</span>
-        <span className={styles.dockTelemetryHint}>DRAG OR SCROLL TO NAVIGATE</span>
-      </div>
+
 
       {/* Right Action: Initiate Alliance */}
       <Link

@@ -41,11 +41,11 @@ export default function ReviewBlogIndexPage() {
 
           <h1 className={styles.title}>
             PERSPECTIVES &amp;<br />
-            ARCHITECTURAL ESSAYS
+            ARCHITECTURAL DISPATCHES
           </h1>
 
           <p className={styles.subtitle}>
-            Actual real-world essays from 13utopia.com — rewritten into first-principles engineering and brand strategy with zero AI slop, zero mythology tropes, and high-contrast typography.
+            Actual real-world dispatches from 13utopia.com — rewritten into first-principles engineering and brand strategy with zero AI slop, zero mythology tropes, and high-contrast typography.
           </p>
         </section>
 

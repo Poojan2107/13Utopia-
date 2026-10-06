@@ -126,15 +126,9 @@ export function SiteFooter() {
             <span className={styles.socialTitle}>LOCATIONS</span>
             <div className={styles.hubCard}>
               <span className={styles.hubCountry}>Ahmedabad, India</span>
-              <p className={styles.hubAddress}>
-                1123 Iconic Shyamal, Shyamal Cross Roads, 132 Feet Ring Rd, Ahmedabad, Gujarat 380015
-              </p>
             </div>
             <div className={styles.hubCard}>
-              <span className={styles.hubCountry}>Scarborough, Canada</span>
-              <p className={styles.hubAddress}>
-                30 Kimbercroft Ct, Markham Corners, Scarborough, ON M1S 4K9
-              </p>
+              <span className={styles.hubCountry}>Toronto, Canada</span>
             </div>
           </div>
 

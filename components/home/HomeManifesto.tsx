@@ -259,10 +259,6 @@ export function HomeManifesto() {
             WE BUILD WHAT MATTERS.{" "}
             <span className={styles.manifestoHeadingAlt}>CREATIVE, TECHNOLOGY AND GROWTH. FULLY INTEGRATED.</span>
           </h2>
-
-          <p className={styles.manifestoText}>
-            13 Utopia is a creative technology and growth company for organisations that want more than a vendor. We bring brand, product, and growth strategy into a single engagement, with one team that thinks across all three.
-          </p>
         </div>
 
         {/* 2-Column Capabilities Triad & 3D Monolith Workspace */}
@@ -301,10 +297,6 @@ export function HomeManifesto() {
               <h3 className={styles.triadCardTitle}>
                 {TRIAD[activeTriadIndex].title}
               </h3>
-
-              <p className={styles.triadCardDesc}>
-                {TRIAD[activeTriadIndex].desc}
-              </p>
 
               <div className={styles.servicesGrid}>
                 {(TRIAD[activeTriadIndex]?.deliverables || []).map((serv, sIdx) => (

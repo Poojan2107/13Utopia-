@@ -1,0 +1,11 @@
+.drumContainer {
+  position: relative;
+  width: 100%;
+  height: clamp(480px, 62vh, 680px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  touch-action: none;
+  background: transparent;
+}

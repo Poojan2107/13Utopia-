@@ -50,6 +50,17 @@ export default async function BlogPostPage({ params }: Props) {
               <span className={styles.authorRole}>{post.author.role}</span>
             </div>
           </div>
+
+          {post.image && (
+            <div className={styles.heroVisualContainer}>
+              <img
+                src={post.image}
+                alt={post.title}
+                className={styles.heroVisualImage}
+              />
+              <div className={styles.heroVisualScrim} />
+            </div>
+          )}
         </header>
 
         <article className={styles.articleBody}>

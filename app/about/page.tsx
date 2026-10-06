@@ -29,10 +29,6 @@ export default function AboutPage() {
               <br />
               AMBITION.
             </h1>
-
-            <p className={styles.heroThesis}>
-              13 Utopia is an independent creative technology and growth company. We operate at the intersection of brand architecture, production software engineering, and category dominance.
-            </p>
           </div>
         </section>
 
@@ -139,36 +135,24 @@ export default function AboutPage() {
               <span className={styles.principleWatermark}>01</span>
               <span className={styles.principleNum}>01 // FIRST PRINCIPLES</span>
               <h3 className={styles.principleTitle}>Custom Architecture Only</h3>
-              <p className={styles.principleDesc}>
-                We refuse disposable frameworks, off-the-shelf themes, and generic templates. Every system is custom-engineered for your exact commercial, technical, and aesthetic needs.
-              </p>
             </div>
 
             <div className={styles.principleBlock}>
               <span className={styles.principleWatermark}>02</span>
               <span className={styles.principleNum}>02 // ZERO TRANSLATION LOSS</span>
               <h3 className={styles.principleTitle}>Direct Builder Access</h3>
-              <p className={styles.principleDesc}>
-                No bloated account managers or bureaucratic middlemen. You collaborate directly with the core designers and engineers actually building the product.
-              </p>
             </div>
 
             <div className={styles.principleBlock}>
               <span className={styles.principleWatermark}>03</span>
               <span className={styles.principleNum}>03 // SHIP FAST</span>
               <h3 className={styles.principleTitle}>High-Velocity Execution</h3>
-              <p className={styles.principleDesc}>
-                We work in high-intensity sprints with tight feedback loops. Production-ready work is delivered in weeks, not months of slide decks.
-              </p>
             </div>
 
             <div className={styles.principleBlock}>
               <span className={styles.principleWatermark}>04</span>
               <span className={styles.principleNum}>04 // OWNERSHIP</span>
               <h3 className={styles.principleTitle}>Commercial Alignment</h3>
-              <p className={styles.principleDesc}>
-                We treat your commercial outcomes as our own. If it does not drive real business value, user acquisition, or category leadership, we do not build it.
-              </p>
             </div>
           </div>
         </section>

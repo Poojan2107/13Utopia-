@@ -1,0 +1,56 @@
+.masterLockupContainer {
+  position: relative;
+  width: min(85vw, 680px);
+  height: min(85vw, 680px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: visible;
+  margin: 0 auto;
+}
+
+.paintCanvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  z-index: 2;
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95))
+    drop-shadow(0 0 12px rgba(255, 255, 255, 0.18));
+}
+
+.titaniumHalo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: 85%;
+  height: 85%;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 40%,
+    transparent 68%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+.haloActive {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .masterLockupContainer {
+    width: 92vw;
+    height: 92vw;
+    max-height: 440px;
+  }
+}

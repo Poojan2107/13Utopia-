@@ -1,0 +1,192 @@
+/* ==========================================================
+   HomeHorizontalStatement — Chapter 03: Kinetic Convergence
+   100vh Pinned Dual Opposing Typography Cinema with 3D Emblem
+   ========================================================== */
+
+.horizontalSection {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: transparent;
+  z-index: 5;
+  color: #ffffff;
+}
+
+.pinContainer {
+  height: 100vh;
+  height: 100dvh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0 clamp(1.5rem, 4vw, 5rem);
+}
+
+/* ── Central Convergence Energy Aura ── */
+.convergenceGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(900px, 90vw);
+  height: min(600px, 70vh);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 45%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(40px);
+}
+
+/* ── 3D Emblem Stage Canvas ── */
+.emblemStage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.95;
+
+}
+
+.canvas3D {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+/* ── Parallax Background Ghost Outline Ribbon ── */
+.backgroundViewport {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.14;
+}
+
+.backgroundTrack {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.ghostText {
+  font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
+  font-size: clamp(90px, 16vw, 240px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.18);
+  user-select: none;
+  padding-left: 5vw;
+}
+
+/* ── Main Foreground Dual-Opposing Stage ── */
+.stageLockup {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2rem, 4.5vh, 4rem);
+  text-align: center;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+/* Top Line (Sweeps from LEFT) */
+.lineTrackLeft {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+
+.leadText {
+  font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
+  font-size: clamp(16px, 2.05vw, 32px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.82);
+  text-transform: uppercase;
+  margin: 0;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.98);
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Bottom Line (Sweeps from RIGHT) */
+.lineTrackRight {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+
+.grandEmblem {
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", "Inter", sans-serif);
+  font-size: clamp(48px, 9.5vw, 150px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0;
+  background: linear-gradient(
+    135deg,
+    #ffffff 20%,
+    rgba(255, 255, 255, 0.95) 50%,
+    rgba(215, 215, 225, 0.85) 85%,
+    #ffffff 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 12px 40px rgba(0, 0, 0, 0.98)) drop-shadow(0 0 60px rgba(255, 255, 255, 0.28));
+  user-select: none;
+  white-space: nowrap;
+}
+
+
+/* ── Mobile Adaptations ── */
+@media (max-width: 768px) {
+  .leadText {
+    font-size: clamp(18px, 5.2vw, 32px);
+    line-height: 1.25;
+  }
+
+  .grandEmblem {
+    font-size: clamp(36px, 10.5vw, 68px);
+    white-space: normal;
+  }
+
+  .ghostText {
+    font-size: clamp(60px, 18vw, 110px);
+  }
+}

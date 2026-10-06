@@ -6,15 +6,16 @@ import styles from "@/styles/motion/AmbientField.module.css";
 
 interface AmbientFieldProps {
   showEmblem?: boolean;
+  emblemOffsetX?: number;
 }
 
 /**
  * 13 UTOPIA Signature Atmosphere:
  * 1. Volumetric Cosmic Smoke & Nebula Shader
  * 2. Stardust Grain Field
- * 3. Centered Liquid Titanium "13" Emblem with continuous scroll & idle motion across all inner pages
+ * 3. Centered/Offset Liquid Titanium "13" Emblem with continuous scroll & idle motion across all inner pages
  */
-export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
+export function AmbientField({ showEmblem = true, emblemOffsetX = 0 }: AmbientFieldProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -338,6 +339,15 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
       threeMesh.position.set(0.95, 0, 0);
       emblemGroup.add(threeMesh);
 
+      // Precisely center the combined geometry to (0,0,0)
+      const emblemBox = new THREE.Box3().setFromObject(emblemGroup);
+      const emblemCenter = new THREE.Vector3();
+      emblemBox.getCenter(emblemCenter);
+      oneMesh.position.x -= emblemCenter.x;
+      oneMesh.position.y -= emblemCenter.y;
+      threeMesh.position.x -= emblemCenter.x;
+      threeMesh.position.y -= emblemCenter.y;
+
       // Dead center in screen
       emblemGroup.position.set(0, 0, 0);
       const initialScale = isMobile ? 0.72 : 0.95;
@@ -527,7 +537,10 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
           emblemGroup.rotation.x += (targetRotX - emblemGroup.rotation.x) * 0.065;
           emblemGroup.rotation.z += (targetRotZ - emblemGroup.rotation.z) * 0.065;
 
-          // Harmonic multi-axis floating float with subtle scroll parallax
+          // Harmonic multi-axis floating float with subtle scroll parallax and responsive offset
+          const targetPosX = (width >= 1024 ? emblemOffsetX : 0) + (mouseX * 0.15);
+          emblemGroup.position.x += (targetPosX - emblemGroup.position.x) * 0.06;
+
           const idleBobY = Math.sin(elapsedTime * 1.2) * 0.14;
           const scrollParallaxY = -Math.sin(smoothScrollY * 0.0006) * 0.20;
           emblemGroup.position.y += ((idleBobY + scrollParallaxY) - emblemGroup.position.y) * 0.06;
@@ -537,7 +550,7 @@ export function AmbientField({ showEmblem = true }: AmbientFieldProps) {
 
           // Dynamic sweeping specular point light
           if (mouseLight) {
-            mouseLight.position.x += (mouseX * 6.5 - mouseLight.position.x) * 0.08;
+            mouseLight.position.x += ((mouseX * 6.5 + (width >= 1024 ? emblemOffsetX : 0)) - mouseLight.position.x) * 0.08;
             mouseLight.position.y += (mouseY * 6.5 - mouseLight.position.y) * 0.08;
             mouseLight.position.z = 4.2 + Math.sin(elapsedTime * 1.4) * 0.6;
           }
