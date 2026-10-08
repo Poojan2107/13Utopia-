@@ -93,9 +93,10 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
 
     // Materials: Dark Obsidian Titanium with specular glint
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x08090c),
-      roughness: 0.28,
-      metalness: 0.90,
+      color: new THREE.Color(0x22262e),
+      roughness: 0.14,
+      metalness: 0.94,
+      emissive: new THREE.Color(0x050608),
       clearcoat: 0.90,
       clearcoatRoughness: 0.10,
       reflectivity: 0.95,
@@ -104,9 +105,10 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
     });
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x06070a),
-      roughness: 0.28,
-      metalness: 0.90,
+      color: new THREE.Color(0x1e222a),
+      roughness: 0.14,
+      metalness: 0.94,
+      emissive: new THREE.Color(0x050608),
       clearcoat: 0.90,
       clearcoatRoughness: 0.10,
       reflectivity: 0.95,

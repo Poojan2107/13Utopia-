@@ -8,13 +8,27 @@ import { Continuous3DStory } from "@/components/plus-ex";
 import { SiteHeader, SiteFooter } from "@/components/layout";
 import {
   AmbientField,
+  ValeranCursor,
   SmoothScrollProvider,
 } from "@/components/motion";
 
 export default function HomePage() {
   return (
     <SmoothScrollProvider>
-      <AmbientField showEmblem={false} />
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          minHeight: "100vh",
+          backgroundColor: "#000000",
+          overflowX: "clip",
+        }}
+      >
+        {/* Sitewide atmosphere */}
+        <AmbientField showEmblem={false} />
+
+        {/* Luxury Square Cursor */}
+        <ValeranCursor />
 
       {/* Site Header (Top Right Logo & Menu Toggle) */}
       <SiteHeader />
@@ -46,6 +60,7 @@ export default function HomePage() {
         {/* 06 — FOOTER: Global Studio Hubs (India & Canada) & Kinetic Wordmark */}
         <SiteFooter />
       </main>
-    </SmoothScrollProvider>
+    </div>
+  </SmoothScrollProvider>
   );
 }

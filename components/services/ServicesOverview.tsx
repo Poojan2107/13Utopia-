@@ -19,7 +19,7 @@ export function ServicesOverview() {
   return (
     <SmoothScrollProvider>
       {/* Signature 3D Titanium "13" Emblem & Ambient Background - Centered */}
-      <AmbientField showEmblem={true} emblemOffsetX={0} />
+      <AmbientField showEmblem={false} />
       <SiteHeader />
 
       <main className={styles.page}>

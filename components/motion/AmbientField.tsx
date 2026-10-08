@@ -11,11 +11,11 @@ interface AmbientFieldProps {
 
 /**
  * 13 UTOPIA Signature Atmosphere:
- * 1. Volumetric Cosmic Smoke & Nebula Shader
- * 2. Stardust Grain Field
- * 3. Centered/Offset Liquid Titanium "13" Emblem with continuous scroll & idle motion across all inner pages
+ * 1. Liquid bronze silk — flowing satin ribbons with champagne specular streaks
+ * 2. Dark content void at center for legibility
+ * 3. Optional liquid "13" emblem with scroll & idle motion on inner pages
  */
-export function AmbientField({ showEmblem = true, emblemOffsetX = 0 }: AmbientFieldProps) {
+export function AmbientField({ showEmblem = false, emblemOffsetX = 0 }: AmbientFieldProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -41,11 +41,11 @@ export function AmbientField({ showEmblem = true, emblemOffsetX = 0 }: AmbientFi
     renderer.setPixelRatio(dpr);
     renderer.setSize(width, height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
+    renderer.toneMappingExposure = 1.55;
     renderer.setClearColor(0x000000, 1);
     container.appendChild(renderer.domElement);
 
-    // ── 01. HIGH-EFFICIENCY VOLUMETRIC LIQUID SMOKE SHADER ──
+    // ── 01. LIQUID BRONZE SILK SHADER ──
     const nebulaVertexShader = `
       varying vec2 vUv;
       void main() {
@@ -113,13 +113,6 @@ export function AmbientField({ showEmblem = true, emblemOffsetX = 0 }: AmbientFi
         return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
       }
 
-      float fbm(vec3 p) {
-        float v = 0.52 * snoise(p);
-        v += 0.30 * snoise(p * 2.05 + vec3(17.3));
-        v += 0.14 * snoise(p * 4.12 + vec3(43.8));
-        return v;
-      }
-
       float hash(vec2 p) {
         p = fract(p * vec2(123.34, 456.21));
         p += dot(p, p + 45.32);
@@ -128,55 +121,141 @@ export function AmbientField({ showEmblem = true, emblemOffsetX = 0 }: AmbientFi
 
       void main() {
         vec2 centeredUv = (gl_FragCoord.xy - 0.5 * uResolution.xy) / min(uResolution.x, uResolution.y);
-        vec2 mouseP = uMouse * 0.5;
+        float r = length(centeredUv);
+        float aspect = uResolution.x / uResolution.y;
 
-        vec2 p = centeredUv * 1.30 + uMouse * 0.08;
-        p.y += uScroll * 0.00022;
+        // Soft elliptical void — widens at center for legibility, tapers at edges
+        float centerVoid = 0.08 + 0.92 * smoothstep(0.10, 0.72, r);
 
-        float t = uTime * 0.038;
+        // Outer vignette darkening — pulls the scene into deep cosmic black at corners
+        float vignette = 1.0 - smoothstep(0.42, 1.05, r);
 
-        // 4-octave curl-noise fluid advection & domain warping (Prototype 03)
-        float q1 = fbm(vec3(p * 1.15, t));
-        float q2 = fbm(vec3(p * 1.75 + vec2(q1 * 0.65, -q1 * 0.45), t * 1.15));
-        float smoke = fbm(vec3(p * 2.10 + vec2(q2 * 0.50, q1 * 0.50), t * 1.30));
+        // Pointer parallax with fixed viewport framing
+        vec2 drift = uMouse * 0.06;
+        vec2 uv = centeredUv + drift;
+        // Scroll dynamically drives silk wave undulation without translating the field off-screen
+        float t = uTime * 0.048 + uScroll * 0.00010;
+        float tFast = uTime * 0.090 + uScroll * 0.00015;
 
-        float density = smoothstep(-0.15, 0.78, smoke + q1 * 0.25 + q2 * 0.15);
+        // Gentle tilt — silk sweeps slightly downhill left to right
+        float ang = -0.16;
+        mat2 rot = mat2(cos(ang), -sin(ang), sin(ang), cos(ang));
+        vec2 suv = rot * uv;
 
-        vec3 spaceVoid = vec3(0.0, 0.0, 0.0);
-        vec3 graphitePlume = vec3(0.035, 0.035, 0.038);
-        vec3 liquidSilver = vec3(0.11, 0.11, 0.12);
-        vec3 titaniumLight = vec3(0.32, 0.32, 0.34);
-        vec3 crystalGlint = vec3(0.92, 0.92, 0.95);
+        // ── LAYER 1: PRIMARY LIQUID SILK RIBBONS (9 bands, broad satin volume) ──
+        float body = 0.0;   // broad satin volume
+        float crest = 0.0;  // sharp folded edge highlight
+        float hot = 0.0;    // traveling specular hotspot
 
-        vec3 col = spaceVoid;
-        col = mix(col, graphitePlume, smoothstep(0.0, 0.35, density));
-        col = mix(col, liquidSilver, smoothstep(0.28, 0.70, density));
-        col = mix(col, titaniumLight, smoothstep(0.60, 1.00, density) * 0.85);
+        for (int i = 0; i < 9; i++) {
+          float fi = float(i);
+          float yOff = (fi - 4.0) * 0.155;
+          float wave =
+            sin(suv.x * 1.35 + t * (0.75 + fi * 0.11) + fi * 2.1) * 0.145 +
+            cos(suv.x * 2.60 - t * 0.55 + fi * 0.9) * 0.060 +
+            sin(suv.x * 0.65 + t * 0.30 + fi * 1.4) * 0.075 +
+            cos(suv.x * 4.20 + t * 1.10 + fi * 0.7) * 0.022;
+          float d = suv.y - yOff - wave;
 
-        // Stardust Sparkles
-        vec2 sUv = (centeredUv + uMouse * 0.03) * 75.0;
+          float g = exp(-abs(d) * 6.5);
+          float c = exp(-abs(d) * 28.0);
+          float m = 0.5 + 0.5 * sin(suv.x * 2.1 - tFast * (1.3 + fi * 0.18) + fi * 2.4);
+          m = m * m * m;
+
+          body  += g * (0.28 + 0.72 * m);
+          crest += c * (0.20 + 0.80 * m);
+          hot   += c * m * (0.85 + 0.15 * sin(tFast * 2.0 + fi));
+        }
+
+        // ── LAYER 2: DEEP SLOW AURORA WISPS (cross-diagonal bronze clouds) ──
+        float aurora = 0.0;
+        float angB = 0.55;
+        mat2 rotB = mat2(cos(angB), -sin(angB), sin(angB), cos(angB));
+        vec2 suvB = rotB * uv;
+        float tB = uTime * 0.022;
+        for (int j = 0; j < 5; j++) {
+          float fj = float(j);
+          float yOffB = (fj - 2.0) * 0.32;
+          float waveB =
+            sin(suvB.x * 0.80 + tB * (0.45 + fj * 0.12) + fj * 1.7) * 0.22 +
+            cos(suvB.x * 1.60 - tB * 0.38 + fj * 0.6) * 0.10;
+          float dB = suvB.y - yOffB - waveB;
+          float gB = exp(-abs(dB) * 3.8);
+          aurora += gB * 0.18;
+        }
+
+        // ── BRONZE SILK PALETTE (richer, more saturated) ──
+        vec3 colVoid        = vec3(0.012, 0.008, 0.005);  // near-black obsidian
+        vec3 colDeepBronze  = vec3(0.18,  0.11,  0.06);   // dark warm amber
+        vec3 colBronze      = vec3(0.52,  0.36,  0.18);   // rich bronze
+        vec3 colChampagne   = vec3(0.88,  0.70,  0.44);   // champagne gold
+        vec3 colBlaze       = vec3(1.00,  0.90,  0.72);   // near-white incandescent core
+        vec3 colStar        = vec3(0.96,  0.97,  1.00);   // cold stellar white
+        vec3 colAurora      = vec3(0.35,  0.22,  0.10);   // deep amber aurora cloud
+
+        // Base — deep obsidian void
+        vec3 col = colVoid;
+
+        // Aurora layer bleeds warm amber into the background
+        col = mix(col, colAurora, aurora * 0.55 * (1.0 - centerVoid * 0.4));
+
+        // Primary silk ribbons
+        col += colDeepBronze * body * 0.70;
+        col += colBronze     * crest * 0.80;
+        col += colChampagne  * hot * 1.15;
+        col += colBlaze      * pow(hot, 2.5) * 0.85;
+        col += colStar       * pow(hot, 4.5) * 0.50;
+
+        // Apply center void — keeps hero copy legible
+        col *= mix(0.12, 1.0, centerVoid);
+
+        // Outer vignette — cinematic black crush at edges
+        col *= vignette;
+
+        // ── MICRO-FIBER GRAIN riding the silk ──
+        float grit = snoise(vec3(suv * 10.0, t * 0.9)) * 0.5 + 0.5;
+        col *= 0.82 + 0.32 * grit;
+
+        // ── DENSE SHARP STARFIELD ──
+        vec2 sUv = uv * 110.0;
         vec2 sId = floor(sUv);
         vec2 sGv = fract(sUv) - 0.5;
         float sH = hash(sId);
-        if (sH > 0.84) {
-          float d = length(sGv);
-          float sparkle = smoothstep(0.05, 0.008, d) * (0.4 + 0.6 * sin(uTime * 3.5 + sH * 6.28));
-          col += crystalGlint * sparkle * 0.35;
+        if (sH > 0.80) {
+          float ds = length(sGv);
+          float size = mix(0.026, 0.007, sH);
+          float sparkle = smoothstep(size, size * 0.12, ds);
+          float twinkle = 0.50 + 0.50 * sin(uTime * 2.6 + sH * 6.28);
+          float starBrightness = mix(0.22, 0.65, sH);
+          // Warm golden tint for stars near silk, cold white for outliers
+          vec3 starCol = mix(colChampagne, colStar, smoothstep(0.80, 0.95, sH));
+          col += starCol * sparkle * twinkle * starBrightness * vignette;
         }
 
-        // Pointer Bloom
-        float mDist = length(centeredUv - mouseP);
-        col += titaniumLight * exp(-mDist * 2.8) * 0.12;
+        // ── SECONDARY MICRO STAR LAYER ──
+        vec2 s2Uv = uv * 195.0 + 29.7;
+        vec2 s2Id = floor(s2Uv);
+        vec2 s2Gv = fract(s2Uv) - 0.5;
+        float s2H = hash(s2Id + 5.3);
+        if (s2H > 0.89) {
+          float d2 = length(s2Gv);
+          float spark2 = smoothstep(0.016, 0.002, d2);
+          float twinkle2 = 0.60 + 0.40 * sin(uTime * 1.8 + s2H * 9.42);
+          col += colStar * spark2 * twinkle2 * 0.35 * vignette;
+        }
 
-        // Luxury Grain
-        float grain = (hash(gl_FragCoord.xy + fract(uTime * 11.3)) - 0.5) * 0.012;
+        // ── SPECULAR SHIMMER: traveling hotspot across the ribbons ──
+        float shimmerPhase = uTime * 0.28 + uMouse.x * 1.2;
+        float shimmerX = sin(shimmerPhase) * 0.9;
+        float shimmerDist = length(vec2(uv.x - shimmerX, uv.y * 0.4));
+        float shimmer = exp(-shimmerDist * shimmerDist * 18.0) * 0.45;
+        col += colChampagne * shimmer * hot * centerVoid;
+
+        // ── FINE FILM GRAIN (cinematic texture) ──
+        float grain = (hash(gl_FragCoord.xy + fract(uTime * 11.3)) - 0.5) * 0.018;
         col += vec3(grain);
 
-        // Vignette
-        float vig = smoothstep(1.4, 0.3, length(centeredUv));
-        col *= (0.75 + 0.25 * vig);
-
-        gl_FragColor = vec4(max(vec3(0.0), col), 1.0);
+        gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
       }
     `;
 
@@ -208,15 +287,15 @@ export function AmbientField({ showEmblem = true, emblemOffsetX = 0 }: AmbientFi
     const pCtx = pCanvas.getContext("2d");
     if (pCtx) {
       const grad = pCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
-      grad.addColorStop(0, "rgba(255, 255, 255, 0.65)");
-      grad.addColorStop(0.3, "rgba(255, 255, 255, 0.25)");
+      grad.addColorStop(0, "rgba(255, 236, 210, 0.70)");
+      grad.addColorStop(0.3, "rgba(200, 150, 100, 0.28)");
       grad.addColorStop(1, "rgba(0, 0, 0, 0)");
       pCtx.fillStyle = grad;
       pCtx.fillRect(0, 0, 32, 32);
     }
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
-    const deepDustCount = isMobile ? 80 : 160;
+    const deepDustCount = isMobile ? 110 : 220;
     const deepDustGeo = new THREE.BufferGeometry();
     const deepDustPositions = new Float32Array(deepDustCount * 3);
     const deepDustVelocities: Array<{ vx: number; vy: number; vz: number }> = [];
@@ -236,8 +315,9 @@ export function AmbientField({ showEmblem = true, emblemOffsetX = 0 }: AmbientFi
     deepDustGeo.setAttribute("position", new THREE.BufferAttribute(deepDustPositions, 3));
 
     const deepDustMat = new THREE.PointsMaterial({
-      size: 0.055,
+      size: 0.042,
       map: particleTexture,
+      color: new THREE.Color(0xf0c880),
       transparent: true,
       opacity: 0.22,
       blending: THREE.AdditiveBlending,
@@ -246,6 +326,149 @@ export function AmbientField({ showEmblem = true, emblemOffsetX = 0 }: AmbientFi
 
     const deepDustSystem = new THREE.Points(deepDustGeo, deepDustMat);
     scene.add(deepDustSystem);
+
+    let envRenderTarget: THREE.WebGLRenderTarget | null = null;
+    let liquidNormalMap: THREE.CanvasTexture | null = null;
+    let liquidRoughnessMap: THREE.CanvasTexture | null = null;
+
+    if (showEmblem) {
+      // ── 01. PROCEDURAL LIQUID CHROME SMOOTH WAVE NORMAL & ROUGHNESS MAPS ──
+      const createLiquidMaps = () => {
+        const size = 1024;
+        const normalCanvas = document.createElement("canvas");
+        normalCanvas.width = size;
+        normalCanvas.height = size;
+        const nCtx = normalCanvas.getContext("2d");
+
+        const roughCanvas = document.createElement("canvas");
+        roughCanvas.width = size;
+        roughCanvas.height = size;
+        const rCtx = roughCanvas.getContext("2d");
+
+        if (!nCtx || !rCtx) return { normalMap: null, roughnessMap: null };
+
+        const nImgData = nCtx.createImageData(size, size);
+        const nData = nImgData.data;
+
+        const rImgData = rCtx.createImageData(size, size);
+        const rData = rImgData.data;
+
+        const heights = new Float32Array(size * size);
+        for (let y = 0; y < size; y++) {
+          const ny = (y / size) * Math.PI * 3.0;
+          for (let x = 0; x < size; x++) {
+            const nx = (x / size) * Math.PI * 3.0;
+
+            const wave1 = Math.sin(nx * 1.1 + Math.sin(ny * 1.3) * 1.8);
+            const wave2 = Math.cos(nx * 2.0 - ny * 1.1 + Math.sin(nx * 0.9) * 1.2);
+            const wave3 = Math.sin((nx + ny) * 1.4 + Math.sin(nx * 2.2) * 0.8);
+            const softSheen = Math.sin(nx * 6.0 + ny * 2.0) * 0.12;
+
+            const h = (wave1 * 0.45 + wave2 * 0.35 + wave3 * 0.15 + softSheen) * 0.5 + 0.5;
+            heights[y * size + x] = h;
+          }
+        }
+
+        const strength = 1.8;
+        for (let y = 0; y < size; y++) {
+          for (let x = 0; x < size; x++) {
+            const xL = (x - 1 + size) % size;
+            const xR = (x + 1) % size;
+            const yU = (y - 1 + size) % size;
+            const yD = (y + 1) % size;
+
+            const dX = (heights[y * size + xR] - heights[y * size + xL]) * strength;
+            const dY = (heights[yD * size + x] - heights[yU * size + x]) * strength;
+
+            const len = Math.sqrt(dX * dX + dY * dY + 1.0);
+            const nx = -dX / len;
+            const ny = -dY / len;
+            const nz = 1.0 / len;
+
+            const idx = (y * size + x) * 4;
+            nData[idx]     = Math.floor((nx * 0.5 + 0.5) * 255);
+            nData[idx + 1] = Math.floor((ny * 0.5 + 0.5) * 255);
+            nData[idx + 2] = Math.floor((nz * 0.5 + 0.5) * 255);
+            nData[idx + 3] = 255;
+
+            const hVal = heights[y * size + x];
+            const roughnessVal = Math.floor((0.06 + (1.0 - hVal) * 0.08) * 255);
+            rData[idx]     = roughnessVal;
+            rData[idx + 1] = roughnessVal;
+            rData[idx + 2] = roughnessVal;
+            rData[idx + 3] = 255;
+          }
+        }
+
+        nCtx.putImageData(nImgData, 0, 0);
+        rCtx.putImageData(rImgData, 0, 0);
+
+        const normalMap = new THREE.CanvasTexture(normalCanvas);
+        normalMap.wrapS = THREE.RepeatWrapping;
+        normalMap.wrapT = THREE.RepeatWrapping;
+        normalMap.repeat.set(1.0, 1.0);
+        normalMap.needsUpdate = true;
+
+        const roughnessMap = new THREE.CanvasTexture(roughCanvas);
+        roughnessMap.wrapS = THREE.RepeatWrapping;
+        roughnessMap.wrapT = THREE.RepeatWrapping;
+        roughnessMap.repeat.set(1.0, 1.0);
+        roughnessMap.needsUpdate = true;
+
+        return { normalMap, roughnessMap };
+      };
+
+      const maps = createLiquidMaps();
+      liquidNormalMap = maps.normalMap;
+      liquidRoughnessMap = maps.roughnessMap;
+
+      const pmremGenerator = new THREE.PMREMGenerator(renderer);
+      pmremGenerator.compileEquirectangularShader();
+
+      const envCanvas = document.createElement("canvas");
+      envCanvas.width = 1024;
+      envCanvas.height = 512;
+      const ctx = envCanvas.getContext("2d");
+      if (ctx) {
+        const bgGrad = ctx.createLinearGradient(0, 0, 0, 512);
+        bgGrad.addColorStop(0, "#1a1d24");
+        bgGrad.addColorStop(0.35, "#303642");
+        bgGrad.addColorStop(0.50, "#505869");
+        bgGrad.addColorStop(0.65, "#303642");
+        bgGrad.addColorStop(1, "#12141a");
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, 1024, 512);
+
+        const softbox = ctx.createRadialGradient(700, 120, 20, 700, 120, 320);
+        softbox.addColorStop(0, "rgba(255, 255, 255, 1.0)");
+        softbox.addColorStop(0.35, "rgba(240, 246, 255, 0.90)");
+        softbox.addColorStop(0.70, "rgba(190, 210, 235, 0.35)");
+        softbox.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = softbox;
+        ctx.fillRect(0, 0, 1024, 512);
+
+        const leftFill = ctx.createRadialGradient(250, 220, 10, 250, 220, 260);
+        leftFill.addColorStop(0, "rgba(230, 240, 255, 0.85)");
+        leftFill.addColorStop(0.5, "rgba(180, 205, 235, 0.40)");
+        leftFill.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = leftFill;
+        ctx.fillRect(0, 0, 1024, 512);
+
+        const horizon = ctx.createLinearGradient(0, 240, 0, 272);
+        horizon.addColorStop(0, "rgba(0, 0, 0, 0)");
+        horizon.addColorStop(0.5, "rgba(255, 255, 255, 0.90)");
+        horizon.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = horizon;
+        ctx.fillRect(0, 240, 1024, 32);
+      }
+
+      const envTexture = new THREE.CanvasTexture(envCanvas);
+      envTexture.mapping = THREE.EquirectangularReflectionMapping;
+      envRenderTarget = pmremGenerator.fromEquirectangular(envTexture);
+      envTexture.dispose();
+      pmremGenerator.dispose();
+      scene.environment = envRenderTarget.texture;
+    }
 
     // ── 03. CENTERED 3D "13" EMBLEM IN CONTINUOUS MOTION ──
     let emblemGroup: THREE.Group | null = null;
@@ -297,32 +520,54 @@ export function AmbientField({ showEmblem = true, emblemOffsetX = 0 }: AmbientFi
 
       const extrudeSettings = {
         steps: 1,
-        depth: 0.95,
+        depth: 0.96,
         bevelEnabled: true,
-        bevelThickness: 0.045,
-        bevelSize: 0.045,
+        bevelThickness: 0.085,
+        bevelSize: 0.075,
         bevelOffset: 0,
-        bevelSegments: 4,
+        bevelSegments: 6,
       };
 
       matOne = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(0x3a3a3a),
-        roughness: 0.16,
-        metalness: 0.88,
-        clearcoat: 0.85,
-        clearcoatRoughness: 0.12,
-        reflectivity: 0.9,
+        color: new THREE.Color(0x1a1614),
+        emissive: new THREE.Color(0x0a0705),
+        roughness: 0.13,
+        metalness: 0.93,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.04,
+        reflectivity: 1.0,
+        ior: 2.5,
+        iridescence: 0.28,
+        iridescenceIOR: 1.38,
+        sheen: 0.55,
+        sheenColor: new THREE.Color(0xd6ad78),
+        sheenRoughness: 0.25,
+        envMapIntensity: 2.2,
+        normalMap: liquidNormalMap || undefined,
+        normalScale: new THREE.Vector2(0.35, 0.35),
+        roughnessMap: liquidRoughnessMap || undefined,
         transparent: true,
         opacity: 1.0,
       });
 
       matThree = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(0x323232),
-        roughness: 0.18,
-        metalness: 0.85,
-        clearcoat: 0.85,
-        clearcoatRoughness: 0.12,
-        reflectivity: 0.9,
+        color: new THREE.Color(0x161311),
+        emissive: new THREE.Color(0x080604),
+        roughness: 0.13,
+        metalness: 0.93,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.04,
+        reflectivity: 1.0,
+        ior: 2.5,
+        iridescence: 0.28,
+        iridescenceIOR: 1.38,
+        sheen: 0.55,
+        sheenColor: new THREE.Color(0xd6ad78),
+        sheenRoughness: 0.25,
+        envMapIntensity: 2.2,
+        normalMap: liquidNormalMap || undefined,
+        normalScale: new THREE.Vector2(0.35, 0.35),
+        roughnessMap: liquidRoughnessMap || undefined,
         transparent: true,
         opacity: 1.0,
       });
@@ -354,27 +599,27 @@ export function AmbientField({ showEmblem = true, emblemOffsetX = 0 }: AmbientFi
       emblemGroup.scale.set(initialScale, initialScale, initialScale);
       scene.add(emblemGroup);
 
-      // Studio Lighting for 3D Emblem
-      const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
+      // Studio Lighting for 3D Emblem matching liquid bronze silk
+      const ambientLight = new THREE.AmbientLight(0x2e2016, 2.0);
       scene.add(ambientLight);
 
-      const keyLight = new THREE.DirectionalLight(0xffffff, 5.0);
+      const keyLight = new THREE.DirectionalLight(0xffecd2, 5.0);
       keyLight.position.set(6, 8, 7);
       scene.add(keyLight);
 
-      const fillLight = new THREE.DirectionalLight(0xd0d0d0, 3.2);
+      const fillLight = new THREE.DirectionalLight(0xe8ba80, 3.2);
       fillLight.position.set(-6, 3, 5);
       scene.add(fillLight);
 
-      const rimLight = new THREE.DirectionalLight(0xffffff, 4.5);
+      const rimLight = new THREE.DirectionalLight(0xf6d4a0, 6.5);
       rimLight.position.set(3, -5, -2);
       scene.add(rimLight);
 
-      const topLight = new THREE.DirectionalLight(0xffffff, 2.5);
+      const topLight = new THREE.DirectionalLight(0xfff2de, 3.5);
       topLight.position.set(0, 8, 2);
       scene.add(topLight);
 
-      mouseLight = new THREE.PointLight(0xffffff, 8.0, 18);
+      mouseLight = new THREE.PointLight(0xffe2b8, 8.0, 18);
       mouseLight.position.set(0, 0, 4);
       scene.add(mouseLight);
     }
@@ -468,8 +713,8 @@ export function AmbientField({ showEmblem = true, emblemOffsetX = 0 }: AmbientFi
       deepPosAttr.needsUpdate = true;
 
       deepDustSystem.rotation.y = elapsedTime * 0.012 + mouseX * 0.06;
-      deepDustSystem.rotation.x = mouseY * 0.04 + smoothScrollY * 0.00015;
-      deepDustSystem.position.y = -(smoothScrollY * 0.0008);
+      deepDustSystem.rotation.x = mouseY * 0.04 + Math.sin(smoothScrollY * 0.0006) * 0.08;
+      deepDustSystem.position.y = Math.sin(elapsedTime * 0.6) * 0.15;
 
       // 3D Liquid Titanium Emblem: Continuously visible across all pages and sections, smoothly fades out BEFORE footer
       if (emblemGroup && matOne && matThree) {
@@ -596,6 +841,9 @@ export function AmbientField({ showEmblem = true, emblemOffsetX = 0 }: AmbientFi
       if (threeGeo) threeGeo.dispose();
       if (matOne) matOne.dispose();
       if (matThree) matThree.dispose();
+      if (liquidNormalMap) (liquidNormalMap as THREE.CanvasTexture).dispose();
+      if (liquidRoughnessMap) (liquidRoughnessMap as THREE.CanvasTexture).dispose();
+      if (envRenderTarget) (envRenderTarget as THREE.WebGLRenderTarget).dispose();
       renderer.dispose();
     };
   }, [showEmblem]);

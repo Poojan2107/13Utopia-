@@ -804,8 +804,8 @@ export default function ThreeCanvas({
         vertexShader: floorVertexShader,
         fragmentShader: floorFragmentShader,
         uniforms: {
-          u_c0: { value: new THREE.Color(0xf4eae0) },
-          u_c1: { value: new THREE.Color(0xf4dfc8) },
+          u_c0: { value: new THREE.Color(0xffffff) },
+          u_c1: { value: new THREE.Color(0xffffff) },
           u_alpha: { value: 0.15 },
           u_gridF: { value: new THREE.Vector2(40, 20) },
           u_leanA: { value: -0.06 },

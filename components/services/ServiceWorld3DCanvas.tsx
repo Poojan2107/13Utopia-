@@ -64,9 +64,10 @@ export function ServiceWorld3DCanvas({
       disposables.push(coreGeo);
 
       const coreMat = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(0x111317),
-        roughness: 0.1,
-        metalness: 0.88,
+        color: new THREE.Color(0x22262e),
+        roughness: 0.14,
+        metalness: 0.94,
+        emissive: new THREE.Color(0x050608),
         clearcoat: 1.0,
         clearcoatRoughness: 0.08,
         reflectivity: 0.95,
@@ -109,9 +110,10 @@ export function ServiceWorld3DCanvas({
       disposables.push(boxGeo);
 
       const boxMat = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(0x0a0c10),
-        roughness: 0.22,
-        metalness: 0.96,
+        color: new THREE.Color(0x22262e),
+        roughness: 0.14,
+        metalness: 0.94,
+        emissive: new THREE.Color(0x050608),
         clearcoat: 0.9,
       });
       disposables.push(boxMat);
@@ -154,9 +156,10 @@ export function ServiceWorld3DCanvas({
       const torusGeo1 = new THREE.TorusGeometry(1.9, 0.18, 20, 64);
       disposables.push(torusGeo1);
       const torusMat1 = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(0x13151a),
-        roughness: 0.2,
-        metalness: 0.92,
+        color: new THREE.Color(0x22262e),
+        roughness: 0.14,
+        metalness: 0.94,
+        emissive: new THREE.Color(0x050608),
         clearcoat: 1.0,
       });
       disposables.push(torusMat1);

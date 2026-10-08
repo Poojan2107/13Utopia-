@@ -59,9 +59,10 @@ export function Solutions3DStoryCanvas({ progress }: Solutions3DStoryCanvasProps
 
     // Titanium Material
     const titaniumMat = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x181a20),
-      metalness: 0.95,
-      roughness: 0.22,
+      color: new THREE.Color(0x22262e),
+      metalness: 0.94,
+      roughness: 0.14,
+      emissive: new THREE.Color(0x050608),
       clearcoat: 0.95,
       clearcoatRoughness: 0.12,
       reflectivity: 0.95,

@@ -11,7 +11,7 @@ export default function BlogIndexPage() {
   return (
     <SmoothScrollProvider>
       {/* Signature 3D Titanium "13" Emblem & Nebula Atmosphere - Centered */}
-      <AmbientField showEmblem={true} emblemOffsetX={0} />
+      <AmbientField showEmblem={false} />
       <SiteHeader />
 
       <main className={styles.blogPage}>

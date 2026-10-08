@@ -89,18 +89,20 @@ export function Hero3DCanvas() {
 
     // Exact architectural graphite & titanium materiality matching the continuous narrative sections
     const matOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x3a3a3a),
-      roughness: 0.16,
-      metalness: 0.88,
+      color: new THREE.Color(0x22262e),
+      roughness: 0.14,
+      metalness: 0.94,
+      emissive: new THREE.Color(0x050608),
       clearcoat: 0.85,
       clearcoatRoughness: 0.12,
       reflectivity: 0.9,
     });
 
     const matThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x323232),
-      roughness: 0.18,
-      metalness: 0.85,
+      color: new THREE.Color(0x1e222a),
+      roughness: 0.14,
+      metalness: 0.94,
+      emissive: new THREE.Color(0x050608),
       clearcoat: 0.85,
       clearcoatRoughness: 0.12,
       reflectivity: 0.9,

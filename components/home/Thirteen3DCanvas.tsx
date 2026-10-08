@@ -100,18 +100,20 @@ export function Thirteen3DCanvas({ progress = 0, className }: Thirteen3DCanvasPr
 
     // 4. Titanium Materials with Physical Sheen
     const matOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x363840),
-      roughness: 0.18,
-      metalness: 0.90,
+      color: new THREE.Color(0x22262e),
+      roughness: 0.14,
+      metalness: 0.94,
+      emissive: new THREE.Color(0x050608),
       clearcoat: 0.85,
       clearcoatRoughness: 0.12,
       reflectivity: 0.95,
     });
 
     const matThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x2e3038),
-      roughness: 0.20,
-      metalness: 0.88,
+      color: new THREE.Color(0x1e222a),
+      roughness: 0.14,
+      metalness: 0.94,
+      emissive: new THREE.Color(0x050608),
       clearcoat: 0.85,
       clearcoatRoughness: 0.12,
       reflectivity: 0.95,

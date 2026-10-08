@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   background-color: transparent;
-  color: #faf6f0;
+  color: #ffffff;
   overflow: hidden;
   z-index: 1;
 }
@@ -107,7 +107,7 @@
   font-size: clamp(0.68rem, 0.78vw, 0.8rem);
   font-weight: 600;
   letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(240, 220, 195, 0.88);
   text-transform: uppercase;
 }
 
@@ -142,13 +142,24 @@
   font-size: var(--be-size);
   font-weight: 800;
   text-transform: uppercase;
-  color: #ffffff;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f2f5f9 16%,
+    #d1d8e4 42%,
+    #939eb2 74%,
+    #566072 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   line-height: 0.74;
   letter-spacing: -0.055em;
   margin: 0;
   padding: 0;
   white-space: nowrap;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.98))
+    drop-shadow(0 14px 32px rgba(0, 0, 0, 0.94))
+    drop-shadow(0 28px 60px rgba(0, 0, 0, 0.88));
 }
 
 .stackedBlock {
@@ -169,24 +180,36 @@
   font-size: var(--word-size);
   font-weight: 800;
   text-transform: uppercase;
-  color: #ffffff;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f2f5f9 16%,
+    #d1d8e4 42%,
+    #939eb2 74%,
+    #566072 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   line-height: 0.76;
   letter-spacing: -0.05em;
   margin: 0;
   padding: 0;
   white-space: nowrap;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.98))
+    drop-shadow(0 14px 32px rgba(0, 0, 0, 0.94))
+    drop-shadow(0 28px 60px rgba(0, 0, 0, 0.88));
 }
 
 .heroLeadText {
   font-family: var(--font-display, "PP Neue Montreal", sans-serif);
-  font-size: clamp(1.02rem, 1.3vw, 1.35rem);
+  font-size: clamp(0.98rem, 1.2vw, 1.22rem);
   font-weight: 500;
   line-height: 1.55;
-  color: #ffffff;
-  max-width: 680px;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: -0.012em;
+  max-width: 660px;
   margin: 0 auto;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.98), 0 0 35px rgba(0, 0, 0, 0.95), 0 1px 4px rgba(0, 0, 0, 1.0);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 0, 0, 0.8);
 }
 
 .heroActions {
@@ -215,7 +238,7 @@
 }
 
 .heroPrimaryBtn:hover {
-  color: #e5e7eb;
+  color: rgba(255,255,255,0.72);
   transform: translateX(4px);
 }
 
@@ -243,7 +266,7 @@
 }
 
 .heroSecondaryBtn:hover {
-  color: #e5e7eb;
+  color: rgba(255,255,255,0.72);
   transform: translateX(4px);
 }
 
@@ -605,7 +628,7 @@
   font-size: clamp(28px, 3.8vw, 48px);
   font-weight: 500;
   line-height: 1;
-  color: #f4eae0;
+  color: #ffffff;
   letter-spacing: -0.03em;
 }
 
@@ -722,7 +745,7 @@
 
 .primaryCta:hover {
   transform: translateX(4px);
-  color: #e5e7eb;
+  color: rgba(255,255,255,0.72);
 }
 
 .secondaryCta {
@@ -740,7 +763,7 @@
 
 .secondaryCta:hover {
   transform: translateX(4px);
-  color: #e5e7eb;
+  color: rgba(255,255,255,0.72);
 }
 
 .initiationFootnote {
@@ -832,7 +855,7 @@
   font-size: 22px;
   font-weight: 500;
   letter-spacing: -0.02em;
-  color: #faf6f0;
+  color: #ffffff;
 }
 
 .footerTagline {
@@ -859,7 +882,7 @@
   font-size: 11px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #f4dfc8;
+  color: #ffffff;
 }
 
 .footerLink {
@@ -871,7 +894,7 @@
 }
 
 .footerLink:hover {
-  color: #f4eae0;
+  color: #ffffff;
 }
 
 .footerBottom {

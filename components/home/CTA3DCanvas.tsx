@@ -88,18 +88,20 @@ export function CTA3DCanvas() {
     };
 
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x18191c),
-      roughness: 0.20,
-      metalness: 0.88,
+      color: new THREE.Color(0x22262e),
+      roughness: 0.14,
+      metalness: 0.94,
+      emissive: new THREE.Color(0x050608),
       clearcoat: 0.85,
       clearcoatRoughness: 0.08,
       reflectivity: 0.95,
     });
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x141518),
-      roughness: 0.22,
-      metalness: 0.86,
+      color: new THREE.Color(0x1e222a),
+      roughness: 0.14,
+      metalness: 0.94,
+      emissive: new THREE.Color(0x050608),
       clearcoat: 0.85,
       clearcoatRoughness: 0.08,
       reflectivity: 0.95,

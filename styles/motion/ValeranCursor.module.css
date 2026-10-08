@@ -1,0 +1,25 @@
+.root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  will-change: left, top;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  /* Steel silver — matches brushed stainless field */
+  background: rgb(200, 204, 210);
+  transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease;
+}
+
+.root.hovered .dot {
+  width: 20px;
+  height: 20px;
+  opacity: 0.45;
+}

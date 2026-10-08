@@ -89,15 +89,17 @@ export function Master3DEmblemCanvas() {
 
     // Dynamic Materials (Dark vs Light Adaptability)
     const matOne = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x2d2d2d),
-      roughness: 0.35,
-      metalness: 0.75,
+      color: new THREE.Color(0x22262e),
+      roughness: 0.14,
+      metalness: 0.94,
+      emissive: new THREE.Color(0x050608),
     });
 
     const matThree = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x242424),
-      roughness: 0.38,
-      metalness: 0.70,
+      color: new THREE.Color(0x1e222a),
+      roughness: 0.14,
+      metalness: 0.94,
+      emissive: new THREE.Color(0x050608),
     });
 
     const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
@@ -127,7 +129,7 @@ export function Master3DEmblemCanvas() {
     fillLight.position.set(-7, 2, 5);
     scene.add(fillLight);
 
-    const rimLight = new THREE.DirectionalLight(0xf4dfc8, 2.8);
+    const rimLight = new THREE.DirectionalLight(0xffffff, 2.8);
     rimLight.position.set(4, -6, -3);
     scene.add(rimLight);
 
@@ -162,10 +164,10 @@ export function Master3DEmblemCanvas() {
     const startTime = performance.now();
 
     // Color interpolation targets
-    const darkColOne = new THREE.Color(0x323232);
-    const darkColThree = new THREE.Color(0x282828);
-    const lightColOne = new THREE.Color(0x151515); // Deep pure onyx for cream section
-    const lightColThree = new THREE.Color(0x0e0e0e);
+    const darkColOne = new THREE.Color(0x22262e);
+    const darkColThree = new THREE.Color(0x1e222a);
+    const lightColOne = new THREE.Color(0x22262e);
+    const lightColThree = new THREE.Color(0x1e222a);
 
     const animate = () => {
       rafId = requestAnimationFrame(animate);

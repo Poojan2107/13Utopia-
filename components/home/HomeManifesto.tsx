@@ -119,14 +119,16 @@ function LightMonolithCanvas({ activeIdx }: { activeIdx: number }) {
     };
 
     const matOne = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x202020),
-      roughness: 0.3,
-      metalness: 0.8,
+      color: new THREE.Color(0x22262e),
+      roughness: 0.14,
+      metalness: 0.94,
+      emissive: new THREE.Color(0x050608),
     });
     const matThree = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x161616),
-      roughness: 0.32,
-      metalness: 0.76,
+      color: new THREE.Color(0x1e222a),
+      roughness: 0.14,
+      metalness: 0.94,
+      emissive: new THREE.Color(0x050608),
     });
 
     const geomOne = new THREE.ExtrudeGeometry(shapeOne, extrudeSettings);

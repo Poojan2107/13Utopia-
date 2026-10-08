@@ -1,0 +1,203 @@
+.stageRoot {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #000000;
+  overflow-x: clip;
+}
+
+.imageBgContainer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: #000000;
+}
+
+.steelPlateImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+/* Top Left Staging Indicator */
+.stagingBadge {
+  position: fixed;
+  top: 24px;
+  left: 28px;
+  z-index: 9999;
+  background: rgba(10, 11, 14, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.badgeText {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+}
+
+/* Floating Glass HUD at bottom center */
+.floatingHud {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: rgba(10, 11, 14, 0.85);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 8px 14px 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  pointer-events: auto;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 95vw;
+}
+
+.hudHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 14px;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+}
+
+.hudLiveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 8px #ffffff;
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+.hudTitle {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+}
+
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.buttonGroup::-webkit-scrollbar {
+  display: none;
+}
+
+.modeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.65);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modeBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.modeBtnActive {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 2px 14px rgba(255, 255, 255, 0.25);
+}
+
+.modeBtnActive .modeNum {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.modeBtnActive .modeBadge {
+  background: rgba(0, 0, 0, 0.12);
+  color: #000000;
+}
+
+.modeNum {
+  font-size: 0.625rem;
+  opacity: 0.6;
+  font-weight: 700;
+}
+
+.modeLabel {
+  text-transform: uppercase;
+}
+
+.modeBadge {
+  font-size: 0.5625rem;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 900px) {
+  .floatingHud {
+    bottom: 16px;
+    padding: 6px 10px;
+    gap: 8px;
+    border-radius: 20px;
+  }
+  .hudHeader {
+    display: none;
+  }
+  .modeBtn {
+    padding: 6px 12px;
+    font-size: 0.625rem;
+  }
+  .modeBadge {
+    display: none;
+  }
+}

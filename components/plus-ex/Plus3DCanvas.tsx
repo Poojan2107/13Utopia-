@@ -67,7 +67,9 @@ export function Plus3DCanvas({
       alpha: true,
       antialias: true,
       powerPreference: "high-performance",
+      premultipliedAlpha: true,
     });
+    renderer.debug.checkShaderErrors = false;
     // Balanced DPR for smooth 120Hz ProMotion on MacBook and mobile devices
     const isMobile = (container.clientWidth || window.innerWidth) < 768;
     const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.0 : 1.35);
@@ -75,6 +77,9 @@ export function Plus3DCanvas({
     renderer.setSize(width, height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.35;
+    // Keep stage transparent so fixed steel field shows through
+    renderer.setClearColor(0x000000, 0);
+    renderer.setClearAlpha(0);
     container.appendChild(renderer.domElement);
 
     // 3D "13" Emblem Group
@@ -157,84 +162,233 @@ export function Plus3DCanvas({
 
     const extrudeSettings = {
       steps: 1,
-      depth: 0.96,
+      depth: 0.72,
       bevelEnabled: true,
-      bevelThickness: 0.075,
-      bevelSize: 0.065,
+      bevelThickness: 0.065,
+      bevelSize: 0.055,
       bevelOffset: 0,
-      bevelSegments: 2,
+      bevelSegments: 6,
     };
 
-    // ── TENBIN HIGH-FREQUENCY MINERAL GRAIN BUMP MAP (64x64 micro-texture) ──
-    const bCanvas = document.createElement("canvas");
-    bCanvas.width = 64;
-    bCanvas.height = 64;
-    const bCtx = bCanvas.getContext("2d");
-    if (bCtx) {
-      const imgData = bCtx.createImageData(64, 64);
-      for (let i = 0; i < imgData.data.length; i += 4) {
-        const noise = Math.floor(Math.random() * 255);
-        imgData.data[i] = noise;
-        imgData.data[i + 1] = noise;
-        imgData.data[i + 2] = noise;
-        imgData.data[i + 3] = 255;
-      }
-      bCtx.putImageData(imgData, 0, 0);
-    }
-    const bumpTexture = new THREE.CanvasTexture(bCanvas);
-    bumpTexture.wrapS = THREE.RepeatWrapping;
-    bumpTexture.wrapT = THREE.RepeatWrapping;
-    bumpTexture.repeat.set(4.0, 4.0);
+    // ── 01. PROCEDURAL LIQUID TITANIUM NORMAL MAP (Molten wave ripples on planar faces) ──
+    const normalCanvas = document.createElement("canvas");
+    normalCanvas.width = 512;
+    normalCanvas.height = 512;
+    const nCtx = normalCanvas.getContext("2d");
+    if (nCtx) {
+      const nImgData = nCtx.createImageData(512, 512);
+      const nData = nImgData.data;
+      const heights = new Float32Array(512 * 512);
 
-    // 13 Utopia Signature Sculpted Titanium Monolith (Visible, Refined Architectural Sheen)
-    const matTitaniumOne = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x282a30),
-      roughness: 0.24,
-      metalness: 0.85,
-      bumpMap: bumpTexture,
-      bumpScale: 0.010,
-      emissive: new THREE.Color(0x050507),
+      for (let y = 0; y < 512; y++) {
+        const ny = (y / 512) * Math.PI * 4.0;
+        for (let x = 0; x < 512; x++) {
+          const nx = (x / 512) * Math.PI * 4.0;
+          const wave1 = Math.sin(nx * 1.3 + Math.sin(ny * 1.5) * 1.6);
+          const wave2 = Math.cos(nx * 2.1 - ny * 1.2 + Math.sin(nx * 0.8) * 1.2);
+          const wave3 = Math.sin((nx + ny) * 1.4 + Math.sin(nx * 2.2) * 0.7);
+          const h = (wave1 * 0.50 + wave2 * 0.35 + wave3 * 0.15) * 0.5 + 0.5;
+          heights[y * 512 + x] = h;
+        }
+      }
+
+      const strength = 1.35;
+      for (let y = 0; y < 512; y++) {
+        for (let x = 0; x < 512; x++) {
+          const xL = (x - 1 + 512) % 512;
+          const xR = (x + 1) % 512;
+          const yU = (y - 1 + 512) % 512;
+          const yD = (y + 1) % 512;
+
+          const dX = (heights[y * 512 + xR] - heights[y * 512 + xL]) * strength;
+          const dY = (heights[yD * 512 + x] - heights[yU * 512 + x]) * strength;
+          const len = Math.sqrt(dX * dX + dY * dY + 1.0);
+
+          const idx = (y * 512 + x) * 4;
+          nData[idx]     = Math.floor(((-dX / len) * 0.5 + 0.5) * 255);
+          nData[idx + 1] = Math.floor(((-dY / len) * 0.5 + 0.5) * 255);
+          nData[idx + 2] = Math.floor(((1.0 / len) * 0.5 + 0.5) * 255);
+          nData[idx + 3] = 255;
+        }
+      }
+      nCtx.putImageData(nImgData, 0, 0);
+    }
+    const liquidNormalMap = new THREE.CanvasTexture(normalCanvas);
+    liquidNormalMap.wrapS = THREE.RepeatWrapping;
+    liquidNormalMap.wrapT = THREE.RepeatWrapping;
+    liquidNormalMap.repeat.set(1.5, 1.5);
+
+    // ── 02. HIGH-CONTRAST CINEMATIC SILK HDR ENVIRONMENT MAP (92% Black Void + Razor Champagne Filaments) ──
+    const envCanvas = document.createElement("canvas");
+    envCanvas.width = 1024;
+    envCanvas.height = 512;
+    const envCtx = envCanvas.getContext("2d");
+    if (envCtx) {
+      // 1. Inky cosmic void base (No muddy brown washing out the shadows)
+      envCtx.fillStyle = "#020304";
+      envCtx.fillRect(0, 0, 1024, 512);
+
+      // Subtle warm dark horizon depth
+      const deepH = envCtx.createLinearGradient(0, 180, 0, 330);
+      deepH.addColorStop(0.0, "rgba(2, 3, 4, 1.0)");
+      deepH.addColorStop(0.5, "rgba(22, 16, 10, 0.40)");
+      deepH.addColorStop(1.0, "rgba(2, 3, 4, 1.0)");
+      envCtx.fillStyle = deepH;
+      envCtx.fillRect(0, 180, 1024, 150);
+
+      // 2. Primary Incandescent Champagne Silk Filament (Laser specular streak across upper bevels)
+      const streak1 = envCtx.createLinearGradient(0, 120, 1024, 210);
+      streak1.addColorStop(0.0, "rgba(0, 0, 0, 0)");
+      streak1.addColorStop(0.35, "rgba(235, 175, 95, 0.40)");
+      streak1.addColorStop(0.48, "rgba(255, 245, 225, 1.0)"); // Blinding incandescent core
+      streak1.addColorStop(0.52, "rgba(255, 245, 225, 1.0)");
+      streak1.addColorStop(0.65, "rgba(240, 185, 110, 0.45)");
+      streak1.addColorStop(1.0, "rgba(0, 0, 0, 0)");
+      envCtx.fillStyle = streak1;
+      envCtx.fillRect(0, 135, 1024, 55);
+
+      // 3. Secondary Razor Gold Filament (Lower edge specular catch)
+      const streak2 = envCtx.createLinearGradient(0, 275, 1024, 335);
+      streak2.addColorStop(0.0, "rgba(0, 0, 0, 0)");
+      streak2.addColorStop(0.20, "rgba(215, 150, 75, 0.35)");
+      streak2.addColorStop(0.50, "rgba(255, 235, 195, 0.90)");
+      streak2.addColorStop(0.80, "rgba(215, 150, 75, 0.35)");
+      streak2.addColorStop(1.0, "rgba(0, 0, 0, 0)");
+      envCtx.fillStyle = streak2;
+      envCtx.fillRect(0, 280, 1024, 45);
+
+      // 4. Focused Champagne Studio Softbox (Upper-right key highlight)
+      const rightSoft = envCtx.createRadialGradient(820, 160, 5, 820, 160, 240);
+      rightSoft.addColorStop(0.0, "rgba(255, 252, 240, 1.0)");
+      rightSoft.addColorStop(0.25, "rgba(255, 225, 170, 0.85)");
+      rightSoft.addColorStop(0.60, "rgba(180, 115, 50, 0.25)");
+      rightSoft.addColorStop(1.0, "rgba(0, 0, 0, 0)");
+      envCtx.fillStyle = rightSoft;
+      envCtx.fillRect(0, 0, 1024, 512);
+
+      // 5. Razor Edge Kicker Strip (Left rim glint)
+      const leftRim = envCtx.createRadialGradient(200, 310, 5, 200, 310, 200);
+      leftRim.addColorStop(0.0, "rgba(255, 240, 205, 0.85)");
+      leftRim.addColorStop(0.35, "rgba(220, 160, 85, 0.40)");
+      leftRim.addColorStop(1.0, "rgba(0, 0, 0, 0)");
+      envCtx.fillStyle = leftRim;
+      envCtx.fillRect(0, 0, 1024, 512);
+    }
+    const envTexture = new THREE.CanvasTexture(envCanvas);
+    envTexture.mapping = THREE.EquirectangularReflectionMapping;
+    scene.environment = envTexture;
+
+    // ── 03. TWO-TONE ARCHITECTURAL MATERIALITY ────────────────────────────────
+    // FRONT & BACK FACES: Inky Obsidian Satin Titanium with Liquid Ripples (High legibility, dark contrast)
+    const matFaceOne = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x0a0c10),
+      roughness: 0.10,
+      metalness: 0.97,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      reflectivity: 1.0,
+      ior: 2.7,
+      iridescence: 0.30,
+      iridescenceIOR: 1.40,
+      sheen: 0.55,
+      sheenColor: new THREE.Color(0xf0c870),
+      sheenRoughness: 0.22,
+      emissive: new THREE.Color(0x050304),
+      normalMap: liquidNormalMap,
+      normalScale: new THREE.Vector2(0.12, 0.12),
+      envMapIntensity: 2.2,
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
 
-    const matTitaniumThree = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x22242a),
-      roughness: 0.24,
-      metalness: 0.85,
-      bumpMap: bumpTexture,
-      bumpScale: 0.010,
-      emissive: new THREE.Color(0x040406),
+    const matFaceThree = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x080a0e),
+      roughness: 0.12,
+      metalness: 0.95,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.03,
+      reflectivity: 1.0,
+      ior: 2.6,
+      iridescence: 0.22,
+      iridescenceIOR: 1.38,
+      sheen: 0.45,
+      sheenColor: new THREE.Color(0xe2be88),
+      sheenRoughness: 0.25,
+      emissive: new THREE.Color(0x020203),
+      normalMap: liquidNormalMap,
+      normalScale: new THREE.Vector2(0.12, 0.12),
+      envMapIntensity: 1.9,
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
     });
 
-    // ── 01. SUB-GROUP: "13" EMBLEM ─────────────────────────────
+    // BEVEL CHAMFERS & SIDEWALLS: Mirror-Polished Smoked Chrome with Razor Champagne-Gold Flare
+    const matSideOne = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x0e1014),
+      roughness: 0.03,
+      metalness: 0.99,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.010,
+      reflectivity: 1.0,
+      ior: 2.9,
+      iridescence: 0.45,
+      iridescenceIOR: 1.48,
+      sheen: 0.90,
+      sheenColor: new THREE.Color(0xffd080),
+      sheenRoughness: 0.16,
+      emissive: new THREE.Color(0x080605),
+      envMapIntensity: 3.2,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+      polygonOffsetUnits: -1,
+    });
+
+    const matSideThree = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x0d0f13),
+      roughness: 0.04,
+      metalness: 0.98,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.015,
+      reflectivity: 1.0,
+      ior: 2.8,
+      iridescence: 0.35,
+      iridescenceIOR: 1.45,
+      sheen: 0.8,
+      sheenColor: new THREE.Color(0xf6d296),
+      sheenRoughness: 0.20,
+      emissive: new THREE.Color(0x050403),
+      envMapIntensity: 2.8,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
+    });
+
+    // ── 04. SUB-GROUP: "13" EMBLEM ─────────────────────────────
     const thirteenGroup = new THREE.Group();
 
     const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
     oneGeo.center();
-    const oneMesh = new THREE.Mesh(oneGeo, matTitaniumOne);
+    const oneMesh = new THREE.Mesh(oneGeo, [matFaceOne, matSideOne]);
     oneMesh.position.set(-1.22, 0, 0);
     thirteenGroup.add(oneMesh);
 
     const threeGeo = new THREE.ExtrudeGeometry(createThreeShape(), extrudeSettings);
     threeGeo.center();
-    const threeMesh = new THREE.Mesh(threeGeo, matTitaniumThree);
+    const threeMesh = new THREE.Mesh(threeGeo, [matFaceThree, matSideThree]);
     threeMesh.position.set(0.60, 0, 0);
     thirteenGroup.add(threeMesh);
 
     emblemGroup.add(thirteenGroup);
 
-    // ── 02. SUB-GROUP: "BE" MONOLITH EMBLEM ────────────────────
+    // ── 05. SUB-GROUP: "BE" MONOLITH EMBLEM ────────────────────
     const beGroup = new THREE.Group();
 
     const bGroup = new THREE.Group();
-    const bSpine = new THREE.Mesh(oneGeo, matTitaniumOne);
+    const bSpine = new THREE.Mesh(oneGeo, [matFaceOne, matSideOne]);
     bSpine.position.set(-1.00, 0, 0.003);
-    const bBowls = new THREE.Mesh(threeGeo, matTitaniumThree);
+    const bBowls = new THREE.Mesh(threeGeo, [matFaceThree, matSideThree]);
     bBowls.position.set(0.40, 0, -0.003);
     bGroup.add(bSpine);
     bGroup.add(bBowls);
@@ -243,7 +397,7 @@ export function Plus3DCanvas({
 
     const eGeo = new THREE.ExtrudeGeometry(createMirroredThreeShape(), extrudeSettings);
     eGeo.center();
-    const eMesh = new THREE.Mesh(eGeo, matTitaniumThree);
+    const eMesh = new THREE.Mesh(eGeo, [matFaceThree, matSideThree]);
     eMesh.position.set(2.12, 0, 0);
     beGroup.add(eMesh);
 
@@ -264,16 +418,16 @@ export function Plus3DCanvas({
     const pCtx = pCanvas.getContext("2d");
     if (pCtx) {
       const grad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
-      grad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
-      grad.addColorStop(0.25, "rgba(230, 242, 255, 0.90)");
-      grad.addColorStop(0.60, "rgba(180, 208, 240, 0.30)");
+      grad.addColorStop(0, "rgba(255, 250, 240, 1.0)");
+      grad.addColorStop(0.25, "rgba(255, 230, 195, 0.95)");
+      grad.addColorStop(0.60, "rgba(215, 175, 120, 0.40)");
       grad.addColorStop(1, "rgba(0, 0, 0, 0)");
       pCtx.fillStyle = grad;
       pCtx.fillRect(0, 0, 64, 64);
     }
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
-    // ── 03. TENBIN EXACT ORBITING MODEL PARTICLES (Surrounding 3D Crystalline Stardust Halo) ──
+    // ── 06. TENBIN EXACT ORBITING MODEL PARTICLES (Surrounding 3D Crystalline Stardust Halo) ──
     const auraParticleCount = 45;
     const auraParticleGeo = new THREE.BufferGeometry();
     const auraPositions = new Float32Array(auraParticleCount * 3);
@@ -303,8 +457,9 @@ export function Plus3DCanvas({
     const auraParticleMat = new THREE.PointsMaterial({
       size: 0.05,
       map: particleTexture,
+      color: new THREE.Color(0xf6e2c8),
       transparent: true,
-      opacity: 0.25,
+      opacity: 0.45,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -312,34 +467,45 @@ export function Plus3DCanvas({
     const auraParticleSystem = new THREE.Points(auraParticleGeo, auraParticleMat);
     scene.add(auraParticleSystem);
 
-    // Studio Lighting (Sculpted Metallic Sheen & Crisp Contours)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
+    // ── 07. HIGH-CONTRAST SCULPTURAL STUDIO LIGHTING ──
+    // 1. Inky low ambient to preserve dramatic obsidian contrast
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.35);
     scene.add(ambientLight);
 
-    // Overhead high-intensity grazing light for sharp top chamfer specular highlights
-    const topRimLight = new THREE.DirectionalLight(0xffffff, 18.0);
-    topRimLight.position.set(0, 18, 2);
-    scene.add(topRimLight);
-
-    // Gentle front camera key fill light
-    const frontKeyLight = new THREE.DirectionalLight(0xffffff, 1.8);
-    frontKeyLight.position.set(0, 3, 10);
-    scene.add(frontKeyLight);
-
-    // Primary studio key light
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
-    keyLight.position.set(8, 12, 8);
-    scene.add(keyLight);
-
-    // Back-kicker rim light for crisp edge separation from dark stardust void
-    const backRimLight = new THREE.DirectionalLight(0xffffff, 8.0);
-    backRimLight.position.set(0, -6, -8);
+    // 2. High-power back rim kicker (Incandescent golden halo directly echoing background silk glow)
+    const backRimLight = new THREE.DirectionalLight(0xffd998, 26.0);
+    backRimLight.position.set(0, -2, -6);
     scene.add(backRimLight);
 
-    // Side grazing light for subtle razor edge glint
-    const sideGrazingLight = new THREE.DirectionalLight(0xffffff, 5.0);
-    sideGrazingLight.position.set(-10, 4, 4);
+    // 3. Overhead razor chamfer glint
+    const topRimLight = new THREE.DirectionalLight(0xfffaee, 18.0);
+    topRimLight.position.set(0, 16, 2);
+    scene.add(topRimLight);
+
+    // 4. Primary champagne sculptural key light
+    const keyLight = new THREE.DirectionalLight(0xffeed4, 3.8);
+    keyLight.position.set(7, 11, 8);
+    scene.add(keyLight);
+
+    // 5. Left liquid gold silhouette kicker
+    const sideGrazingLight = new THREE.DirectionalLight(0xebb770, 8.5);
+    sideGrazingLight.position.set(-9, 3, 5);
     scene.add(sideGrazingLight);
+
+    // 6. Subtle soft front volume fill
+    const frontKeyLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    frontKeyLight.position.set(0, 2.0, 9.0);
+    scene.add(frontKeyLight);
+
+    // 7. Dark amber-bronze under bounce
+    const floorBounceLight = new THREE.DirectionalLight(0x402510, 2.0);
+    floorBounceLight.position.set(0, -8, 4);
+    scene.add(floorBounceLight);
+
+    // 8. Dynamic sweeping champagne specular point light
+    const mouseLight = new THREE.PointLight(0xffe6b8, 7.5, 16);
+    mouseLight.position.set(0, 0, 4.0);
+    scene.add(mouseLight);
 
     // Mouse & Touch Parallax Trackers
     let mouseX = 0;
@@ -421,6 +587,11 @@ export function Plus3DCanvas({
       keyLight.position.y = 14 + mouseY * 2.0;
 
       topRimLight.position.x = mouseX * 2.0;
+
+      if (mouseLight) {
+        mouseLight.position.x = mouseX * 6.0;
+        mouseLight.position.y = mouseY * 5.0;
+      }
 
       // Update Tenbin Orbiting Stardust Halo Particles
       const auraAttr = auraParticleGeo.attributes.position as THREE.BufferAttribute;
@@ -639,8 +810,12 @@ export function Plus3DCanvas({
       auraParticleGeo.dispose();
       auraParticleMat.dispose();
       particleTexture.dispose();
-      matTitaniumOne.dispose();
-      matTitaniumThree.dispose();
+      matFaceOne.dispose();
+      matFaceThree.dispose();
+      matSideOne.dispose();
+      matSideThree.dispose();
+      liquidNormalMap.dispose();
+      envTexture.dispose();
       renderer.dispose();
     };
   }, [theme]);

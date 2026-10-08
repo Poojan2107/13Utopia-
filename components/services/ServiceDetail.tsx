@@ -33,7 +33,7 @@ export function ServiceDetail({ world }: Props) {
   return (
     <SmoothScrollProvider>
       {/* Signature 3D Titanium "13" Emblem & Nebula Atmosphere offset to frame hero copy */}
-      <AmbientField showEmblem={true} emblemOffsetX={3.0} />
+      <AmbientField showEmblem={false} />
       <SiteHeader />
 
       <main
