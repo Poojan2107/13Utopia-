@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useRef, useEffect, useCallback, useState } from "react";
+import { motion, useMotionValue, animate } from "framer-motion";
 import { Project, PROJECTS } from "./projects";
 import styles from "./WorkShowcase.module.css";
 
@@ -11,52 +11,276 @@ interface ProjectModalProps {
   onSelectProject?: (project: Project) => void;
 }
 
-const SPRING_TRANSITION = {
-  type: "spring",
-  stiffness: 300,
-  damping: 32,
-  mass: 0.8,
-} as const;
+// 1:1 Jesper Landberg Cinematic Cubic-Bezier Curve (Apple fluid ease-out)
+const EASING = [0.16, 1, 0.3, 1] as const;
+const TRANSITION_DURATION = 0.48;
+
+// Tripled set of projects to allow infinite seamless looping in both directions
+const REPEATED_PROJECTS: { project: Project; virtualIndex: number }[] = [
+  ...PROJECTS.map((p) => ({ project: p, virtualIndex: 0 })),
+  ...PROJECTS.map((p) => ({ project: p, virtualIndex: 1 })),
+  ...PROJECTS.map((p) => ({ project: p, virtualIndex: 2 })),
+].map((item, idx) => ({ project: item.project, virtualIndex: idx }));
+
+function SheetCard({
+  project,
+  isActive,
+  onClose,
+  onClick,
+}: {
+  project: Project;
+  isActive: boolean;
+  onClose?: () => void;
+  onClick?: () => void;
+}) {
+  const galleryImages =
+    project.gallery && project.gallery.length > 0
+      ? project.gallery
+      : [project.image];
+
+  return (
+    <article
+      className={`${styles.sheetCard} ${
+        isActive ? styles.sheetCardActive : styles.sheetCardRelated
+      }`}
+      role="dialog"
+      aria-modal={isActive}
+      aria-labelledby={`sheet-title-${project.slug}`}
+      onClick={!isActive ? onClick : undefined}
+      title={!isActive ? project.title : undefined}
+    >
+      {/* Left Column: Title, Description, Pills */}
+      <div className={styles.sheetLeftCol}>
+        <h1 id={`sheet-title-${project.slug}`} className={styles.sheetTitle}>
+          {project.title}
+        </h1>
+
+        <div className={styles.sheetDescription}>{project.description}</div>
+
+        <div className={styles.sheetPillsRow}>
+          {/* External link button with micro-interaction */}
+          <a
+            href={project.url || "https://13utopia.com"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.visitPill}
+            aria-label={`Visit ${project.title}`}
+            data-cursor="hover"
+            tabIndex={isActive ? 0 : -1}
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="7" y1="17" x2="17" y2="7" />
+              <polyline points="7 7 17 7 17 17" />
+            </svg>
+          </a>
+
+          <div className={styles.capsulesGroup}>
+            <span className={styles.metaPill}>{project.year || "2026"}</span>
+
+            <span
+              className={styles.trophyIcon}
+              role="img"
+              aria-label="Awwwards recognition"
+            >
+              🏆
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Column: Scrollable Media Stack (Completely Hidden Scrollbar) */}
+      <div className={styles.sheetRightCol}>
+        <div className={styles.mediaStack}>
+          {project.video ? (
+            <div
+              className={styles.mediaFrame}
+              style={{ aspectRatio: project.aspectRatio || "16 / 9" }}
+            >
+              <video
+                className={styles.mediaImg}
+                src={project.video}
+                poster={project.image}
+                playsInline
+                autoPlay
+                muted
+                loop
+                preload="auto"
+                aria-label={`${project.title} reel`}
+              />
+            </div>
+          ) : null}
+
+          {galleryImages.map((imgUrl, i) => (
+            <div
+              key={i}
+              className={styles.mediaFrame}
+              style={{ aspectRatio: project.aspectRatio || "16 / 9" }}
+            >
+              <img
+                src={imgUrl}
+                alt={`${project.title} asset ${i + 1}`}
+                loading="eager"
+                decoding="sync"
+                className={styles.mediaImg}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 1:1 Jesper Close button matching Image 5 (Crisp thin ring with centered cross) */}
+      {isActive && onClose && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
+          className={styles.sheetCloseBtn}
+          aria-label="Close project"
+          data-cursor="hover"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      )}
+    </article>
+  );
+}
 
 export default function ProjectModal({
   project,
   onClose,
   onSelectProject,
 }: ProjectModalProps) {
-  const [direction, setDirection] = useState<1 | -1>(1);
+  const railRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  const currentIndex = project
+  // Preload all project assets in memory cache for instant, zero-delay switching
+  useEffect(() => {
+    PROJECTS.forEach((p) => {
+      if (p.image) {
+        const img = new Image();
+        img.src = p.image;
+      }
+      p.gallery?.forEach((g) => {
+        const img = new Image();
+        img.src = g;
+      });
+    });
+  }, []);
+
+  // Map initial project to the middle set (indexes 4..7)
+  const initialOriginalIndex = project
     ? PROJECTS.findIndex((p) => p.slug === project.slug)
-    : -1;
-  const prevProject =
-    currentIndex > 0
-      ? PROJECTS[currentIndex - 1]
-      : PROJECTS[PROJECTS.length - 1];
-  const nextProject =
-    currentIndex < PROJECTS.length - 1
-      ? PROJECTS[currentIndex + 1]
-      : PROJECTS[0];
+    : 0;
+  const [virtualIndex, setVirtualIndex] = useState(
+    initialOriginalIndex >= 0 ? initialOriginalIndex + PROJECTS.length : PROJECTS.length
+  );
 
-  const handlePrev = useCallback(() => {
-    if (prevProject && onSelectProject) {
-      setDirection(-1);
-      onSelectProject(prevProject);
+  const getStep = useCallback(() => {
+    if (railRef.current) {
+      const cardWidth = railRef.current.offsetWidth;
+      const gap = window.innerWidth >= 650 ? 40 : 24;
+      return cardWidth + gap;
     }
-  }, [prevProject, onSelectProject]);
+    return window.innerWidth - 100;
+  }, []);
 
-  const handleNext = useCallback(() => {
-    if (nextProject && onSelectProject) {
-      setDirection(1);
-      onSelectProject(nextProject);
+  const slideToIndex = useCallback(
+    (targetIndex: number) => {
+      if (isAnimating) return;
+      setIsAnimating(true);
+
+      // Immediately activate target card on Frame 0 so content is 100% visible with zero delay
+      setVirtualIndex(targetIndex);
+
+      const len = PROJECTS.length;
+      const origIdx = ((targetIndex % len) + len) % len;
+      if (onSelectProject) {
+        onSelectProject(PROJECTS[origIdx]);
+      }
+
+      const step = getStep();
+      const targetX = -targetIndex * step;
+
+      animate(x, targetX, {
+        duration: TRANSITION_DURATION,
+        ease: EASING,
+        onComplete: () => {
+          let normalizedIndex = targetIndex;
+          // Quietly re-center to the middle loop set to allow infinite navigation
+          if (targetIndex >= len * 2) {
+            normalizedIndex = targetIndex - len;
+            x.set(-normalizedIndex * step);
+            setVirtualIndex(normalizedIndex);
+          } else if (targetIndex < len) {
+            normalizedIndex = targetIndex + len;
+            x.set(-normalizedIndex * step);
+            setVirtualIndex(normalizedIndex);
+          }
+          setIsAnimating(false);
+        },
+      });
+    },
+    [isAnimating, getStep, x, onSelectProject]
+  );
+
+  const handleSlideNext = useCallback(() => {
+    slideToIndex(virtualIndex + 1);
+  }, [slideToIndex, virtualIndex]);
+
+  const handleSlidePrev = useCallback(() => {
+    slideToIndex(virtualIndex - 1);
+  }, [slideToIndex, virtualIndex]);
+
+  // Sync virtual index if external project changes
+  useEffect(() => {
+    if (!project) return;
+    const origIdx = PROJECTS.findIndex((p) => p.slug === project.slug);
+    if (origIdx >= 0) {
+      const targetV = origIdx + PROJECTS.length;
+      if (targetV !== virtualIndex) {
+        setVirtualIndex(targetV);
+        const step = getStep();
+        x.set(-targetV * step);
+      }
     }
-  }, [nextProject, onSelectProject]);
+  }, [project?.slug]);
+
+  // Initialize position on mount
+  useEffect(() => {
+    const step = getStep();
+    x.set(-virtualIndex * step);
+  }, [getStep, virtualIndex, x]);
 
   // Keyboard navigation: Esc to close, Arrow keys for prev/next
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowLeft") handlePrev();
-      if (e.key === "ArrowRight") handleNext();
+      if (e.key === "ArrowLeft") handleSlidePrev();
+      if (e.key === "ArrowRight") handleSlideNext();
     };
     if (project) {
       window.addEventListener("keydown", onKeyDown);
@@ -66,19 +290,9 @@ export default function ProjectModal({
       window.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = "";
     };
-  }, [project, onClose, handlePrev, handleNext]);
+  }, [project, onClose, handleSlidePrev, handleSlideNext]);
 
   if (!project) return null;
-
-  const galleryImages =
-    project.gallery && project.gallery.length > 0
-      ? project.gallery
-      : [project.image];
-
-  const vignettes =
-    project.vignettes && project.vignettes.length > 0
-      ? project.vignettes
-      : galleryImages;
 
   return (
     <div
@@ -87,276 +301,48 @@ export default function ProjectModal({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      {/* Top Fixed Navigation Meta Rail */}
-      <div className={styles.sliderHeaderRail}>
-        <div className={styles.sliderMetaBadge}>
-          <span className={styles.sliderLiveDot} />
-          <span>PROJECT {currentIndex + 1} / {PROJECTS.length}</span>
-          <span className={styles.sliderMetaSep}>·</span>
-          <span className={styles.sliderMetaTitle}>{project.title}</span>
-        </div>
+      {/* 1:1 Jesper Landberg Continuous Multi-Card Slider Rail */}
+      <motion.div
+        ref={railRef}
+        className={styles.sliderRail}
+        style={{ x }}
+        drag={isAnimating ? false : "x"}
+        dragConstraints={{ left: -999999, right: 999999 }}
+        dragElastic={0.15}
+        onDragEnd={(_, info) => {
+          const step = getStep();
+          const swipeThreshold = 40;
+          const velocityThreshold = 140;
 
-        <button
-          type="button"
-          onClick={onClose}
-          className={styles.sliderCloseBtn}
-          aria-label="Close project viewer"
-          data-cursor="hover"
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-
-      {/* Peaking Previous Project Card (Left side - Exact Jesper Landberg Layout) */}
-      {prevProject && (
-        <aside
-          className={`${styles.relatedCard} ${styles.relatedPrev}`}
-          onClick={handlePrev}
-          title={`Previous: ${prevProject.title}`}
-          aria-label={`Previous project: ${prevProject.title}`}
-          data-cursor="hover"
-        >
-          <div className={styles.relatedContent}>
-            <span className={styles.relatedTitle}>{prevProject.title}</span>
-            <span className={styles.relatedYear}>{prevProject.year}</span>
-          </div>
-          <div className={styles.relatedArrowBtn} aria-hidden="true">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-          </div>
-        </aside>
-      )}
-
-      {/* Main Expansive Project Sheet with Smooth Spring Directional Transitions */}
-      <AnimatePresence mode="popLayout" custom={direction} initial={false}>
-        <motion.article
-          key={project.slug}
-          custom={direction}
-          className={styles.sheetContainer}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="project-sheet-title"
-          initial={{
-            opacity: 0,
-            x: direction > 0 ? 120 : -120,
-            scale: 0.96,
-          }}
-          animate={{
-            opacity: 1,
-            x: 0,
-            scale: 1,
-            transition: SPRING_TRANSITION,
-          }}
-          exit={{
-            opacity: 0,
-            x: direction > 0 ? -120 : 120,
-            scale: 0.96,
-            transition: { duration: 0.22, ease: "easeOut" },
-          }}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.15}
-          onDragEnd={(_, { offset, velocity }) => {
-            const swipeThreshold = 50;
-            const velocityThreshold = 250;
-            if (offset.x < -swipeThreshold || velocity.x < -velocityThreshold) {
-              handleNext();
-            } else if (offset.x > swipeThreshold || velocity.x > velocityThreshold) {
-              handlePrev();
-            }
-          }}
-        >
-          {/* Left Column: Sticky Editorial Info */}
-          <div className={styles.sheetLeftCol}>
-            <div className={styles.sheetLeftTop}>
-              <motion.h1
-                id="project-sheet-title"
-                className={styles.sheetTitle}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, delay: 0.05 }}
-              >
-                {project.title}
-              </motion.h1>
-
-              <motion.p
-                className={styles.sheetDescription}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, delay: 0.1 }}
-              >
-                {project.description}
-              </motion.p>
-
-              <motion.div
-                className={styles.sheetPillsRow}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.15 }}
-              >
-                {/* External link button */}
-                {project.url && (
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.visitPill}
-                    aria-label={`Visit ${project.title} live website`}
-                    data-cursor="hover"
-                  >
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <line x1="7" y1="17" x2="17" y2="7" />
-                      <polyline points="7 7 17 7 17 17" />
-                    </svg>
-                  </a>
-                )}
-
-                {/* Year Capsule Pill */}
-                <span className={styles.metaPill}>{project.year}</span>
-
-                {/* Role / Client Capsule Pill */}
-                {project.role && (
-                  <span className={styles.metaPill}>{project.role}</span>
-                )}
-              </motion.div>
-            </div>
-
-            {/* Bottom Left Minimal Progress / Scroll Indicator Ring */}
-            <div className={styles.sheetScrollRing} aria-hidden="true" />
-          </div>
-
-          {/* Right Column: Scrollable Media Gallery Stack */}
-          <motion.div
-            className={styles.sheetRightCol}
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.08 }}
-          >
-            {/* 5-Column Vignette / Mosaic Grid (Signature Jesper Landberg feature) */}
-            {vignettes.length > 0 && (
-              <div className={styles.vignetteGrid}>
-                {vignettes.map((imgUrl, i) => (
-                  <div key={i} className={styles.vignetteItem}>
-                    <img
-                      src={imgUrl}
-                      alt={`${project.title} detail ${i + 1}`}
-                      loading="lazy"
-                      className={styles.vignetteImg}
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Stacked Large Aspect-Ratio Frames */}
-            <div className={styles.mediaStack}>
-              {project.video ? (
-                <div
-                  className={styles.mediaFrame}
-                  style={{ aspectRatio: project.aspectRatio }}
-                >
-                  <video
-                    className={styles.mediaImg}
-                    src={project.video}
-                    poster={project.image}
-                    controls
-                    playsInline
-                    autoPlay
-                    muted
-                    loop
-                    preload="auto"
-                    aria-label={`${project.title} reel`}
-                  />
-                </div>
-              ) : null}
-              {galleryImages.map((imgUrl, i) => (
-                <div
-                  key={i}
-                  className={styles.mediaFrame}
-                  style={{ aspectRatio: project.aspectRatio }}
-                >
-                  <img
-                    src={imgUrl}
-                    alt={`${project.title} preview shot ${i + 1}`}
-                    loading={i === 0 ? "eager" : "lazy"}
-                    className={styles.mediaImg}
-                  />
-                  {project.url && (
-                    <a
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.frameVisitBtn}
-                      aria-label={`Open ${project.title} live`}
-                      data-cursor="hover"
-                    >
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <line x1="7" y1="17" x2="17" y2="7" />
-                        <polyline points="7 7 17 7 17 17" />
-                      </svg>
-                    </a>
-                  )}
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </motion.article>
-      </AnimatePresence>
-
-      {/* Peaking Next Project Card (Right side - Exact Jesper Landberg Layout) */}
-      {nextProject && (
-        <aside
-          className={`${styles.relatedCard} ${styles.relatedNext}`}
-          onClick={handleNext}
-          title={`Next: ${nextProject.title}`}
-          aria-label={`Next project: ${nextProject.title}`}
-          data-cursor="hover"
-        >
-          <div className={styles.relatedContent}>
-            <span className={styles.relatedTitle}>{nextProject.title}</span>
-            <span className={styles.relatedYear}>{nextProject.year}</span>
-          </div>
-          <div className={styles.relatedArrowBtn} aria-hidden="true">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </div>
-        </aside>
-      )}
+          if (
+            info.offset.x < -swipeThreshold ||
+            info.velocity.x < -velocityThreshold
+          ) {
+            handleSlideNext();
+          } else if (
+            info.offset.x > swipeThreshold ||
+            info.velocity.x > velocityThreshold
+          ) {
+            handleSlidePrev();
+          } else {
+            // Snap back cleanly to current card
+            animate(x, -virtualIndex * step, {
+              duration: 0.32,
+              ease: EASING,
+            });
+          }
+        }}
+      >
+        {REPEATED_PROJECTS.map((item, idx) => (
+          <SheetCard
+            key={`${item.project.slug}-${idx}`}
+            project={item.project}
+            isActive={idx === virtualIndex}
+            onClose={onClose}
+            onClick={() => slideToIndex(idx)}
+          />
+        ))}
+      </motion.div>
     </div>
   );
 }
-
-
-

@@ -10,23 +10,31 @@ type Props = {
   children: React.ReactNode;
 };
 
+/**
+ * One continuous scroll river:
+ * Lenis lerp smooths the wheel → ScrollTrigger scrub:true reads that stream 1:1
+ * → dive camera rebakes every frame. No stacked lag, no pose pops.
+ */
 export function SmoothScrollProvider({ children }: Props) {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
 
     gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
 
     const lenis = new Lenis({
-      duration: 1.15,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      autoRaf: false,
+      lerp: 0.11,
+      duration: 0.9,
       smoothWheel: true,
-      touchMultiplier: 1.1,
+      syncTouch: false,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.0,
     });
 
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
-    // Sync Lenis with GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 
     const tickerCallback = (time: number) => {
@@ -36,7 +44,16 @@ export function SmoothScrollProvider({ children }: Props) {
     gsap.ticker.add(tickerCallback);
     gsap.ticker.lagSmoothing(0);
 
+    const refresh = () => {
+      lenis.resize();
+      ScrollTrigger.refresh();
+    };
+    const t = window.setTimeout(refresh, 120);
+    window.addEventListener("load", refresh);
+
     return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("load", refresh);
       gsap.ticker.remove(tickerCallback);
       lenis.destroy();
       delete (window as unknown as { __lenis?: Lenis }).__lenis;

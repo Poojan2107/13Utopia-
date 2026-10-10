@@ -172,12 +172,14 @@ export function ModelViewer() {
 
     // 4. Materials with polygonOffset for zero Z-fighting
     const matOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0xd0d5dd),
-      roughness: 0.18,
-      metalness: 0.95,
-      clearcoat: 0.90,
+      color: new THREE.Color(0x38393d),
+      roughness: 0.45,
+      metalness: 0.55,
+      clearcoat: 0.85,
       clearcoatRoughness: 0.10,
-      reflectivity: 0.90,
+      reflectivity: 0.95,
+      sheen: 0.60,
+      sheenColor: new THREE.Color(0xf0f5ff),
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
@@ -185,12 +187,14 @@ export function ModelViewer() {
     matOneRef.current = matOne;
 
     const matThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0xb0b8c4),
-      roughness: 0.20,
+      color: new THREE.Color(0x282a2e),
+      roughness: 0.12,
       metalness: 0.92,
-      clearcoat: 0.90,
-      clearcoatRoughness: 0.10,
-      reflectivity: 0.90,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      reflectivity: 1.0,
+      sheen: 0.85,
+      sheenColor: new THREE.Color(0xffffff),
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,

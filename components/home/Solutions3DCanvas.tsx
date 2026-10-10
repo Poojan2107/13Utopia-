@@ -91,29 +91,31 @@ export function Solutions3DCanvas({ activeIndex = 0 }: Solutions3DCanvasProps) {
       bevelSegments: 5,
     };
 
-    // Materials: Dark Obsidian Titanium with specular glint
+    // Materials: Dark Obsidian Charcoal with Review Route Grading
     const matTitaniumOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x22262e),
-      roughness: 0.14,
-      metalness: 0.94,
-      emissive: new THREE.Color(0x050608),
-      clearcoat: 0.90,
+      color: new THREE.Color(0x38393d),
+      roughness: 0.45,
+      metalness: 0.55,
+      clearcoat: 0.85,
       clearcoatRoughness: 0.10,
       reflectivity: 0.95,
+      sheen: 0.60,
+      sheenColor: new THREE.Color(0xf0f5ff),
       transparent: true,
-      opacity: 0.80,
+      opacity: 0.85,
     });
 
     const matTitaniumThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x1e222a),
-      roughness: 0.14,
-      metalness: 0.94,
-      emissive: new THREE.Color(0x050608),
-      clearcoat: 0.90,
-      clearcoatRoughness: 0.10,
-      reflectivity: 0.95,
+      color: new THREE.Color(0x282a2e),
+      roughness: 0.12,
+      metalness: 0.92,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      reflectivity: 1.0,
+      sheen: 0.85,
+      sheenColor: new THREE.Color(0xffffff),
       transparent: true,
-      opacity: 0.80,
+      opacity: 0.85,
     });
 
     const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);

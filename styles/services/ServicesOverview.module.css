@@ -7,6 +7,26 @@
   z-index: 2;
 }
 
+/* ─── Fixed Persistent 3D Stage (Omnipresent across page, hidden in footer) ─── */
+.fixed3DStage {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s;
+}
+
+.stageHidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 /* ─── Hero Section (Full 100vh Centered Viewport) ─── */
 .hero {
   position: relative;
@@ -24,6 +44,16 @@
   padding: 0 clamp(1.5rem, 5vw, 6rem);
   box-sizing: border-box;
   margin: 0 auto;
+  overflow: hidden;
+}
+
+.hero3DCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .heroContent {
@@ -36,6 +66,14 @@
   gap: 1.5rem;
   position: relative;
   z-index: 10;
+  pointer-events: none;
+}
+
+.heroContent a,
+.heroContent button,
+.heroContent h1,
+.heroContent p {
+  pointer-events: auto;
 }
 
 .title {

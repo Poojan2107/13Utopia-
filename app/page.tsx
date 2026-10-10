@@ -6,11 +6,7 @@ import {
 } from "@/components/home";
 import { Continuous3DStory } from "@/components/plus-ex";
 import { SiteHeader, SiteFooter } from "@/components/layout";
-import {
-  AmbientField,
-  ValeranCursor,
-  SmoothScrollProvider,
-} from "@/components/motion";
+import { SmoothScrollProvider } from "@/components/motion";
 
 export default function HomePage() {
   return (
@@ -20,20 +16,12 @@ export default function HomePage() {
           position: "relative",
           width: "100%",
           minHeight: "100vh",
-          backgroundColor: "#000000",
+          backgroundColor: "transparent",
           overflowX: "clip",
         }}
       >
-        {/* Sitewide atmosphere */}
-        <AmbientField showEmblem={false} />
-
-        {/* Luxury Square Cursor */}
-        <ValeranCursor />
-
-      {/* Site Header (Top Right Logo & Menu Toggle) */}
       <SiteHeader />
 
-      {/* Unified Continuous Architecture (Hero -> 3D Story -> Digital Bust Sculpture -> Kinetic Thesis Cinema -> Work Carousel -> CTA Monolith) */}
       <main
         id="main-content"
         style={{
@@ -42,8 +30,8 @@ export default function HomePage() {
           backgroundColor: "transparent",
         }}
       >
-        {/* 01 — 3D ARCHITECTURAL HERO & NARRATIVE CONTINUUM */}
-        <Continuous3DStory />
+        {/* 01 — Black-hole dive hero → emerge into 3D narrative */}
+        <Continuous3DStory blackHoleDive />
 
         {/* 02 — IDENTITY & PHILOSOPHY: Transparent WebGL Metallic Digital Bust & Architectural Thesis */}
         <HomeNarrativeSection />

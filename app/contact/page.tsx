@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/layout";
-import { AmbientField, SmoothScrollProvider } from "@/components/motion";
+import { SmoothScrollProvider } from "@/components/motion";
 import styles from "@/styles/contact/Contact.module.css";
 
 const SERVICES = [
@@ -44,7 +44,6 @@ export default function ContactPage() {
 
   return (
     <SmoothScrollProvider>
-      <AmbientField showEmblem={false} />
       <SiteHeader />
 
       <main className={styles.contactPage} id="main-content">

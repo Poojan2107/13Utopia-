@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { SiteHeader, SiteFooter } from "@/components/layout";
-import { AmbientField, SmoothScrollProvider } from "@/components/motion";
+import { SmoothScrollProvider } from "@/components/motion";
 import { BLOG_POSTS } from "@/data/blog";
 import styles from "@/styles/blog/BlogPost.module.css";
 
@@ -25,7 +25,6 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <SmoothScrollProvider>
-      <AmbientField />
       <SiteHeader />
 
       <main className={styles.articlePage}>

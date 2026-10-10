@@ -2,13 +2,12 @@
 
 import { SiteHeader, SiteFooter } from "@/components/layout";
 import { FramerSectionCTA } from "@/components/framer/FramerSectionCTA";
-import { AmbientField, SmoothScrollProvider } from "@/components/motion";
+import { SmoothScrollProvider } from "@/components/motion";
 import styles from "@/styles/about/About.module.css";
 
 export default function AboutPage() {
   return (
     <SmoothScrollProvider>
-      <AmbientField />
       <SiteHeader />
 
       <main className={styles.aboutPage}>

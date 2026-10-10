@@ -9,6 +9,7 @@ export interface Plus3DCanvasProps {
   entryProgress?: number;
   className?: string;
   theme?: "dark" | "light" | "transparent";
+  onlyThirteen?: boolean;
 }
 
 /**
@@ -27,11 +28,13 @@ export function Plus3DCanvas({
   entryProgress = 1,
   className,
   theme = "transparent",
+  onlyThirteen = false,
 }: Plus3DCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const groupRef = useRef<THREE.Group | null>(null);
   const progressRef = useRef(progress);
   const entryProgressRef = useRef(entryProgress);
+  const onlyThirteenRef = useRef(onlyThirteen);
 
   useEffect(() => {
     progressRef.current = progress;
@@ -40,6 +43,10 @@ export function Plus3DCanvas({
   useEffect(() => {
     entryProgressRef.current = entryProgress;
   }, [entryProgress]);
+
+  useEffect(() => {
+    onlyThirteenRef.current = onlyThirteen;
+  }, [onlyThirteen]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -76,7 +83,7 @@ export function Plus3DCanvas({
     renderer.setPixelRatio(dpr);
     renderer.setSize(width, height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
+    renderer.toneMappingExposure = 1.8;
     // Keep stage transparent so fixed steel field shows through
     renderer.setClearColor(0x000000, 0);
     renderer.setClearAlpha(0);
@@ -218,58 +225,37 @@ export function Plus3DCanvas({
     liquidNormalMap.wrapT = THREE.RepeatWrapping;
     liquidNormalMap.repeat.set(1.5, 1.5);
 
-    // ── 02. HIGH-CONTRAST CINEMATIC SILK HDR ENVIRONMENT MAP (92% Black Void + Razor Champagne Filaments) ──
+    // ── 02. HIGH-CONTRAST STUDIO HDR ENVIRONMENT MAP (Review Route Studio Grade) ──
     const envCanvas = document.createElement("canvas");
     envCanvas.width = 1024;
     envCanvas.height = 512;
     const envCtx = envCanvas.getContext("2d");
     if (envCtx) {
-      // 1. Inky cosmic void base (No muddy brown washing out the shadows)
-      envCtx.fillStyle = "#020304";
+      envCtx.fillStyle = "#020204";
       envCtx.fillRect(0, 0, 1024, 512);
 
-      // Subtle warm dark horizon depth
-      const deepH = envCtx.createLinearGradient(0, 180, 0, 330);
-      deepH.addColorStop(0.0, "rgba(2, 3, 4, 1.0)");
-      deepH.addColorStop(0.5, "rgba(22, 16, 10, 0.40)");
-      deepH.addColorStop(1.0, "rgba(2, 3, 4, 1.0)");
-      envCtx.fillStyle = deepH;
-      envCtx.fillRect(0, 180, 1024, 150);
+      // Top silver rim light streak
+      const g1 = envCtx.createLinearGradient(0, 60, 1024, 160);
+      g1.addColorStop(0.0, "rgba(0, 0, 0, 0)");
+      g1.addColorStop(0.4, "rgba(230, 240, 255, 0.6)");
+      g1.addColorStop(0.5, "rgba(255, 255, 255, 1.0)");
+      g1.addColorStop(0.6, "rgba(230, 240, 255, 0.6)");
+      g1.addColorStop(1.0, "rgba(0, 0, 0, 0)");
+      envCtx.fillStyle = g1;
+      envCtx.fillRect(0, 70, 1024, 80);
 
-      // 2. Primary Incandescent Champagne Silk Filament (Laser specular streak across upper bevels)
-      const streak1 = envCtx.createLinearGradient(0, 120, 1024, 210);
-      streak1.addColorStop(0.0, "rgba(0, 0, 0, 0)");
-      streak1.addColorStop(0.35, "rgba(235, 175, 95, 0.40)");
-      streak1.addColorStop(0.48, "rgba(255, 245, 225, 1.0)"); // Blinding incandescent core
-      streak1.addColorStop(0.52, "rgba(255, 245, 225, 1.0)");
-      streak1.addColorStop(0.65, "rgba(240, 185, 110, 0.45)");
-      streak1.addColorStop(1.0, "rgba(0, 0, 0, 0)");
-      envCtx.fillStyle = streak1;
-      envCtx.fillRect(0, 135, 1024, 55);
-
-      // 3. Secondary Razor Gold Filament (Lower edge specular catch)
-      const streak2 = envCtx.createLinearGradient(0, 275, 1024, 335);
-      streak2.addColorStop(0.0, "rgba(0, 0, 0, 0)");
-      streak2.addColorStop(0.20, "rgba(215, 150, 75, 0.35)");
-      streak2.addColorStop(0.50, "rgba(255, 235, 195, 0.90)");
-      streak2.addColorStop(0.80, "rgba(215, 150, 75, 0.35)");
-      streak2.addColorStop(1.0, "rgba(0, 0, 0, 0)");
-      envCtx.fillStyle = streak2;
-      envCtx.fillRect(0, 280, 1024, 45);
-
-      // 4. Focused Champagne Studio Softbox (Upper-right key highlight)
-      const rightSoft = envCtx.createRadialGradient(820, 160, 5, 820, 160, 240);
-      rightSoft.addColorStop(0.0, "rgba(255, 252, 240, 1.0)");
-      rightSoft.addColorStop(0.25, "rgba(255, 225, 170, 0.85)");
-      rightSoft.addColorStop(0.60, "rgba(180, 115, 50, 0.25)");
-      rightSoft.addColorStop(1.0, "rgba(0, 0, 0, 0)");
-      envCtx.fillStyle = rightSoft;
+      // Strong highlight spot
+      const spot = envCtx.createRadialGradient(512, 120, 5, 512, 120, 200);
+      spot.addColorStop(0.0, "rgba(255, 255, 255, 1.0)");
+      spot.addColorStop(0.5, "rgba(200, 220, 245, 0.6)");
+      spot.addColorStop(1.0, "rgba(0, 0, 0, 0)");
+      envCtx.fillStyle = spot;
       envCtx.fillRect(0, 0, 1024, 512);
 
-      // 5. Razor Edge Kicker Strip (Left rim glint)
+      // Left crisp kicker glint
       const leftRim = envCtx.createRadialGradient(200, 310, 5, 200, 310, 200);
-      leftRim.addColorStop(0.0, "rgba(255, 240, 205, 0.85)");
-      leftRim.addColorStop(0.35, "rgba(220, 160, 85, 0.40)");
+      leftRim.addColorStop(0.0, "rgba(240, 245, 255, 0.90)");
+      leftRim.addColorStop(0.35, "rgba(200, 220, 255, 0.40)");
       leftRim.addColorStop(1.0, "rgba(0, 0, 0, 0)");
       envCtx.fillStyle = leftRim;
       envCtx.fillRect(0, 0, 1024, 512);
@@ -278,88 +264,80 @@ export function Plus3DCanvas({
     envTexture.mapping = THREE.EquirectangularReflectionMapping;
     scene.environment = envTexture;
 
-    // ── 03. TWO-TONE ARCHITECTURAL MATERIALITY ────────────────────────────────
-    // FRONT & BACK FACES: Inky Obsidian Satin Titanium with Liquid Ripples (High legibility, dark contrast)
+    // ── 03. REVIEW ROUTE EXACT VOLCANIC OBSIDIAN & SMOKED CHROME MATERIALITY ──
+    // FRONT & BACK FACES: Dark Obsidian Charcoal Satin Base with High Facet Speculars
     const matFaceOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x0a0c10),
-      roughness: 0.10,
-      metalness: 0.97,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.02,
-      reflectivity: 1.0,
-      ior: 2.7,
-      iridescence: 0.30,
-      iridescenceIOR: 1.40,
-      sheen: 0.55,
-      sheenColor: new THREE.Color(0xf0c870),
-      sheenRoughness: 0.22,
-      emissive: new THREE.Color(0x050304),
+      color: new THREE.Color(0x38393d), // Matching Tenbin liquid rock charcoal tone
+      roughness: 0.48,
+      metalness: 0.55,
+      clearcoat: 0.70,
+      clearcoatRoughness: 0.10,
+      reflectivity: 0.95,
+      ior: 2.4,
+      sheen: 0.60,
+      sheenColor: new THREE.Color(0xf0f5ff),
+      sheenRoughness: 0.20,
+      emissive: new THREE.Color(0x000000),
       normalMap: liquidNormalMap,
       normalScale: new THREE.Vector2(0.12, 0.12),
-      envMapIntensity: 2.2,
+      envMapIntensity: 1.8,
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
 
     const matFaceThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x080a0e),
-      roughness: 0.12,
-      metalness: 0.95,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.03,
-      reflectivity: 1.0,
-      ior: 2.6,
-      iridescence: 0.22,
-      iridescenceIOR: 1.38,
-      sheen: 0.45,
-      sheenColor: new THREE.Color(0xe2be88),
-      sheenRoughness: 0.25,
-      emissive: new THREE.Color(0x020203),
+      color: new THREE.Color(0x323438),
+      roughness: 0.50,
+      metalness: 0.52,
+      clearcoat: 0.68,
+      clearcoatRoughness: 0.12,
+      reflectivity: 0.92,
+      ior: 2.3,
+      sheen: 0.55,
+      sheenColor: new THREE.Color(0xe8eeff),
+      sheenRoughness: 0.22,
+      emissive: new THREE.Color(0x000000),
       normalMap: liquidNormalMap,
       normalScale: new THREE.Vector2(0.12, 0.12),
-      envMapIntensity: 1.9,
+      envMapIntensity: 1.7,
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
     });
 
-    // BEVEL CHAMFERS & SIDEWALLS: Mirror-Polished Smoked Chrome with Razor Champagne-Gold Flare
+    // BEVEL CHAMFERS & SIDEWALLS: Mirror-Polished Smoked Obsidian Chrome with Razor Silver Glint
     const matSideOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x0e1014),
-      roughness: 0.03,
-      metalness: 0.99,
+      color: new THREE.Color(0x222428),
+      roughness: 0.04,
+      metalness: 0.92,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.010,
+      clearcoatRoughness: 0.015,
       reflectivity: 1.0,
-      ior: 2.9,
-      iridescence: 0.45,
-      iridescenceIOR: 1.48,
-      sheen: 0.90,
-      sheenColor: new THREE.Color(0xffd080),
-      sheenRoughness: 0.16,
-      emissive: new THREE.Color(0x080605),
-      envMapIntensity: 3.2,
+      ior: 2.8,
+      sheen: 0.85,
+      sheenColor: new THREE.Color(0xffffff),
+      sheenRoughness: 0.15,
+      emissive: new THREE.Color(0x000000),
+      envMapIntensity: 2.6,
       polygonOffset: true,
       polygonOffsetFactor: -1,
       polygonOffsetUnits: -1,
     });
 
     const matSideThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x0d0f13),
-      roughness: 0.04,
-      metalness: 0.98,
+      color: new THREE.Color(0x202226),
+      roughness: 0.05,
+      metalness: 0.90,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.015,
+      clearcoatRoughness: 0.02,
       reflectivity: 1.0,
-      ior: 2.8,
-      iridescence: 0.35,
-      iridescenceIOR: 1.45,
-      sheen: 0.8,
-      sheenColor: new THREE.Color(0xf6d296),
-      sheenRoughness: 0.20,
-      emissive: new THREE.Color(0x050403),
-      envMapIntensity: 2.8,
+      ior: 2.7,
+      sheen: 0.80,
+      sheenColor: new THREE.Color(0xf0f5ff),
+      sheenRoughness: 0.18,
+      emissive: new THREE.Color(0x000000),
+      envMapIntensity: 2.4,
       polygonOffset: true,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
@@ -418,16 +396,16 @@ export function Plus3DCanvas({
     const pCtx = pCanvas.getContext("2d");
     if (pCtx) {
       const grad = pCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
-      grad.addColorStop(0, "rgba(255, 250, 240, 1.0)");
-      grad.addColorStop(0.25, "rgba(255, 230, 195, 0.95)");
-      grad.addColorStop(0.60, "rgba(215, 175, 120, 0.40)");
+      grad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
+      grad.addColorStop(0.25, "rgba(230, 240, 255, 0.95)");
+      grad.addColorStop(0.60, "rgba(180, 210, 245, 0.35)");
       grad.addColorStop(1, "rgba(0, 0, 0, 0)");
       pCtx.fillStyle = grad;
       pCtx.fillRect(0, 0, 64, 64);
     }
     const particleTexture = new THREE.CanvasTexture(pCanvas);
 
-    // ── 06. TENBIN EXACT ORBITING MODEL PARTICLES (Surrounding 3D Crystalline Stardust Halo) ──
+    // ── 06. ORBITING STARDUST PARTICLES (Tenbin Stardust Palette) ──
     const auraParticleCount = 45;
     const auraParticleGeo = new THREE.BufferGeometry();
     const auraPositions = new Float32Array(auraParticleCount * 3);
@@ -455,11 +433,11 @@ export function Plus3DCanvas({
     auraParticleGeo.setAttribute("position", new THREE.BufferAttribute(auraPositions, 3));
 
     const auraParticleMat = new THREE.PointsMaterial({
-      size: 0.05,
+      size: 0.055,
       map: particleTexture,
-      color: new THREE.Color(0xf6e2c8),
+      color: new THREE.Color(0xf0f5ff),
       transparent: true,
-      opacity: 0.45,
+      opacity: 0.65,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -467,45 +445,39 @@ export function Plus3DCanvas({
     const auraParticleSystem = new THREE.Points(auraParticleGeo, auraParticleMat);
     scene.add(auraParticleSystem);
 
-    // ── 07. HIGH-CONTRAST SCULPTURAL STUDIO LIGHTING ──
-    // 1. Inky low ambient to preserve dramatic obsidian contrast
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.35);
+    // ── 07. MILKY WAY GALACTIC CORE & CELESTIAL STARLIGHT LIGHTING ──
+    const ambientLight = new THREE.AmbientLight(0x0e131f, 1.2);
     scene.add(ambientLight);
 
-    // 2. High-power back rim kicker (Incandescent golden halo directly echoing background silk glow)
-    const backRimLight = new THREE.DirectionalLight(0xffd998, 26.0);
-    backRimLight.position.set(0, -2, -6);
-    scene.add(backRimLight);
-
-    // 3. Overhead razor chamfer glint
-    const topRimLight = new THREE.DirectionalLight(0xfffaee, 18.0);
-    topRimLight.position.set(0, 16, 2);
-    scene.add(topRimLight);
-
-    // 4. Primary champagne sculptural key light
-    const keyLight = new THREE.DirectionalLight(0xffeed4, 3.8);
-    keyLight.position.set(7, 11, 8);
+    // Key Light: High-altitude cold celestial star cluster
+    const keyLight = new THREE.DirectionalLight(0xf8fafc, 5.2);
+    keyLight.position.set(5, 8, 7);
     scene.add(keyLight);
 
-    // 5. Left liquid gold silhouette kicker
-    const sideGrazingLight = new THREE.DirectionalLight(0xebb770, 8.5);
-    sideGrazingLight.position.set(-9, 3, 5);
-    scene.add(sideGrazingLight);
+    // Galactic Core Warm Amber/Bronze Kicker Light (matching the golden galactic plane)
+    const galacticCoreLight = new THREE.DirectionalLight(0xf5cf9b, 4.8);
+    galacticCoreLight.position.set(6, -5, -3);
+    scene.add(galacticCoreLight);
 
-    // 6. Subtle soft front volume fill
-    const frontKeyLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    // Top Rim Light: Diamond Starlight Glint
+    const topRimLight = new THREE.DirectionalLight(0xffffff, 4.0);
+    topRimLight.position.set(-3, 9, 2);
+    scene.add(topRimLight);
+
+    // Deep Space Void Back Rim
+    const backRimLight = new THREE.DirectionalLight(0xa5c4f2, 5.0);
+    backRimLight.position.set(0, -3, -6);
+    scene.add(backRimLight);
+
+    // Front Fill: Subtle obsidian facet definition
+    const frontKeyLight = new THREE.DirectionalLight(0xfff7ed, 1.4);
     frontKeyLight.position.set(0, 2.0, 9.0);
     scene.add(frontKeyLight);
 
-    // 7. Dark amber-bronze under bounce
-    const floorBounceLight = new THREE.DirectionalLight(0x402510, 2.0);
-    floorBounceLight.position.set(0, -8, 4);
-    scene.add(floorBounceLight);
-
-    // 8. Dynamic sweeping champagne specular point light
-    const mouseLight = new THREE.PointLight(0xffe6b8, 7.5, 16);
+    const mouseLight = new THREE.PointLight(0xffeedd, 3.5, 14);
     mouseLight.position.set(0, 0, 4.0);
     scene.add(mouseLight);
+
 
     // Mouse & Touch Parallax Trackers
     let mouseX = 0;
@@ -574,6 +546,7 @@ export function Plus3DCanvas({
       const elapsedTime = (performance.now() - startTime) * 0.001;
       const p = Math.max(0, Math.min(1, progressRef.current));
       const entryP = Math.max(0, Math.min(1, entryProgressRef.current));
+      const entryFade = smoothstep(0.05, 0.65, entryP);
 
       // Smooth mouse parallax damping
       mouseX += (targetMouseX - mouseX) * 0.06;
@@ -616,23 +589,118 @@ export function Plus3DCanvas({
       auraParticleSystem.rotation.y = elapsedTime * 0.04 + mouseX * 0.05;
 
       if (emblemGroup) {
-        const entryFade = smoothstep(0.05, 0.65, entryP);
-
         // Harmonic organic floating breath
         const idleFloatY = Math.sin(elapsedTime * 1.4) * 0.07;
         const idleRotX = Math.cos(elapsedTime * 1.1) * 0.025;
         const idleRotZ = Math.sin(elapsedTime * 0.9) * 0.02;
 
+        const isOnly13 = onlyThirteenRef.current;
+
         let targetX = 0;
         let targetY = idleFloatY;
         let targetZ = -1.0;
         let targetRotY = 0;
-        let targetRotX = 0.08 + idleRotX;
-        let targetRotZ = idleRotZ;
+        let targetRotX = isOnly13 ? 0 : 0.08 + idleRotX;
+        let targetRotZ = isOnly13 ? 0 : idleRotZ;
         let targetScale = 0.88;
         let targetMorph = 0; // 0 = 13, 1.0 = BE
 
-        if (p < 0.08) {
+        if (isOnly13) {
+          // Pure "13" Architectural Emblem: Zero BE morphing.
+          // Smooth 360° continuous rotation while scrolling, exactly FRONT-FACING at all section stoppages.
+          targetMorph = 0;
+
+          if (p < 0.20) {
+            // Stoppage 0: Hero (CREATE. BUILD. GROW.) — Front facing
+            targetX = 0;
+            targetY = 0.20 + idleFloatY * 0.3;
+            targetZ = -1.1;
+            targetRotY = 0; // 0°: Exactly front facing
+            targetRotX = 0;
+            targetRotZ = 0;
+            targetScale = 0.82;
+          } else if (p >= 0.20 && p < 0.27) {
+            // Transition: Scrolling from Hero -> CREATE Showcase
+            const t = smoothstep(0.20, 0.27, p);
+            const arcDepth = Math.sin(t * Math.PI) * -2.4;
+            targetX = -3.85 * t;
+            targetY = idleFloatY * 0.3;
+            targetZ = -1.1 + arcDepth;
+            targetRotY = Math.PI * 2 * t; // Smooth 360° spin
+            targetRotX = Math.sin(t * Math.PI) * 0.12;
+            targetRotZ = 0;
+            targetScale = 0.82 + 0.14 * t;
+          } else if (p >= 0.27 && p < 0.44) {
+            // Stoppage 1: CREATE Panel — Front facing
+            targetX = -3.85;
+            targetY = idleFloatY * 0.3;
+            targetZ = -1.0;
+            targetRotY = Math.PI * 2; // 360°: Exactly front facing
+            targetRotX = 0;
+            targetRotZ = 0;
+            targetScale = 0.96;
+          } else if (p >= 0.44 && p < 0.51) {
+            // Transition: Scrolling from CREATE -> BUILD Showcase
+            const t = smoothstep(0.44, 0.51, p);
+            const arcDepth = Math.sin(t * Math.PI) * -3.0;
+            targetX = -3.85 + 7.7 * t;
+            targetY = idleFloatY * 0.3;
+            targetZ = -1.0 + arcDepth;
+            targetRotY = Math.PI * 2 + Math.PI * 2 * t; // Smooth 360° spin from 2π to 4π
+            targetRotX = Math.sin(t * Math.PI) * 0.14;
+            targetRotZ = 0;
+            targetScale = 0.96;
+          } else if (p >= 0.51 && p < 0.67) {
+            // Stoppage 2: BUILD Panel — Front facing
+            targetX = 3.85;
+            targetY = idleFloatY * 0.3;
+            targetZ = -1.0;
+            targetRotY = Math.PI * 4; // 720°: Exactly front facing
+            targetRotX = 0;
+            targetRotZ = 0;
+            targetScale = 0.96;
+          } else if (p >= 0.67 && p < 0.74) {
+            // Transition: Scrolling from BUILD -> GROW Showcase
+            const t = smoothstep(0.67, 0.74, p);
+            const arcDepth = Math.sin(t * Math.PI) * -3.0;
+            targetX = 3.85 - 7.7 * t;
+            targetY = idleFloatY * 0.3;
+            targetZ = -1.0 + arcDepth;
+            targetRotY = Math.PI * 4 + Math.PI * 2 * t; // Smooth 360° spin from 4π to 6π
+            targetRotX = Math.sin(t * Math.PI) * 0.14;
+            targetRotZ = 0;
+            targetScale = 0.96;
+          } else if (p >= 0.74 && p < 0.88) {
+            // Stoppage 3: GROW Panel — Front facing
+            targetX = -3.85;
+            targetY = idleFloatY * 0.3;
+            targetZ = -1.0;
+            targetRotY = Math.PI * 6; // 1080°: Exactly front facing
+            targetRotX = 0;
+            targetRotZ = 0;
+            targetScale = 0.96;
+          } else if (p >= 0.88 && p < 0.93) {
+            // Transition: Scrolling from GROW -> Alliance / CTA
+            const t = smoothstep(0.88, 0.93, p);
+            const arcDepth = Math.sin(t * Math.PI) * -2.4;
+            targetX = -3.85 * (1 - t);
+            targetY = idleFloatY * 0.3;
+            targetZ = -1.0 + arcDepth;
+            targetRotY = Math.PI * 6 + Math.PI * 2 * t; // Smooth 360° spin from 6π to 8π
+            targetRotX = Math.sin(t * Math.PI) * 0.12;
+            targetRotZ = 0;
+            targetScale = 0.96 * (1 - 0.04 * t);
+          } else {
+            // Stoppage 4: Alliance & CTA Section — Front facing
+            targetX = 0;
+            targetY = 0.0 + idleFloatY * 0.2;
+            targetZ = -0.92;
+            targetRotY = Math.PI * 8; // 1440°: Exactly front facing
+            targetRotX = 0;
+            targetRotZ = 0;
+            targetScale = 0.92;
+          }
+        } else if (p < 0.08) {
           // Act Hero: 3D Titanium Monolith centered majestically behind BE UNREAL UNREASONABLE
           const localP = p / 0.08;
           targetX = 0;
@@ -755,17 +823,17 @@ export function Plus3DCanvas({
           targetMorph = 0.0;
         }
 
-        // Apply Mouse Parallax Offsets (anchored in finale so 13 and UTOPIA stay perfectly aligned)
+        // Apply Mouse Parallax Offsets
         const isFinale = p >= 0.92;
-        const pScale = isFinale ? 0.14 : 1.0;
-        targetX += mouseX * 0.45 * pScale;
-        targetY += mouseY * 0.35 * pScale;
-        targetRotY += mouseX * 0.28 * pScale;
-        targetRotX += -mouseY * 0.22 * pScale;
+        const pScale = isOnly13 ? 0.35 : (isFinale ? 0.14 : 1.0);
+        targetX += mouseX * 0.35 * pScale;
+        targetY += mouseY * 0.25 * pScale;
+        targetRotY += mouseX * (isOnly13 ? 0.06 : 0.28) * pScale;
+        targetRotX += -mouseY * (isOnly13 ? 0.04 : 0.22) * pScale;
 
-        // Precision physics damping
-        const dampFactor = 0.095;
-        const morphDamp = 0.14;
+        // Keep emblem locked to fast scroll (was lagging behind the dive handoff)
+        const dampFactor = 0.18;
+        const morphDamp = 0.24;
 
         currentX += (targetX - currentX) * dampFactor;
         currentY += (targetY - currentY) * dampFactor;
@@ -784,12 +852,19 @@ export function Plus3DCanvas({
           emblemGroup.scale.setScalar(currentScale);
           emblemGroup.rotation.set(currentRotX, currentRotY, currentRotZ);
 
-          thirteenGroup.visible = currentMorph < 0.50;
-          beGroup.visible = currentMorph >= 0.50;
+          if (isOnly13) {
+            thirteenGroup.visible = true;
+            beGroup.visible = false;
+          } else {
+            thirteenGroup.visible = currentMorph < 0.50;
+            beGroup.visible = currentMorph >= 0.50;
+          }
         }
       }
 
-      renderer.render(scene, camera);
+      if (entryFade > 0.005) {
+        renderer.render(scene, camera);
+      }
     };
 
     animate();

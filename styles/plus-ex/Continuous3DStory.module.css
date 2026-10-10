@@ -20,6 +20,31 @@
   background-color: transparent;
 }
 
+.heroBackgroundContainer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.diveSwallowOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 48%,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.28) 38%,
+    rgba(0, 0, 0, 0.85) 68%,
+    #000000 100%
+  );
+  will-change: opacity;
+}
+
 .canvasContainer {
   position: absolute;
   inset: 0;
@@ -27,6 +52,7 @@
   height: 100%;
   z-index: 1;
   pointer-events: auto;
+  transition: opacity 0.35s ease-out;
 }
 
 /* Optional subtle atmospheric vignette */
@@ -72,56 +98,135 @@
   pointer-events: auto;
 }
 
-/* ── Hero State: Tenbin-Style Centerpiece Monumental Stage ── */
+/* ── Hero State: copy sits in the left gap; black hole owns the right ── */
 .heroAct {
-  align-items: center;
-  text-align: center;
-}
-
-.heroLockup {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  gap: clamp(1.4rem, 3.2vh, 2.4rem);
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
+  text-align: left;
+  position: relative;
+  will-change: opacity, transform;
 }
 
-.heroTopTag {
+/* Corner Architectural Telemetry Framing (Pear / Tenbin Grade) */
+.heroFrameTopLeft {
+  position: absolute;
+  top: clamp(20px, 4vh, 40px);
+  left: clamp(24px, 4.5vw, 64px);
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 0;
-  background: transparent;
-  border: none;
+  pointer-events: none;
+  z-index: 10;
 }
 
-.heroPulse {
-  display: none;
+.heroFrameTopRight {
+  position: absolute;
+  top: clamp(20px, 4vh, 40px);
+  right: clamp(24px, 4.5vw, 64px);
+  display: inline-flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
 }
 
-.heroTagText {
+.heroFrameBottomLeft {
+  position: absolute;
+  bottom: clamp(24px, 4vh, 44px);
+  left: clamp(24px, 4.5vw, 64px);
+  display: inline-flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.heroFrameBottomRight {
+  position: absolute;
+  bottom: clamp(24px, 4vh, 44px);
+  right: clamp(24px, 4.5vw, 64px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.frameDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 8px #ffffff;
+}
+
+.frameText {
   font-family: var(--font-mono, monospace);
-  font-size: clamp(0.68rem, 0.78vw, 0.8rem);
+  font-size: clamp(0.68rem, 0.76vw, 0.78rem);
   font-weight: 600;
   letter-spacing: 0.18em;
-  color: rgba(240, 220, 195, 0.88);
+  color: rgba(255, 255, 255, 0.45);
   text-transform: uppercase;
 }
 
+.frameScrollCue {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.68rem, 0.76vw, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.65);
+  text-transform: uppercase;
+}
+
+.frameScrollArrow {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.9rem;
+  color: #ffffff;
+  animation: bounceScroll 2s ease-in-out infinite;
+}
+
+@keyframes bounceScroll {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+.heroLockup {
+  /* Type tuned to accretion-disk whites + cool starfield silver */
+  --hero-type-glow: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f4f6f8 18%,
+    #d8dde3 42%,
+    #9aa3ad 72%,
+    #5c646e 100%
+  );
+  --hero-type-shadow:
+    drop-shadow(0 2px 8px rgba(0, 0, 0, 0.85))
+    drop-shadow(0 12px 28px rgba(0, 0, 0, 0.75))
+    drop-shadow(0 0 40px rgba(210, 220, 235, 0.12));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(1.4rem, 3.2vh, 2.4rem);
+  width: min(100%, 52vw);
+  max-width: 720px;
+  margin: 0;
+}
+
 .monumentLockup {
-  --word-size: min(7.0vw, 13.5vh);
+  --word-size: min(6.2vw, 12vh);
   --gap-stack: clamp(0.15rem, 0.4vw, 0.6rem);
   --be-size: calc(var(--word-size) * 2.18 + var(--gap-stack) * 0.4);
   display: inline-flex;
   align-items: stretch;
-  justify-content: center;
+  justify-content: flex-start;
   gap: clamp(1rem, 2.2vw, 2.8rem);
   width: auto;
-  max-width: 92vw;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   pointer-events: auto;
   user-select: none;
   box-sizing: border-box;
@@ -142,24 +247,17 @@
   font-size: var(--be-size);
   font-weight: 800;
   text-transform: uppercase;
-  background: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #f2f5f9 16%,
-    #d1d8e4 42%,
-    #939eb2 74%,
-    #566072 100%
-  );
+  background: var(--hero-type-glow);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
   line-height: 0.74;
   letter-spacing: -0.055em;
   margin: 0;
   padding: 0;
   white-space: nowrap;
-  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.98))
-    drop-shadow(0 14px 32px rgba(0, 0, 0, 0.94))
-    drop-shadow(0 28px 60px rgba(0, 0, 0, 0.88));
+  filter: var(--hero-type-shadow);
 }
 
 .stackedBlock {
@@ -180,24 +278,17 @@
   font-size: var(--word-size);
   font-weight: 800;
   text-transform: uppercase;
-  background: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #f2f5f9 16%,
-    #d1d8e4 42%,
-    #939eb2 74%,
-    #566072 100%
-  );
+  background: var(--hero-type-glow);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
   line-height: 0.76;
   letter-spacing: -0.05em;
   margin: 0;
   padding: 0;
   white-space: nowrap;
-  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.98))
-    drop-shadow(0 14px 32px rgba(0, 0, 0, 0.94))
-    drop-shadow(0 28px 60px rgba(0, 0, 0, 0.88));
+  filter: var(--hero-type-shadow);
 }
 
 .heroLeadText {
@@ -205,12 +296,16 @@
   font-size: clamp(0.98rem, 1.2vw, 1.22rem);
   font-weight: 500;
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(198, 206, 216, 0.78);
   letter-spacing: -0.012em;
-  max-width: 660px;
-  margin: 0 auto;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 0, 0, 0.8);
+  max-width: 34rem;
+  margin: 0;
+  text-align: left;
+  text-shadow:
+    0 1px 10px rgba(0, 0, 0, 0.9),
+    0 0 24px rgba(0, 0, 0, 0.55);
 }
+
 
 .heroActions {
   display: flex;
@@ -272,6 +367,8 @@
 
 /* Act 0: Plus-X 1:1 Editorial Statement (1 Title + 3 Lines Underneath) */
 .manifestoContent {
+  position: relative;
+  z-index: 2;
   width: 100%;
   max-width: 1300px;
   margin: 0 auto;
@@ -345,6 +442,15 @@
   .leadLine,
   .subLineItem {
     white-space: normal;
+  }
+
+  .heroLockup {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .monumentLockup {
+    --word-size: min(9.5vw, 7.5vh);
   }
 }
 
@@ -430,8 +536,8 @@
   font-family: var(--font-mono, monospace);
   font-size: clamp(0.72rem, 0.82vw, 0.85rem);
   font-weight: 600;
-  letter-spacing: 0.16em;
-  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.18em;
+  color: rgba(245, 215, 181, 0.82);
   text-transform: uppercase;
 }
 
@@ -444,8 +550,9 @@
   text-transform: uppercase;
   line-height: 1;
   margin: 0;
-  text-shadow: 0 4px 24px rgba(255, 255, 255, 0.15);
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.95), 0 0 40px rgba(255, 255, 255, 0.2);
 }
+
 
 .reelViewport {
   position: relative;
@@ -826,7 +933,7 @@
 .storyFooter {
   position: relative;
   width: 100%;
-  background: #000000;
+  background: transparent;
   border-top: 1px solid rgba(244, 234, 224, 0.1);
   padding: clamp(40px, 6vw, 80px) clamp(24px, 6vw, 100px) clamp(30px, 4vw, 50px);
   display: flex;

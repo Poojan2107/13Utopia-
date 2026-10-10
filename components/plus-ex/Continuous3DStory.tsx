@@ -1,13 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "@/styles/plus-ex/Continuous3DStory.module.css";
 import { Plus3DCanvas } from "./Plus3DCanvas";
-
 import { UtopiaPaintReveal } from "./UtopiaPaintReveal";
+import {
+  BlackHoleCanvas,
+  type BlackHoleCanvasHandle,
+} from "@/components/black-hole";
+import { SITE_SCRUB } from "@/components/motion/scrollFeel";
+import { DIVE_SCROLL_END } from "@/optimized-black-hole/dive";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,6 +32,49 @@ interface WorldConfig {
   align: "left" | "right";
 }
 
+/** Plus3DCanvas CREATE transition starts here in the original timeline. */
+const LEGACY_POST_MANIFESTO = 0.24;
+
+/** Original act windows (pre-dive) for CREATE / BUILD / GROW / finale. */
+const LEGACY_WORLD_RANGES = [
+  { start: 0.25, end: 0.45 },
+  { start: 0.5, end: 0.67 },
+  { start: 0.72, end: 0.88 },
+] as const;
+const LEGACY_FINALE_START = 0.915;
+
+/** Pack a legacy progress value into the post-dive scroll span. */
+function legacyToDiveScroll(legacy: number, manifestoEnd: number): number {
+  return (
+    manifestoEnd +
+    ((legacy - LEGACY_POST_MANIFESTO) / (1 - LEGACY_POST_MANIFESTO)) *
+      (1 - manifestoEnd)
+  );
+}
+
+/**
+ * Dive owns early scroll. Manifesto keeps centered "13".
+ * After that, play the original Plus3DCanvas timeline 1:1 (CREATE→BUILD→GROW→finale).
+ */
+function mapDiveScrollToEmblemProgress(
+  p: number,
+  manifestoStart: number,
+  manifestoEnd: number
+): number {
+  if (p < manifestoStart) return 0.12;
+
+  if (p < manifestoEnd) {
+    const t = (p - manifestoStart) / Math.max(1e-6, manifestoEnd - manifestoStart);
+    return 0.08 + t * 0.15;
+  }
+
+  return (
+    LEGACY_POST_MANIFESTO +
+    ((p - manifestoEnd) / Math.max(1e-6, 1 - manifestoEnd)) *
+      (1 - LEGACY_POST_MANIFESTO)
+  );
+}
+
 const WORLDS: WorldConfig[] = [
   {
     id: "create",
@@ -43,7 +90,8 @@ const WORLDS: WorldConfig[] = [
       { stance: "BE UNCOMPROMISING", deliverable: "VISUAL IDENTITY SYSTEMS" },
     ],
     leadTitle: "BE THE BRAND THAT OWNS THE CATEGORY.",
-    subTitle: "WE DEVELOP BRAND STRATEGY, CUSTOM IDENTITY SYSTEMS, AND CINEMATIC MOTION FROM FIRST PRINCIPLES. EVERY ENGAGEMENT IS ORIGINAL.",
+    subTitle:
+      "WE DEVELOP BRAND STRATEGY, CUSTOM IDENTITY SYSTEMS, AND CINEMATIC MOTION FROM FIRST PRINCIPLES. EVERY ENGAGEMENT IS ORIGINAL.",
     pill: "13 UTOPIA // CREATE",
     align: "right",
   },
@@ -61,7 +109,8 @@ const WORLDS: WorldConfig[] = [
       { stance: "E-COMMERCE & MVPS", deliverable: "HIGH-CONVERTING ARCHITECTURE" },
     ],
     leadTitle: "PRODUCTS ENGINEERED FOR SCALE AND PERFORMANCE.",
-    subTitle: "WE ENGINEER WEBSITES, MOBILE APPS, SAAS PLATFORMS, AI SYSTEMS, AND CLOUD INFRASTRUCTURE. BUILT TO PERFORM UNDER REAL CONDITIONS.",
+    subTitle:
+      "WE ENGINEER WEBSITES, MOBILE APPS, SAAS PLATFORMS, AI SYSTEMS, AND CLOUD INFRASTRUCTURE. BUILT TO PERFORM UNDER REAL CONDITIONS.",
     pill: "13 UTOPIA // BUILD",
     align: "left",
   },
@@ -79,18 +128,58 @@ const WORLDS: WorldConfig[] = [
       { stance: "BE PROVEN", deliverable: "MARKET CATEGORY LEADERSHIP" },
     ],
     leadTitle: "GROWTH SYSTEMS THAT COMPOUND INTO MARKET AUTHORITY.",
-    subTitle: "SEO ARCHITECTURE, PERFORMANCE MARKETING, AND CONTENT SYSTEMS DESIGNED TO DRIVE MEASURABLE PIPELINE AND HOLD CATEGORY POSITION.",
+    subTitle:
+      "SEO ARCHITECTURE, PERFORMANCE MARKETING, AND CONTENT SYSTEMS DESIGNED TO DRIVE MEASURABLE PIPELINE AND HOLD CATEGORY POSITION.",
     pill: "13 UTOPIA // GROW",
     align: "right",
   },
 ];
 
-export function Continuous3DStory() {
+export interface Continuous3DStoryProps {
+  /** @deprecated Prefer blackHoleDive — kept for review pages that pass a custom node */
+  heroBackground?: React.ReactNode;
+  /** Scroll-driven fall into the black hole, then emerge into the story */
+  blackHoleDive?: boolean;
+}
+
+export function Continuous3DStory({
+  heroBackground,
+  blackHoleDive = false,
+}: Continuous3DStoryProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
+  const blackHoleRef = useRef<BlackHoleCanvasHandle | null>(null);
+  const holeLayerRef = useRef<HTMLDivElement | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+  const heroActRef = useRef<HTMLDivElement | null>(null);
+  const emblemLayerRef = useRef<HTMLDivElement | null>(null);
+  const scrollProgressRef = useRef(0);
+  const lastUiProgress = useRef(-1);
 
-  const [entryProgress, setEntryProgress] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+
+  const useDive = Boolean(blackHoleDive);
+
+  // After dive emerges, emblem + later acts take over
+  const postDive = useDive
+    ? scrollProgress >= DIVE_SCROLL_END * 0.70
+    : scrollProgress >= 0.08;
+  const diveExit = useDive
+    ? Math.max(0, Math.min(1, (scrollProgress - DIVE_SCROLL_END) / 0.06))
+    : 0;
+  const diveActive = useDive && scrollProgress < DIVE_SCROLL_END + 0.06;
+  const holeOpacity = useDive
+    ? diveActive
+      ? 1 - diveExit
+      : 0
+    : heroBackground
+      ? scrollProgress <= 0.08
+        ? 1
+        : Math.max(0, 1 - (scrollProgress - 0.08) / 0.05)
+      : 0;
+  const holeVisible = useDive
+    ? holeOpacity > 0.005
+    : Boolean(heroBackground) && scrollProgress < 0.14;
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -98,28 +187,114 @@ export function Continuous3DStory() {
     if (!section || !stage) return;
 
     const ctx = gsap.context(() => {
-      // Continuous pinned 3D narrative journey with seamless fluid unpinning
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: () => `+=${Math.round(Math.max(2600, Math.min(3800, window.innerHeight * 3.4)))}`,
+        end: () =>
+          `+=${Math.round(
+            Math.max(
+              2400,
+              Math.min(3400, window.innerHeight * (useDive ? 3.0 : 2.5))
+            )
+          )}`,
         pin: stage,
         pinSpacing: true,
-        scrub: 0.4,
+        // Direct 1:1 tracking with Lenis stream for instant, weightless Awwwards responsiveness
+        scrub: true,
         anticipatePin: 1,
         fastScrollEnd: true,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
+          // self.progress is already scrub-smoothed — drive GPU from this, not raw wheel
           const p = Math.max(0, Math.min(1, self.progress));
-          setScrollProgress(p);
+          scrollProgressRef.current = p;
+
+          if (useDive) {
+            const diveP = Math.max(0, Math.min(1, p / DIVE_SCROLL_END));
+            blackHoleRef.current?.setDiveProgress(diveP);
+
+            const exit = Math.max(
+              0,
+              Math.min(1, (p - DIVE_SCROLL_END) / 0.06)
+            );
+            const active = p < DIVE_SCROLL_END + 0.06;
+            const holeOp = active ? 1 - exit : 0;
+            if (holeLayerRef.current) {
+              holeLayerRef.current.style.opacity = String(holeOp);
+              holeLayerRef.current.style.visibility =
+                holeOp > 0.005 ? "visible" : "hidden";
+            }
+
+            const emblemOp =
+              p >= DIVE_SCROLL_END * 0.70
+                ? Math.min(1, (p - DIVE_SCROLL_END * 0.70) / (DIVE_SCROLL_END * 0.30))
+                : 0;
+            if (emblemLayerRef.current) {
+              emblemLayerRef.current.style.opacity = String(emblemOp);
+              emblemLayerRef.current.style.visibility =
+                emblemOp > 0.005 ? "visible" : "hidden";
+              emblemLayerRef.current.style.pointerEvents =
+                emblemOp > 0.3 ? "auto" : "none";
+            }
+
+            // Ensure swallow veil is completely hidden once past dive
+            if (p >= DIVE_SCROLL_END && overlayRef.current) {
+              overlayRef.current.style.opacity = "0";
+              overlayRef.current.style.visibility = "hidden";
+            }
+          }
+
+          // Zero React re-render churn during the dive: all dive visuals run via direct DOM refs.
+          // React state only updates when transitioning into the text acts.
+          const shouldUpdateUi =
+            p >= DIVE_SCROLL_END * 0.7 &&
+            Math.abs(p - lastUiProgress.current) >= 0.0035;
+
+          if (shouldUpdateUi) {
+            lastUiProgress.current = p;
+            setScrollProgress(p);
+          } else if (
+            p < DIVE_SCROLL_END * 0.7 &&
+            lastUiProgress.current >= DIVE_SCROLL_END * 0.7
+          ) {
+            lastUiProgress.current = 0;
+            setScrollProgress(0);
+          }
         },
       });
     }, section);
 
+    // After pin mounts, refresh once so Lenis + ScrollTrigger share measurements
+    const refreshId = window.requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+
     return () => {
+      window.cancelAnimationFrame(refreshId);
       ctx.revert();
     };
-  }, []);
+  }, [useDive]);
+
+  // Dive owns the open; after manifesto, acts match the original story timeline
+  const manifestoStart = useDive ? 0.20 : 0.09;
+  const manifestoEnd = useDive ? 0.34 : 0.22;
+  const worldRanges = useDive
+    ? LEGACY_WORLD_RANGES.map(({ start, end }) => ({
+        start: legacyToDiveScroll(start, manifestoEnd),
+        end: legacyToDiveScroll(end, manifestoEnd),
+      }))
+    : LEGACY_WORLD_RANGES.map(({ start, end }) => ({ start, end }));
+  const finaleStart = useDive
+    ? legacyToDiveScroll(LEGACY_FINALE_START, manifestoEnd)
+    : LEGACY_FINALE_START;
+
+  const canvasProgress = useDive
+    ? mapDiveScrollToEmblemProgress(scrollProgress, manifestoStart, manifestoEnd)
+    : scrollProgress;
+
+  const heroVisible = useDive
+    ? scrollProgress < DIVE_SCROLL_END * 0.45
+    : scrollProgress < 0.08;
 
   return (
     <section
@@ -128,23 +303,90 @@ export function Continuous3DStory() {
       id="narrative"
       aria-label="13 Utopia 3D Architectural Narrative"
     >
-      {/* Pinned 3D Viewport Stage */}
       <div ref={stageRef} className={styles.stagePin}>
-        {/* 3D 13 Utopia Architectural Emblem Canvas */}
-        <div className={styles.canvasContainer}>
-          <Plus3DCanvas
-            progress={scrollProgress}
-            entryProgress={1}
+        {/* Black hole — dive camera, then hide after swallow */}
+        {(useDive || heroBackground) && (
+          <div
+            ref={holeLayerRef}
+            className={styles.heroBackgroundContainer}
+            style={{
+              opacity: holeOpacity,
+              visibility: holeVisible ? "visible" : "hidden",
+              transition: useDive ? "none" : "opacity 0.35s ease-out",
+              willChange: useDive ? "opacity" : undefined,
+            }}
+          >
+            {useDive ? (
+              <BlackHoleCanvas
+                ref={blackHoleRef}
+                onDiveSample={(sample) => {
+                  const p = scrollProgressRef.current;
+                  const overlay = p >= DIVE_SCROLL_END ? 0 : (sample?.overlay ?? 0);
+                  const copy = sample?.heroCopyOpacity ?? 1;
+                  if (overlayRef.current) {
+                    overlayRef.current.style.opacity = String(overlay);
+                    overlayRef.current.style.visibility =
+                      overlay > 0.005 ? "visible" : "hidden";
+                  }
+                  if (heroActRef.current && useDive) {
+                    heroActRef.current.style.opacity = String(copy);
+                    heroActRef.current.style.visibility =
+                      copy > 0.005 ? "visible" : "hidden";
+                    heroActRef.current.style.transform = `translate3d(0, ${-(1 - copy) * 32}px, 0)`;
+                  }
+                }}
+              />
+            ) : (
+              heroBackground
+            )}
+          </div>
+        )}
+
+        {/* Horizon swallow veil — opacity driven from rAF, not React */}
+        {useDive && (
+          <div
+            ref={overlayRef}
+            className={styles.diveSwallowOverlay}
+            style={{ opacity: 0, visibility: "hidden" }}
+            aria-hidden
           />
+        )}
+
+        {/* 3D emblem — emerges after the fall-through */}
+        <div
+          ref={emblemLayerRef}
+          className={styles.canvasContainer}
+          style={{
+            opacity: postDive
+              ? useDive
+                ? Math.min(1, (scrollProgress - DIVE_SCROLL_END * 0.70) / (DIVE_SCROLL_END * 0.30))
+                : Math.min(1, (scrollProgress - 0.08) / 0.06)
+              : 0,
+            visibility: postDive ? "visible" : "hidden",
+            pointerEvents: postDive ? "auto" : "none",
+            transition: useDive ? "none" : "opacity 0.35s ease-out",
+            willChange: useDive ? "opacity" : undefined,
+          }}
+        >
+          <Plus3DCanvas progress={canvasProgress} entryProgress={1} />
         </div>
 
-        {/* Dynamic Narrative Overlays */}
         <div className={styles.actsWrapper}>
-          {/* Act Hero: Tenbin-Style Centerpiece Monumental Typography & Tagline */}
+          {/* Hero copy — fades as we center on the hole */}
           <div
+            ref={heroActRef}
             className={`${styles.act} ${styles.heroAct} ${
-              scrollProgress < 0.08 ? styles.actVisible : styles.actHidden
+              useDive
+                ? styles.actVisible
+                : heroVisible
+                  ? styles.actVisible
+                  : styles.actHidden
             }`}
+            style={
+              useDive
+                ? { transition: "none", opacity: 1 }
+                : undefined
+            }
           >
             <div className={styles.heroLockup}>
               <div className={styles.monumentLockup}>
@@ -158,47 +400,47 @@ export function Continuous3DStory() {
               </div>
 
               <p className={styles.heroLeadText}>
-                13 Utopia is a creative technology and growth company building brands, products, and systems for ambitious organisations.
+                13 Utopia is a creative technology and growth company building brands,
+                products, and systems for ambitious organisations.
               </p>
             </div>
           </div>
 
-          {/* Act 0: Plus-X 1:1 Narrative Statement (1 Line Lead + 3 Lines Sub = 13) */}
+          {/* Manifesto — after emerging from the hole */}
           <div
             className={`${styles.act} ${
-              scrollProgress >= 0.09 && scrollProgress < 0.22 ? styles.actVisible : styles.actHidden
+              scrollProgress >= manifestoStart && scrollProgress < manifestoEnd
+                ? styles.actVisible
+                : styles.actHidden
             }`}
           >
             <div className={styles.manifestoContent}>
               <h2 className={styles.manifestoHeading}>
-                <span className={styles.leadLine}>
-                  13 UTOPIA BRINGS CREATIVE,
-                </span>
+                <span className={styles.leadLine}>13 UTOPIA BRINGS CREATIVE,</span>
                 <span className={styles.subLines}>
                   <span className={styles.subLineItem}>TECHNOLOGY AND GROWTH</span>
                   <span className={styles.subLineItem}>TOGETHER UNDER ONE ROOF.</span>
-                  <span className={styles.subLineItem}>SO NOTHING GETS LOST IN TRANSLATION.</span>
+                  <span className={styles.subLineItem}>
+                    SO NOTHING GETS LOST IN TRANSLATION.
+                  </span>
                 </span>
               </h2>
             </div>
           </div>
 
-          {/* Worlds Sequence: CREATE (Right), BUILD (Left), GROW (Right) */}
           {WORLDS.map((world, idx) => {
-            const ranges = [
-              { start: 0.25, end: 0.45 },
-              { start: 0.50, end: 0.67 },
-              { start: 0.72, end: 0.88 },
-            ];
-            const { start: startP, end: endP } = ranges[idx];
+            const { start: startP, end: endP } = worldRanges[idx];
             const isWorldActive = scrollProgress >= startP && scrollProgress <= endP;
-            const worldP = Math.max(0, Math.min(1, (scrollProgress - startP) / (endP - startP)));
-            
-            // Sub-phases: 0.0 -> 0.65 (Word Roll with high dwell time), 0.65 -> 1.0 (Editorial Statement)
+            const worldP = Math.max(
+              0,
+              Math.min(1, (scrollProgress - startP) / (endP - startP))
+            );
+
             const isReel = worldP < 0.65;
             const reelP = Math.min(1, worldP / 0.65);
-            
-            const alignClass = world.align === "left" ? styles.alignLeft : styles.alignRight;
+
+            const alignClass =
+              world.align === "left" ? styles.alignLeft : styles.alignRight;
 
             return (
               <div
@@ -208,7 +450,6 @@ export function Continuous3DStory() {
                 }`}
               >
                 <div className={styles.worldContainer}>
-                  {/* Mode 1: Plus-X Kinetic 3D Curved Drum Roll */}
                   <div
                     className={`${styles.reelView} ${
                       isReel ? styles.modeVisible : styles.modeHidden
@@ -224,35 +465,36 @@ export function Continuous3DStory() {
                         {world.keywords.map((word, wIdx) => {
                           const numItems = world.keywords.length;
                           const rawFloat = reelP * (numItems - 1);
-                          
-                          // Smooth plateau easing for high dwell time on each keyword
+
                           const floorIdx = Math.floor(rawFloat);
                           const frac = rawFloat - floorIdx;
-                          // Smooth S-curve transition between words (lingers at integer points)
                           const smoothFrac = frac * frac * (3 - 2 * frac);
                           const continuousFloat = floorIdx + smoothFrac;
-                          
+
                           const delta = wIdx - continuousFloat;
-                          
-                          // 3D Cylindrical Drum Physics
-                          const R = 320; // Refined cylinder radius in px
-                          const angleStep = 0.38; // Radian curvature per item
+
+                          const R = 320;
+                          const angleStep = 0.38;
                           const theta = delta * angleStep;
-                          
+
                           const translateY = R * Math.sin(theta);
                           const translateZ = R * (Math.cos(theta) - 1);
                           const rotateX = -(theta * (180 / Math.PI));
-                          
+
                           const absDelta = Math.abs(delta);
                           const isCenter = absDelta < 0.42;
-                          
-                          // Smooth optical cosine opacity curve
+
                           const opacity = Math.max(
                             0.06,
-                            Math.pow(Math.cos(Math.min(Math.PI / 2.05, absDelta * 0.42)), 2.2)
+                            Math.pow(
+                              Math.cos(Math.min(Math.PI / 2.05, absDelta * 0.42)),
+                              2.2
+                            )
                           );
-                          
-                          const scale = isCenter ? 1.04 : Math.max(0.88, 1 - absDelta * 0.045);
+
+                          const scale = isCenter
+                            ? 1.04
+                            : Math.max(0.88, 1 - absDelta * 0.045);
 
                           return (
                             <div
@@ -280,15 +522,12 @@ export function Continuous3DStory() {
                     </div>
                   </div>
 
-                  {/* Mode 2: Plus-X Editorial Statement */}
                   <div
                     className={`${styles.statementView} ${
                       !isReel ? styles.modeVisible : styles.modeHidden
                     }`}
                   >
-                    <h2 className={styles.statementLead}>
-                      {world.leadTitle}
-                    </h2>
+                    <h2 className={styles.statementLead}>{world.leadTitle}</h2>
                     <div className={styles.statementPill}>
                       <span>{world.pill}</span>
                     </div>
@@ -298,10 +537,12 @@ export function Continuous3DStory() {
             );
           })}
 
-          {/* Act Finale: Utopia Brush Calligraphy Painting itself onto the 3D 13 Emblem */}
           {(() => {
-            const isFinaleActive = scrollProgress >= 0.915;
-            const finaleP = Math.max(0, Math.min(1, (scrollProgress - 0.92) / 0.075));
+            const isFinaleActive = scrollProgress >= finaleStart;
+            const finaleP = Math.max(
+              0,
+              Math.min(1, (scrollProgress - finaleStart) / 0.06)
+            );
 
             return (
               <div
@@ -310,7 +551,6 @@ export function Continuous3DStory() {
                 }`}
               >
                 <div className={styles.finaleContent}>
-                  {/* Pure 13 UTOPIA Mastermark Canvas */}
                   <UtopiaPaintReveal progress={finaleP} />
                 </div>
               </div>

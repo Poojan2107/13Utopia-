@@ -117,6 +117,13 @@ void main() {
     // 5. Smooth door lean
     w = lean(w, u_sheetP);
 
+    // 6. Interactive 3D Hover Lift & Tactile Dent (Jesper Landberg elastic depth feel)
+    if (u_hover > 0.001) {
+        float dome = sheetDome(uv);
+        // Pull card slightly closer on Z + create tactile subtle inward dish/dent
+        w.z += (0.18 * u_hover) - (u_dent * dome * u_hover);
+    }
+
     vWorld = w.xyz;
     gl_Position = projectionMatrix * viewMatrix * w;
 }
@@ -236,11 +243,12 @@ void main() {
     float depthLuminance = 1.0 - smoothstep(0.18, 0.95, u_distNorm) * 0.28;
     tex *= depthLuminance;
 
-    // Rounded rectangle mask
+    // Rounded rectangle mask with analytic subpixel SDF anti-aliasing
     vec2 p = (vUv - 0.5) * u_res;
     float r = u_corner * u_res.y;
     float d = roundedBoxSDF(p, u_res * 0.5, r);
-    float edgeAlpha = 1.0 - smoothstep(0.0, 1.5 / max(u_res.y, 1.0), d);
+    float aa = max(fwidth(d), 0.0015);
+    float edgeAlpha = 1.0 - smoothstep(-aa * 0.5, aa * 0.5, d);
 
     // Analytical normal calculation for silky specular sheen
     vec3 n = calculateSheetNormal(vWorld.x, vUv, u_res);
@@ -248,18 +256,18 @@ void main() {
     vec3 viewDir = normalize(vec3(0.0, 0.0, 1.0));
     vec3 halfVec = normalize(lightDir + viewDir);
 
-    // Subtle specular highlight on crests
-    float spec = pow(max(dot(n, halfVec), 0.0), 32.0) * (0.16 + 0.14 * u_hover);
+    // Subtle specular highlight on crests + hover lift reflection
+    float spec = pow(max(dot(n, halfVec), 0.0), 32.0) * (0.16 + 0.18 * u_hover);
     float rim = pow(1.0 - max(dot(n, viewDir), 0.0), 2.8) * 0.08;
     vec3 sheen = vec3(1.0, 1.0, 1.0) * spec + vec3(0.9, 0.9, 0.9) * rim;
 
-    // Subtle crisp border outline (frames dark video scenes against void)
-    float borderWidth = 1.6 / max(u_res.y, 1.0);
+    // Subpixel-crisp border outline (frames dark video scenes against void)
+    float borderWidth = max(1.25 * aa, 0.0022);
     float borderDist = abs(d);
     float borderStroke = 1.0 - smoothstep(0.0, borderWidth, borderDist);
     
     // Luxury titanium border color with directional top glint
-    vec3 baseBorder = mix(vec3(0.40, 0.40, 0.44), vec3(0.85, 0.85, 0.90), u_hover);
+    vec3 baseBorder = mix(vec3(0.40, 0.40, 0.44), vec3(0.88, 0.88, 0.94), u_hover);
     float topGlint = smoothstep(0.1, 0.8, n.y + (1.0 - vUv.y) * 0.3) * 0.28;
     vec3 borderColor = baseBorder + vec3(topGlint);
     

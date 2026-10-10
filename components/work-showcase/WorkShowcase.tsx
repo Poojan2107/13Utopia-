@@ -130,10 +130,10 @@ export default function WorkShowcase() {
       if (activeView !== "featured") return;
       if (selectedProjectRef.current) return;
       const factor =
-        e.deltaMode === 1 ? 24 : e.deltaMode === 2 ? window.innerHeight : 1;
-      const delta =
+        e.deltaMode === 1 ? 20 : e.deltaMode === 2 ? window.innerHeight : 1;
+      const rawDelta =
         (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * factor;
-      p.target += delta * 0.75;
+      p.target += rawDelta * 0.70;
     };
 
     const onPointerDown = (e: PointerEvent) => {
@@ -160,10 +160,10 @@ export default function WorkShowcase() {
 
       // Instantaneous velocity (px/frame)
       p.pointerVelocity = (delta / dt) * 16.67;
-      p.target += delta * 1.1;
+      p.target += delta * 1.05;
 
       // Tightly couple current to target during active drag for zero input lag
-      p.current += (p.target - p.current) * 0.35;
+      p.current += (p.target - p.current) * 0.30;
 
       p.lastX = e.clientX;
       p.lastTime = now;
@@ -174,9 +174,10 @@ export default function WorkShowcase() {
       p.isDragging = false;
       document.documentElement.classList.remove("grabbing");
 
-      // Apply organic momentum throw
-      if (Math.abs(p.pointerVelocity) > 0.5) {
-        p.target += p.pointerVelocity * 8;
+      // Apply organic momentum throw (clamped to prevent jarring velocity jumps)
+      if (Math.abs(p.pointerVelocity) > 0.4) {
+        const throwMagnitude = Math.min(Math.abs(p.pointerVelocity) * 7.2, 950);
+        p.target += Math.sign(p.pointerVelocity) * throwMagnitude;
       }
     };
 
@@ -193,11 +194,11 @@ export default function WorkShowcase() {
       if (!p.isDragging) return;
       const now = performance.now();
       const dt = Math.max(now - p.lastTime, 1);
-      const delta = (p.lastX - e.touches[0].clientX) * 1.25;
+      const delta = (p.lastX - e.touches[0].clientX) * 1.15;
 
       p.pointerVelocity = (delta / dt) * 16.67;
       p.target += delta;
-      p.current += (p.target - p.current) * 0.35;
+      p.current += (p.target - p.current) * 0.30;
 
       p.lastX = e.touches[0].clientX;
       p.lastTime = now;
@@ -206,8 +207,68 @@ export default function WorkShowcase() {
     const onTouchEnd = () => {
       if (!p.isDragging) return;
       p.isDragging = false;
-      if (Math.abs(p.pointerVelocity) > 0.5) {
-        p.target += p.pointerVelocity * 10;
+      if (Math.abs(p.pointerVelocity) > 0.4) {
+        const throwMagnitude = Math.min(Math.abs(p.pointerVelocity) * 7.5, 900);
+        p.target += Math.sign(p.pointerVelocity) * throwMagnitude;
+      }
+    };
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (!isInViewRef.current) return;
+      if (selectedProjectRef.current) return;
+      if (activeView !== "featured") return;
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement
+      ) {
+        return;
+      }
+
+      const isDesktop = window.innerWidth > 650;
+      const gap = isDesktop ? 120 : 40;
+      const firstMetric = cardMetricsRef.current[0];
+      const step = (firstMetric?.wPx || 600) + gap;
+
+      if (
+        e.key === "ArrowRight" ||
+        e.key === "ArrowDown" ||
+        e.key === "d" ||
+        e.key === "D"
+      ) {
+        e.preventDefault();
+        p.target += step;
+      } else if (
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowUp" ||
+        e.key === "a" ||
+        e.key === "A"
+      ) {
+        e.preventDefault();
+        p.target -= step;
+      } else if (e.key === "Enter" || e.key === " ") {
+        // Find currently centered card and open it
+        const singleW = singleLoopWidthRef.current;
+        const totalSpan = singleW * 3;
+        const ww = window.innerWidth;
+        if (totalSpan > 0 && cardMetricsRef.current.length > 0) {
+          e.preventDefault();
+          let closestMetric = cardMetricsRef.current[0];
+          let minDist = Infinity;
+          for (const m of cardMetricsRef.current) {
+            let cardScreenX = (m.leftPx - p.current) % totalSpan;
+            if (cardScreenX < -m.wPx - 200) cardScreenX += totalSpan;
+            if (cardScreenX > totalSpan - m.wPx - 200) cardScreenX -= totalSpan;
+            const cardCenter = cardScreenX + m.wPx / 2;
+            const dist = Math.abs(cardCenter - ww / 2);
+            if (dist < minDist) {
+              minDist = dist;
+              closestMetric = m;
+            }
+          }
+          if (closestMetric?.project) {
+            setSelectedProject(closestMetric.project);
+          }
+        }
       }
     };
 
@@ -219,14 +280,15 @@ export default function WorkShowcase() {
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchmove", onTouchMove, { passive: true });
     window.addEventListener("touchend", onTouchEnd);
+    window.addEventListener("keydown", onKeyDown);
 
-    // Main physics integration tick
+    // Main physics integration tick (Silky exponential glide ~0.076)
     const tick = () => {
       animId = requestAnimationFrame(tick);
 
       const diff = p.target - p.current;
-      p.current += diff * 0.085;
-      p.velocity = diff * 0.085;
+      p.current += diff * 0.076;
+      p.velocity = diff * 0.076;
 
       scrollCurrentRef.current = p.current;
       velocityRef.current = p.velocity;
@@ -257,6 +319,7 @@ export default function WorkShowcase() {
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("keydown", onKeyDown);
       document.documentElement.classList.remove("grabbing");
     };
   }, [activeView]);

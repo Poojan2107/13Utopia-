@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { EchoTitle } from "@/components/framer/EchoTitle";
@@ -8,6 +8,8 @@ import { FramerSectionCTA } from "@/components/framer/FramerSectionCTA";
 import { SiteFooter, SiteHeader } from "@/components/layout";
 import { ServiceCapabilityDeck } from "@/components/services/ServiceCapabilityDeck";
 import { ServiceProcessVisualizer } from "@/components/services/ServiceProcessVisualizer";
+import { ServiceFaq } from "@/components/services/ServiceFaq";
+import { ServiceWorld3DCanvas } from "@/components/services/ServiceWorld3DCanvas";
 import {
   EASE,
   fadeUp,
@@ -32,7 +34,7 @@ export function ServiceDetail({ world }: Props) {
 
   return (
     <SmoothScrollProvider>
-      {/* Signature 3D Titanium "13" Emblem & Nebula Atmosphere offset to frame hero copy */}
+      {/* Signature 3D Titanium & Ambient Background Depth */}
       <AmbientField showEmblem={false} />
       <SiteHeader />
 
@@ -40,7 +42,7 @@ export function ServiceDetail({ world }: Props) {
         className={styles.page}
         style={{ "--svc-accent": world.accent } as React.CSSProperties}
       >
-        {/* HERO: CLEAN TYPOGRAPHY OVER ATMOSPHERIC 13 EMBLEM */}
+        {/* HERO: CLEAN TYPOGRAPHY OVER ATMOSPHERIC CANVAS */}
         <section className={styles.hero} aria-labelledby={`svc-hero-${world.slug}`}>
           <motion.div
             className={styles.heroCopy}
@@ -52,7 +54,9 @@ export function ServiceDetail({ world }: Props) {
               <span className={styles.liveDot} />
               <span className={styles.metaSlug}>{world.worldTag}</span>
               <span className={styles.metaDivider}>//</span>
-              <span className={styles.metaTelemetry}>DISCIPLINE 0{world.indexNum.charAt(1)}</span>
+              <span className={styles.metaTelemetry}>
+                DISCIPLINE 0{world.indexNum.charAt(1)} // 03 · ACCREDITED
+              </span>
             </div>
 
             <ScrollBlurText isHero maxBlur={16} interactiveFocus glowOnFocus>
@@ -93,27 +97,116 @@ export function ServiceDetail({ world }: Props) {
                 </span>
               </Link>
               <Link href="/work" className={styles.ctaGhost} data-cursor="hover">
-                View selected work
+                [ View Selected Work → ]
               </Link>
             </motion.div>
           </motion.div>
+
+          {/* 3D Discipline Interactive Artifact */}
+          <motion.div
+            className={styles.hero3DWrap}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: EASE, delay: 0.2 }}
+          >
+            <ServiceWorld3DCanvas slug={world.slug} />
+          </motion.div>
         </section>
 
-        {/* 01. INTERACTIVE CAPABILITIES DECK WITH LIVE VISUAL ARTIFACTS */}
+        {/* 00. TELEMETRY PROOF METRICS STRIP */}
+        {world.proof && world.proof.length > 0 && (
+          <motion.section
+            className={styles.proofStrip}
+            aria-label="Discipline Proof & Performance Metrics"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={viewportOnce}
+            transition={{ duration: 0.7, ease: EASE }}
+          >
+            <div className={styles.proofGrid}>
+              {world.proof.map((p, idx) => (
+                <div key={idx} className={styles.proofItem}>
+                  <span className={styles.proofVal}>{p.value}</span>
+                  <span className={styles.proofLabel}>{p.label}</span>
+                </div>
+              ))}
+            </div>
+          </motion.section>
+        )}
+
+        {/* 01. STRATEGIC VALUE / WHY IT MATTERS (REASONS GRID) */}
+        {world.reasons && world.reasons.length > 0 && (
+          <section className={styles.block} aria-labelledby={`svc-reasons-${world.slug}`}>
+            <BlockHead index="01" title={world.reasonsTitle} id={`svc-reasons-${world.slug}`} />
+            <div className={styles.reasonsGrid}>
+              {world.reasons.map((r) => (
+                <div key={r.num} className={styles.reasonCard}>
+                  <span className={styles.reasonNum}>// {r.num}</span>
+                  <h3 className={styles.reasonTitle}>{r.title}</h3>
+                  <p className={styles.reasonDesc}>{r.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 02. INTERACTIVE CAPABILITIES DECK WITH LIVE VISUAL ARTIFACTS */}
         <section className={styles.block} aria-labelledby={`svc-cap-${world.slug}`}>
-          <BlockHead index="01" title={world.capabilitiesTitle} id={`svc-cap-${world.slug}`} />
+          <BlockHead index="02" title={world.capabilitiesTitle} id={`svc-cap-${world.slug}`} />
           <ServiceCapabilityDeck capabilities={world.capabilities} worldSlug={world.slug} />
         </section>
 
-        {/* 02. INTERACTIVE PROCESS PIPELINE SEQUENCER */}
+        {/* 03. INTERACTIVE PROCESS PIPELINE SEQUENCER */}
         <section className={styles.block} aria-labelledby={`svc-proc-${world.slug}`}>
-          <BlockHead index="02" title={world.processTitle} id={`svc-proc-${world.slug}`} />
+          <BlockHead index="03" title={world.processTitle} id={`svc-proc-${world.slug}`} />
           <ServiceProcessVisualizer steps={world.process} />
         </section>
 
-        {/* 03. NEXT DISCIPLINES DOCK */}
+        {/* 04. STRATEGIC ENGAGEMENT SCOPE (WHO THIS IS BUILT FOR) */}
+        {world.fitTitle && (
+          <section className={styles.block} aria-labelledby={`svc-fit-${world.slug}`}>
+            <BlockHead index="04" title="Engagement Scope & Fit" id={`svc-fit-${world.slug}`} />
+            <div className={styles.fitCard}>
+              <div className={styles.fitLeft}>
+                <span className={styles.fitTag}>ORGANIZATIONAL FIT</span>
+                <h3 className={styles.fitTitle}>{world.fitTitle}</h3>
+                <p className={styles.fitBody}>{world.fitBody}</p>
+              </div>
+              <div className={styles.fitPillars}>
+                <div className={styles.fitPillarItem}>
+                  <span className={styles.fitCheck}>✓</span>
+                  <span className={styles.fitPillarText}>
+                    Direct founder and principal engineer access with zero account management fluff.
+                  </span>
+                </div>
+                <div className={styles.fitPillarItem}>
+                  <span className={styles.fitCheck}>✓</span>
+                  <span className={styles.fitPillarText}>
+                    Iterative weekly delivery sprints with live staging deployments.
+                  </span>
+                </div>
+                <div className={styles.fitPillarItem}>
+                  <span className={styles.fitCheck}>✓</span>
+                  <span className={styles.fitPillarText}>
+                    Complete asset ownership, typed source code, and comprehensive documentation.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* 05. FREQUENTLY ASKED QUESTIONS */}
+        {world.faqs && world.faqs.length > 0 && (
+          <section className={styles.faqSection} aria-labelledby={`svc-faq-${world.slug}`}>
+            <BlockHead index="05" title="Frequently Asked Questions" id={`svc-faq-${world.slug}`} />
+            <ServiceFaq items={world.faqs} />
+          </section>
+        )}
+
+        {/* 06. SIBLING DISCIPLINES DOCK */}
         <section className={styles.others} aria-label="Other disciplines">
-          <BlockHead index="03" title="Explore Related Disciplines" />
+          <BlockHead index="06" title="Explore Sibling Disciplines" />
           <div className={styles.otherGrid}>
             {others.map((o, idx) => (
               <motion.div
@@ -143,8 +236,38 @@ export function ServiceDetail({ world }: Props) {
           </div>
         </section>
 
+        {/* SIGNATURE 13 UTOPIA CONVERSION HORIZON */}
         <FramerSectionCTA />
+
+        {/* FLOATING BOTTOM DISCIPLINE DOCK CAPSULE */}
+        <aside className={styles.bottomSwitcher} aria-label="Discipline Switcher">
+          <Link
+            href="/services/create"
+            className={`${styles.switchPill} ${
+              world.slug === "create" ? styles.switchPillActive : ""
+            }`}
+          >
+            01 CREATE
+          </Link>
+          <Link
+            href="/services/build"
+            className={`${styles.switchPill} ${
+              world.slug === "build" ? styles.switchPillActive : ""
+            }`}
+          >
+            02 BUILD
+          </Link>
+          <Link
+            href="/services/grow"
+            className={`${styles.switchPill} ${
+              world.slug === "grow" ? styles.switchPillActive : ""
+            }`}
+          >
+            03 GROW
+          </Link>
+        </aside>
       </main>
+
       <SiteFooter />
     </SmoothScrollProvider>
   );
@@ -168,8 +291,8 @@ function BlockHead({
       transition={{ duration: 0.65, ease: EASE }}
     >
       <div className={styles.blockHeadMeta}>
-        <span className={styles.blockIndex}>{index}</span>
-        <span className={styles.blockRail}>DISCIPLINE OVERVIEW</span>
+        <span className={styles.blockIndex}>// {index}</span>
+        <span className={styles.blockRail}>DISCIPLINE SPECIFICATION</span>
       </div>
       <h2 id={id} className={styles.blockTitle}>
         {title}

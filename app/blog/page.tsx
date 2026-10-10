@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { SiteHeader, SiteFooter } from "@/components/layout";
-import { AmbientField, SmoothScrollProvider, ScrollBlurText } from "@/components/motion";
+import { SmoothScrollProvider, ScrollBlurText } from "@/components/motion";
 import { BLOG_POSTS, BlogPost } from "@/data/blog";
 import styles from "@/styles/blog/Blog.module.css";
 
@@ -11,7 +11,6 @@ export default function BlogIndexPage() {
   return (
     <SmoothScrollProvider>
       {/* Signature 3D Titanium "13" Emblem & Nebula Atmosphere - Centered */}
-      <AmbientField showEmblem={false} />
       <SiteHeader />
 
       <main className={styles.blogPage}>

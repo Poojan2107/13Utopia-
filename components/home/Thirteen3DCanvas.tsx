@@ -98,25 +98,27 @@ export function Thirteen3DCanvas({ progress = 0, className }: Thirteen3DCanvasPr
       bevelSegments: 3,
     };
 
-    // 4. Titanium Materials with Physical Sheen
+    // 4. Obsidian and Smoked Chrome Materials with Review Route Grading
     const matOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x22262e),
-      roughness: 0.14,
-      metalness: 0.94,
-      emissive: new THREE.Color(0x050608),
+      color: new THREE.Color(0x38393d),
+      roughness: 0.45,
+      metalness: 0.55,
       clearcoat: 0.85,
-      clearcoatRoughness: 0.12,
+      clearcoatRoughness: 0.10,
       reflectivity: 0.95,
+      sheen: 0.60,
+      sheenColor: new THREE.Color(0xf0f5ff),
     });
 
     const matThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x1e222a),
-      roughness: 0.14,
-      metalness: 0.94,
-      emissive: new THREE.Color(0x050608),
-      clearcoat: 0.85,
-      clearcoatRoughness: 0.12,
-      reflectivity: 0.95,
+      color: new THREE.Color(0x282a2e),
+      roughness: 0.12,
+      metalness: 0.92,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      reflectivity: 1.0,
+      sheen: 0.85,
+      sheenColor: new THREE.Color(0xffffff),
     });
 
     // 5. Build Group

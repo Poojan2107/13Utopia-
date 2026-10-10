@@ -169,18 +169,17 @@ export function SiteHeader() {
       } ${open ? styles.menuOpen : ""} ${pathname === "/" ? styles.onHome : ""}`}
     >
       <div className={styles.inner}>
-        {/* Top-Left Corner: Brand Mark */}
-        <Link
-          href="/"
-          className={styles.brand}
-          onClick={closeMenu}
-          aria-label="13 UTOPIA home"
-        >
-          <BrandLogo variant="official" priority />
-        </Link>
+        {/* Top-Left: Brand Mark + Menu Trigger */}
+        <div className={styles.leftCluster}>
+          <Link
+            href="/"
+            className={styles.brand}
+            onClick={closeMenu}
+            aria-label="13 UTOPIA home"
+          >
+            <BrandLogo variant="official" priority />
+          </Link>
 
-        {/* Top-Right Corner: Capsule Menu Trigger */}
-        <div className={styles.actions}>
           <button
             type="button"
             className={`${styles.menuToggle} ${open ? styles.menuToggleActive : ""}`}

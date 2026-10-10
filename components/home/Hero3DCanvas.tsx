@@ -87,25 +87,27 @@ export function Hero3DCanvas() {
       bevelSegments: 4,
     };
 
-    // Exact architectural graphite & titanium materiality matching the continuous narrative sections
+    // Exact architectural obsidian & smoked chrome materiality matching the review model
     const matOne = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x22262e),
-      roughness: 0.14,
-      metalness: 0.94,
-      emissive: new THREE.Color(0x050608),
+      color: new THREE.Color(0x38393d),
+      roughness: 0.45,
+      metalness: 0.55,
       clearcoat: 0.85,
-      clearcoatRoughness: 0.12,
-      reflectivity: 0.9,
+      clearcoatRoughness: 0.10,
+      reflectivity: 0.95,
+      sheen: 0.60,
+      sheenColor: new THREE.Color(0xf0f5ff),
     });
 
     const matThree = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x1e222a),
-      roughness: 0.14,
-      metalness: 0.94,
-      emissive: new THREE.Color(0x050608),
-      clearcoat: 0.85,
-      clearcoatRoughness: 0.12,
-      reflectivity: 0.9,
+      color: new THREE.Color(0x282a2e),
+      roughness: 0.12,
+      metalness: 0.92,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      reflectivity: 1.0,
+      sheen: 0.85,
+      sheenColor: new THREE.Color(0xffffff),
     });
 
     const oneGeo = new THREE.ExtrudeGeometry(createOneShape(), extrudeSettings);
@@ -124,19 +126,19 @@ export function Hero3DCanvas() {
     emblemGroup.position.set(baseOffsetX, 0, 0);
     scene.add(emblemGroup);
 
-    // 4. Exact Studio Lighting Rig
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
+    // 4. Studio Lighting Rig Matching Review Route
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
     scene.add(ambientLight);
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 5.0);
     keyLight.position.set(6, 8, 7);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xd0d0d0, 3.2);
+    const fillLight = new THREE.DirectionalLight(0xe8eeff, 3.2);
     fillLight.position.set(-6, 3, 5);
     scene.add(fillLight);
 
-    const rimLight = new THREE.DirectionalLight(0xffffff, 4.5);
+    const rimLight = new THREE.DirectionalLight(0xdde8ff, 5.5);
     rimLight.position.set(3, -5, -2);
     scene.add(rimLight);
 

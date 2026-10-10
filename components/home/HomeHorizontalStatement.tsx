@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SITE_SCRUB } from "@/components/motion/scrollFeel";
 import { Thirteen3DCanvas } from "./Thirteen3DCanvas";
 
 import styles from "@/styles/home/HomeHorizontalStatement.module.css";
@@ -36,19 +37,24 @@ export function HomeHorizontalStatement() {
     if (!section || !container || !line1 || !line2) return;
 
     const ctx = gsap.context(() => {
+      let lastEmblemP = -1;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
           end: "+=170%",
-          scrub: 0.8,
+          scrub: SITE_SCRUB,
           pin: container,
           pinSpacing: true,
           anticipatePin: 1,
-          fastScrollEnd: false,
+          fastScrollEnd: true,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            setEmblemProgress(self.progress);
+            const p = self.progress;
+            if (Math.abs(p - lastEmblemP) >= 0.0015) {
+              lastEmblemP = p;
+              setEmblemProgress(p);
+            }
           },
         },
       });

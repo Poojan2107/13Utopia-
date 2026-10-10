@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ServicesOverview } from "@/components/services";
+import { ServiceDetail } from "@/components/services";
 import { SERVICE_WORLDS } from "@/data/services";
 import { buildMetadata } from "@/lib/seo";
 
@@ -39,5 +39,6 @@ export default async function ServiceWorldPage({
 }) {
   const { slug } = await params;
   if (!isValidSlug(slug)) notFound();
-  return <ServicesOverview initialWorld={slug} />;
+  const world = SERVICE_WORLDS[slug];
+  return <ServiceDetail world={world} />;
 }

@@ -169,14 +169,26 @@ export function HomeSectionWork() {
       }
     };
 
-    let lastWindowScrollY = typeof window !== "undefined" ? window.scrollY : 0;
-    const onWindowScroll = () => {
+    type LenisLike = {
+      scroll: number;
+      on: (e: string, cb: () => void) => void;
+      off: (e: string, cb: () => void) => void;
+    };
+    const getLenis = () =>
+      (window as unknown as { __lenis?: LenisLike }).__lenis;
+
+    let lastScrollY =
+      getLenis()?.scroll ??
+      (typeof window !== "undefined" ? window.scrollY : 0);
+
+    const onScrollRiver = () => {
+      const y = getLenis()?.scroll ?? window.scrollY;
       if (!isInViewRef.current) {
-        lastWindowScrollY = window.scrollY;
+        lastScrollY = y;
         return;
       }
-      const dy = window.scrollY - lastWindowScrollY;
-      lastWindowScrollY = window.scrollY;
+      const dy = y - lastScrollY;
+      lastScrollY = y;
       if (Math.abs(dy) > 0) {
         p.target += dy * 1.2;
       }
@@ -190,8 +202,9 @@ export function HomeSectionWork() {
         p.target += 0.85;
       }
 
+      // Snappier follow — matches Lenis river feel (was 0.085 lag mush)
       if (!p.isDragging) {
-        p.current += (p.target - p.current) * 0.085;
+        p.current += (p.target - p.current) * 0.14;
       }
       velocityRef.current = p.current - scrollCurrentRef.current;
       scrollCurrentRef.current = p.current;
@@ -210,7 +223,12 @@ export function HomeSectionWork() {
     };
 
     window.addEventListener("wheel", onWheel, { passive: true });
-    window.addEventListener("scroll", onWindowScroll, { passive: true });
+    const lenis = getLenis();
+    if (lenis) {
+      lenis.on("scroll", onScrollRiver);
+    } else {
+      window.addEventListener("scroll", onScrollRiver, { passive: true });
+    }
     window.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerup", onPointerUp);
@@ -224,7 +242,9 @@ export function HomeSectionWork() {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("scroll", onWindowScroll);
+      const l = getLenis();
+      if (l) l.off("scroll", onScrollRiver);
+      else window.removeEventListener("scroll", onScrollRiver);
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);

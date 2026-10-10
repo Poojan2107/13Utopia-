@@ -11,6 +11,7 @@ import {
 } from "next/font/google";
 import { buildMetadata, defaultHomeSeo } from "@/lib/seo";
 import { jsonLdScript, organizationSchema, websiteSchema } from "@/lib/schema";
+import { AmbientField } from "@/components/motion";
 import "./globals.css";
 
 /**
@@ -103,6 +104,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={jsonLdScript(websiteSchema())}
         />
+        {/* Sitewide starfield — pages keep transparent grounds; black hole stays hero-only */}
+        <AmbientField showEmblem={false} />
         {children}
       </body>
     </html>
