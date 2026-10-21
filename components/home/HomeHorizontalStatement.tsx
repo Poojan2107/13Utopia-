@@ -10,24 +10,86 @@ import styles from "@/styles/home/HomeHorizontalStatement.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
+function clamp01(t: number) {
+  return Math.max(0, Math.min(1, t));
+}
+
+function smootherstep(edge0: number, edge1: number, x: number) {
+  const t = clamp01((x - edge0) / Math.max(1e-6, edge1 - edge0));
+  return t * t * t * (t * (t * 6 - 15) + 10);
+}
+
+function applyThesisProgress(
+  p: number,
+  line1: HTMLElement,
+  line2: HTMLElement,
+  glow: HTMLElement | null,
+  bgTrack: HTMLElement | null
+) {
+  // Match GSAP timeline windows from the scroll-driven version
+  const l1 = smootherstep(0, 0.42, p);
+  const l2 = smootherstep(0.18, 0.6, p);
+  const glowT = smootherstep(0.35, 0.7, p);
+  const breathe = smootherstep(0.6, 1, p);
+  const scale = 1 + breathe * 0.025;
+
+  line1.style.transform = `translate3d(${(1 - l1) * -100}vw, 0, 0) scale(${scale})`;
+  line1.style.opacity = String(l1);
+  line2.style.transform = `translate3d(${(1 - l2) * 100}vw, 0, 0) scale(${scale})`;
+  line2.style.opacity = String(l2);
+
+  if (glow) {
+    glow.style.opacity = String(glowT);
+    glow.style.transform = `scale(${0.75 + glowT * 0.4})`;
+  }
+  if (bgTrack) {
+    bgTrack.style.transform = `translate3d(${15 - p * 30}vw, 0, 0)`;
+  }
+}
+
+type Props = {
+  /** 0–1 thesis chapter progress (skips ScrollTrigger when set) */
+  externalProgress?: number;
+  fillParent?: boolean;
+};
+
 /**
  * HomeHorizontalStatement — Chapter 03: Kinetic Convergence Cinema
  * Pinned 100vh cinematic canvas with centered 3D "13" Monolith Emblem.
- * Dual opposing scroll-driven entrance:
- * - Line 1 sweeps in from the LEFT and settles in upper center.
- * - Line 2 ("WE ARE 13 UTOPIA") sweeps in from the RIGHT and locks underneath.
- * - Central 3D Titanium "13" Monolith floats in continuous depth behind the convergence.
  */
-export function HomeHorizontalStatement() {
+export function HomeHorizontalStatement({
+  externalProgress,
+  fillParent = false,
+}: Props = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const line1Ref = useRef<HTMLDivElement | null>(null);
   const line2Ref = useRef<HTMLDivElement | null>(null);
   const glowRef = useRef<HTMLDivElement | null>(null);
   const bgTrackRef = useRef<HTMLDivElement | null>(null);
-  const [emblemProgress, setEmblemProgress] = useState(0);
+  const controlled = typeof externalProgress === "number";
+  const [emblemProgress, setEmblemProgress] = useState(
+    controlled ? clamp01(externalProgress) : 0
+  );
 
   useEffect(() => {
+    if (!controlled) return;
+    const p = clamp01(externalProgress ?? 0);
+    const line1 = line1Ref.current;
+    const line2 = line2Ref.current;
+    if (!line1 || !line2) return;
+    applyThesisProgress(
+      p,
+      line1,
+      line2,
+      glowRef.current,
+      bgTrackRef.current
+    );
+    setEmblemProgress(p);
+  }, [controlled, externalProgress]);
+
+  useEffect(() => {
+    if (controlled) return;
     const section = sectionRef.current;
     const container = containerRef.current;
     const line1 = line1Ref.current;
@@ -59,48 +121,29 @@ export function HomeHorizontalStatement() {
         },
       });
 
-      // 01. Line 1 sweeps in smoothly from LEFT to CENTER (0.0 -> 0.42)
       tl.fromTo(
         line1,
         { x: "-100vw", opacity: 0 },
-        {
-          x: "0vw",
-          opacity: 1,
-          ease: "power2.out",
-          duration: 0.42,
-        },
+        { x: "0vw", opacity: 1, ease: "power2.out", duration: 0.42 },
         0
       );
 
-      // 02. Line 2 sweeps in smoothly from RIGHT to CENTER (0.18 -> 0.60)
       tl.fromTo(
         line2,
         { x: "100vw", opacity: 0 },
-        {
-          x: "0vw",
-          opacity: 1,
-          ease: "power2.out",
-          duration: 0.42,
-        },
+        { x: "0vw", opacity: 1, ease: "power2.out", duration: 0.42 },
         0.18
       );
 
-      // 03. Convergence Glow blooms gently as they meet (0.35 -> 0.70)
       if (glow) {
         tl.fromTo(
           glow,
           { opacity: 0, scale: 0.75 },
-          {
-            opacity: 1,
-            scale: 1.15,
-            ease: "power1.out",
-            duration: 0.35,
-          },
+          { opacity: 1, scale: 1.15, ease: "power1.out", duration: 0.35 },
           0.35
         );
       }
 
-      // 04. Background Ghost Track subtle counter-drift
       if (bgTrack) {
         tl.fromTo(
           bgTrack,
@@ -110,22 +153,17 @@ export function HomeHorizontalStatement() {
         );
       }
 
-      // 05. Unified Centerpiece Hold with subtle breathing scale (0.60 -> 1.0)
       tl.to(
         [line1, line2],
-        {
-          scale: 1.025,
-          ease: "none",
-          duration: 0.40,
-        },
-        0.60
+        { scale: 1.025, ease: "none", duration: 0.4 },
+        0.6
       );
     }, section);
 
     return () => {
       ctx.revert();
     };
-  }, []);
+  }, [controlled]);
 
   return (
     <section
@@ -133,12 +171,33 @@ export function HomeHorizontalStatement() {
       className={styles.horizontalSection}
       id="thesis"
       aria-label="13 Utopia Architectural Thesis"
+      style={
+        fillParent
+          ? {
+              position: "absolute",
+              inset: 0,
+              height: "100%",
+              minHeight: 0,
+              margin: 0,
+            }
+          : undefined
+      }
     >
-      <div ref={containerRef} className={styles.pinContainer}>
-        {/* Central Convergence Energy Aura */}
-        <div ref={glowRef} className={styles.convergenceGlow} aria-hidden="true" />
+      <div
+        ref={containerRef}
+        className={styles.pinContainer}
+        style={
+          fillParent
+            ? { position: "absolute", inset: 0, height: "100%", width: "100%" }
+            : undefined
+        }
+      >
+        <div
+          ref={glowRef}
+          className={styles.convergenceGlow}
+          aria-hidden="true"
+        />
 
-        {/* Pure 3D Titanium "13" Monolith Emblem Canvas Stage */}
         <div className={styles.emblemStage} aria-hidden="true">
           <Thirteen3DCanvas
             progress={emblemProgress}
@@ -146,30 +205,31 @@ export function HomeHorizontalStatement() {
           />
         </div>
 
-
-        {/* Parallax Background Ghost Outline Ribbon */}
         <div className={styles.backgroundViewport} aria-hidden="true">
           <div ref={bgTrackRef} className={styles.backgroundTrack}>
             <span className={styles.ghostText}>
-              13 UTOPIA · UNREASONABLE OBSESSION · UNREAL REALITY · 
+              13 UTOPIA · UNREASONABLE OBSESSION · UNREAL REALITY ·
             </span>
           </div>
         </div>
 
-        {/* Foreground Dual Opposing Lockup Stage */}
         <div className={styles.stageLockup}>
-          {/* Top Line: Sweeps in from LEFT */}
-          <div ref={line1Ref} className={styles.lineTrackLeft}>
+          <div
+            ref={line1Ref}
+            className={styles.lineTrackLeft}
+            style={controlled ? { opacity: 0 } : undefined}
+          >
             <span className={styles.leadText}>
               DRIVEN BY UNREASONABLE OBSESSION TO CREATE WHAT FEELS UNREAL
             </span>
           </div>
 
-          {/* Bottom Line: Sweeps in from RIGHT */}
-          <div ref={line2Ref} className={styles.lineTrackRight}>
-            <span className={styles.grandEmblem}>
-              WE ARE 13 UTOPIA
-            </span>
+          <div
+            ref={line2Ref}
+            className={styles.lineTrackRight}
+            style={controlled ? { opacity: 0 } : undefined}
+          >
+            <span className={styles.grandEmblem}>WE ARE 13 UTOPIA</span>
           </div>
         </div>
       </div>

@@ -5,15 +5,15 @@ import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "lenis/dist/lenis.css";
+import { SITE_GSAP_LAG_SMOOTHING, SITE_LENIS } from "./scrollFeel";
 
 type Props = {
   children: React.ReactNode;
 };
 
 /**
- * One continuous scroll river:
- * Lenis lerp smooths the wheel → ScrollTrigger scrub:true reads that stream 1:1
- * → dive camera rebakes every frame. No stacked lag, no pose pops.
+ * Sitewide smooth scroll — one Lenis river, one GSAP ticker.
+ * Snappy lerp only (no duration layer). ScrollTrigger scrub:true reads 1:1.
  */
 export function SmoothScrollProvider({ children }: Props) {
   useEffect(() => {
@@ -25,12 +25,11 @@ export function SmoothScrollProvider({ children }: Props) {
 
     const lenis = new Lenis({
       autoRaf: false,
-      lerp: 0.11,
-      duration: 0.9,
-      smoothWheel: true,
-      syncTouch: false,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.0,
+      lerp: SITE_LENIS.lerp,
+      smoothWheel: SITE_LENIS.smoothWheel,
+      syncTouch: SITE_LENIS.syncTouch,
+      wheelMultiplier: SITE_LENIS.wheelMultiplier,
+      touchMultiplier: SITE_LENIS.touchMultiplier,
     });
 
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
@@ -42,7 +41,7 @@ export function SmoothScrollProvider({ children }: Props) {
     };
 
     gsap.ticker.add(tickerCallback);
-    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.lagSmoothing(SITE_GSAP_LAG_SMOOTHING);
 
     const refresh = () => {
       lenis.resize();

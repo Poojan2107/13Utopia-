@@ -14,7 +14,12 @@ import {
   staggerParent,
   viewportOnce,
 } from "@/components/services/svcMotion";
-import { AmbientField, SmoothScrollProvider, ScrollBlurText } from "@/components/motion";
+import {
+  AmbientField,
+  SmoothScrollProvider,
+  ScrollBlurText,
+  SITE_SCRUB,
+} from "@/components/motion";
 import { Plus3DCanvas } from "@/components/plus-ex/Plus3DCanvas";
 import styles from "@/styles/services/ServicesOverview.module.css";
 
@@ -48,7 +53,7 @@ function FixedServices3DStage({
         trigger: mainEl,
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.6,
+        scrub: SITE_SCRUB,
         onUpdate: (self) => {
           setProgress(self.progress);
         },

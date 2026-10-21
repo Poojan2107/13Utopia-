@@ -59,10 +59,18 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     index: "06",
+    title: "ORBITAL",
+    href: "/orbital",
+    tagline: "Autonomous 3D Satellite & Planetary Intelligence Simulation",
+    category: "06 // WEBGL LAB",
+    previewImage: "/images/world-create.jpg",
+  },
+  {
+    index: "07",
     title: "CONTACT",
     href: "/contact",
     tagline: "Direct Partner Access & Project Inquiries",
-    category: "06 // CONTACT",
+    category: "07 // CONTACT",
     previewImage: "/images/world-grow.jpg",
   },
 ];

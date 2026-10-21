@@ -20,7 +20,11 @@ import {
 import { sampleDive, type DiveSample } from "./dive";
 import { defaultHeroSettings } from "./settings";
 
+/** Steady-state cursor yaw — buttery when hero is held. */
 const SCENE_YAW_TAU_S = 0.325;
+/** First frames after re-entering static hero — catch pointer immediately. */
+const SCENE_YAW_REENTRY_TAU_S = 0.055;
+const YAW_REENTRY_BOOST_MS = 220;
 
 const MAX_FRAME_DT_S = 0.1;
 
@@ -85,6 +89,8 @@ export function createRenderer({ canvas }: RendererOptions) {
   let lastDiveSample: DiveSample | undefined;
   let lastBakeKey = "";
   let lastPostBloom = -1;
+  /** Until this timestamp, yaw uses the re-entry tau (instant cursor lock). */
+  let yawBoostUntil = 0;
 
   const bakeKeyOf = () =>
     [
@@ -96,8 +102,16 @@ export function createRenderer({ canvas }: RendererOptions) {
       settings.fov.toFixed(3),
     ].join("|");
 
+  const snapYawToPointer = () => {
+    currentSceneYaw =
+      pointerXNormalized * Math.max(0, settings.mouseYaw);
+    yawBoostUntil = clockMs() + YAW_REENTRY_BOOST_MS;
+    lastYawAt = undefined;
+  };
+
   const applyDiveOrLayout = (progress: number) => {
     const mobile = mobileQuery.matches;
+    const wasDiving = diveActive;
     const diving = progress > 0.001;
     diveActive = diving;
 
@@ -124,6 +138,8 @@ export function createRenderer({ canvas }: RendererOptions) {
       );
       settings.bloom.strength = baseBloomStrength * bloomScale;
       lastDiveSample = undefined;
+      // Leaving dive → static hero: cursor must be live this frame, not after damp.
+      if (wasDiving) snapYawToPointer();
     } else {
       const dive = sampleDive(progress, base, mobile);
       lastDiveSample = dive;
@@ -196,7 +212,9 @@ export function createRenderer({ canvas }: RendererOptions) {
     if (shouldRun === Boolean(loop)) return;
     if (shouldRun) {
       lastFrameAt = undefined;
-      lastYawAt = undefined;
+      // Canvas re-entered view (scroll back to hero) — lock yaw to live pointer.
+      if (!diveActive) snapYawToPointer();
+      else lastYawAt = undefined;
       loop = startPacedLoop(api, gpu);
     } else {
       loop?.stop();
@@ -251,12 +269,18 @@ export function createRenderer({ canvas }: RendererOptions) {
     if (disposed || !effects || !targets || !surface) return;
     const now = clockMs();
 
-    // Continuous damped interpolation toward diveTarget (Awwwards 120fps glide)
+    // Dive ease: smooth on the way in, snap-fast on the way out so reverse
+    // scroll restores full cursor yaw immediately at the static hero.
     if (diveTarget > 0.0005 || diveCurrent > 0.0005) {
-      const damp = 0.12;
-      diveCurrent += (diveTarget - diveCurrent) * damp;
-      if (Math.abs(diveTarget - diveCurrent) < 0.0002) {
-        diveCurrent = diveTarget;
+      if (diveTarget < 0.001) {
+        diveCurrent = 0;
+      } else {
+        const returning = diveTarget < diveCurrent;
+        const damp = returning ? 0.55 : 0.12;
+        diveCurrent += (diveTarget - diveCurrent) * damp;
+        if (Math.abs(diveTarget - diveCurrent) < 0.0002) {
+          diveCurrent = diveTarget;
+        }
       }
       applyDiveOrLayout(diveCurrent);
     }
@@ -280,14 +304,17 @@ export function createRenderer({ canvas }: RendererOptions) {
       lastYawAt = now;
       return 0;
     }
+    const target = pointerXNormalized * Math.max(0, settings.mouseYaw);
     const dt =
       lastYawAt === undefined
-        ? 0
+        ? // First sample after pause / re-entry: treat as a real frame so yaw moves.
+          1 / 60
         : Math.min(Math.max((now - lastYawAt) / 1000, 0), MAX_FRAME_DT_S);
     lastYawAt = now;
-    const target = pointerXNormalized * Math.max(0, settings.mouseYaw);
+    const tau =
+      now < yawBoostUntil ? SCENE_YAW_REENTRY_TAU_S : SCENE_YAW_TAU_S;
     currentSceneYaw +=
-      (target - currentSceneYaw) * (1 - Math.exp(-dt / SCENE_YAW_TAU_S));
+      (target - currentSceneYaw) * (1 - Math.exp(-dt / tau));
     return currentSceneYaw;
   };
 

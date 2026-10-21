@@ -5,6 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SERVICE_WORLDS } from "@/data/services";
+import { SITE_SCRUB } from "@/components/motion/scrollFeel";
 import styles from "@/styles/services/ServicesHorizontalShowcase.module.css";
 
 const WORLDS = [
@@ -50,7 +51,7 @@ export function ServicesHorizontalShowcase() {
         trigger: section,
         start: "top top",
         end: () => `+=${totalScrollDistance}`,
-        scrub: 1.2,
+        scrub: SITE_SCRUB,
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,

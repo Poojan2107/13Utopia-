@@ -140,11 +140,20 @@ export interface Continuous3DStoryProps {
   heroBackground?: React.ReactNode;
   /** Scroll-driven fall into the black hole, then emerge into the story */
   blackHoleDive?: boolean;
+  /**
+   * When set, ScrollTrigger is skipped and this 0–1 value drives the story
+   * (PlayCanvas / Edolus virtual scroll host).
+   */
+  externalProgress?: number;
+  /** Fill a fixed parent instead of document-flow pin spacing */
+  fillParent?: boolean;
 }
 
 export function Continuous3DStory({
   heroBackground,
   blackHoleDive = false,
+  externalProgress,
+  fillParent = false,
 }: Continuous3DStoryProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -155,8 +164,11 @@ export function Continuous3DStory({
   const emblemLayerRef = useRef<HTMLDivElement | null>(null);
   const scrollProgressRef = useRef(0);
   const lastUiProgress = useRef(-1);
+  const controlled = typeof externalProgress === "number";
 
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(
+    controlled ? Math.max(0, Math.min(1, externalProgress)) : 0
+  );
 
   const useDive = Boolean(blackHoleDive);
 
@@ -181,7 +193,70 @@ export function Continuous3DStory({
     ? holeOpacity > 0.005
     : Boolean(heroBackground) && scrollProgress < 0.14;
 
+  const applyDiveDom = (p: number) => {
+    scrollProgressRef.current = p;
+    if (!useDive) return;
+
+    const diveP = Math.max(0, Math.min(1, p / DIVE_SCROLL_END));
+    blackHoleRef.current?.setDiveProgress(diveP);
+
+    const exit = Math.max(0, Math.min(1, (p - DIVE_SCROLL_END) / 0.06));
+    const active = p < DIVE_SCROLL_END + 0.06;
+    const holeOp = active ? 1 - exit : 0;
+    if (holeLayerRef.current) {
+      holeLayerRef.current.style.opacity = String(holeOp);
+      holeLayerRef.current.style.visibility =
+        holeOp > 0.005 ? "visible" : "hidden";
+    }
+
+    const emblemOp =
+      p >= DIVE_SCROLL_END * 0.7
+        ? Math.min(
+            1,
+            (p - DIVE_SCROLL_END * 0.7) / (DIVE_SCROLL_END * 0.3)
+          )
+        : 0;
+    if (emblemLayerRef.current) {
+      emblemLayerRef.current.style.opacity = String(emblemOp);
+      emblemLayerRef.current.style.visibility =
+        emblemOp > 0.005 ? "visible" : "hidden";
+      emblemLayerRef.current.style.pointerEvents =
+        emblemOp > 0.3 ? "auto" : "none";
+    }
+
+    if (p >= DIVE_SCROLL_END && overlayRef.current) {
+      overlayRef.current.style.opacity = "0";
+      overlayRef.current.style.visibility = "hidden";
+    }
+  };
+
+  // Controlled mode — PlayCanvas / virtual scroll host drives progress
   useEffect(() => {
+    if (!controlled) return;
+    const p = Math.max(0, Math.min(1, externalProgress ?? 0));
+    applyDiveDom(p);
+
+    const shouldUpdateUi =
+      p >= DIVE_SCROLL_END * 0.7 &&
+      Math.abs(p - lastUiProgress.current) >= 0.0035;
+
+    if (shouldUpdateUi) {
+      lastUiProgress.current = p;
+      setScrollProgress(p);
+    } else if (
+      p < DIVE_SCROLL_END * 0.7 &&
+      lastUiProgress.current >= DIVE_SCROLL_END * 0.7
+    ) {
+      lastUiProgress.current = 0;
+      setScrollProgress(0);
+    } else if (!useDive && Math.abs(p - lastUiProgress.current) >= 0.0035) {
+      lastUiProgress.current = p;
+      setScrollProgress(p);
+    }
+  }, [controlled, externalProgress, useDive]);
+
+  useEffect(() => {
+    if (controlled) return;
     const section = sectionRef.current;
     const stage = stageRef.current;
     if (!section || !stage) return;
@@ -200,49 +275,14 @@ export function Continuous3DStory({
         pin: stage,
         pinSpacing: true,
         // Direct 1:1 tracking with Lenis stream for instant, weightless Awwwards responsiveness
-        scrub: true,
+        scrub: SITE_SCRUB,
         anticipatePin: 1,
         fastScrollEnd: true,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           // self.progress is already scrub-smoothed — drive GPU from this, not raw wheel
           const p = Math.max(0, Math.min(1, self.progress));
-          scrollProgressRef.current = p;
-
-          if (useDive) {
-            const diveP = Math.max(0, Math.min(1, p / DIVE_SCROLL_END));
-            blackHoleRef.current?.setDiveProgress(diveP);
-
-            const exit = Math.max(
-              0,
-              Math.min(1, (p - DIVE_SCROLL_END) / 0.06)
-            );
-            const active = p < DIVE_SCROLL_END + 0.06;
-            const holeOp = active ? 1 - exit : 0;
-            if (holeLayerRef.current) {
-              holeLayerRef.current.style.opacity = String(holeOp);
-              holeLayerRef.current.style.visibility =
-                holeOp > 0.005 ? "visible" : "hidden";
-            }
-
-            const emblemOp =
-              p >= DIVE_SCROLL_END * 0.70
-                ? Math.min(1, (p - DIVE_SCROLL_END * 0.70) / (DIVE_SCROLL_END * 0.30))
-                : 0;
-            if (emblemLayerRef.current) {
-              emblemLayerRef.current.style.opacity = String(emblemOp);
-              emblemLayerRef.current.style.visibility =
-                emblemOp > 0.005 ? "visible" : "hidden";
-              emblemLayerRef.current.style.pointerEvents =
-                emblemOp > 0.3 ? "auto" : "none";
-            }
-
-            // Ensure swallow veil is completely hidden once past dive
-            if (p >= DIVE_SCROLL_END && overlayRef.current) {
-              overlayRef.current.style.opacity = "0";
-              overlayRef.current.style.visibility = "hidden";
-            }
-          }
+          applyDiveDom(p);
 
           // Zero React re-render churn during the dive: all dive visuals run via direct DOM refs.
           // React state only updates when transitioning into the text acts.
@@ -273,7 +313,7 @@ export function Continuous3DStory({
       window.cancelAnimationFrame(refreshId);
       ctx.revert();
     };
-  }, [useDive]);
+  }, [useDive, controlled]);
 
   // Dive owns the open; after manifesto, acts match the original story timeline
   const manifestoStart = useDive ? 0.20 : 0.09;
@@ -302,8 +342,32 @@ export function Continuous3DStory({
       className={styles.storySection}
       id="narrative"
       aria-label="13 Utopia 3D Architectural Narrative"
+      style={
+        fillParent
+          ? {
+              position: "absolute",
+              inset: 0,
+              height: "100%",
+              minHeight: 0,
+              margin: 0,
+            }
+          : undefined
+      }
     >
-      <div ref={stageRef} className={styles.stagePin}>
+      <div
+        ref={stageRef}
+        className={styles.stagePin}
+        style={
+          fillParent
+            ? {
+                position: "absolute",
+                inset: 0,
+                height: "100%",
+                width: "100%",
+              }
+            : undefined
+        }
+      >
         {/* Black hole — dive camera, then hide after swallow */}
         {(useDive || heroBackground) && (
           <div

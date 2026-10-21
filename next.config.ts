@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  transpilePackages: ["playcanvas"],
   // vgpu WGSL module loader — required for optimized-black-hole *.wgsl imports
   turbopack: {
     rules: {
