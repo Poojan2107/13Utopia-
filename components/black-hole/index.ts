@@ -6,7 +6,3 @@ export {
   type HeroSettings,
 } from "@/optimized-black-hole/settings";
 export { sampleDive, DIVE_SCROLL_END, type DiveSample } from "@/optimized-black-hole/dive";
-export {
-  SingularitySilhouette,
-  type SingularitySilhouetteHandle,
-} from "./SingularitySilhouette";

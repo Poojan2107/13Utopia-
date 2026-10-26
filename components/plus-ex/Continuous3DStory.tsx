@@ -9,8 +9,6 @@ import { UtopiaPaintReveal } from "./UtopiaPaintReveal";
 import {
   BlackHoleCanvas,
   type BlackHoleCanvasHandle,
-  SingularitySilhouette,
-  type SingularitySilhouetteHandle,
 } from "@/components/black-hole";
 import { SITE_SCRUB } from "@/components/motion/scrollFeel";
 import { DIVE_SCROLL_END } from "@/optimized-black-hole/dive";
@@ -170,7 +168,6 @@ export function Continuous3DStory({
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const blackHoleRef = useRef<BlackHoleCanvasHandle | null>(null);
-  const silhouetteRef = useRef<SingularitySilhouetteHandle | null>(null);
   const holeLayerRef = useRef<HTMLDivElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const heroActRef = useRef<HTMLDivElement | null>(null);
@@ -224,7 +221,6 @@ export function Continuous3DStory({
     if (handoffAfterDive) {
       const j = sampleDiveOnlyJourney(p);
       blackHoleRef.current?.setDiveProgress(j.diveP);
-      silhouetteRef.current?.setDiveProgress(j.diveP);
       setVerseHandoff(j.handoff);
 
       if (heroActRef.current) {
@@ -491,9 +487,6 @@ export function Continuous3DStory({
                     }
                   }}
                 />
-                {handoffAfterDive && (
-                  <SingularitySilhouette ref={silhouetteRef} />
-                )}
               </>
             ) : (
               heroBackground
