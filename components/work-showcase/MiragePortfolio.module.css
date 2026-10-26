@@ -447,6 +447,10 @@
 
 /* Homepage hero lockup — fuller viewport presence; tracking driven by portal birth */
 .centerLogoEmbedded {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
   font-size: clamp(2.8rem, 7.5vw, 6.4rem);
   font-weight: 800;
   letter-spacing: 0.14em;

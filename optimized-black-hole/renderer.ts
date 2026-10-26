@@ -274,9 +274,9 @@ export function createRenderer({ canvas }: RendererOptions) {
     if (disposed || !effects || !targets || !surface) return;
     const now = clockMs();
 
-    // Bidirectional dive ease — identical buttery smoothness in both forward and reverse
+    // Bidirectional dive ease — snappy, buttery smoothness in both forward and reverse
     if (diveTarget > 0.0001 || diveCurrent > 0.0001) {
-      diveCurrent += (diveTarget - diveCurrent) * 0.24;
+      diveCurrent += (diveTarget - diveCurrent) * 0.28;
       if (Math.abs(diveTarget - diveCurrent) < 0.00015) {
         diveCurrent = diveTarget;
       }

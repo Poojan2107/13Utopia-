@@ -15,8 +15,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 const NUM = PORTFOLIO_PROJECTS.length;
 /** Showcase scrub window inside pin progress (after UTOPIANVERSE entrance + expand) */
-const CARD_START = 0.28;
-const CARD_END = 0.86;
+const CARD_START = 0.20;
+const CARD_END = 0.90;
 
 function progressForCard(index: number): number {
   const i = Math.max(0, Math.min(NUM - 1, index));
@@ -92,7 +92,7 @@ export function HomeSectionMirageWork() {
       const main = ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: "+=900%",
+        end: "+=520%",
         pin,
         pinSpacing: true,
         scrub: SITE_SCRUB,

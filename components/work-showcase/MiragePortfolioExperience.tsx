@@ -200,58 +200,53 @@ export const MiragePortfolioExperience = forwardRef<
     const p = clamp01(progress);
     const s = stateRef.current;
 
-    // Pin journey:
-    // 0.00–0.16  UTOPIANVERSE text animation + elevated orbital carousel overview
-    // 0.16–0.28  Carousel expands into eye-level showcase; UTOPIANVERSE text dissolves
-    // 0.28–0.86  Smooth continuous card showcase (cards 0 to 9)
-    // 0.86–1.00  Soft exit release into next homepage section
+    // Pin journey (streamlined for brisk, weightless backscroll):
+    // 0.00–0.14  UTOPIANVERSE text hero + orbital carousel overview
+    // 0.14–0.24  Carousel expands into eye-level showcase; UTOPIANVERSE text glides up & dissolves
+    // 0.24–0.90  Smooth continuous card showcase (cards 0 to 9)
+    // 0.90–1.00  Soft exit release into next homepage section
     let heroBlend = 1;
     let floatIndex = 0;
     let diveTwist = 0;
     let fov = 15.0;
     let titleLock = 0;
-    let impact = 1;
 
-    if (p < 0.16) {
+    if (p < 0.14) {
       heroBlend = 1;
       floatIndex = 0;
-      impact = smootherstep(0, 0.16, p);
       diveTwist = 0;
       fov = 15.0;
-      titleLock = 0;
-    } else if (p < 0.28) {
-      const expandT = smootherstep(0.16, 0.28, p);
+    } else if (p < 0.24) {
+      const expandT = smootherstep(0.14, 0.24, p);
       heroBlend = 1 - expandT;
       floatIndex = 0;
-      impact = 1;
       diveTwist = 0;
       fov = 15.0;
-      titleLock = expandT;
-    } else if (p <= 0.86) {
+    } else if (p <= 0.90) {
       heroBlend = 0;
-      impact = 1;
-      const scrub = (p - 0.28) / (0.86 - 0.28);
+      const scrub = (p - 0.24) / (0.90 - 0.24);
       floatIndex = scrub * (NUM_SCREENS - 1);
       diveTwist = 0;
       fov = 15.0;
-      titleLock = 1;
     } else {
       heroBlend = 0;
-      impact = 1;
       floatIndex = NUM_SCREENS - 1;
       diveTwist = 0;
       fov = 15.0;
-      titleLock = 1 - smootherstep(0.88, 1.0, p) * 0.4;
     }
+
+    // Completely decoupled titleLock: active only during card showcase (p: 0.24 -> 0.92)
+    // Completely 0 before p = 0.22 so it NEVER collides with UTOPIANVERSE (which dissolves above 0.14)
+    titleLock = smootherstep(0.24, 0.30, p) * (1 - smootherstep(0.90, 0.98, p));
 
     const idx = Math.max(0, Math.min(NUM_SCREENS - 1, Math.round(floatIndex)));
     const inHero = heroBlend > 0.55;
 
     s.riverHeroBlend = heroBlend;
-    s.riverExitFade = smootherstep(0.86, 1.0, p);
+    s.riverExitFade = smootherstep(0.90, 1.0, p);
     s.riverDiveTwist = diveTwist;
     s.riverFov = fov;
-    s.riverImpact = impact;
+    s.riverImpact = 1;
     s.riverTitleLock = titleLock;
     s.isHomeMode = inHero;
 
@@ -968,9 +963,10 @@ export const MiragePortfolioExperience = forwardRef<
       if (logoRef.current) {
         if (river) {
           // Centered screen lockup with fluid tracking, luminous glow and upward drift
-          const heroShow = Math.max(0, Math.min(1, (heroBlend - 0.04) / 0.96)) * slam;
+          // Visible when in rotunda overview (heroBlend >= 0.15)
+          const heroShow = smootherstep(0.15, 0.85, heroBlend);
           const tracking = 0.20 - (1 - heroBlend) * 0.08;
-          const scale = 0.92 + slam * 0.08 + (1 - heroBlend) * 0.12;
+          const scale = 0.96 + (1 - heroBlend) * 0.08;
           const yShift = (1 - heroBlend) * -45; // smoothly glides up as carousel expands
 
           logoRef.current.style.left = "50%";
@@ -990,7 +986,7 @@ export const MiragePortfolioExperience = forwardRef<
 
       if (heroOverlayRef.current) {
         if (river) {
-          const heroShow = Math.max(0, Math.min(1, (heroBlend - 0.04) / 0.96)) * slam;
+          const heroShow = smootherstep(0.15, 0.85, heroBlend);
           heroOverlayRef.current.style.opacity = heroShow > 0.005 ? "1" : "0";
           heroOverlayRef.current.style.pointerEvents =
             heroShow > 0.45 ? "auto" : "none";
@@ -1004,7 +1000,7 @@ export const MiragePortfolioExperience = forwardRef<
       if (carouselOverlayRef.current) {
         const show = river
           ? smootherstep(0.55, 0.95, diveT) * (1 - st.riverExitFade * 0.7)
-          : smootherstep(0.9, 1, diveT) * slam;
+          : smootherstep(0.9, 1, diveT);
         carouselOverlayRef.current.style.opacity = String(show);
         carouselOverlayRef.current.style.pointerEvents =
           show > 0.5 ? "auto" : "none";
@@ -1017,16 +1013,15 @@ export const MiragePortfolioExperience = forwardRef<
         titleStageRef.current.style.opacity = String(titleLock);
       }
       if (river && rootRef.current) {
-        // Opacity + scale only — never CSS filter blur (was the lag)
-        const enterScale = 1.08 - slam * 0.08;
+        // Continuous, weightless opacity — never CSS blur
         const exitOp = 1 - st.riverExitFade * 0.35;
-        rootRef.current.style.opacity = String(exitOp * slam);
+        rootRef.current.style.opacity = String(exitOp);
         rootRef.current.style.filter = "none";
-        rootRef.current.style.transform = `translate3d(0, 0, 0) scale(${enterScale.toFixed(4)})`;
+        rootRef.current.style.transform = "translate3d(0, 0, 0)";
       }
 
-      // Direct lerp — never unwrap into [-π,π] (that fought idx*ANGLE_STEP past card ~5)
-      const rotLerp = river ? (diveT > 0.98 ? 0.16 : 0.2) : 0.08;
+      // Direct lerp — snappy, responsive, and buttery without lagging behind wheel
+      const rotLerp = river ? (diveT > 0.98 ? 0.22 : 0.26) : 0.08;
       st.currentRotationY +=
         (st.targetRotationY - st.currentRotationY) * rotLerp;
       if (Math.abs(st.targetRotationY - st.currentRotationY) < 0.0015) {
@@ -1046,28 +1041,15 @@ export const MiragePortfolioExperience = forwardRef<
       duneShaderMat.uniforms.uTime.value += 0.016;
 
       if (river) {
-        // Impact: rocket out of the singularity → overhead hero, then spiral to cards
-        const pull = 1 - slam;
-        birthHeroPos.set(
-          heroCamPos.x * slam,
-          heroCamPos.y * slam + pull * 1.2,
-          heroCamPos.z * slam + pull * 2.4
-        );
-        birthHeroLook.set(
-          heroLookAt.x,
-          heroLookAt.y + pull * 0.2,
-          heroLookAt.z
-        );
-
         const t = diveT;
         const u = 1 - t;
         camBlendPos.set(0, 0, 0);
-        camBlendPos.addScaledVector(birthHeroPos, u * u);
+        camBlendPos.addScaledVector(heroCamPos, u * u);
         camBlendPos.addScaledVector(diveSwingPos, 2 * u * t);
         camBlendPos.addScaledVector(carouselCamPos, t * t);
 
         camBlendLook.set(0, 0, 0);
-        camBlendLook.addScaledVector(birthHeroLook, u * u);
+        camBlendLook.addScaledVector(heroLookAt, u * u);
         camBlendLook.addScaledVector(diveSwingLook, 2 * u * t);
         camBlendLook.addScaledVector(carouselLookAt, t * t);
 
@@ -1094,7 +1076,7 @@ export const MiragePortfolioExperience = forwardRef<
         camBlendPos.z
       );
 
-      const camLerp = river ? 0.22 : 0.06;
+      const camLerp = river ? 0.26 : 0.06;
       currentCamPos.lerp(parallaxTarget, camLerp);
       currentLookAt.lerp(camBlendLook, camLerp);
 
@@ -1103,14 +1085,14 @@ export const MiragePortfolioExperience = forwardRef<
 
       if (river) {
         const targetFov = st.riverFov;
-        camera.fov += (targetFov - camera.fov) * 0.12;
+        camera.fov += (targetFov - camera.fov) * 0.20;
         camera.updateProjectionMatrix();
       }
 
       // Authentic light intensity — hotter underglow as we enter the sand
       const targetIntensity = 0.42 + diveT * 0.12 + heroBlend * 0.015;
       duneShaderMat.uniforms.uLightIntensity.value +=
-        (targetIntensity - duneShaderMat.uniforms.uLightIntensity.value) * 0.08;
+        (targetIntensity - duneShaderMat.uniforms.uLightIntensity.value) * 0.16;
 
       // Full sky bleed so the open ring center always shows stars
       if (river) {

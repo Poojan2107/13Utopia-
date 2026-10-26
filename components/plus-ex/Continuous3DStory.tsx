@@ -223,8 +223,8 @@ export function Continuous3DStory({
       setVerseHandoff(j.handoff);
 
       if (heroActRef.current) {
-        const copyFade = 1 - Math.max(0, Math.min(1, p / 0.28));
-        const copyY = Math.max(0, Math.min(1, p / 0.28)) * -35;
+        const copyFade = 1 - Math.max(0, Math.min(1, p / 0.40));
+        const copyY = Math.max(0, Math.min(1, p / 0.40)) * -32;
         heroActRef.current.style.opacity = String(copyFade);
         heroActRef.current.style.transform = `translate3d(0, ${copyY.toFixed(1)}px, 0)`;
         heroActRef.current.style.pointerEvents = copyFade < 0.1 ? "none" : "auto";
@@ -334,7 +334,7 @@ export function Continuous3DStory({
           const h = window.innerHeight;
           // diveOnly: short punchy runway — dive + black cut, then Mirage impact
           if (handoffAfterDive) {
-            return `+=${Math.round(Math.max(1100, Math.min(1600, h * 1.35)))}`;
+            return `+=${Math.round(Math.max(880, Math.min(1250, h * 1.05)))}`;
           }
           return `+=${Math.round(
             Math.max(2400, Math.min(3400, h * (useDive ? 3.0 : 2.5)))
