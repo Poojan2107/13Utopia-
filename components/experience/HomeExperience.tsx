@@ -5,10 +5,10 @@
  * Used by `/` and `/experience`. No chapter chunking; one document scroll.
  */
 import {
-  HomeNarrativeSection,
+  HomeSectionMirageWork,
+  // HomeSectionWork, // revert: Landberg ribbon still at components/home/HomeSectionWork.tsx
   HomeHorizontalStatement,
-  HomeSectionWork,
-  HomeCTASection,
+  HomeEarthExperienceSection,
 } from "@/components/home";
 import { Continuous3DStory } from "@/components/plus-ex";
 import { SiteHeader, SiteFooter } from "@/components/layout";
@@ -36,11 +36,11 @@ export function HomeExperience() {
             backgroundColor: "transparent",
           }}
         >
-          <Continuous3DStory blackHoleDive />
-          <HomeNarrativeSection />
+          {/* Hero → black-hole dive → straight into UTOPIANVERSE (skip CREATE/BUILD/GROW) */}
+          <Continuous3DStory blackHoleDive diveOnly />
+          <HomeSectionMirageWork />
           <HomeHorizontalStatement />
-          <HomeSectionWork />
-          <HomeCTASection />
+          <HomeEarthExperienceSection />
           <SiteFooter />
         </main>
       </div>

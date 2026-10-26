@@ -1,0 +1,3267 @@
+[
+  {
+    "id": "292211860",
+    "name": "loading.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292237431",
+    "name": "settings.local.json",
+    "type": "json",
+    "file": {
+      "filename": "settings.local.json",
+      "size": 246,
+      "hash": "e0fef443d52948538346e4b1bd0adb5f",
+      "url": "files/assets/292237431/1/settings.local.json"
+    },
+    "tags": []
+  },
+  {
+    "id": "292237877",
+    "name": "settings.json",
+    "type": "json",
+    "file": {
+      "filename": "settings.json",
+      "size": 84,
+      "hash": "566b0c1891cc3e8d88010369b0caeb3c",
+      "url": "files/assets/292237877/1/settings.json"
+    },
+    "tags": []
+  },
+  {
+    "id": "292242166",
+    "name": "EventBus.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292242168",
+    "name": "SceneManager.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292242169",
+    "name": "ScrollManager.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292242204",
+    "name": "TransitionManager.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292242205",
+    "name": "AudioManager.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292242206",
+    "name": "CursorManager.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292242209",
+    "name": "PostFXManager.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292242250",
+    "name": "SceneSatellite.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292242262",
+    "name": "SceneDatacenter.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292242417",
+    "name": "SceneChip.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292242420",
+    "name": "SceneUI.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292242465",
+    "name": "SceneCar.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292242469",
+    "name": "SceneEnding.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292280431",
+    "name": "CameraController.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292280661",
+    "name": "SceneDiamondMap.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292280847",
+    "name": "MonitorCar-frame",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "292280850",
+    "name": "VERTEX3DendingBKG",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "292431627",
+    "name": "carBKG",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "292432194",
+    "name": "videoEarth.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292438594",
+    "name": "satelliteMover.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292439810",
+    "name": "textureMap.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292447614",
+    "name": "diamondMover.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292449081",
+    "name": "miniDiamondAppear.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292490275",
+    "name": "scrollAppear.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292578861",
+    "name": "UIXscrollmove.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292601043",
+    "name": "screenRenderTarget.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292614072",
+    "name": "black",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "292617818",
+    "name": "setLayerRecursive.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "292624780",
+    "name": "monitorScreenFit.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "293747584",
+    "name": "satellite State Graph",
+    "type": "animstategraph",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "293798294",
+    "name": "FilmGrainEffect.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "293808903",
+    "name": "mouseParallax.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "294120188",
+    "name": "DiamondBKG",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294125708",
+    "name": "centerDissolve.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "294129713",
+    "name": "dotgrid.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "294207062",
+    "name": "movingBackground.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "294368960",
+    "name": "cloudTransition.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "294466898",
+    "name": "diamondLabel.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "294606318",
+    "name": "Take 001.glb",
+    "type": "animation",
+    "file": {
+      "hash": "92c8e5f8d31f59a30cf620634318bcd9",
+      "size": 67232,
+      "filename": "Take 001.glb",
+      "url": "files/assets/294606318/1/Take%20001.glb"
+    },
+    "tags": []
+  },
+  {
+    "id": "294606319",
+    "name": "white",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606320",
+    "name": "Metal_02",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606321",
+    "name": "Solar_panel_normal.webp",
+    "type": "texture",
+    "file": {
+      "filename": "Solar_panel_normal.webp",
+      "size": 59802,
+      "hash": "5e759e1404fb30e999b73730a5c98c41",
+      "variants": {
+        "basis": {
+          "filename": "Solar_panel_normal.basis",
+          "hash": "09198b76cb21fd17f393d524e34d242a",
+          "size": 196091,
+          "sizeGzip": 195938,
+          "opt": 8,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/294606321/1/Solar_panel_normal.basis"
+        }
+      },
+      "url": "files/assets/294606321/1/Solar_panel_normal.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "294606322",
+    "name": "StarlinkV2-1.glb",
+    "type": "container",
+    "file": {
+      "hash": "de925792652e508f31cca5c035cb07c7",
+      "size": 3652756,
+      "filename": "StarlinkV2-1.glb",
+      "url": "files/assets/294606322/1/StarlinkV2-1.glb"
+    },
+    "tags": []
+  },
+  {
+    "id": "294606323",
+    "name": "metal_01_body",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606325",
+    "name": "Brass",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606326",
+    "name": "Screens",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606327",
+    "name": "black",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606328",
+    "name": "Solar_panel",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606329",
+    "name": "Solar_panel_gloss.webp",
+    "type": "texture",
+    "file": {
+      "filename": "Solar_panel_gloss.webp",
+      "size": 69816,
+      "hash": "8306ec8180bdaf4d29d694a2e6c20cbd",
+      "variants": {
+        "basis": {
+          "filename": "Solar_panel_gloss.basis",
+          "hash": "0917901a8e1434791e06f5ea88e0eb5b",
+          "size": 109750,
+          "sizeGzip": 109661,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/294606329/1/Solar_panel_gloss.basis"
+        }
+      },
+      "url": "files/assets/294606329/1/Solar_panel_gloss.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "294606330",
+    "name": "body_003_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606331",
+    "name": "Starlink_body001_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606332",
+    "name": "Solar_panel_016_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606333",
+    "name": "Solar_panel_022_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606334",
+    "name": "Solar_panel_023_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606335",
+    "name": "Solar_panel_017_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606336",
+    "name": "Solar_panel_024_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606337",
+    "name": "Solar_panel_025_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606338",
+    "name": "Solar_panel_026_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606339",
+    "name": "Solar_panel_018_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606340",
+    "name": "Solar_panel_019_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606341",
+    "name": "Solar_panel_021_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606342",
+    "name": "Solar_panel_020_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606343",
+    "name": "Solar_panel_027_ncl1_1",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294606344",
+    "name": "StarlinkV2-1",
+    "type": "template",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294722699",
+    "name": "body",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294722701",
+    "name": "glass",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294722702",
+    "name": "TOP",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294722703",
+    "name": "tranparent",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294724770",
+    "name": "satelliteLabel.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "294753048",
+    "name": "datalights.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "294754040",
+    "name": "parallaxMap.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "294755262",
+    "name": "satelliteFeed.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "294760515",
+    "name": "mapPanAnchor.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "294760742",
+    "name": "BlackTiles",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294760775",
+    "name": "Poliigon_TilesCeramicWhite_6956_AmbientOcclusion.jpg",
+    "type": "texture",
+    "file": {
+      "filename": "Poliigon_TilesCeramicWhite_6956_AmbientOcclusion.jpg",
+      "size": 18059,
+      "hash": "c99696c529faf445e945e4fbe0cc15ab",
+      "variants": {
+        "basis": {
+          "filename": "Poliigon_TilesCeramicWhite_6956_AmbientOcclusion.basis",
+          "hash": "b974572a8b080d9f9de059daf9e34b0e",
+          "size": 12228,
+          "sizeGzip": 11865,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/294760775/1/Poliigon_TilesCeramicWhite_6956_AmbientOcclusion.basis"
+        }
+      },
+      "url": "files/assets/294760775/1/Poliigon_TilesCeramicWhite_6956_AmbientOcclusion.jpg"
+    },
+    "tags": []
+  },
+  {
+    "id": "294760950",
+    "name": "monochrome_studio_02_512k-sharp.png",
+    "type": "texture",
+    "file": {
+      "filename": "monochrome_studio_02_512k-sharp.png",
+      "hash": "8139f8aa6c8508093d0d6ef1660addad",
+      "size": 206288,
+      "variants": {},
+      "url": "files/assets/294760950/1/monochrome_studio_02_512k-sharp.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "294761251",
+    "name": "EARTH.png",
+    "type": "texture",
+    "file": {
+      "filename": "EARTH.png",
+      "hash": "d0af63985b34c09358f004ad3e278425",
+      "size": 1047923,
+      "variants": {},
+      "url": "files/assets/294761251/1/EARTH.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "294761465",
+    "name": "sceneText.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "294776005",
+    "name": "Panel_DarkGrey",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294776006",
+    "name": "Gold_Brass",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294776007",
+    "name": "Silver_Metal",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "294776008",
+    "name": "Cabinet_Black",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295516297",
+    "name": "infinityFloor.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "295593207",
+    "name": "posteffect-bokeh",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "295593211",
+    "name": "bokehFocusRange.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "295595875",
+    "name": "rotateObject.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "295638209",
+    "name": "matrix.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "295642651",
+    "name": "lightShot.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "295655813",
+    "name": "GoldCHIP",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657340",
+    "name": "Paint Gloss Black #1",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657341",
+    "name": "Aluminum Polished #3",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657342",
+    "name": "Aluminum Polished #1",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657343",
+    "name": "Aluminum Polished #2",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657344",
+    "name": "Paint Gloss Black #3",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657346",
+    "name": "Paint Gloss Black #2",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657347",
+    "name": "ComputeTrayJOINED.glb",
+    "type": "container",
+    "file": {
+      "hash": "8ce0797c7b650df871d236a54eead989",
+      "size": 7507724,
+      "filename": "ComputeTrayJOINED.glb",
+      "url": "files/assets/295657347/1/ComputeTrayJOINED.glb"
+    },
+    "tags": []
+  },
+  {
+    "id": "295657348",
+    "name": "mesh.006",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657349",
+    "name": "mesh.002",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657350",
+    "name": "mesh",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657351",
+    "name": "mesh.001",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657352",
+    "name": "mesh.003",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657353",
+    "name": "mesh.004",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657354",
+    "name": "mesh.005",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295657355",
+    "name": "ComputeTrayJOINED",
+    "type": "template",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295659089",
+    "name": "chipAppear.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "295713684",
+    "name": "processor.glb",
+    "type": "container",
+    "file": {
+      "hash": "7d4f897bae4c8eef6b8b6c19e564a496",
+      "size": 541660,
+      "filename": "processor.glb",
+      "url": "files/assets/295713684/1/processor.glb"
+    },
+    "tags": []
+  },
+  {
+    "id": "295713686",
+    "name": "Processor.002",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295713687",
+    "name": "processor",
+    "type": "template",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295714357",
+    "name": "wafer",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "295897434",
+    "name": "rackDissolve.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "295912295",
+    "name": "worldText.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "295912296",
+    "name": "hudText.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "295953003",
+    "name": "typeWriter.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296018586",
+    "name": "LightManager.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296179108",
+    "name": "Solar_panelDiffuse1.webp",
+    "type": "texture",
+    "file": {
+      "filename": "Solar_panelDiffuse1.webp",
+      "size": 73294,
+      "hash": "80af5e5aedde24ce10a08f6b87b3551e",
+      "variants": {
+        "basis": {
+          "filename": "Solar_panelDiffuse1.basis",
+          "hash": "3e43c8d02b3bd044973f54ed55ee6cbd",
+          "size": 1498609,
+          "sizeGzip": 1202557,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "astc",
+          "noFlip": true,
+          "url": "files/assets/296179108/1/Solar_panelDiffuse1.basis"
+        }
+      },
+      "url": "files/assets/296179108/1/Solar_panelDiffuse1.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "296215328",
+    "name": "OverlayManager.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296220070",
+    "name": "Reflection1.png",
+    "type": "texture",
+    "file": {
+      "filename": "Reflection1.png",
+      "hash": "0a2f15de9eb23fff14bded515031345c",
+      "size": 522324,
+      "variants": {},
+      "url": "files/assets/296220070/1/Reflection1.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "296312491",
+    "name": "textdatacenter.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296316509",
+    "name": "ny copy.webp",
+    "type": "texture",
+    "file": {
+      "filename": "ny copy.webp",
+      "size": 13608,
+      "hash": "fe8988a189f5b12a594bbdc2175b057f",
+      "variants": {
+        "basis": {
+          "filename": "ny copy.basis",
+          "hash": "d956002c2dc42ce6645fd811932a5b62",
+          "size": 79350,
+          "sizeGzip": 75787,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/296316509/1/ny%20copy.basis"
+        }
+      },
+      "url": "files/assets/296316509/1/ny%20copy.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "296316510",
+    "name": "nz copy.webp",
+    "type": "texture",
+    "file": {
+      "filename": "nz copy.webp",
+      "size": 18008,
+      "hash": "0a0b17c3c0448741a9dac7d0dbf95821",
+      "variants": {
+        "basis": {
+          "filename": "nz copy.basis",
+          "hash": "f90f1007bdc0cb49f50e7c898d5a2410",
+          "size": 96871,
+          "sizeGzip": 95411,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/296316510/1/nz%20copy.basis"
+        }
+      },
+      "url": "files/assets/296316510/1/nz%20copy.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "296316511",
+    "name": "px copy.webp",
+    "type": "texture",
+    "file": {
+      "filename": "px copy.webp",
+      "size": 18374,
+      "hash": "e66100fe368ecf969f73f43413a50e53",
+      "variants": {
+        "basis": {
+          "filename": "px copy.basis",
+          "hash": "c54dbceef59814a4d22364851e5df86a",
+          "size": 111975,
+          "sizeGzip": 109860,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/296316511/1/px%20copy.basis"
+        }
+      },
+      "url": "files/assets/296316511/1/px%20copy.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "296316512",
+    "name": "pz copy.webp",
+    "type": "texture",
+    "file": {
+      "filename": "pz copy.webp",
+      "size": 50648,
+      "hash": "d9376ba02eff100f39278633c8a52205",
+      "variants": {
+        "basis": {
+          "filename": "pz copy.basis",
+          "hash": "2b9519dde6d56acb01fa5a1382ec7462",
+          "size": 239815,
+          "sizeGzip": 239277,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/296316512/1/pz%20copy.basis"
+        }
+      },
+      "url": "files/assets/296316512/1/pz%20copy.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "296316513",
+    "name": "nx copy.webp",
+    "type": "texture",
+    "file": {
+      "filename": "nx copy.webp",
+      "size": 38372,
+      "hash": "62730488d3535e85465dfd6b1367f89b",
+      "variants": {
+        "basis": {
+          "filename": "nx copy.basis",
+          "hash": "61891ef30ee03ba5eebd33976314a4b4",
+          "size": 210366,
+          "sizeGzip": 209130,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/296316513/1/nx%20copy.basis"
+        }
+      },
+      "url": "files/assets/296316513/1/nx%20copy.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "296316514",
+    "name": "py copy.webp",
+    "type": "texture",
+    "file": {
+      "filename": "py copy.webp",
+      "size": 71654,
+      "hash": "e84d086a8f5fd21fe6fcd37163dc4af1",
+      "variants": {
+        "basis": {
+          "filename": "py copy.basis",
+          "hash": "99d57d944dcd14fcd7b5c61cb59ce1ac",
+          "size": 281477,
+          "sizeGzip": 281430,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/296316514/1/py%20copy.basis"
+        }
+      },
+      "url": "files/assets/296316514/1/py%20copy.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "296323877",
+    "name": "Reflection3.png",
+    "type": "texture",
+    "file": {
+      "filename": "Reflection3.png",
+      "hash": "aae9d2808879be11353b5a0766f97bca",
+      "size": 382800,
+      "variants": {},
+      "url": "files/assets/296323877/1/Reflection3.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "296343035",
+    "name": "objectFade.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296362305",
+    "name": "trueGlass.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296407558",
+    "name": "datalightDiamond.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296433599",
+    "name": "textScramble.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296436897",
+    "name": "dustLight.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296475080",
+    "name": "infraGrid.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296495520",
+    "name": "mapHud.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296574674",
+    "name": "ringPulse.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296654444",
+    "name": "haloSatellite.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296663079",
+    "name": "textSatellite.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296783254",
+    "name": "aurora.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296791673",
+    "name": "nebula.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "296902347",
+    "name": "GDX-JOIN2 - FIXtop2.glb",
+    "type": "container",
+    "file": {
+      "hash": "68e0f4a3b8355314f77708f47cce0f16",
+      "size": 825104,
+      "filename": "GDX-JOIN2 - FIXtop2.glb",
+      "url": "files/assets/296902347/1/GDX-JOIN2%20-%20FIXtop2.glb"
+    },
+    "tags": []
+  },
+  {
+    "id": "296902349",
+    "name": "Cube.926",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "296902351",
+    "name": "GDX-JOIN2 - FIXtop2",
+    "type": "template",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297063124",
+    "name": "nebula2.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297128009",
+    "name": "chipDots.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297174797",
+    "name": "cardSystem.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297185569",
+    "name": "cardZeroFollow.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297199958",
+    "name": "UIwallpaper.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297205581",
+    "name": "CardDesign.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297255727",
+    "name": "dataScan.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297261766",
+    "name": "GDX-3PODS-F2.glb",
+    "type": "container",
+    "file": {
+      "hash": "ab0a12f255fc890bc0fa03829ea3e56f",
+      "size": 1535080,
+      "filename": "GDX-3PODS-F2.glb",
+      "url": "files/assets/297261766/1/GDX-3PODS-F2.glb"
+    },
+    "tags": []
+  },
+  {
+    "id": "297261773",
+    "name": "Cube.003",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297261778",
+    "name": "GDX-3PODS-F2",
+    "type": "template",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270870",
+    "name": "Car_Paint",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270871",
+    "name": "Plastic_Black_Shiny",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270873",
+    "name": "Windows_Glass",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270874",
+    "name": "Aluminum_Interior",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270876",
+    "name": "Leather_White",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270877",
+    "name": "LED_Light_Interior",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270878",
+    "name": "Leather_Black",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270879",
+    "name": "Mirror",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270880",
+    "name": "Tire_Thread",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270881",
+    "name": "Carpet_Black",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270882",
+    "name": "Fabric_White",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270883",
+    "name": "Rubber_Interiorpedales",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270884",
+    "name": "Stitches_White",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270885",
+    "name": "Leather_Seats",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270886",
+    "name": "Red_Light",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270887",
+    "name": "Plastic_Black_Interior",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270888",
+    "name": "Leather_Perfurated_Seats",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270889",
+    "name": "Plastic_Black_Stering_Wheel",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270891",
+    "name": "Stitches_Opacity.webp",
+    "type": "texture",
+    "file": {
+      "filename": "Stitches_Opacity.webp",
+      "hash": "b2cffde13b4802e64230d85e680775e9",
+      "size": 2398,
+      "variants": {},
+      "url": "files/assets/297270891/1/Stitches_Opacity.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "297270892",
+    "name": "Carpet_Diffuse.webp",
+    "type": "texture",
+    "file": {
+      "filename": "Carpet_Diffuse.webp",
+      "hash": "e3d6f9a52d599d68bcb6d23cd85b2ab9",
+      "size": 118208,
+      "variants": {
+        "basis": {
+          "filename": "Carpet_Diffuse.basis",
+          "hash": "4f9b65e5ed7e6c78c1e7275dc07fec5b",
+          "size": 156848,
+          "sizeGzip": 156867,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/297270892/1/Carpet_Diffuse.basis"
+        }
+      },
+      "url": "files/assets/297270892/1/Carpet_Diffuse.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "297270893",
+    "name": "Stitches_Opacity_1.webp",
+    "type": "texture",
+    "file": {
+      "filename": "Stitches_Opacity_1.webp",
+      "hash": "e9929fee4c9df13c31c696cf7911b902",
+      "size": 17102,
+      "variants": {},
+      "url": "files/assets/297270893/1/Stitches_Opacity_1.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "297270895",
+    "name": "Plastic_Bump.webp",
+    "type": "texture",
+    "file": {
+      "filename": "Plastic_Bump.webp",
+      "hash": "f525909de7b14f24e34bd7870befd5fd",
+      "size": 83934,
+      "variants": {
+        "basis": {
+          "filename": "Plastic_Bump.basis",
+          "hash": "c37ecb1352b51f58f6dd8fa6811fef5c",
+          "size": 161370,
+          "sizeGzip": 161248,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/297270895/1/Plastic_Bump.basis"
+        }
+      },
+      "url": "files/assets/297270895/1/Plastic_Bump.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "297270901",
+    "name": "Leather_Perforated_Diffuse.webp",
+    "type": "texture",
+    "file": {
+      "filename": "Leather_Perforated_Diffuse.webp",
+      "hash": "ebbdd1af333a857898f286325f112462",
+      "size": 27886,
+      "variants": {
+        "basis": {
+          "filename": "Leather_Perforated_Diffuse.basis",
+          "hash": "3515d73ccb9ae7c400ee782ecb8a6762",
+          "size": 33888,
+          "sizeGzip": 33712,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/297270901/1/Leather_Perforated_Diffuse.basis"
+        }
+      },
+      "url": "files/assets/297270901/1/Leather_Perforated_Diffuse.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "297270902",
+    "name": "Aluminiun_Black_Interior",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270903",
+    "name": "Stitches_Black",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270904",
+    "name": "Plastic_Black_Matte",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297270905",
+    "name": "Rear_Light_Glass",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297273798",
+    "name": "matrixGrid.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297279737",
+    "name": "circuitCHIP",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297281639",
+    "name": "textCenterFade.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297298133",
+    "name": "leather_Bump copy.webp",
+    "type": "texture",
+    "file": {
+      "filename": "leather_Bump copy.webp",
+      "size": 50022,
+      "hash": "3ff687cc4da250ab12f0e81361d095c7",
+      "variants": {
+        "basis": {
+          "filename": "leather_Bump copy.basis",
+          "hash": "564da3f4a69c07af9607b392457c0abc",
+          "size": 151171,
+          "sizeGzip": 151046,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/297298133/1/leather_Bump%20copy.basis"
+        }
+      },
+      "url": "files/assets/297298133/1/leather_Bump%20copy.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "297301043",
+    "name": "cardHover.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297329227",
+    "name": "videoCar.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297329782",
+    "name": "3Dtxt",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297329940",
+    "name": "000395480029reflect.png",
+    "type": "texture",
+    "file": {
+      "filename": "000395480029reflect.png",
+      "hash": "519403362bd35481144ace1056ba5409",
+      "size": 431782,
+      "variants": {},
+      "url": "files/assets/297329940/1/000395480029reflect.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "297335929",
+    "name": "posteffect-bloom",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297337347",
+    "name": "card0screenshot.webp",
+    "type": "texture",
+    "file": {
+      "filename": "card0screenshot.webp",
+      "size": 27928,
+      "hash": "770b85b0f211b313ffdb1fd35d225a56",
+      "variants": {},
+      "url": "files/assets/297337347/1/card0screenshot.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "297340642",
+    "name": "Space-compressNOAUDIO-YTfullHD.mp4",
+    "type": "audio",
+    "file": {
+      "filename": "Space-compressNOAUDIO-YTfullHD.mp4",
+      "size": 6049773,
+      "hash": "5a0a9ec555552bb84bfa533812619b4e",
+      "url": "files/assets/297340642/1/Space-compressNOAUDIO-YTfullHD.mp4"
+    },
+    "tags": []
+  },
+  {
+    "id": "297340938",
+    "name": "Seedance2-0_r2v_00002YTHD_lowbitrate.mp4",
+    "type": "audio",
+    "file": {
+      "filename": "Seedance2-0_r2v_00002YTHD_lowbitrate.mp4",
+      "size": 5690427,
+      "hash": "5f0560e47ec95621695e44389cbc520f",
+      "url": "files/assets/297340938/1/Seedance2-0_r2v_00002YTHD_lowbitrate.mp4"
+    },
+    "tags": []
+  },
+  {
+    "id": "297382047",
+    "name": "optimizeRetina.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297385086",
+    "name": "emissiveFresnel.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297417320",
+    "name": "chipTransform.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297435347",
+    "name": "haloVignette.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297458955",
+    "name": "solidBackground.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297470913",
+    "name": "chipDissolve.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297590896",
+    "name": "GeneralSans-Medium.otf",
+    "type": "font",
+    "file": {
+      "filename": "GeneralSans-Medium.png",
+      "hash": "cb3acd5968fb8456d586286349ab27e6",
+      "size": 173545,
+      "url": "files/assets/297590896/1/GeneralSans-Medium.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "297590897",
+    "name": "GeneralSans-Light.otf",
+    "type": "font",
+    "file": {
+      "filename": "GeneralSans-Light.png",
+      "hash": "c39918db5da4cfb2a105d84bca84e826",
+      "size": 158363,
+      "url": "files/assets/297590897/1/GeneralSans-Light.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "297590898",
+    "name": "GeneralSans-Semibold.otf",
+    "type": "font",
+    "file": {
+      "filename": "GeneralSans-Semibold.png",
+      "hash": "15ed265506c0cefee46c8a91618bef37",
+      "size": 182354,
+      "url": "files/assets/297590898/1/GeneralSans-Semibold.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "297590899",
+    "name": "GeneralSans-Bold.otf",
+    "type": "font",
+    "file": {
+      "filename": "GeneralSans-Bold.png",
+      "hash": "b6eb0a357e4264b3fd2dfc451b4c5e6c",
+      "size": 187942,
+      "url": "files/assets/297590899/1/GeneralSans-Bold.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "297590900",
+    "name": "GeneralSans-Extralight.otf",
+    "type": "font",
+    "file": {
+      "filename": "GeneralSans-Extralight.png",
+      "hash": "1d34452e3cbdc2b8f99b28fb2fe71d98",
+      "size": 152572,
+      "url": "files/assets/297590900/1/GeneralSans-Extralight.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "297590901",
+    "name": "GeneralSans-Regular.otf",
+    "type": "font",
+    "file": {
+      "filename": "GeneralSans-Regular.png",
+      "hash": "f28ae9a89d8a008405830df372e61717",
+      "size": 165070,
+      "url": "files/assets/297590901/1/GeneralSans-Regular.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "297611779",
+    "name": "satellite-aichip",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297624079",
+    "name": "Glow.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297624392",
+    "name": "satglow",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297624710",
+    "name": "energyField.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297695678",
+    "name": "steeringWheel.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297699331",
+    "name": "DiamondV4.glb",
+    "type": "container",
+    "file": {
+      "hash": "bbfd90494bc20c115f22090fa62ba6b1",
+      "size": 1450272,
+      "filename": "DiamondV4.glb",
+      "url": "files/assets/297699331/1/DiamondV4.glb"
+    },
+    "tags": []
+  },
+  {
+    "id": "297699334",
+    "name": "Plane.001",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297699335",
+    "name": "Plane",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297699336",
+    "name": "Plane.002",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297699337",
+    "name": "Plane.003",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297699338",
+    "name": "Plane.004",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297699339",
+    "name": "Plane.005",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297699340",
+    "name": "Cube_disassembled",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297699341",
+    "name": "Cube_disassembled.003",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297699342",
+    "name": "DIAMONDCORE_CLEAN.001",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297699343",
+    "name": "DiamondV4",
+    "type": "template",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297703733",
+    "name": "triangle",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297721293",
+    "name": "triangle3D.glb",
+    "type": "container",
+    "file": {
+      "hash": "2bbb325a08d7f23e2accabdf18913a85",
+      "size": 1576,
+      "filename": "triangle3D.glb",
+      "url": "files/assets/297721293/1/triangle3D.glb"
+    },
+    "tags": []
+  },
+  {
+    "id": "297721294",
+    "name": "Plane",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297721295",
+    "name": "triangle3D",
+    "type": "template",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "297734634",
+    "name": "shaderFade.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297775167",
+    "name": "gradientPlane.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297926489",
+    "name": "spacecloud.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "297987501",
+    "name": "Reflection2.png",
+    "type": "texture",
+    "file": {
+      "filename": "Reflection2.png",
+      "hash": "e2da34ed53d92e20df2aabb2267482a0",
+      "size": 34912,
+      "variants": {},
+      "url": "files/assets/297987501/1/Reflection2.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "298051497",
+    "name": "chromaticTransition.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298146151",
+    "name": "cloudShadows.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298204720",
+    "name": "intelligenceLayer.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298215984",
+    "name": "mapblend.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298216506",
+    "name": "DiamondBKG2",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298281233",
+    "name": "scrollRotate.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298281707",
+    "name": "infraGridMap.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298286652",
+    "name": "Material.002",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298286654",
+    "name": "MAP.glb",
+    "type": "container",
+    "file": {
+      "hash": "7f46450dde32eff01d0b14b506ebd9fb",
+      "size": 456348,
+      "filename": "MAP.glb",
+      "url": "files/assets/298286654/1/MAP.glb"
+    },
+    "tags": []
+  },
+  {
+    "id": "298286655",
+    "name": "Plane",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298286656",
+    "name": "MAP",
+    "type": "template",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298346278",
+    "name": "mapClouds.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298350544",
+    "name": "6kgfa2umfqb91-edit.webp",
+    "type": "texture",
+    "file": {
+      "filename": "6kgfa2umfqb91-edit.webp",
+      "size": 2484796,
+      "hash": "aafb654c69b180967cacaa23ea6ed927",
+      "variants": {},
+      "url": "files/assets/298350544/1/6kgfa2umfqb91-edit.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "298352572",
+    "name": "CurvedScreen.glb",
+    "type": "container",
+    "file": {
+      "hash": "788088ea0348a2099d9c861bbcb719af",
+      "size": 21728,
+      "filename": "CurvedScreen.glb",
+      "url": "files/assets/298352572/1/CurvedScreen.glb"
+    },
+    "tags": []
+  },
+  {
+    "id": "298352573",
+    "name": "Plane",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298352574",
+    "name": "CurvedScreen",
+    "type": "template",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298352590",
+    "name": "Car-floor",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298361492",
+    "name": "pointerRipple.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298371763",
+    "name": "endingCredits.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298497716",
+    "name": "rearlightflare.webp",
+    "type": "texture",
+    "file": {
+      "filename": "rearlightflare.webp",
+      "size": 46754,
+      "hash": "e995bd4f6cff11e12ecb13e44705150e",
+      "variants": {},
+      "url": "files/assets/298497716/1/rearlightflare.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "298497886",
+    "name": "imgcarflare.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298499543",
+    "name": "backflare.webp",
+    "type": "texture",
+    "file": {
+      "filename": "backflare.webp",
+      "size": 18638,
+      "hash": "35509e35401d2d7afe9efd62c085718f",
+      "variants": {},
+      "url": "files/assets/298499543/1/backflare.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "298537756",
+    "name": "podFade.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298615133",
+    "name": "shadowcar.webp",
+    "type": "texture",
+    "file": {
+      "filename": "shadowcar.webp",
+      "size": 131602,
+      "hash": "9b34ece62c4d4c7c4025a7eab398f056",
+      "variants": {
+        "basis": {
+          "filename": "shadowcar.basis",
+          "hash": "4ecacab2b8759d1d5e23dc83f5cea02f",
+          "size": 59244,
+          "sizeGzip": 58772,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/298615133/1/shadowcar.basis"
+        }
+      },
+      "url": "files/assets/298615133/1/shadowcar.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "298616193",
+    "name": "imgplane.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298621173",
+    "name": "POD-Cabinet_Black",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298623365",
+    "name": "reflectionPOD.webp",
+    "type": "texture",
+    "file": {
+      "filename": "reflectionPOD.webp",
+      "size": 34808,
+      "hash": "ec322275aa81f21728af53aa83506939",
+      "variants": {
+        "basis": {
+          "filename": "reflectionPOD.basis",
+          "hash": "bd4040d3430673dcf38f78b97cf2e9bc",
+          "size": 17739,
+          "sizeGzip": 17011,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/298623365/1/reflectionPOD.basis"
+        }
+      },
+      "url": "files/assets/298623365/1/reflectionPOD.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "298667245",
+    "name": "textblur.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298739098",
+    "name": "cubesTransition.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298850929",
+    "name": "plexus.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298861848",
+    "name": "basis.wasm.wasm",
+    "type": "wasm",
+    "file": {
+      "filename": "basis.wasm.wasm",
+      "size": 611602,
+      "hash": "7ebe033aa225bbba197a081f8dd37c1f",
+      "url": "files/assets/298861848/1/basis.wasm.wasm"
+    },
+    "tags": []
+  },
+  {
+    "id": "298861849",
+    "name": "basis.js",
+    "type": "script",
+    "file": {
+      "filename": "basis.js",
+      "size": 1038957,
+      "hash": "2872fd4901e238b4cfaf55e6abab7776",
+      "url": "files/assets/298861849/1/basis.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298861850",
+    "name": "basis.wasm.js",
+    "type": "script",
+    "file": {
+      "filename": "basis.wasm.js",
+      "size": 60106,
+      "hash": "857b905d7d34143f4dd02edb4484cd21",
+      "url": "files/assets/298861850/1/basis.wasm.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "298863804",
+    "name": "card4.webp",
+    "type": "texture",
+    "file": {
+      "filename": "card4.webp",
+      "size": 33550,
+      "hash": "eff27160555eadbf07cce88cf88addbf",
+      "variants": {},
+      "url": "files/assets/298863804/1/card4.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "298888460",
+    "name": "Poliigon_TilesCeramicWhite_6956_Normal.png",
+    "type": "texture",
+    "file": {
+      "filename": "Poliigon_TilesCeramicWhite_6956_Normal.png",
+      "size": 511027,
+      "hash": "7130a78988a9e8d3a03c7205adda9c10",
+      "variants": {},
+      "url": "files/assets/298888460/1/Poliigon_TilesCeramicWhite_6956_Normal.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "298936975",
+    "name": "abstractwall_5_normal-1K.webp",
+    "type": "texture",
+    "file": {
+      "filename": "abstractwall_5_normal-1K.webp",
+      "size": 109328,
+      "hash": "ead84506baa2c731ef9922096f92c26d",
+      "variants": {},
+      "url": "files/assets/298936975/1/abstractwall_5_normal-1K.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "298949851",
+    "name": "Tesla-ready2.glb",
+    "type": "container",
+    "file": {
+      "hash": "2f3940419bc18acd7c2019d5206c3305",
+      "size": 7325056,
+      "filename": "Tesla-ready2.glb",
+      "url": "files/assets/298949851/1/Tesla-ready2.glb"
+    },
+    "tags": []
+  },
+  {
+    "id": "298949855",
+    "name": "Car_Paint",
+    "type": "material",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298949857",
+    "name": "Rear_Bump_Light",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298949858",
+    "name": "Tire_RL",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298949859",
+    "name": "Charging_Port",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298949860",
+    "name": "Interior",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298949861",
+    "name": "Seats",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298949862",
+    "name": "Dash",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298949863",
+    "name": "Body.005",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298949864",
+    "name": "Body.004",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298949865",
+    "name": "Stering Wheel.001",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298949866",
+    "name": "Trunk_Rear_Light.002",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298949867",
+    "name": "Trunk_Rear_Light.003",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298949868",
+    "name": "Tesla-ready2",
+    "type": "template",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298957981",
+    "name": "card3-2.webp",
+    "type": "texture",
+    "file": {
+      "filename": "card3-2.webp",
+      "size": 184998,
+      "hash": "c17f34c15b9e9e52bb3fc35c02d9941f",
+      "variants": {},
+      "url": "files/assets/298957981/1/card3-2.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "298958818",
+    "name": "card2-2.webp",
+    "type": "texture",
+    "file": {
+      "filename": "card2-2.webp",
+      "size": 58756,
+      "hash": "37996317367c5d6ee828af050a4a9173",
+      "variants": {},
+      "url": "files/assets/298958818/1/card2-2.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "298968097",
+    "name": "card1-2.webp",
+    "type": "texture",
+    "file": {
+      "filename": "card1-2.webp",
+      "size": 48542,
+      "hash": "f9196a49a0170dd5b3a31fb9075c8f25",
+      "variants": {},
+      "url": "files/assets/298968097/1/card1-2.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "298971146",
+    "name": "Skybox.png",
+    "type": "cubemap",
+    "file": {
+      "filename": "Skybox.png",
+      "size": 182080,
+      "hash": "17d44521568257f497d9cd56447f0e09",
+      "url": "files/assets/298971146/1/Skybox.png"
+    },
+    "tags": []
+  },
+  {
+    "id": "298988831",
+    "name": "AutonomousDeployment.glb",
+    "type": "container",
+    "file": {
+      "hash": "d5a6ecacb159d2fb79291a27407c133d",
+      "size": 141696,
+      "filename": "AutonomousDeployment.glb",
+      "url": "files/assets/298988831/1/AutonomousDeployment.glb"
+    },
+    "tags": []
+  },
+  {
+    "id": "298988832",
+    "name": "Text.005",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298988833",
+    "name": "Text",
+    "type": "render",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "298988834",
+    "name": "AutonomousDeployment",
+    "type": "template",
+    "file": null,
+    "tags": []
+  },
+  {
+    "id": "299037872",
+    "name": "revealLightTrail.js",
+    "type": "script",
+    "file": {
+      "filename": "__game-scripts.js",
+      "size": 1000462,
+      "hash": "7bc4c3dc33c2d676ca8ae8c58e9c2014",
+      "url": "__game-scripts.js"
+    },
+    "tags": []
+  },
+  {
+    "id": "299229076",
+    "name": "bass_stemAUDITION30.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "bass_stemAUDITION30.ogg",
+      "size": 615147,
+      "hash": "9552979410320fb2066b90eaeefe7fe1",
+      "url": "files/assets/299229076/1/bass_stemAUDITION30.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299302867",
+    "name": "melody_stem_AUDITION302.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "melody_stem_AUDITION302.ogg",
+      "size": 890451,
+      "hash": "7698e8c9257628be5ec99a6321185aab",
+      "url": "files/assets/299302867/1/melody_stem_AUDITION302.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299304748",
+    "name": "instruments_stemAUDITION305.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "instruments_stemAUDITION305.ogg",
+      "size": 618175,
+      "hash": "beb6e776801a22c3919449bc050d4ba4",
+      "url": "files/assets/299304748/1/instruments_stemAUDITION305.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299306216",
+    "name": "BTNclick2.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "BTNclick2.ogg",
+      "size": 8773,
+      "hash": "60468d24c7ffeddffd1ebcad8d7df1d3",
+      "url": "files/assets/299306216/1/BTNclick2.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299313827",
+    "name": "diamond2.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "diamond2.ogg",
+      "size": 24989,
+      "hash": "e7048091a56ddba0ec3eb7b1d6808f64",
+      "url": "files/assets/299313827/1/diamond2.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299314557",
+    "name": "map.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "map.ogg",
+      "size": 42991,
+      "hash": "c86c5b1df2170126724fe07e652d603a",
+      "url": "files/assets/299314557/1/map.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299338751",
+    "name": "rack.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "rack.ogg",
+      "size": 15054,
+      "hash": "00163cb1d0e3ef4b16a17fcf3eb515ad",
+      "url": "files/assets/299338751/1/rack.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299345449",
+    "name": "wafertexure_upscayl2.webp",
+    "type": "texture",
+    "file": {
+      "filename": "wafertexure_upscayl2.webp",
+      "size": 381628,
+      "hash": "869d8ea3e9333a7276f14338814e400c",
+      "variants": {
+        "basis": {
+          "filename": "wafertexure_upscayl2.basis",
+          "hash": "dc6f7ed560d539914753e8d74cf495cc",
+          "size": 373029,
+          "sizeGzip": 372913,
+          "opt": 0,
+          "quality": 128,
+          "compressionMode": "etc",
+          "noFlip": true,
+          "url": "files/assets/299345449/1/wafertexure_upscayl2.basis"
+        }
+      },
+      "url": "files/assets/299345449/1/wafertexure_upscayl2.webp"
+    },
+    "tags": []
+  },
+  {
+    "id": "299456165",
+    "name": "computecore2.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "computecore2.ogg",
+      "size": 87679,
+      "hash": "98a02580916c8732a8f630aec7b83cdb",
+      "url": "files/assets/299456165/1/computecore2.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299456357",
+    "name": "textrack.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "textrack.ogg",
+      "size": 40480,
+      "hash": "202e1b1883a5a080aa8b6010672af482",
+      "url": "files/assets/299456357/1/textrack.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299456592",
+    "name": "textchip2.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "textchip2.ogg",
+      "size": 102752,
+      "hash": "9e7b57eb981f5e173d5b1f052971fe0d",
+      "url": "files/assets/299456592/1/textchip2.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299484005",
+    "name": "quantum5.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "quantum5.ogg",
+      "size": 84965,
+      "hash": "89adac43016ebbb89ff1e0e5828d714c",
+      "url": "files/assets/299484005/1/quantum5.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299492189",
+    "name": "Scrambletext.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "Scrambletext.ogg",
+      "size": 29145,
+      "hash": "276e2c3f2b2417828f45835a3bfb883f",
+      "url": "files/assets/299492189/1/Scrambletext.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299493082",
+    "name": "intelligent.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "intelligent.ogg",
+      "size": 14660,
+      "hash": "bd504de05bd511d0ca7d736f3ce6c1e5",
+      "url": "files/assets/299493082/1/intelligent.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299500275",
+    "name": "UIscreen.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "UIscreen.ogg",
+      "size": 15829,
+      "hash": "734480243a8f0ae95dc23c7d53a03176",
+      "url": "files/assets/299500275/1/UIscreen.ogg"
+    },
+    "tags": []
+  },
+  {
+    "id": "299520427",
+    "name": "AICHIP.ogg",
+    "type": "audio",
+    "file": {
+      "filename": "AICHIP.ogg",
+      "size": 33947,
+      "hash": "9a45efbf2e6c104ac0c35e77f7d6c10e",
+      "url": "files/assets/299520427/1/AICHIP.ogg"
+    },
+    "tags": []
+  }
+]

@@ -1,0 +1,467 @@
+@font-face {
+  font-family: "PPPangramSans";
+  src: url("/sites/studiomirage/fonts/PPPangramSans-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PPPangramSans";
+  src: url("/sites/studiomirage/fonts/PPPangramSans-Semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PPPangramSans";
+  src: url("/sites/studiomirage/fonts/PPPangramSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PPPangramSans";
+  src: url("/sites/studiomirage/fonts/PPPangramSans-Extrabold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fullscreen App Shell */
+.appContainer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background-color: #000000;
+  color: #ffffff;
+  font-family: "PPPangramSans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* 3D WebGL Canvas Layer */
+.canvasLayer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Top Navigation Header */
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32px 48px;
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 20px 24px;
+  }
+}
+
+.brandLogo {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+@media (max-width: 768px) {
+  .headerRight {
+    gap: 16px;
+  }
+}
+
+.soundBtn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+}
+
+.soundWaves {
+  display: flex;
+  align-items: center;
+  gap: 2.5px;
+  height: 12px;
+}
+
+.soundLine {
+  width: 18px;
+  height: 1.5px;
+  background: #ffffff;
+  border-radius: 1px;
+  transition: transform 0.2s ease;
+}
+
+.soundBarPlaying:nth-child(1) {
+  width: 2px;
+  height: 10px;
+  background: #fff;
+  animation: barAnim 0.7s infinite alternate;
+}
+.soundBarPlaying:nth-child(2) {
+  width: 2px;
+  height: 14px;
+  background: #fff;
+  animation: barAnim 0.5s 0.2s infinite alternate;
+}
+.soundBarPlaying:nth-child(3) {
+  width: 2px;
+  height: 8px;
+  background: #fff;
+  animation: barAnim 0.8s 0.3s infinite alternate;
+}
+
+@keyframes barAnim {
+  0% { height: 4px; }
+  100% { height: 14px; }
+}
+
+.navLink {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.navLink:hover {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .navLink {
+    display: none;
+  }
+}
+
+/* Contact Us Button with Golden Glow */
+.contactBtnWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contactGlow {
+  position: absolute;
+  width: 110%;
+  height: 120%;
+  border-radius: 30px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(-45deg, rgba(255, 220, 114, 0.9), rgba(255, 102, 0, 0.85));
+  filter: blur(28px);
+  opacity: 0.85;
+  pointer-events: none;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.contactBtnWrapper:hover .contactGlow {
+  filter: blur(34px);
+  opacity: 1;
+}
+
+.contactBtn {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 26px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000000;
+  background: #ffffff;
+  border-radius: 30px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.contactBtn:hover {
+  background: #f0f0f0;
+}
+
+/* =========================================
+   HERO MODE UI (State 1)
+   ========================================= */
+.heroLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.heroLayerHidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95);
+}
+
+.heroLeftCity {
+  position: absolute;
+  left: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+  .heroLeftCity {
+    left: 24px;
+  }
+}
+
+.heroRightCity {
+  position: absolute;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+  .heroRightCity {
+    right: 24px;
+  }
+}
+
+.heroCenterLogo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(3rem, 6.5vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+/* Scroll To Start Exploring Button */
+.ctaScroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.25s ease;
+}
+
+.ctaScroll:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.ctaArrow {
+  animation: bounceArrow 1.6s ease-in-out infinite;
+}
+
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* =========================================
+   CAROUSEL MODE UI (State 2)
+   ========================================= */
+.carouselLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.carouselLayerHidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.05);
+}
+
+.activeProjectTitle {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  text-align: center;
+  font-size: clamp(2.4rem, 5.5vw, 5rem);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  margin: 0;
+}
+
+/* Bottom Nav in Carousel */
+.bottomNav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0 48px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .bottomNav {
+    padding: 0 20px 24px;
+  }
+}
+
+.prevBtn,
+.nextBtn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  position: relative;
+  text-align: left;
+  padding: 8px 12px;
+}
+
+.nextBtn {
+  text-align: right;
+}
+
+.btnBgGlow {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: -1;
+  background: linear-gradient(-45deg, #ffdc72, #ff6200);
+  filter: blur(50px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.prevBtn:hover .btnBgGlow,
+.nextBtn:hover .btnBgGlow {
+  opacity: 0.35;
+}
+
+.navLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #888888;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.navProjectName {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  display: block;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .navProjectName {
+    display: none;
+  }
+}
+
+/* Center Pill: Visit This Mirage */
+.visitBtn {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 28px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+@media (max-width: 768px) {
+  .visitBtn {
+    bottom: 24px;
+  }
+}
+
+.visitBtn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.visitIcon {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}

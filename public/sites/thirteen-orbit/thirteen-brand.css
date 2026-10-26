@@ -1,0 +1,66 @@
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: url("/fonts/neue-montreal/ppneuemontreal-book.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: url("/fonts/neue-montreal/ppneuemontreal-medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: url("/fonts/neue-montreal/ppneuemontreal-bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Only hide Edolus wordmark — NEVER hide splash or canvas */
+#pc-overlay-logo {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+#custom-splash-logo {
+  width: min(92vw, 560px) !important;
+  max-width: 92vw !important;
+}
+
+#custom-splash-logo .tu-splash-mark {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  color: #fff;
+  font-family: "PP Neue Montreal", "Neue Montreal", system-ui, sans-serif;
+  letter-spacing: 0.22em;
+  white-space: nowrap;
+}
+
+#custom-splash-logo .tu-splash-mark span:first-child {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+#custom-splash-logo .tu-splash-mark span:last-child {
+  font-size: clamp(18px, 2.6vw, 28px);
+  font-weight: 500;
+  letter-spacing: 0.28em;
+}
+
+#custom-title,
+#custom-subtitle,
+#cta-label,
+#custom-headphones .hp-text {
+  font-family: "PP Neue Montreal", "Neue Montreal", system-ui, sans-serif !important;
+}

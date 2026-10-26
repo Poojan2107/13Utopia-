@@ -1,0 +1,109 @@
+{
+  "version": 2,
+  "carouselSize": 10,
+  "numVideos": 13,
+  "totalFrames": 755,
+  "sampleRate": 15,
+  "textureWidth": 1,
+  "textureHeight": 755,
+  "uids": [
+    "difc",
+    "margiela",
+    "ubisoft",
+    "renault-trucks",
+    "omnicell-explorer",
+    "tasmim",
+    "sopra-banking",
+    "caisse-des-depots",
+    "jinns",
+    "biotherm",
+    "unpresidential",
+    "metaverse",
+    "__about__"
+  ],
+  "frameRanges": [
+    {
+      "start": 0,
+      "count": 52
+    },
+    {
+      "start": 52,
+      "count": 52
+    },
+    {
+      "start": 104,
+      "count": 43
+    },
+    {
+      "start": 147,
+      "count": 45
+    },
+    {
+      "start": 192,
+      "count": 56
+    },
+    {
+      "start": 248,
+      "count": 43
+    },
+    {
+      "start": 291,
+      "count": 53
+    },
+    {
+      "start": 344,
+      "count": 52
+    },
+    {
+      "start": 396,
+      "count": 52
+    },
+    {
+      "start": 448,
+      "count": 52
+    },
+    {
+      "start": 500,
+      "count": 52
+    },
+    {
+      "start": 552,
+      "count": 52
+    },
+    {
+      "start": 604,
+      "count": 151
+    }
+  ],
+  "durations": [
+    3.442,
+    3.466,
+    2.838,
+    3.031,
+    3.766,
+    2.838,
+    3.5,
+    3.466,
+    3.466,
+    3.466,
+    3.466,
+    3.466,
+    10.033333
+  ],
+  "hashes": [
+    "6700fd6e5e32e0f2",
+    "5bae2931ff06ae57",
+    "dd2a09e7894e72fc",
+    "92957196b756ffd5",
+    "e2a8d552473b6693",
+    "db182ead458f963b",
+    "2ecdf50ffbc1f69a",
+    "3308a24d7d4090ae",
+    "e025ae74b7b66ebb",
+    "e5ab88781116172b",
+    "902e4c8550080d61",
+    "0b1ec6c74962fb7d",
+    "aa4fe5dac21021a3"
+  ],
+  "generatedAt": "2026-09-04T13:59:39.556Z"
+}

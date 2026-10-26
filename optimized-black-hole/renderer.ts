@@ -109,10 +109,15 @@ export function createRenderer({ canvas }: RendererOptions) {
     lastYawAt = undefined;
   };
 
+  const boostYawReentry = () => {
+    yawBoostUntil = clockMs() + YAW_REENTRY_BOOST_MS;
+    lastYawAt = undefined;
+  };
+
   const applyDiveOrLayout = (progress: number) => {
     const mobile = mobileQuery.matches;
     const wasDiving = diveActive;
-    const diving = progress > 0.001;
+    const diving = progress > 0.0005;
     diveActive = diving;
 
     if (!diving) {
@@ -138,8 +143,8 @@ export function createRenderer({ canvas }: RendererOptions) {
       );
       settings.bloom.strength = baseBloomStrength * bloomScale;
       lastDiveSample = undefined;
-      // Leaving dive → static hero: cursor must be live this frame, not after damp.
-      if (wasDiving) snapYawToPointer();
+      // Leaving dive → static hero: smoothly boost yaw to live pointer without sudden snap
+      if (wasDiving) boostYawReentry();
     } else {
       const dive = sampleDive(progress, base, mobile);
       lastDiveSample = dive;
@@ -269,20 +274,16 @@ export function createRenderer({ canvas }: RendererOptions) {
     if (disposed || !effects || !targets || !surface) return;
     const now = clockMs();
 
-    // Dive ease: smooth on the way in, snap-fast on the way out so reverse
-    // scroll restores full cursor yaw immediately at the static hero.
-    if (diveTarget > 0.0005 || diveCurrent > 0.0005) {
-      if (diveTarget < 0.001) {
-        diveCurrent = 0;
-      } else {
-        const returning = diveTarget < diveCurrent;
-        const damp = returning ? 0.55 : 0.12;
-        diveCurrent += (diveTarget - diveCurrent) * damp;
-        if (Math.abs(diveTarget - diveCurrent) < 0.0002) {
-          diveCurrent = diveTarget;
-        }
+    // Bidirectional dive ease — identical buttery smoothness in both forward and reverse
+    if (diveTarget > 0.0001 || diveCurrent > 0.0001) {
+      diveCurrent += (diveTarget - diveCurrent) * 0.24;
+      if (Math.abs(diveTarget - diveCurrent) < 0.00015) {
+        diveCurrent = diveTarget;
       }
       applyDiveOrLayout(diveCurrent);
+    } else if (diveCurrent !== 0) {
+      diveCurrent = 0;
+      applyDiveOrLayout(0);
     }
 
     const runBake = forceBake || diveActive;

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import WorkShowcase from "@/components/work-showcase/WorkShowcase";
+import WorkClientView from "@/components/work-showcase/WorkClientView";
 
 export const metadata: Metadata = {
   title: "Work & Portfolio — 13 UTOPIA",
@@ -8,5 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default function WorkPage() {
-  return <WorkShowcase />;
+  return <WorkClientView />;
 }
+
+

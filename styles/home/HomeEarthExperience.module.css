@@ -1,0 +1,243 @@
+/* =========================================================
+   13 UTOPIA // CHAPTER 05 — THE INVITATION
+   Cinematic orbital Earth horizon over continuous sitewide stars.
+   Full-viewport integration inspired by Edolus with continuous flow.
+   ========================================================= */
+
+.earthExperience {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: transparent;
+  color: #ffffff;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  z-index: 5;
+}
+
+/* ── Full Cinematic Video Background (Edolus integration) ── */
+.mediaContainer {
+  position: absolute;
+  inset: -4% -4%;
+  width: 108%;
+  height: 108%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+
+  /* Edolus-style continuous edge dissolves (fadeHeight & bottomFade) */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.3) 5%,
+    black 16%,
+    black 84%,
+    rgba(0, 0, 0, 0.3) 95%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.3) 5%,
+    black 16%,
+    black 84%,
+    rgba(0, 0, 0, 0.3) 95%,
+    transparent 100%
+  );
+}
+
+.bgVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  /* Match hero black hole palette: pure monochrome, deep obsidian blacks, glowing titanium whites */
+  filter: grayscale(100%) contrast(1.24) brightness(1.06);
+}
+
+/* ── Atmospheric Top & Bottom Continuous Dissolve Scrims ── */
+.scrimTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(140px, 22vh, 260px);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.45) 45%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.scrimBottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: clamp(160px, 24vh, 280px);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.45) 45%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Subtle silver-white atmospheric bloom along the sunrise horizon (matching black hole bloom) */
+.horizonGlow {
+  position: absolute;
+  top: 46%;
+  right: 22%;
+  width: 550px;
+  height: 380px;
+  transform: translate(50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0.05) 40%,
+    transparent 70%
+  );
+  filter: blur(48px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Central Architectural Content Container ────────────── */
+.container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1720px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: clamp(6rem, 12vh, 10rem) clamp(1.5rem, 4vw, 5.5rem);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+/* ── Monumental Title Header Block ──────────────────────── */
+.headerBlock {
+  max-width: 62rem;
+}
+
+.mainTitle {
+  font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
+  font-size: clamp(3rem, 6.2vw, 6.2rem);
+  font-weight: 700;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+}
+
+/* ── Action Button & Right Editorial Manifesto ──────────── */
+.invitationRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 3rem;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: clamp(2rem, 4vh, 4rem);
+}
+
+.invitationLeft {
+  display: flex;
+  align-items: center;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 2.4rem;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #000000;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.5);
+}
+
+.ctaButton:hover {
+  background: rgba(255, 255, 255, 0.85);
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 36px rgba(255, 255, 255, 0.3);
+}
+
+.arrowIcon {
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: transform 0.28s ease;
+}
+
+.ctaButton:hover .arrowIcon {
+  transform: translateX(4px);
+}
+
+.invitationRight {
+  max-width: 480px;
+  text-align: right;
+  padding-bottom: 4px;
+}
+
+.manifestoText {
+  font-family: var(--font-display, "PP Neue Montreal", "Inter", sans-serif);
+  font-size: clamp(1.2rem, 1.85vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
+}
+
+.manifestoAccent {
+  color: #ffffff;
+}
+
+/* ── Responsive Adaptations ─────────────────────────────── */
+@media (max-width: 768px) {
+  .container {
+    padding: clamp(4rem, 8vh, 5rem) 1.5rem;
+  }
+
+  .invitationRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2.5rem;
+  }
+
+  .invitationRight {
+    text-align: left;
+    max-width: 100%;
+  }
+
+  .mainTitle {
+    font-size: clamp(2.4rem, 9vw, 3.4rem);
+  }
+}

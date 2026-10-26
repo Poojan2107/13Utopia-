@@ -1,0 +1,1 @@
+import{u,g as a,e as s,h as n}from"./DUwSgNYY.js";import{p as m}from"./BhA1SOav.js";let i=n("/"),e=n("/");function f(){u(()=>{const t=m.url.pathname;t!==a(e)&&(s(i,a(e),!0),s(e,t,!0))})}const g={get value(){return a(i)}};function h(t){const r=t.from?.url,o=t.to?.url;return!!r&&!!o&&r.pathname===o.pathname}export{f as a,h as i,g as p};

@@ -97,6 +97,26 @@ export default function RootLayout({
     >
       <body>
         <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(regs) {
+                  for (var i = 0; i < regs.length; i++) {
+                    regs[i].unregister();
+                  }
+                });
+                if ('caches' in window) {
+                  caches.keys().then(function(names) {
+                    for (var j = 0; j < names.length; j++) {
+                      caches.delete(names[j]);
+                    }
+                  });
+                }
+              }
+            `,
+          }}
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={jsonLdScript(organizationSchema())}
         />

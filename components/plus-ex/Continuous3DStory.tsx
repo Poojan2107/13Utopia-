@@ -12,6 +12,10 @@ import {
 } from "@/components/black-hole";
 import { SITE_SCRUB } from "@/components/motion/scrollFeel";
 import { DIVE_SCROLL_END } from "@/optimized-black-hole/dive";
+import {
+  sampleDiveOnlyJourney,
+  setVerseHandoff,
+} from "./utopiaVerseHandoff";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -141,6 +145,11 @@ export interface Continuous3DStoryProps {
   /** Scroll-driven fall into the black hole, then emerge into the story */
   blackHoleDive?: boolean;
   /**
+   * Hero → black-hole dive only, then hand off to the next section
+   * (UTOPIANVERSE / Mirage). Skips manifesto + CREATE/BUILD/GROW + finale.
+   */
+  diveOnly?: boolean;
+  /**
    * When set, ScrollTrigger is skipped and this 0–1 value drives the story
    * (PlayCanvas / Edolus virtual scroll host).
    */
@@ -152,6 +161,7 @@ export interface Continuous3DStoryProps {
 export function Continuous3DStory({
   heroBackground,
   blackHoleDive = false,
+  diveOnly = false,
   externalProgress,
   fillParent = false,
 }: Continuous3DStoryProps = {}) {
@@ -162,6 +172,7 @@ export function Continuous3DStory({
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const heroActRef = useRef<HTMLDivElement | null>(null);
   const emblemLayerRef = useRef<HTMLDivElement | null>(null);
+  const blackCutRef = useRef<HTMLDivElement | null>(null);
   const scrollProgressRef = useRef(0);
   const lastUiProgress = useRef(-1);
   const controlled = typeof externalProgress === "number";
@@ -171,19 +182,27 @@ export function Continuous3DStory({
   );
 
   const useDive = Boolean(blackHoleDive);
+  /** Dive → next section (no emblem / CREATE acts) */
+  const handoffAfterDive = useDive && diveOnly;
 
-  // After dive emerges, emblem + later acts take over
-  const postDive = useDive
-    ? scrollProgress >= DIVE_SCROLL_END * 0.70
-    : scrollProgress >= 0.08;
+  // After dive emerges, emblem + later acts take over (skipped in diveOnly)
+  const postDive = handoffAfterDive
+    ? false
+    : useDive
+      ? scrollProgress >= DIVE_SCROLL_END * 0.7
+      : scrollProgress >= 0.08;
   const diveExit = useDive
-    ? Math.max(0, Math.min(1, (scrollProgress - DIVE_SCROLL_END) / 0.06))
+    ? handoffAfterDive
+      ? 0
+      : Math.max(0, Math.min(1, (scrollProgress - DIVE_SCROLL_END) / 0.06))
     : 0;
-  const diveActive = useDive && scrollProgress < DIVE_SCROLL_END + 0.06;
+  const diveActive = useDive && (handoffAfterDive || scrollProgress < DIVE_SCROLL_END + 0.06);
   const holeOpacity = useDive
-    ? diveActive
-      ? 1 - diveExit
-      : 0
+    ? handoffAfterDive
+      ? 1
+      : diveActive
+        ? 1 - diveExit
+        : 0
     : heroBackground
       ? scrollProgress <= 0.08
         ? 1
@@ -197,6 +216,50 @@ export function Continuous3DStory({
     scrollProgressRef.current = p;
     if (!useDive) return;
 
+    // ── diveOnly: dive → black cut → release (cheap: opacity only) ────
+    if (handoffAfterDive) {
+      const j = sampleDiveOnlyJourney(p);
+      blackHoleRef.current?.setDiveProgress(j.diveP);
+      setVerseHandoff(j.handoff);
+
+      if (heroActRef.current) {
+        const copyFade = 1 - Math.max(0, Math.min(1, p / 0.28));
+        const copyY = Math.max(0, Math.min(1, p / 0.28)) * -35;
+        heroActRef.current.style.opacity = String(copyFade);
+        heroActRef.current.style.transform = `translate3d(0, ${copyY.toFixed(1)}px, 0)`;
+        heroActRef.current.style.pointerEvents = copyFade < 0.1 ? "none" : "auto";
+      }
+
+      if (holeLayerRef.current) {
+        holeLayerRef.current.style.opacity = String(j.holeOpacity);
+        holeLayerRef.current.style.visibility =
+          j.holeOpacity > 0.004 ? "visible" : "hidden";
+        holeLayerRef.current.style.transform = "";
+        holeLayerRef.current.style.filter = "";
+      }
+
+      if (blackCutRef.current) {
+        blackCutRef.current.style.opacity = String(j.blackCut);
+        blackCutRef.current.style.visibility =
+          j.blackCut > 0.01 ? "visible" : "hidden";
+      }
+
+      if (stageRef.current) {
+        stageRef.current.style.opacity = String(j.stageOpacity);
+        stageRef.current.style.pointerEvents =
+          j.stageOpacity < 0.15 ? "none" : "auto";
+        stageRef.current.style.maskImage = "";
+        stageRef.current.style.webkitMaskImage = "";
+      }
+
+      if (overlayRef.current && j.diveP >= 0.95) {
+        overlayRef.current.style.opacity = "0";
+        overlayRef.current.style.visibility = "hidden";
+      }
+      return;
+    }
+
+    // ── Full story path (CREATE / BUILD / GROW) ───────────────────────
     const diveP = Math.max(0, Math.min(1, p / DIVE_SCROLL_END));
     blackHoleRef.current?.setDiveProgress(diveP);
 
@@ -207,6 +270,8 @@ export function Continuous3DStory({
       holeLayerRef.current.style.opacity = String(holeOp);
       holeLayerRef.current.style.visibility =
         holeOp > 0.005 ? "visible" : "hidden";
+      holeLayerRef.current.style.transform = "";
+      holeLayerRef.current.style.filter = "";
     }
 
     const emblemOp =
@@ -236,24 +301,24 @@ export function Continuous3DStory({
     const p = Math.max(0, Math.min(1, externalProgress ?? 0));
     applyDiveDom(p);
 
+    // diveOnly: DOM refs drive everything — no act UI to re-render
+    if (handoffAfterDive) return;
+
+    const uiGate = DIVE_SCROLL_END * 0.7;
     const shouldUpdateUi =
-      p >= DIVE_SCROLL_END * 0.7 &&
-      Math.abs(p - lastUiProgress.current) >= 0.0035;
+      p >= uiGate && Math.abs(p - lastUiProgress.current) >= 0.0035;
 
     if (shouldUpdateUi) {
       lastUiProgress.current = p;
       setScrollProgress(p);
-    } else if (
-      p < DIVE_SCROLL_END * 0.7 &&
-      lastUiProgress.current >= DIVE_SCROLL_END * 0.7
-    ) {
+    } else if (p < uiGate && lastUiProgress.current >= uiGate) {
       lastUiProgress.current = 0;
       setScrollProgress(0);
     } else if (!useDive && Math.abs(p - lastUiProgress.current) >= 0.0035) {
       lastUiProgress.current = p;
       setScrollProgress(p);
     }
-  }, [controlled, externalProgress, useDive]);
+  }, [controlled, externalProgress, useDive, handoffAfterDive]);
 
   useEffect(() => {
     if (controlled) return;
@@ -265,13 +330,16 @@ export function Continuous3DStory({
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: () =>
-          `+=${Math.round(
-            Math.max(
-              2400,
-              Math.min(3400, window.innerHeight * (useDive ? 3.0 : 2.5))
-            )
-          )}`,
+        end: () => {
+          const h = window.innerHeight;
+          // diveOnly: short punchy runway — dive + black cut, then Mirage impact
+          if (handoffAfterDive) {
+            return `+=${Math.round(Math.max(1100, Math.min(1600, h * 1.35)))}`;
+          }
+          return `+=${Math.round(
+            Math.max(2400, Math.min(3400, h * (useDive ? 3.0 : 2.5)))
+          )}`;
+        },
         pin: stage,
         pinSpacing: true,
         // Direct 1:1 tracking with Lenis stream for instant, weightless Awwwards responsiveness
@@ -284,19 +352,18 @@ export function Continuous3DStory({
           const p = Math.max(0, Math.min(1, self.progress));
           applyDiveDom(p);
 
-          // Zero React re-render churn during the dive: all dive visuals run via direct DOM refs.
-          // React state only updates when transitioning into the text acts.
+          // diveOnly: skip React — hero/hole are DOM-driven; next section is UTOPIANVERSE
+          if (handoffAfterDive) return;
+
+          // React state only updates when transitioning into the text acts
+          const uiGate = DIVE_SCROLL_END * 0.7;
           const shouldUpdateUi =
-            p >= DIVE_SCROLL_END * 0.7 &&
-            Math.abs(p - lastUiProgress.current) >= 0.0035;
+            p >= uiGate && Math.abs(p - lastUiProgress.current) >= 0.0035;
 
           if (shouldUpdateUi) {
             lastUiProgress.current = p;
             setScrollProgress(p);
-          } else if (
-            p < DIVE_SCROLL_END * 0.7 &&
-            lastUiProgress.current >= DIVE_SCROLL_END * 0.7
-          ) {
+          } else if (p < uiGate && lastUiProgress.current >= uiGate) {
             lastUiProgress.current = 0;
             setScrollProgress(0);
           }
@@ -313,7 +380,7 @@ export function Continuous3DStory({
       window.cancelAnimationFrame(refreshId);
       ctx.revert();
     };
-  }, [useDive, controlled]);
+  }, [useDive, controlled, handoffAfterDive]);
 
   // Dive owns the open; after manifesto, acts match the original story timeline
   const manifestoStart = useDive ? 0.20 : 0.09;
@@ -392,7 +459,7 @@ export function Continuous3DStory({
                     overlayRef.current.style.visibility =
                       overlay > 0.005 ? "visible" : "hidden";
                   }
-                  if (heroActRef.current && useDive) {
+                  if (heroActRef.current && useDive && !handoffAfterDive) {
                     heroActRef.current.style.opacity = String(copy);
                     heroActRef.current.style.visibility =
                       copy > 0.005 ? "visible" : "hidden";
@@ -416,24 +483,40 @@ export function Continuous3DStory({
           />
         )}
 
-        {/* 3D emblem — emerges after the fall-through */}
-        <div
-          ref={emblemLayerRef}
-          className={styles.canvasContainer}
-          style={{
-            opacity: postDive
-              ? useDive
-                ? Math.min(1, (scrollProgress - DIVE_SCROLL_END * 0.70) / (DIVE_SCROLL_END * 0.30))
-                : Math.min(1, (scrollProgress - 0.08) / 0.06)
-              : 0,
-            visibility: postDive ? "visible" : "hidden",
-            pointerEvents: postDive ? "auto" : "none",
-            transition: useDive ? "none" : "opacity 0.35s ease-out",
-            willChange: useDive ? "opacity" : undefined,
-          }}
-        >
-          <Plus3DCanvas progress={canvasProgress} entryProgress={1} />
-        </div>
+        {/* Hard black cut after swallow — no blur/mask, just opacity */}
+        {handoffAfterDive && (
+          <div
+            ref={blackCutRef}
+            className={styles.portalBlackCut}
+            style={{ opacity: 0, visibility: "hidden" }}
+            aria-hidden
+          />
+        )}
+
+        {/* 3D emblem — emerges after the fall-through (skipped when handing off to UTOPIANVERSE) */}
+        {!handoffAfterDive && (
+          <div
+            ref={emblemLayerRef}
+            className={styles.canvasContainer}
+            style={{
+              opacity: postDive
+                ? useDive
+                  ? Math.min(
+                      1,
+                      (scrollProgress - DIVE_SCROLL_END * 0.7) /
+                        (DIVE_SCROLL_END * 0.3)
+                    )
+                  : Math.min(1, (scrollProgress - 0.08) / 0.06)
+                : 0,
+              visibility: postDive ? "visible" : "hidden",
+              pointerEvents: postDive ? "auto" : "none",
+              transition: useDive ? "none" : "opacity 0.35s ease-out",
+              willChange: useDive ? "opacity" : undefined,
+            }}
+          >
+            <Plus3DCanvas progress={canvasProgress} entryProgress={1} />
+          </div>
+        )}
 
         <div className={styles.actsWrapper}>
           {/* Hero copy — fades as we center on the hole */}
@@ -448,7 +531,7 @@ export function Continuous3DStory({
             }`}
             style={
               useDive
-                ? { transition: "none", opacity: 1 }
+                ? { transition: "none" }
                 : undefined
             }
           >
@@ -470,6 +553,9 @@ export function Continuous3DStory({
             </div>
           </div>
 
+          {/* Post-dive story acts — skipped when dive hands off to UTOPIANVERSE */}
+          {!handoffAfterDive && (
+            <>
           {/* Manifesto — after emerging from the hole */}
           <div
             className={`${styles.act} ${
@@ -620,6 +706,8 @@ export function Continuous3DStory({
               </div>
             );
           })()}
+            </>
+          )}
         </div>
       </div>
     </section>

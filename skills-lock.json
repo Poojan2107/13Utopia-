@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "clone-website": {
+      "source": "JCodesMore/ai-website-cloner-template",
+      "sourceType": "github",
+      "skillPath": "skills/clone-website/SKILL.md",
+      "computedHash": "local"
+    },
     "add-effects": {
       "source": "playcanvas/skills",
       "sourceType": "github",

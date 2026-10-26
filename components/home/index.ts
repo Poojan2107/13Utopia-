@@ -4,12 +4,15 @@ export { HomeVideoSection } from "./HomeVideoSection";
 export { HomeNarrativeSection } from "./HomeNarrativeSection";
 export { HomeManifesto } from "./HomeManifesto";
 export { HomeSectionWork } from "./HomeSectionWork";
+export { HomeSectionMirageWork } from "./HomeSectionMirageWork";
 export { HomeSectionSolutions } from "./HomeSectionSolutions";
 export { HomeHorizontalStatement } from "./HomeHorizontalStatement";
 export { HomeCTASection } from "./HomeCTASection";
+export { HomeEarthExperienceSection } from "./HomeEarthExperienceSection";
 export { Hero3DCanvas } from "./Hero3DCanvas";
 export { HeroPreloader } from "./HeroPreloader";
 export { TransparentBustVideo } from "./TransparentBustVideo";
+export { TransparentEarthVideo } from "./TransparentEarthVideo";
 export { CTA3DCanvas } from "./CTA3DCanvas";
 export { Solutions3DCanvas } from "./Solutions3DCanvas";
 

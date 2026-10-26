@@ -164,7 +164,7 @@ export function ComingSoonScreen({
           </Link>
 
           <Link
-            href="/model"
+            href="/work"
             style={{
               display: "inline-flex",
               alignItems: "center",

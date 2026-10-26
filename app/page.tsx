@@ -1,9 +1,8 @@
-import { ExperiencePageClient } from "@/components/experience/ExperiencePageClient";
+import { HomeExperience } from "@/components/experience/HomeExperience";
 
 /**
- * Main homepage = the continuous experience river
- * (same shell as /experience — Lenis + dive + full homepage).
+ * 13 UTOPIA Core Homepage
  */
 export default function HomePage() {
-  return <ExperiencePageClient />;
+  return <HomeExperience />;
 }

@@ -1,0 +1,805 @@
+@font-face {
+  font-family: "PPPangramSans";
+  src: url("/sites/studiomirage/fonts/PPPangramSans-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PPPangramSans";
+  src: url("/sites/studiomirage/fonts/PPPangramSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PPPangramSans";
+  src: url("/sites/studiomirage/fonts/PPPangramSans-Extrabold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fullscreen App Container */
+.container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background-color: #000000;
+  color: #ffffff;
+  font-family: "PPPangramSans", "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 10;
+  cursor: default;
+}
+
+/* Homepage river: fill the GSAP pin stage (SiteHeader owns chrome) */
+.containerEmbedded {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  z-index: 2;
+  background-color: transparent !important;
+  transform-origin: 50% 48%;
+  will-change: transform, opacity, filter;
+}
+
+.containerEmbedded .canvasWrapper,
+.containerEmbedded .glCanvas {
+  background: transparent !important;
+}
+
+.vignetteEmbedded {
+  /* Open sky — AmbientField stars must dominate the upper frame */
+  background: radial-gradient(
+    ellipse 90% 70% at 50% 72%,
+    transparent 30%,
+    rgba(0, 0, 0, 0.06) 62%,
+    rgba(0, 0, 0, 0.18) 100%
+  );
+}
+
+.heroEmbedded {
+  /* Opacity driven by scroll dive — do not hard-hide with .heroHidden lag */
+  transition: none;
+}
+
+.carouselEmbedded {
+  transition: none;
+  opacity: 0;
+}
+
+/* Luxury Studio Mirage Custom Cursor */
+.customCursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  will-change: transform;
+}
+
+.cursorFluidGlow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 96px;
+  height: 96px;
+  margin-top: -48px;
+  margin-left: -48px;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.24) 0%,
+    rgba(255, 225, 170, 0.12) 35%,
+    rgba(255, 190, 120, 0.04) 60%,
+    transparent 75%
+  );
+  mix-blend-mode: screen;
+  transition: opacity 0.3s ease;
+  will-change: transform;
+}
+
+.cursorVisible {
+  opacity: 1;
+}
+
+.cursorDot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffffff;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.95);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
+}
+
+.cursorRing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              background 0.25s ease;
+}
+
+.cursorInteractive .cursorRing {
+  width: 60px;
+  height: 60px;
+  border-color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.25);
+}
+
+.cursorInteractive .cursorDot {
+  transform: translate(-50%, -50%) scale(0.6);
+  background: #ffffff;
+}
+
+.cursorGrabbing .cursorRing {
+  width: 48px;
+  height: 24px;
+  border-radius: 20px;
+  border-color: rgba(255, 220, 114, 0.95);
+  background: rgba(255, 220, 114, 0.2);
+  transform: translate(-50%, -50%);
+}
+
+@media (pointer: coarse), (hover: none) {
+  .customCursor,
+  .cursorFluidGlow {
+    display: none !important;
+  }
+}
+
+.canvasWrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.glCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Soft Cinematic Vignette */
+.vignetteOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(
+    circle at 50% 45%,
+    transparent 45%,
+    rgba(0, 0, 0, 0.22) 75%,
+    rgba(0, 0, 0, 0.50) 100%
+  );
+}
+
+/* Film grain — matches Studio Mirage texture */
+.grainOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+  background-image: url("/sites/studiomirage/images/noise-seamless-512.CgE0VwGp.webp");
+  background-size: 256px 256px;
+  background-repeat: repeat;
+}
+
+/* Global Navigation Header */
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32px 48px;
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 20px 24px;
+  }
+}
+
+.brandLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.35s ease, transform 0.25s ease;
+}
+
+/* Hero mode: Mirage hides left mark — keep accessible but visually quiet */
+.brandLinkHero {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.brandLink:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .headerRight {
+    gap: 14px;
+  }
+}
+
+.navLink {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0.92;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s ease;
+}
+
+.navLink:hover {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .navLink {
+    display: none;
+  }
+}
+
+.contactBtnWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contactGlow {
+  position: absolute;
+  width: 118%;
+  height: 130%;
+  border-radius: 30px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(-45deg, rgba(255, 220, 114, 0.95), rgba(255, 102, 0, 0.85));
+  filter: blur(28px);
+  opacity: 0.88;
+  pointer-events: none;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.contactBtnWrapper:hover .contactGlow {
+  filter: blur(34px);
+  opacity: 1;
+}
+
+.contactBtn {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 26px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000000;
+  background: #ffffff;
+  border-radius: 30px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.contactBtn:hover {
+  background: #f0f0f0;
+}
+
+.soundBtn {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  transition: opacity 0.25s ease;
+}
+
+.soundBtn:hover {
+  opacity: 0.75;
+}
+
+.sineIcon {
+  width: 22px;
+  height: 12px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+.sinePlaying {
+  animation: sineWavePulse 1.1s ease-in-out infinite alternate;
+  stroke: #ffda79;
+}
+
+@keyframes sineWavePulse {
+  0% { transform: scaleY(0.6); }
+  100% { transform: scaleY(1.4); }
+}
+
+/* =========================================
+   HERO MODE UI (State 1)
+   ========================================= */
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.heroHidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95);
+}
+
+.centerLogo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(1.4rem, 2.4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+  line-height: 1;
+  pointer-events: none;
+  will-change: transform, opacity;
+  text-shadow: none;
+}
+
+/* Homepage UTOPIANVERSE Hero Lockup */
+.heroCenterLockup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+  width: min(94vw, 1200px);
+  will-change: transform, opacity;
+}
+
+.heroCenterLockupEmbedded {
+  z-index: 25;
+}
+
+.heroEmbedded {
+  transition: none !important;
+}
+
+/* Homepage hero lockup — fuller viewport presence; tracking driven by portal birth */
+.centerLogoEmbedded {
+  font-size: clamp(2.8rem, 7.5vw, 6.4rem);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: center;
+  max-width: 94vw;
+  text-shadow:
+    0 0 45px rgba(255, 255, 255, 0.4),
+    0 0 90px rgba(255, 215, 140, 0.18),
+    0 4px 30px rgba(0, 0, 0, 0.9);
+  transition: none;
+}
+
+/* Compact arrows — sit beside VIEW ALL WORK in the bottom bar */
+.embedArrowBtn {
+  pointer-events: auto;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.embedArrowBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: scale(1.05);
+}
+
+.embedArrowBtn:disabled {
+  opacity: 0.25;
+  cursor: default;
+  transform: none;
+}
+
+.embedArrowBtn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+.scrollCta {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  background: rgba(18, 18, 18, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+}
+
+.scrollCta:hover {
+  background: rgba(32, 32, 32, 0.9);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.scrollArrow {
+  animation: floatArrow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes floatArrow {
+  0% { transform: translateY(-2px); }
+  100% { transform: translateY(3px); }
+}
+
+/* =========================================
+   CAROUSEL MODE UI (State 2)
+   ========================================= */
+.carouselOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.carouselHidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.05);
+}
+
+.titleStage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 1100px);
+  height: clamp(3.4rem, 8.5vw, 6.2rem);
+  pointer-events: none;
+  z-index: 25;
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+}
+
+.titleStageEmbedded {
+  transition: none !important;
+}
+
+.carouselEmbedded {
+  transition: none !important;
+}
+
+.projectTitle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+  font-size: clamp(2.4rem, 5.4vw, 4.8rem);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.85);
+  margin: 0;
+  line-height: 1.05;
+  pointer-events: none;
+  will-change: transform, opacity, filter;
+}
+
+.projectTitleLayer {
+  /* Keep motion relative to titleStage center */
+}
+
+.bottomNav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0 48px 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: auto;
+}
+
+/* Homepage: prev · VIEW ALL WORK · next as one lower control cluster */
+.bottomNavEmbedded {
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  padding: 0 20px 32px;
+  z-index: 40;
+}
+
+.exploreBtnEmbedded {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  transform: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 26px;
+  border-radius: 30px;
+  background: rgba(18, 18, 18, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  pointer-events: auto;
+}
+
+.exploreBtnEmbedded:hover {
+  background: rgba(35, 35, 35, 0.9);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .bottomNav {
+    padding: 0 20px 24px;
+  }
+
+  .bottomNavEmbedded {
+    gap: 10px;
+    padding-bottom: 24px;
+  }
+
+  .exploreBtnEmbedded {
+    padding: 10px 18px;
+    font-size: 12px;
+  }
+}
+
+.prevButton,
+.nextButton {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 8px 12px;
+  min-width: 180px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  pointer-events: auto;
+}
+
+.prevButton {
+  text-align: left;
+}
+
+.nextButton {
+  text-align: right;
+}
+
+.prevButton:hover,
+.nextButton:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.navLabel {
+  font-size: 0.72rem;
+  display: block;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 5px;
+}
+
+.navName {
+  font-size: 1.1rem;
+  display: block;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.navGlow {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: -1;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 40%, transparent 70%);
+  filter: blur(40px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.prevButton .navGlow {
+  left: -80px;
+}
+
+.nextButton .navGlow {
+  right: -80px;
+}
+
+.prevButton:hover .navGlow,
+.nextButton:hover .navGlow {
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .prevButton,
+  .nextButton {
+    min-width: auto;
+  }
+  .navName {
+    display: none;
+  }
+}
+
+.exploreBtn {
+  position: absolute;
+  left: 50%;
+  bottom: 36px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 26px;
+  border-radius: 30px;
+  background: rgba(18, 18, 18, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+  .exploreBtn {
+    bottom: 24px;
+    padding: 10px 20px;
+    font-size: 12px;
+  }
+}
+
+.exploreBtn:hover {
+  background: rgba(35, 35, 35, 0.9);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.exploreIcon {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  flex-shrink: 0;
+}
+
