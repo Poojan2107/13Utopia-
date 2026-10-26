@@ -26,20 +26,19 @@ function smooth(edge0: number, edge1: number, x: number): number {
  */
 export function sampleDiveOnlyJourney(pinProgress: number) {
   const p = Math.max(0, Math.min(1, pinProgress));
-  // Fast, continuous, unified dive journey — camera responds across 0.00 to 0.85
-  const diveP = Math.max(0, Math.min(1, p / 0.85));
-  const release = smooth(0.70, 0.96, p);
+  // Fast, continuous, unified dive journey — camera plunges across 0.00 to 0.90
+  const diveP = Math.max(0, Math.min(1, p / 0.90));
 
   return {
     diveP,
     /** No harsh black veil — let the celestial stars bridge across */
     blackCut: 0,
-    /** Hole canvas fades softly as we complete the plunge */
-    holeOpacity: 1 - smooth(0.68, 0.95, p),
-    /** Entire dive stage eases out smoothly to hand off to UTOPIANVERSE */
-    stageOpacity: 1 - release,
-    /** Smooth handoff start so UTOPIANVERSE seamlessly receives the transition */
-    handoff: smooth(0.48, 0.84, p),
+    /** Hole canvas remains visible throughout the dive without premature drop */
+    holeOpacity: 1,
+    /** Stage stays active until unpin, perfectly matching Mirage entrance */
+    stageOpacity: 1,
+    /** Early approach handoff so UTOPIANVERSE awakens and prepares its sequence */
+    handoff: smooth(0.20, 0.75, p),
   };
 }
 

@@ -158,6 +158,8 @@ export const MiragePortfolioExperience = forwardRef<
 
   const stateRef = useRef({
     isHomeMode: true,
+    /** Current normalized pin progress 0-1 */
+    riverProgress: 0,
     /** 1 = orbital UTOPIANVERSE hero, 0 = sand carousel (scroll-scrubbed on homepage) */
     riverHeroBlend: 1,
     /** Soft exit dissolve into the next homepage chapter */
@@ -172,6 +174,8 @@ export const MiragePortfolioExperience = forwardRef<
     riverTitleLock: 0,
     /** 0–1 impact birth out of the black cut */
     riverImpact: 0,
+    /** 0-1 fade-in animation progress when landing on Utopianverse sequence */
+    introTextFade: 0,
     activeSlideIndex: 0,
     targetRotationY: 0,
     currentRotationY: 0,
@@ -199,11 +203,13 @@ export const MiragePortfolioExperience = forwardRef<
     if (!embeddedRef.current) return;
     const p = clamp01(progress);
     const s = stateRef.current;
+    s.riverProgress = p;
 
-    // Pin journey (streamlined for brisk, weightless backscroll):
-    // 0.00–0.14  UTOPIANVERSE text hero + orbital carousel overview
-    // 0.14–0.24  Carousel expands into eye-level showcase; UTOPIANVERSE text glides up & dissolves
-    // 0.24–0.90  Smooth continuous card showcase (cards 0 to 9)
+    // Pin journey (cinematic scroll-based sequence):
+    // 0.00–0.08  UTOPIANVERSE text fade-in first (carousel hidden/subtle silhouette)
+    // 0.08–0.20  Carousel subtly appears & illuminates behind UTOPIANVERSE in rotunda overview
+    // 0.20–0.30  Reveal complete: carousel expands to eye-level; UTOPIANVERSE dissolves; Card 0 active
+    // 0.30–0.90  Smooth continuous card showcase (cards 0 to 9)
     // 0.90–1.00  Soft exit release into next homepage section
     let heroBlend = 1;
     let floatIndex = 0;
@@ -211,20 +217,20 @@ export const MiragePortfolioExperience = forwardRef<
     let fov = 15.0;
     let titleLock = 0;
 
-    if (p < 0.14) {
+    if (p < 0.20) {
       heroBlend = 1;
       floatIndex = 0;
       diveTwist = 0;
       fov = 15.0;
-    } else if (p < 0.24) {
-      const expandT = smootherstep(0.14, 0.24, p);
+    } else if (p < 0.30) {
+      const expandT = smootherstep(0.20, 0.30, p);
       heroBlend = 1 - expandT;
       floatIndex = 0;
       diveTwist = 0;
       fov = 15.0;
     } else if (p <= 0.90) {
       heroBlend = 0;
-      const scrub = (p - 0.24) / (0.90 - 0.24);
+      const scrub = (p - 0.30) / (0.90 - 0.30);
       floatIndex = scrub * (NUM_SCREENS - 1);
       diveTwist = 0;
       fov = 15.0;
@@ -235,9 +241,9 @@ export const MiragePortfolioExperience = forwardRef<
       fov = 15.0;
     }
 
-    // Completely decoupled titleLock: active only during card showcase (p: 0.24 -> 0.92)
-    // Completely 0 before p = 0.22 so it NEVER collides with UTOPIANVERSE (which dissolves above 0.14)
-    titleLock = smootherstep(0.24, 0.30, p) * (1 - smootherstep(0.90, 0.98, p));
+    // Completely decoupled titleLock: active only during eye-level card showcase (p: 0.30 -> 0.92)
+    // Completely 0 before p = 0.28 so it NEVER collides with UTOPIANVERSE (which dissolves by 0.28)
+    titleLock = smootherstep(0.30, 0.36, p) * (1 - smootherstep(0.90, 0.98, p));
 
     const idx = Math.max(0, Math.min(NUM_SCREENS - 1, Math.round(floatIndex)));
     const inHero = heroBlend > 0.55;
@@ -692,6 +698,7 @@ export const MiragePortfolioExperience = forwardRef<
 
     const videoElements: HTMLVideoElement[] = [];
     const screenMeshes: THREE.Mesh[] = [];
+    const screenMaterials: THREE.MeshBasicMaterial[] = [];
 
     PORTFOLIO_PROJECTS.forEach((proj, idx) => {
       const imgTex = textureLoader.load(proj.image);
@@ -715,7 +722,12 @@ export const MiragePortfolioExperience = forwardRef<
       videoTex.minFilter = THREE.LinearFilter;
       videoTex.magFilter = THREE.LinearFilter;
 
-      const screenMat = new THREE.MeshBasicMaterial({ map: videoTex });
+      const screenMat = new THREE.MeshBasicMaterial({
+        map: videoTex,
+        transparent: true,
+        opacity: isEmbedded ? 0.06 : 1,
+      });
+      screenMaterials.push(screenMat);
       const materials = [
         frameMat,
         frameMat,
@@ -962,11 +974,19 @@ export const MiragePortfolioExperience = forwardRef<
 
       if (logoRef.current) {
         if (river) {
-          // Centered screen lockup with fluid tracking, luminous glow and upward drift
-          // Visible when in rotunda overview (heroBlend >= 0.15)
-          const heroShow = smootherstep(0.15, 0.85, heroBlend);
-          const tracking = 0.20 - (1 - heroBlend) * 0.08;
-          const scale = 0.96 + (1 - heroBlend) * 0.08;
+          const pinP = st.riverProgress;
+          // 1. Text UTOPIANVERSE: cinematic fade-in entrance animation upon landing in sequence
+          if (st.riverApproach > 0.05 || pinP >= 0) {
+            st.introTextFade += (1 - st.introTextFade) * 0.09;
+          }
+          if (st.riverApproach === 0 && pinP === 0) {
+            st.introTextFade = 0;
+          }
+          const fadeIn = st.introTextFade;
+          const fadeOut = 1 - smootherstep(0.20, 0.28, pinP);
+          const heroShow = fadeIn * fadeOut;
+          const tracking = 0.14 + fadeIn * 0.04 - (1 - heroBlend) * 0.08;
+          const scale = 0.94 + fadeIn * 0.06 + (1 - heroBlend) * 0.08;
           const yShift = (1 - heroBlend) * -45; // smoothly glides up as carousel expands
 
           logoRef.current.style.left = "50%";
@@ -986,7 +1006,10 @@ export const MiragePortfolioExperience = forwardRef<
 
       if (heroOverlayRef.current) {
         if (river) {
-          const heroShow = smootherstep(0.15, 0.85, heroBlend);
+          const pinP = st.riverProgress;
+          const fadeIn = st.introTextFade;
+          const fadeOut = 1 - smootherstep(0.20, 0.28, pinP);
+          const heroShow = fadeIn * fadeOut;
           heroOverlayRef.current.style.opacity = heroShow > 0.005 ? "1" : "0";
           heroOverlayRef.current.style.pointerEvents =
             heroShow > 0.45 ? "auto" : "none";
@@ -997,9 +1020,19 @@ export const MiragePortfolioExperience = forwardRef<
             heroShow > 0.45 ? "auto" : "none";
         }
       }
+
+      // 2. Carousel subtly appearing like a cinematic scroll-based event
+      // At p < 0.06: dunes are dark, screens are subtle/faint (only UTOPIANVERSE text is seen)
+      // At p: 0.06 -> 0.20: carousel subtly emerges behind UTOPIANVERSE into full 3D presence
+      const carouselReveal = river ? smootherstep(0.06, 0.20, st.riverProgress) : 1;
+      for (let i = 0; i < screenMaterials.length; i++) {
+        screenMaterials[i].opacity = river ? Math.max(0.02, carouselReveal) : 1;
+      }
+
       if (carouselOverlayRef.current) {
+        // Bottom nav buttons only appear when carousel is at eye level (p >= 0.28)
         const show = river
-          ? smootherstep(0.55, 0.95, diveT) * (1 - st.riverExitFade * 0.7)
+          ? smootherstep(0.28, 0.35, st.riverProgress) * (1 - st.riverExitFade * 0.7)
           : smootherstep(0.9, 1, diveT);
         carouselOverlayRef.current.style.opacity = String(show);
         carouselOverlayRef.current.style.pointerEvents =
@@ -1090,7 +1123,8 @@ export const MiragePortfolioExperience = forwardRef<
       }
 
       // Authentic light intensity — hotter underglow as we enter the sand
-      const targetIntensity = 0.42 + diveT * 0.12 + heroBlend * 0.015;
+      const targetIntensity =
+        (0.42 + diveT * 0.12 + heroBlend * 0.015) * (river ? carouselReveal : 1);
       duneShaderMat.uniforms.uLightIntensity.value +=
         (targetIntensity - duneShaderMat.uniforms.uLightIntensity.value) * 0.16;
 

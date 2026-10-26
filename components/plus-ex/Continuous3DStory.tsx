@@ -9,6 +9,8 @@ import { UtopiaPaintReveal } from "./UtopiaPaintReveal";
 import {
   BlackHoleCanvas,
   type BlackHoleCanvasHandle,
+  SingularitySilhouette,
+  type SingularitySilhouetteHandle,
 } from "@/components/black-hole";
 import { SITE_SCRUB } from "@/components/motion/scrollFeel";
 import { DIVE_SCROLL_END } from "@/optimized-black-hole/dive";
@@ -168,12 +170,14 @@ export function Continuous3DStory({
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const blackHoleRef = useRef<BlackHoleCanvasHandle | null>(null);
+  const silhouetteRef = useRef<SingularitySilhouetteHandle | null>(null);
   const holeLayerRef = useRef<HTMLDivElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const heroActRef = useRef<HTMLDivElement | null>(null);
   const emblemLayerRef = useRef<HTMLDivElement | null>(null);
   const blackCutRef = useRef<HTMLDivElement | null>(null);
   const scrollProgressRef = useRef(0);
+  const lastDirectionRef = useRef(1);
   const lastUiProgress = useRef(-1);
   const controlled = typeof externalProgress === "number";
 
@@ -220,6 +224,7 @@ export function Continuous3DStory({
     if (handoffAfterDive) {
       const j = sampleDiveOnlyJourney(p);
       blackHoleRef.current?.setDiveProgress(j.diveP);
+      silhouetteRef.current?.setDiveProgress(j.diveP);
       setVerseHandoff(j.handoff);
 
       if (heroActRef.current) {
@@ -332,9 +337,9 @@ export function Continuous3DStory({
         start: "top top",
         end: () => {
           const h = window.innerHeight;
-          // diveOnly: short punchy runway — dive + black cut, then Mirage impact
+          // diveOnly: exact 100vh runway so Section 1 unpins and Section 2 pins at the exact same pixel with zero dead gap
           if (handoffAfterDive) {
-            return `+=${Math.round(Math.max(880, Math.min(1250, h * 1.05)))}`;
+            return `+=${h}`;
           }
           return `+=${Math.round(
             Math.max(2400, Math.min(3400, h * (useDive ? 3.0 : 2.5)))
@@ -347,7 +352,25 @@ export function Continuous3DStory({
         anticipatePin: 1,
         fastScrollEnd: true,
         invalidateOnRefresh: true,
+        snap: handoffAfterDive
+          ? {
+              snapTo: (value: number) => {
+                const dir = lastDirectionRef.current;
+                if (dir > 0) {
+                  // Forward: one scroll from hero lands on Utopianverse sequence
+                  return value > 0.08 ? 1 : 0;
+                } else {
+                  // Reverse: reverse scroll carries smoothly all the way back to hero
+                  return value < 0.92 ? 0 : 1;
+                }
+              },
+              duration: { min: 0.35, max: 0.55 },
+              delay: 0.06,
+              ease: "power2.out",
+            }
+          : undefined,
         onUpdate: (self) => {
+          lastDirectionRef.current = self.direction || 1;
           // self.progress is already scrub-smoothed — drive GPU from this, not raw wheel
           const p = Math.max(0, Math.min(1, self.progress));
           applyDiveDom(p);
@@ -448,33 +471,38 @@ export function Continuous3DStory({
             }}
           >
             {useDive ? (
-              <BlackHoleCanvas
-                ref={blackHoleRef}
-                onDiveSample={(sample) => {
-                  const p = scrollProgressRef.current;
-                  const overlay = p >= DIVE_SCROLL_END ? 0 : (sample?.overlay ?? 0);
-                  const copy = sample?.heroCopyOpacity ?? 1;
-                  if (overlayRef.current) {
-                    overlayRef.current.style.opacity = String(overlay);
-                    overlayRef.current.style.visibility =
-                      overlay > 0.005 ? "visible" : "hidden";
-                  }
-                  if (heroActRef.current && useDive && !handoffAfterDive) {
-                    heroActRef.current.style.opacity = String(copy);
-                    heroActRef.current.style.visibility =
-                      copy > 0.005 ? "visible" : "hidden";
-                    heroActRef.current.style.transform = `translate3d(0, ${-(1 - copy) * 32}px, 0)`;
-                  }
-                }}
-              />
+              <>
+                <BlackHoleCanvas
+                  ref={blackHoleRef}
+                  onDiveSample={(sample) => {
+                    const p = scrollProgressRef.current;
+                    const overlay = handoffAfterDive ? 0 : (p >= DIVE_SCROLL_END ? 0 : (sample?.overlay ?? 0));
+                    const copy = sample?.heroCopyOpacity ?? 1;
+                    if (overlayRef.current && !handoffAfterDive) {
+                      overlayRef.current.style.opacity = String(overlay);
+                      overlayRef.current.style.visibility =
+                        overlay > 0.005 ? "visible" : "hidden";
+                    }
+                    if (heroActRef.current && useDive && !handoffAfterDive) {
+                      heroActRef.current.style.opacity = String(copy);
+                      heroActRef.current.style.visibility =
+                        copy > 0.005 ? "visible" : "hidden";
+                      heroActRef.current.style.transform = `translate3d(0, ${-(1 - copy) * 32}px, 0)`;
+                    }
+                  }}
+                />
+                {handoffAfterDive && (
+                  <SingularitySilhouette ref={silhouetteRef} />
+                )}
+              </>
             ) : (
               heroBackground
             )}
           </div>
         )}
 
-        {/* Horizon swallow veil — opacity driven from rAF, not React */}
-        {useDive && (
+        {/* Horizon swallow veil — only in full CREATE/BUILD/GROW story mode, NOT in handoffAfterDive */}
+        {useDive && !handoffAfterDive && (
           <div
             ref={overlayRef}
             className={styles.diveSwallowOverlay}

@@ -15,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const NUM = PORTFOLIO_PROJECTS.length;
 /** Showcase scrub window inside pin progress (after UTOPIANVERSE entrance + expand) */
-const CARD_START = 0.20;
+const CARD_START = 0.30;
 const CARD_END = 0.90;
 
 function progressForCard(index: number): number {
