@@ -108,7 +108,7 @@ export const BlackHoleCanvas = forwardRef<BlackHoleCanvasHandle, Props>(
           height: "100%",
           width: "100%",
           overflow: "hidden",
-          backgroundColor: "#000000",
+          backgroundColor: "transparent",
         }}
       >
         <canvas

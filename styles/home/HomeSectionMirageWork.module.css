@@ -1,4 +1,4 @@
-/* Homepage Mirage — continuous AmbientField stars, no hard black slab */
+/* Homepage Unified Hero → Cosmic Starfield → Utopianverse River */
 
 .section {
   position: relative;
@@ -15,21 +15,247 @@
   height: 100dvh;
   overflow: hidden;
   background-color: transparent;
-  /* Only dissolve into the next chapter at the bottom — sky stays fully starred */
+  /* Only dissolve into the next chapter at the very bottom */
   mask-image: linear-gradient(
     to bottom,
     black 0%,
-    black 88%,
-    rgba(0, 0, 0, 0.55) 95%,
+    black 92%,
+    rgba(0, 0, 0, 0.55) 97%,
     transparent 100%
   );
   -webkit-mask-image: linear-gradient(
     to bottom,
     black 0%,
-    black 88%,
-    rgba(0, 0, 0, 0.55) 95%,
+    black 92%,
+    rgba(0, 0, 0, 0.55) 97%,
     transparent 100%
   );
+}
+
+/* ── Hero Layers: Black Hole & Monument Typography ── */
+.heroHoleContainer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: auto;
+  overflow: hidden;
+  will-change: opacity;
+  background-color: transparent;
+}
+
+.heroCopyContainer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 clamp(24px, 6vw, 100px);
+  will-change: opacity, transform;
+}
+
+.heroLockup {
+  --hero-type-glow: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f4f6f8 18%,
+    #d8dde3 42%,
+    #9aa3ad 72%,
+    #5c646e 100%
+  );
+  --hero-type-shadow:
+    drop-shadow(0 2px 8px rgba(0, 0, 0, 0.85))
+    drop-shadow(0 12px 28px rgba(0, 0, 0, 0.75))
+    drop-shadow(0 0 40px rgba(210, 220, 235, 0.12));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(1.4rem, 3.2vh, 2.4rem);
+  width: min(100%, 52vw);
+  max-width: 720px;
+  margin: 0;
+  pointer-events: auto;
+}
+
+.monumentLockup {
+  --word-size: min(6.2vw, 12vh);
+  --gap-stack: clamp(0.15rem, 0.4vw, 0.6rem);
+  --be-size: calc(var(--word-size) * 2.18 + var(--gap-stack) * 0.4);
+  display: inline-flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: clamp(1rem, 2.2vw, 2.8rem);
+  width: auto;
+  max-width: 100%;
+  margin: 0;
+  pointer-events: auto;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.beCommonBlock {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0.76;
+}
+
+.beWord {
+  display: block;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: var(--be-size);
+  font-weight: 800;
+  text-transform: uppercase;
+  background: var(--hero-type-glow);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  line-height: 0.74;
+  letter-spacing: -0.055em;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  filter: var(--hero-type-shadow);
+}
+
+.stackedBlock {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--gap-stack);
+  line-height: 0.76;
+}
+
+.wordTop,
+.wordBottom {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-neue-montreal, "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: var(--word-size);
+  font-weight: 800;
+  text-transform: uppercase;
+  background: var(--hero-type-glow);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  line-height: 0.76;
+  letter-spacing: -0.05em;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  filter: var(--hero-type-shadow);
+}
+
+.heroLeadText {
+  font-family: var(--font-display, "PP Neue Montreal", sans-serif);
+  font-size: clamp(0.98rem, 1.2vw, 1.22rem);
+  font-weight: 500;
+  line-height: 1.55;
+  color: rgba(198, 206, 216, 0.78);
+  letter-spacing: -0.012em;
+  max-width: 34rem;
+  margin: 0;
+  text-align: left;
+  text-shadow:
+    0 1px 10px rgba(0, 0, 0, 0.9),
+    0 0 24px rgba(0, 0, 0, 0.55);
+}
+
+/* ── Architectural Framing Telemetry ── */
+.heroFrameTopLeft {
+  position: absolute;
+  top: clamp(20px, 4vh, 40px);
+  left: clamp(24px, 4.5vw, 64px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.heroFrameTopRight {
+  position: absolute;
+  top: clamp(20px, 4vh, 40px);
+  right: clamp(24px, 4.5vw, 64px);
+  display: inline-flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.heroFrameBottomLeft {
+  position: absolute;
+  bottom: clamp(24px, 4vh, 44px);
+  left: clamp(24px, 4.5vw, 64px);
+  display: inline-flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.heroFrameBottomRight {
+  position: absolute;
+  bottom: clamp(24px, 4vh, 44px);
+  right: clamp(24px, 4.5vw, 64px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.frameDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 8px #ffffff;
+}
+
+.frameText {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.68rem, 0.76vw, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+}
+
+.frameScrollCue {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(0.68rem, 0.76vw, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.65);
+  text-transform: uppercase;
+}
+
+.frameScrollArrow {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.9rem;
+  color: #ffffff;
+  animation: bounceScroll 2s ease-in-out infinite;
+}
+
+@keyframes bounceScroll {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
 }
 
 .scrimBottom {
@@ -45,4 +271,24 @@
     rgba(0, 0, 0, 0.45) 0%,
     transparent 100%
   );
+}
+
+@media (max-width: 900px) {
+  .heroLockup {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .monumentLockup {
+    --word-size: min(9vw, 9vh);
+    --be-size: calc(var(--word-size) * 2.18 + var(--gap-stack) * 0.4);
+    gap: clamp(0.7rem, 2vw, 1.8rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .heroFrameTopLeft,
+  .heroFrameTopRight {
+    display: none;
+  }
 }

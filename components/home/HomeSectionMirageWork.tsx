@@ -9,14 +9,18 @@ import {
   PORTFOLIO_PROJECTS,
   type MiragePortfolioHandle,
 } from "@/components/work-showcase/MiragePortfolioExperience";
+import {
+  BlackHoleCanvas,
+  type BlackHoleCanvasHandle,
+} from "@/components/black-hole";
 import styles from "@/styles/home/HomeSectionMirageWork.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const NUM = PORTFOLIO_PROJECTS.length;
-/** Showcase scrub window inside pin progress (after UTOPIANVERSE entrance + expand) */
-const CARD_START = 0.30;
-const CARD_END = 0.90;
+/** Showcase scrub window inside pin progress (after Hero dissolve + UTOPIANVERSE reveal + expand) */
+const CARD_START = 0.56;
+const CARD_END = 0.92;
 
 function progressForCard(index: number): number {
   const i = Math.max(0, Math.min(NUM - 1, index));
@@ -24,13 +28,31 @@ function progressForCard(index: number): number {
   return CARD_START + (i / (NUM - 1)) * (CARD_END - CARD_START);
 }
 
+function clamp01(t: number): number {
+  return Math.max(0, Math.min(1, t));
+}
+
+function smootherstep(edge0: number, edge1: number, x: number): number {
+  const t = clamp01((x - edge0) / Math.max(1e-6, edge1 - edge0));
+  return t * t * t * (t * (t * 6 - 15) + 10);
+}
+
 /**
- * Homepage work stage — Mirage pin owns UTOPIANVERSE entrance + card showcase.
- * Dive→verse sync is a shared float read inside Mirage's rAF (no events).
+ * Unified Homepage Stage:
+ * Hero ("BE UNREAL UNREASONABLE" + Black Hole)
+ * → Smooth Cosmic Dissolve to Star Background Only
+ * → UTOPIANVERSE Celestial Reveal
+ * → 3D Carousel Rotunda to Eye-Level Transition
+ * → Continuous Project River
+ *
+ * All orchestrated within a single seamless GSAP pin — zero black void, zero unpin seam.
  */
 export function HomeSectionMirageWork() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const pinRef = useRef<HTMLDivElement | null>(null);
+  const heroHoleRef = useRef<HTMLDivElement | null>(null);
+  const heroCopyRef = useRef<HTMLDivElement | null>(null);
+  const blackHoleRef = useRef<BlackHoleCanvasHandle | null>(null);
   const mirageRef = useRef<MiragePortfolioHandle | null>(null);
   const stRef = useRef<ScrollTrigger | null>(null);
   const steppingRef = useRef(false);
@@ -88,11 +110,41 @@ export function HomeSectionMirageWork() {
     };
     window.addEventListener("mirage-card-step", onStep);
 
+    const updateDOM = (progress: number) => {
+      const p = clamp01(progress);
+      mirageRef.current?.setRiverProgress(p);
+
+      // 1. Hero Typography: smooth glide-up & fade out (p: 0.04 -> 0.18)
+      const copyFade = 1 - smootherstep(0.04, 0.18, p);
+      const copyY = smootherstep(0.04, 0.18, p) * -35;
+      if (heroCopyRef.current) {
+        heroCopyRef.current.style.opacity = String(copyFade);
+        heroCopyRef.current.style.transform = `translate3d(0, ${copyY.toFixed(1)}px, 0)`;
+        heroCopyRef.current.style.visibility =
+          copyFade > 0.005 ? "visible" : "hidden";
+        heroCopyRef.current.style.pointerEvents =
+          copyFade > 0.2 ? "auto" : "none";
+      }
+
+      // 2. Black Hole: gentle forward camera drift & cosmic dissolve into starfield (p: 0.06 -> 0.22)
+      // Never plunges into singularity black void; dissolves into underlying AmbientField stars.
+      const holeFade = 1 - smootherstep(0.06, 0.22, p);
+      if (heroHoleRef.current) {
+        heroHoleRef.current.style.opacity = String(holeFade);
+        heroHoleRef.current.style.visibility =
+          holeFade > 0.005 ? "visible" : "hidden";
+        heroHoleRef.current.style.pointerEvents =
+          holeFade > 0.2 ? "auto" : "none";
+      }
+      const diveTarget = smootherstep(0.0, 0.22, p) * 0.25;
+      blackHoleRef.current?.setDiveProgress(diveTarget);
+    };
+
     const ctx = gsap.context(() => {
       const main = ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: "+=520%",
+        end: "+=680%",
         pin,
         pinSpacing: true,
         scrub: SITE_SCRUB,
@@ -100,35 +152,32 @@ export function HomeSectionMirageWork() {
         fastScrollEnd: true,
         invalidateOnRefresh: true,
         onEnter: () => {
-          mirageRef.current?.setApproachProgress(1);
+          updateDOM(0);
         },
         onEnterBack: () => {
           mirageRef.current?.setApproachProgress(1);
         },
         onLeave: () => {
-          mirageRef.current?.setRiverProgress(1);
+          updateDOM(1);
         },
         onLeaveBack: () => {
-          mirageRef.current?.setRiverProgress(0);
+          updateDOM(0);
           mirageRef.current?.setApproachProgress(0);
         },
         onUpdate: (self) => {
-          mirageRef.current?.setRiverProgress(self.progress);
-          if (self.progress > 0.002) {
-            mirageRef.current?.setApproachProgress(1);
-          }
+          updateDOM(self.progress);
         },
         onRefresh: (self) => {
-          mirageRef.current?.setRiverProgress(self.progress);
-          if (self.progress > 0 || self.isActive) {
-            mirageRef.current?.setApproachProgress(1);
-          }
+          updateDOM(self.progress);
         },
       });
       stRef.current = main;
     }, section);
 
-    requestAnimationFrame(() => ScrollTrigger.refresh());
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+      updateDOM(0);
+    });
 
     return () => {
       window.removeEventListener("mirage-card-step", onStep);
@@ -143,18 +192,58 @@ export function HomeSectionMirageWork() {
   return (
     <section
       ref={sectionRef}
-      id="work"
-      aria-label="Selected work — Mirage portfolio"
+      id="hero"
+      data-section="work"
+      aria-label="13 Utopia — Brand, technology and architecture narrative"
       className={styles.section}
     >
       <div ref={pinRef} className={styles.pin}>
-        <div className={styles.scrimBottom} aria-hidden="true" />
+        {/* Hero 3D Black Hole — smoothly dissolves into pure starfield */}
+        <div ref={heroHoleRef} className={styles.heroHoleContainer}>
+          <BlackHoleCanvas ref={blackHoleRef} />
+        </div>
+
+        {/* Hero Monument Typography & Telemetry */}
+        <div ref={heroCopyRef} className={styles.heroCopyContainer}>
+          <div className={styles.heroFrameTopLeft} aria-hidden="true">
+            <span className={styles.frameDot} />
+            <span className={styles.frameText}>SYS: 13U // ARCHITECTURE</span>
+          </div>
+          <div className={styles.heroFrameTopRight} aria-hidden="true">
+            <span className={styles.frameText}>CORE: ACTIVE // 60FPS</span>
+          </div>
+          <div className={styles.heroFrameBottomLeft} aria-hidden="true">
+            <span className={styles.frameText}>LATENCY: OPTIMAL</span>
+          </div>
+          <div className={styles.heroFrameBottomRight} aria-hidden="true">
+            <span className={styles.frameScrollCue}>SCROLL TO TRANSCEND</span>
+            <span className={styles.frameScrollArrow}>↓</span>
+          </div>
+
+          <div className={styles.heroLockup}>
+            <div className={styles.monumentLockup}>
+              <div className={styles.beCommonBlock}>
+                <span className={styles.beWord}>BE</span>
+              </div>
+              <div className={styles.stackedBlock}>
+                <span className={styles.wordTop}>UNREAL</span>
+                <span className={styles.wordBottom}>UNREASONABLE</span>
+              </div>
+            </div>
+
+            <p className={styles.heroLeadText}>
+              13 Utopia is a creative technology and growth company building brands,
+              products, and systems for ambitious organisations.
+            </p>
+          </div>
+        </div>
+
+        {/* 3D Mirage UTOPIANVERSE & Project River */}
         <MiragePortfolioExperience ref={mirageRef} embedded />
+
+        {/* Bottom atmospheric scrim */}
+        <div className={styles.scrimBottom} aria-hidden="true" />
       </div>
     </section>
   );
-}
-
-function clamp01(t: number): number {
-  return Math.max(0, Math.min(1, t));
 }
