@@ -41,7 +41,7 @@ export function SmoothScrollProvider({ children }: Props) {
     };
 
     gsap.ticker.add(tickerCallback);
-    gsap.ticker.lagSmoothing(SITE_GSAP_LAG_SMOOTHING);
+    gsap.ticker.lagSmoothing(500, 33);
 
     const refresh = () => {
       lenis.resize();

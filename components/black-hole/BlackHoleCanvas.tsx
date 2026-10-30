@@ -12,6 +12,7 @@ import type { DiveSample } from "@/optimized-black-hole/dive";
 
 export type BlackHoleCanvasHandle = {
   setDiveProgress: (progress: number) => void;
+  setActive?: (active: boolean) => void;
 };
 
 type Props = {
@@ -40,6 +41,9 @@ export const BlackHoleCanvas = forwardRef<BlackHoleCanvasHandle, Props>(
     useImperativeHandle(ref, () => ({
       setDiveProgress: (progress: number) => {
         rendererRef.current?.setDiveProgress(progress);
+      },
+      setActive: (active: boolean) => {
+        rendererRef.current?.setActive(active);
       },
     }));
 
@@ -73,7 +77,7 @@ export const BlackHoleCanvas = forwardRef<BlackHoleCanvasHandle, Props>(
     }, []);
 
     useEffect(() => {
-      if (!isReady) return;
+      if (!isReady || !onDiveSample) return;
       const renderer = rendererRef.current;
       if (!renderer) return;
 

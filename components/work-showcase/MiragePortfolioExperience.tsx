@@ -468,7 +468,7 @@ export const MiragePortfolioExperience = forwardRef<
     }
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
 
     // Bloom/composer clears opaque black and kills the starfield — /work only
     let composer: EffectComposer | null = null;
@@ -721,10 +721,11 @@ export const MiragePortfolioExperience = forwardRef<
       video.loop = true;
       video.muted = true;
       video.playsInline = true;
-      video.autoplay = true;
-      video.preload = "auto";
-      video.load();
-      video.play().catch(() => {});
+      video.autoplay = false;
+      video.preload = isEmbedded ? "none" : "metadata";
+
+
+
       videoElements.push(video);
 
       const videoTex = new THREE.VideoTexture(video);
@@ -734,11 +735,15 @@ export const MiragePortfolioExperience = forwardRef<
       videoTex.magFilter = THREE.LinearFilter;
 
       const screenMat = new THREE.MeshBasicMaterial({
-        map: videoTex,
+        map: isEmbedded ? imgTex : videoTex,
         transparent: true,
         opacity: isEmbedded ? 0 : 1,
       });
       screenMaterials.push(screenMat);
+      video.addEventListener("playing", () => {
+        screenMat.map = videoTex;
+        screenMat.needsUpdate = true;
+      });
       const materials = [
         frameMat,
         frameMat,
@@ -957,11 +962,61 @@ export const MiragePortfolioExperience = forwardRef<
     const birthHeroPos = new THREE.Vector3();
     const birthHeroLook = new THREE.Vector3();
 
+    let lastActiveVideoIdx = -1;
+    const syncVideos = (activeIdx: number, inCarousel: boolean) => {
+      if (!isEmbedded) {
+        for (let i = 0; i < videoElements.length; i++) {
+          const v = videoElements[i];
+          if (i === activeIdx) {
+            if (v.paused) v.play().catch(() => {});
+          } else {
+            if (!v.paused) v.pause();
+          }
+        }
+        return;
+      }
+
+      if (!inCarousel) {
+        if (lastActiveVideoIdx !== -1) {
+          for (let i = 0; i < videoElements.length; i++) {
+            if (!videoElements[i].paused) videoElements[i].pause();
+          }
+          lastActiveVideoIdx = -1;
+        }
+        return;
+      }
+
+      if (lastActiveVideoIdx !== activeIdx) {
+        lastActiveVideoIdx = activeIdx;
+        for (let i = 0; i < videoElements.length; i++) {
+          const v = videoElements[i];
+          if (i === activeIdx) {
+            if (v.preload === "none" || v.preload === "metadata") {
+              v.preload = "auto";
+            }
+            if (v.paused) v.play().catch(() => {});
+          } else {
+            if (!v.paused) v.pause();
+          }
+        }
+      }
+    };
+
     const animate = () => {
       animId = requestAnimationFrame(animate);
 
       const st = stateRef.current;
       const river = embeddedRef.current;
+
+      if (river && (st.riverProgress < 0.18 || st.riverProgress > 0.99)) {
+        syncVideos(st.activeSlideIndex, false);
+        return;
+      }
+
+      const inCarousel = river
+        ? st.riverProgress >= 0.28 && st.riverProgress <= 0.96
+        : true;
+      syncVideos(st.activeSlideIndex, inCarousel);
       const heroBlend = river
         ? st.riverHeroBlend
         : st.isHomeMode

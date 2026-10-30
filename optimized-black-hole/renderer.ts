@@ -69,6 +69,7 @@ export function createRenderer({ canvas }: RendererOptions) {
   let documentVisible =
     typeof document === "undefined" ? true : !document.hidden;
   let canvasIntersecting = true;
+  let isExplicitlyActive = true;
 
   let started = false;
   let animationTime = 0;
@@ -213,7 +214,7 @@ export function createRenderer({ canvas }: RendererOptions) {
 
   function reconcileLoop(): void {
     if (!started || !gpu || !api) return;
-    const shouldRun = !disposed && documentVisible && canvasIntersecting;
+    const shouldRun = !disposed && documentVisible && canvasIntersecting && isExplicitlyActive;
     if (shouldRun === Boolean(loop)) return;
     if (shouldRun) {
       lastFrameAt = undefined;
@@ -431,7 +432,13 @@ export function createRenderer({ canvas }: RendererOptions) {
     handleFailure(error);
   });
 
-  return { ready, dispose, setDiveProgress, getDiveSample };
+  function setActive(active: boolean): void {
+    if (isExplicitlyActive === active) return;
+    isExplicitlyActive = active;
+    reconcileLoop();
+  }
+
+  return { ready, dispose, setDiveProgress, getDiveSample, setActive };
 }
 
 function clockMs(): number {

@@ -37,20 +37,36 @@ export function HomeEarthExperienceSection() {
       targetY = yNorm * -14;
     };
 
+    let isIntersecting = false;
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== "undefined") {
+      observer = new IntersectionObserver(
+        (entries) => {
+          isIntersecting = entries[0]?.isIntersecting ?? false;
+        },
+        { threshold: 0 }
+      );
+      observer.observe(container);
+    } else {
+      isIntersecting = true;
+    }
+
     const updateLoop = () => {
+      rafId = requestAnimationFrame(updateLoop);
+      if (!isIntersecting) return;
       currentX += (targetX - currentX) * 0.05;
       currentY += (targetY - currentY) * 0.05;
 
       if (mediaRef.current) {
         mediaRef.current.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0) scale(1.05)`;
       }
-      rafId = requestAnimationFrame(updateLoop);
     };
 
     container.addEventListener("mousemove", handleMouseMove, { passive: true });
     rafId = requestAnimationFrame(updateLoop);
 
     return () => {
+      observer?.disconnect();
       container.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(rafId);
     };

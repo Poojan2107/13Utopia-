@@ -138,6 +138,7 @@ export function HomeSectionMirageWork() {
       }
       const diveTarget = smootherstep(0.0, 0.22, p) * 0.25;
       blackHoleRef.current?.setDiveProgress(diveTarget);
+      blackHoleRef.current?.setActive?.(holeFade > 0.005);
     };
 
     const ctx = gsap.context(() => {

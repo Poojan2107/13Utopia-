@@ -196,11 +196,25 @@ export function Thirteen3DCanvas({ progress = 0, className }: Thirteen3DCanvasPr
 
     let rafId: number;
     let isRunning = true;
+    let isIntersecting = false;
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== "undefined") {
+      observer = new IntersectionObserver(
+        (entries) => {
+          isIntersecting = entries[0]?.isIntersecting ?? false;
+        },
+        { threshold: 0 }
+      );
+      observer.observe(container);
+    } else {
+      isIntersecting = true;
+    }
     const startTime = performance.now();
 
     const animate = () => {
       if (!isRunning) return;
       rafId = requestAnimationFrame(animate);
+      if (!isIntersecting) return;
       const elapsedTime = (performance.now() - startTime) * 0.001;
 
       mouseX += (targetMouseX - mouseX) * 0.06;
@@ -241,6 +255,7 @@ export function Thirteen3DCanvas({ progress = 0, className }: Thirteen3DCanvasPr
 
     return () => {
       isRunning = false;
+      observer?.disconnect();
       cancelAnimationFrame(rafId);
       window.removeEventListener("mousemove", onPointerMove);
       window.removeEventListener("resize", onResize);
