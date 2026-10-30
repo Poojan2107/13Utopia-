@@ -203,23 +203,8 @@ export function HomeSectionMirageWork() {
           <BlackHoleCanvas ref={blackHoleRef} />
         </div>
 
-        {/* Hero Monument Typography & Telemetry */}
+        {/* Hero Monument Typography */}
         <div ref={heroCopyRef} className={styles.heroCopyContainer}>
-          <div className={styles.heroFrameTopLeft} aria-hidden="true">
-            <span className={styles.frameDot} />
-            <span className={styles.frameText}>SYS: 13U // ARCHITECTURE</span>
-          </div>
-          <div className={styles.heroFrameTopRight} aria-hidden="true">
-            <span className={styles.frameText}>CORE: ACTIVE // 60FPS</span>
-          </div>
-          <div className={styles.heroFrameBottomLeft} aria-hidden="true">
-            <span className={styles.frameText}>LATENCY: OPTIMAL</span>
-          </div>
-          <div className={styles.heroFrameBottomRight} aria-hidden="true">
-            <span className={styles.frameScrollCue}>SCROLL TO TRANSCEND</span>
-            <span className={styles.frameScrollArrow}>↓</span>
-          </div>
-
           <div className={styles.heroLockup}>
             <div className={styles.monumentLockup}>
               <div className={styles.beCommonBlock}>

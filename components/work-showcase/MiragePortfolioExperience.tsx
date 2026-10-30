@@ -647,6 +647,9 @@ export const MiragePortfolioExperience = forwardRef<
     uvAttr.needsUpdate = true;
     duneGeo.computeVertexNormals();
     const fallbackGroundMesh = new THREE.Mesh(duneGeo, duneShaderMat);
+    if (isEmbedded) {
+      fallbackGroundMesh.visible = false;
+    }
     scene.add(fallbackGroundMesh);
 
     // Load authentic Studio Mirage sculpted GLB terrain
@@ -670,6 +673,9 @@ export const MiragePortfolioExperience = forwardRef<
           ground.position.set(-0.15, 0, 0);
           ground.rotation.set(0, (Math.PI * 2 / 10) * 0.5, 0);
           scene.remove(fallbackGroundMesh);
+          if (isEmbedded) {
+            ground.visible = stateRef.current.riverProgress > 0.34;
+          }
           scene.add(ground);
           groundModelMesh = ground;
         }
@@ -682,6 +688,9 @@ export const MiragePortfolioExperience = forwardRef<
 
     // 5. Billboard Screens in Decagon Ring
     const carouselGroup = new THREE.Group();
+    if (isEmbedded) {
+      carouselGroup.visible = false;
+    }
     scene.add(carouselGroup);
 
     // Authentic Studio Mirage decagon proportions — elegant, balanced framing
@@ -694,6 +703,8 @@ export const MiragePortfolioExperience = forwardRef<
       color: 0x050505,
       roughness: 0.9,
       metalness: 0.1,
+      transparent: true,
+      opacity: isEmbedded ? 0 : 1,
     });
 
     const videoElements: HTMLVideoElement[] = [];
@@ -725,7 +736,7 @@ export const MiragePortfolioExperience = forwardRef<
       const screenMat = new THREE.MeshBasicMaterial({
         map: videoTex,
         transparent: true,
-        opacity: isEmbedded ? 0.06 : 1,
+        opacity: isEmbedded ? 0 : 1,
       });
       screenMaterials.push(screenMat);
       const materials = [
@@ -1016,6 +1027,11 @@ export const MiragePortfolioExperience = forwardRef<
       // At p < 0.34: dunes and screens are hidden (stars only)
       // At p: 0.34 -> 0.48: carousel subtly emerges behind UTOPIANVERSE into full 3D presence
       const carouselReveal = river ? smootherstep(0.34, 0.48, st.riverProgress) : 1;
+      const showCarousel = !river || carouselReveal > 0.001;
+      carouselGroup.visible = showCarousel;
+      if (groundModelMesh) groundModelMesh.visible = showCarousel;
+      if (fallbackGroundMesh) fallbackGroundMesh.visible = showCarousel;
+      frameMat.opacity = river ? carouselReveal : 1;
       for (let i = 0; i < screenMaterials.length; i++) {
         screenMaterials[i].opacity = river ? carouselReveal : 1;
       }
@@ -1038,7 +1054,9 @@ export const MiragePortfolioExperience = forwardRef<
       }
       if (river && rootRef.current) {
         // Continuous, weightless opacity — never CSS blur
-        const exitOp = 1 - st.riverExitFade * 0.35;
+        const mirageFadeIn = smootherstep(0.18, 0.26, st.riverProgress);
+        const exitOp = (1 - st.riverExitFade * 0.35) * mirageFadeIn;
+        rootRef.current.style.visibility = exitOp > 0.001 ? "visible" : "hidden";
         rootRef.current.style.opacity = String(exitOp);
         rootRef.current.style.filter = "none";
         rootRef.current.style.transform = "translate3d(0, 0, 0)";
@@ -1184,6 +1202,7 @@ export const MiragePortfolioExperience = forwardRef<
   return (
     <div
       ref={rootRef}
+      style={embedded ? { opacity: 0, visibility: "hidden" } : undefined}
       className={`${styles.container}${
         embedded ? ` ${styles.containerEmbedded}` : ""
       }`}

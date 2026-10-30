@@ -173,91 +173,6 @@
     0 0 24px rgba(0, 0, 0, 0.55);
 }
 
-/* ── Architectural Framing Telemetry ── */
-.heroFrameTopLeft {
-  position: absolute;
-  top: clamp(20px, 4vh, 40px);
-  left: clamp(24px, 4.5vw, 64px);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  pointer-events: none;
-  z-index: 10;
-}
-
-.heroFrameTopRight {
-  position: absolute;
-  top: clamp(20px, 4vh, 40px);
-  right: clamp(24px, 4.5vw, 64px);
-  display: inline-flex;
-  align-items: center;
-  pointer-events: none;
-  z-index: 10;
-}
-
-.heroFrameBottomLeft {
-  position: absolute;
-  bottom: clamp(24px, 4vh, 44px);
-  left: clamp(24px, 4.5vw, 64px);
-  display: inline-flex;
-  align-items: center;
-  pointer-events: none;
-  z-index: 10;
-}
-
-.heroFrameBottomRight {
-  position: absolute;
-  bottom: clamp(24px, 4vh, 44px);
-  right: clamp(24px, 4.5vw, 64px);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  pointer-events: none;
-  z-index: 10;
-}
-
-.frameDot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 0 8px #ffffff;
-}
-
-.frameText {
-  font-family: var(--font-mono, monospace);
-  font-size: clamp(0.68rem, 0.76vw, 0.78rem);
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.45);
-  text-transform: uppercase;
-}
-
-.frameScrollCue {
-  font-family: var(--font-mono, monospace);
-  font-size: clamp(0.68rem, 0.76vw, 0.78rem);
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.65);
-  text-transform: uppercase;
-}
-
-.frameScrollArrow {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.9rem;
-  color: #ffffff;
-  animation: bounceScroll 2s ease-in-out infinite;
-}
-
-@keyframes bounceScroll {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(4px);
-  }
-}
-
 .scrimBottom {
   position: absolute;
   bottom: 0;
@@ -283,12 +198,5 @@
     --word-size: min(9vw, 9vh);
     --be-size: calc(var(--word-size) * 2.18 + var(--gap-stack) * 0.4);
     gap: clamp(0.7rem, 2vw, 1.8rem);
-  }
-}
-
-@media (max-width: 600px) {
-  .heroFrameTopLeft,
-  .heroFrameTopRight {
-    display: none;
   }
 }
