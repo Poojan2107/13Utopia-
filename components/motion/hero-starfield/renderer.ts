@@ -1,5 +1,10 @@
 import type { Effect, Frame, Gpu, Surface } from "vgpu";
 import { defaultHeroSettings } from "@/optimized-black-hole/settings";
+import {
+  isHeroHoleCovering,
+  subscribeHeroHoleCover,
+} from "@/components/motion/heroHoleCover";
+import { isUserScrolling } from "@/components/motion/scrollActivity";
 import starfieldWgsl from "./starfield.wgsl";
 
 type VgpuApi = typeof import("vgpu");
@@ -38,6 +43,7 @@ export function createStarfieldRenderer({ canvas }: RendererOptions) {
   let documentVisible =
     typeof document === "undefined" ? true : !document.hidden;
   let canvasIntersecting = true;
+  let unsubscribeCover: (() => void) | undefined;
   let started = false;
   let animationTime = 0;
   let lastFrameAt: number | undefined;
@@ -49,7 +55,11 @@ export function createStarfieldRenderer({ canvas }: RendererOptions) {
 
   function reconcileLoop(): void {
     if (!started || !gpu || !api) return;
-    const shouldRun = !disposed && documentVisible && canvasIntersecting;
+    const shouldRun =
+      !disposed &&
+      documentVisible &&
+      canvasIntersecting &&
+      !isHeroHoleCovering();
     if (shouldRun === Boolean(loop)) return;
     if (shouldRun) {
       lastFrameAt = undefined;
@@ -65,6 +75,10 @@ export function createStarfieldRenderer({ canvas }: RendererOptions) {
     let lastPresentedAt: number | undefined;
     const tick = (timestamp: number): void => {
       if (stopped) return;
+      if (isUserScrolling()) {
+        if (!stopped) frameHandle = requestAnimationFrame(tick);
+        return;
+      }
       if (
         lastPresentedAt === undefined ||
         timestamp - lastPresentedAt >= MIN_FRAME_INTERVAL_MS
@@ -112,6 +126,7 @@ export function createStarfieldRenderer({ canvas }: RendererOptions) {
     loop?.stop();
     observer?.disconnect();
     intersection?.disconnect();
+    unsubscribeCover?.();
     if (typeof document !== "undefined") {
       document.removeEventListener("visibilitychange", onVisibilityChange);
     }
@@ -128,7 +143,8 @@ export function createStarfieldRenderer({ canvas }: RendererOptions) {
     }
     gpu = nextGpu;
     api = vgpu;
-    surface = vgpu.surface(gpu, canvas, { dpr: 1 });
+    const width = canvas.clientWidth || window.innerWidth;
+    surface = vgpu.surface(gpu, canvas, { dpr: width < 768 ? 0.7 : 0.8 });
     effect = vgpu.effect(gpu, starfieldWgsl, {
       label: "hero-starfield",
       set: {
@@ -165,6 +181,7 @@ export function createStarfieldRenderer({ canvas }: RendererOptions) {
     }
     started = true;
     documentVisible = !document.hidden;
+    unsubscribeCover = subscribeHeroHoleCover(reconcileLoop);
     reconcileLoop();
   };
 

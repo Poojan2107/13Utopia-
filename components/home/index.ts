@@ -5,6 +5,7 @@ export { HomeNarrativeSection } from "./HomeNarrativeSection";
 export { HomeManifesto } from "./HomeManifesto";
 export { HomeSectionWork } from "./HomeSectionWork";
 export { HomeSectionMirageWork } from "./HomeSectionMirageWork";
+export { HomeCreatePath } from "./HomeCreatePath";
 export { HomeSectionSolutions } from "./HomeSectionSolutions";
 export { HomeHorizontalStatement } from "./HomeHorizontalStatement";
 export { HomeCTASection } from "./HomeCTASection";

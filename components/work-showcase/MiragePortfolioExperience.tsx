@@ -142,6 +142,7 @@ export const MiragePortfolioExperience = forwardRef<
   const logoRef = useRef<HTMLDivElement>(null);
   const embeddedRef = useRef(embedded);
   embeddedRef.current = embedded;
+  const wakeLoopRef = useRef<(() => void) | null>(null);
 
   // Homepage starts in UTOPIANVERSE hero; /work defaults to hero too
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -204,6 +205,15 @@ export const MiragePortfolioExperience = forwardRef<
     const p = clamp01(progress);
     const s = stateRef.current;
     s.riverProgress = p;
+    if (p > 0.26) wakeLoopRef.current?.();
+
+    if (logoRef.current) {
+      // Stay invisible until BE UNREAL / UNREASONABLE has fully left (ends ~0.18).
+      const verseShow =
+        smootherstep(0.22, 0.3, p) * (1 - smootherstep(0.46, 0.54, p));
+      logoRef.current.style.opacity = String(verseShow);
+      logoRef.current.style.visibility = verseShow > 0.02 ? "visible" : "hidden";
+    }
 
     // Unified pin sequence:
     // 0.00–0.22  Hero stage & dissolve to pure starfield (Mirage is idle/hidden)
@@ -457,7 +467,7 @@ export const MiragePortfolioExperience = forwardRef<
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: true,
+      antialias: !isEmbedded,
       alpha: isEmbedded,
       powerPreference: "high-performance",
       premultipliedAlpha: false,
@@ -468,7 +478,10 @@ export const MiragePortfolioExperience = forwardRef<
     }
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    const coarsePointer = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+    renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio || 1, isEmbedded || coarsePointer ? 1 : 1.25)
+    );
 
     // Bloom/composer clears opaque black and kills the starfield — /work only
     let composer: EffectComposer | null = null;
@@ -1002,16 +1015,23 @@ export const MiragePortfolioExperience = forwardRef<
       }
     };
 
-    const animate = () => {
-      animId = requestAnimationFrame(animate);
+    let loopRunning = false;
+    const riverInView = () => {
+      if (!embeddedRef.current) return true;
+      const p = stateRef.current.riverProgress;
+      return p >= 0.28 && p <= 0.992;
+    };
 
+    const animate = () => {
       const st = stateRef.current;
       const river = embeddedRef.current;
 
-      if (river && (st.riverProgress < 0.18 || st.riverProgress > 0.99)) {
+      if (!riverInView()) {
+        loopRunning = false;
         syncVideos(st.activeSlideIndex, false);
         return;
       }
+      animId = requestAnimationFrame(animate);
 
       const inCarousel = river
         ? st.riverProgress >= 0.28 && st.riverProgress <= 0.96
@@ -1212,7 +1232,13 @@ export const MiragePortfolioExperience = forwardRef<
       }
     };
 
-    animate();
+    const wakeLoop = () => {
+      if (loopRunning || !riverInView()) return;
+      loopRunning = true;
+      animId = requestAnimationFrame(animate);
+    };
+    wakeLoopRef.current = wakeLoop;
+    wakeLoop();
 
     const handleResize = () => {
       syncSize();
@@ -1220,6 +1246,7 @@ export const MiragePortfolioExperience = forwardRef<
     window.addEventListener("resize", handleResize);
 
     return () => {
+      wakeLoopRef.current = null;
       cancelAnimationFrame(animId);
       if (!isEmbedded) {
         domEl.removeEventListener("wheel", handleWheel as EventListener);

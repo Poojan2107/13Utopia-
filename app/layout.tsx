@@ -94,8 +94,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${didone.variable} ${playfair.variable} ${cormorant.variable} ${brand.variable} ${sans.variable} ${mono.variable} ${pinyon.variable} ${alexBrush.variable}`}
+      suppressHydrationWarning
     >
-      <body>
+      <body suppressHydrationWarning>
         <script
           dangerouslySetInnerHTML={{
             __html: `

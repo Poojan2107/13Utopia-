@@ -17,6 +17,7 @@ import {
   type Effects,
   type Targets,
 } from "./pipeline";
+import { isUserScrolling } from "@/components/motion/scrollActivity";
 import { sampleDive, type DiveSample } from "./dive";
 import { defaultHeroSettings } from "./settings";
 
@@ -28,7 +29,7 @@ const YAW_REENTRY_BOOST_MS = 220;
 
 const MAX_FRAME_DT_S = 0.1;
 
-const TARGET_FPS = 60;
+const TARGET_FPS = 30;
 
 const FRAME_PACING_EPSILON_MS = 2;
 
@@ -161,8 +162,11 @@ export function createRenderer({ canvas }: RendererOptions) {
     }
 
     if (diving) {
-      // Continuous camera → continuous geodesic bake (no pose pops)
-      forceBake = true;
+      const key = bakeKeyOf();
+      if (key !== lastBakeKey) {
+        lastBakeKey = key;
+        forceBake = true;
+      }
     } else {
       const key = bakeKeyOf();
       if (key !== lastBakeKey) {
@@ -232,20 +236,29 @@ export function createRenderer({ canvas }: RendererOptions) {
     let stopped = false;
 
     let lastPresentedAt: number | undefined;
+    let catchUp = false;
     const tick = (timestamp: number): void => {
       if (stopped) return;
+      // The scroll thread owns these frames. The hole stays on the last
+      // picture and fades with CSS; the pose catches up when the wheel rests.
+      if (isUserScrolling()) {
+        catchUp = true;
+        if (!stopped) frameHandle = requestAnimationFrame(tick);
+        return;
+      }
       // Skip GPU render when dive is 100% complete and fully settled
       if (diveTarget >= 1.0 && diveCurrent >= 0.999) {
         if (!stopped) frameHandle = requestAnimationFrame(tick);
         return;
       }
-      // During active dive: present every rAF so camera glides smoothly with continuous momentum
-      const isMoving = diveActive || Math.abs(diveTarget - diveCurrent) > 0.0005;
       const due =
-        isMoving ||
         lastPresentedAt === undefined ||
         timestamp - lastPresentedAt >= MIN_FRAME_INTERVAL_MS;
       if (due) {
+        if (catchUp) {
+          diveCurrent = diveTarget;
+          catchUp = false;
+        }
         lastPresentedAt = timestamp;
         try {
           vgpu.frame(activeGpu, renderFrame);
@@ -287,7 +300,7 @@ export function createRenderer({ canvas }: RendererOptions) {
       applyDiveOrLayout(0);
     }
 
-    const runBake = forceBake || diveActive;
+    const runBake = forceBake;
     forceBake = false;
     if (runBake) setBakeUniforms(effects, targets, settings);
     setShadeUniforms(
@@ -352,10 +365,17 @@ export function createRenderer({ canvas }: RendererOptions) {
     if (!resizeFrame) resizeFrame = requestAnimationFrame(applyResize);
   };
 
+  const renderScale = () => {
+    const width = canvas.clientWidth || window.innerWidth;
+    if (width < 768) return 0.7;
+    return 0.75;
+  };
+
   const measure = () => {
+    const scale = renderScale();
     resize({
-      width: canvas.clientWidth,
-      height: canvas.clientHeight,
+      width: Math.max(1, Math.round(canvas.clientWidth * scale)),
+      height: Math.max(1, Math.round(canvas.clientHeight * scale)),
     });
   };
 
@@ -387,7 +407,8 @@ export function createRenderer({ canvas }: RendererOptions) {
     }
     gpu = nextGpu;
     api = vgpu;
-    surface = vgpu.surface(gpu, canvas, { dpr: 1 });
+    const cssWidth = canvas.clientWidth || window.innerWidth;
+    surface = vgpu.surface(gpu, canvas, { dpr: cssWidth < 768 ? 0.7 : 0.75 });
     effects = createEffects(vgpu, gpu);
     targets = createTargets(vgpu, gpu, surface.size);
     setBakeUniforms(effects, targets, settings);

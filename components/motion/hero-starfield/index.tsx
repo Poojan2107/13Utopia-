@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import {
+  isHeroHoleCovering,
+  subscribeHeroHoleCover,
+} from "@/components/motion/heroHoleCover";
 import { createStarfieldRenderer } from "./renderer";
 
 /** Exact hero black-hole starfield, without the hole / disk — for sitewide ambient. */
@@ -10,24 +14,46 @@ export function HeroStarfieldBackground() {
 
   useEffect(() => {
     let cancelled = false;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    let renderer: ReturnType<typeof createStarfieldRenderer> | null = null;
+    let idleId = 0;
+    let timeoutId = 0;
 
-    const hasWebGpu = typeof navigator !== "undefined" && "gpu" in navigator;
-    if (!hasWebGpu) return;
+    const start = () => {
+      if (cancelled || renderer) return;
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      if (typeof navigator === "undefined" || !("gpu" in navigator)) return;
 
-    const renderer = createStarfieldRenderer({ canvas });
-    void renderer.ready
-      .then(() => {
-        if (!cancelled) setIsReady(true);
-      })
-      .catch(() => {
-        /* leave black fallback */
-      });
+      renderer = createStarfieldRenderer({ canvas });
+      void renderer.ready
+        .then(() => {
+          if (!cancelled) setIsReady(true);
+        })
+        .catch(() => {
+          /* leave black fallback */
+        });
+    };
+
+    // Build the starfield while the hole still covers it, so the first
+    // scroll does not pay for a second WebGPU startup.
+    if (!isHeroHoleCovering()) {
+      start();
+    } else if (typeof window.requestIdleCallback === "function") {
+      idleId = window.requestIdleCallback(() => start(), { timeout: 1600 });
+    } else {
+      timeoutId = window.setTimeout(start, 800);
+    }
+
+    const unsubscribe = subscribeHeroHoleCover(() => {
+      if (!isHeroHoleCovering()) start();
+    });
 
     return () => {
       cancelled = true;
-      renderer.dispose();
+      unsubscribe();
+      if (idleId) window.cancelIdleCallback(idleId);
+      window.clearTimeout(timeoutId);
+      renderer?.dispose();
     };
   }, []);
 

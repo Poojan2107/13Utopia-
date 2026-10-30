@@ -5,6 +5,7 @@ import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "lenis/dist/lenis.css";
+import { noteScrollActivity } from "./scrollActivity";
 import { SITE_GSAP_LAG_SMOOTHING, SITE_LENIS } from "./scrollFeel";
 
 type Props = {
@@ -34,14 +35,17 @@ export function SmoothScrollProvider({ children }: Props) {
 
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
-    lenis.on("scroll", ScrollTrigger.update);
+    lenis.on("scroll", () => {
+      noteScrollActivity();
+      ScrollTrigger.update();
+    });
 
     const tickerCallback = (time: number) => {
       lenis.raf(time * 1000);
     };
 
     gsap.ticker.add(tickerCallback);
-    gsap.ticker.lagSmoothing(500, 33);
+    gsap.ticker.lagSmoothing(SITE_GSAP_LAG_SMOOTHING);
 
     const refresh = () => {
       lenis.resize();

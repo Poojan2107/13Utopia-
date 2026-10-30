@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { setHeroHoleCovering } from "@/components/motion/heroHoleCover";
 import { SITE_SCRUB } from "@/components/motion/scrollFeel";
 import {
   MiragePortfolioExperience,
@@ -55,7 +56,12 @@ export function HomeSectionMirageWork() {
   const blackHoleRef = useRef<BlackHoleCanvasHandle | null>(null);
   const mirageRef = useRef<MiragePortfolioHandle | null>(null);
   const stRef = useRef<ScrollTrigger | null>(null);
+  const coverArmed = useRef(false);
   const steppingRef = useRef(false);
+  if (!coverArmed.current && typeof window !== "undefined") {
+    coverArmed.current = true;
+    setHeroHoleCovering(true);
+  }
   const unlockTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -110,46 +116,52 @@ export function HomeSectionMirageWork() {
     };
     window.addEventListener("mirage-card-step", onStep);
 
+    let lastCopy = -1;
+    let lastHole = -1;
     const updateDOM = (progress: number) => {
       const p = clamp01(progress);
       mirageRef.current?.setRiverProgress(p);
 
-      // 1. Hero Typography: smooth glide-up & fade out (p: 0.04 -> 0.18)
+      // Opacity only. Moving the lockup would re-rasterize the metallic type.
       const copyFade = 1 - smootherstep(0.04, 0.18, p);
-      const copyY = smootherstep(0.04, 0.18, p) * -35;
-      if (heroCopyRef.current) {
+      if (heroCopyRef.current && Math.abs(copyFade - lastCopy) > 0.012) {
+        lastCopy = copyFade;
         heroCopyRef.current.style.opacity = String(copyFade);
-        heroCopyRef.current.style.transform = `translate3d(0, ${copyY.toFixed(1)}px, 0)`;
         heroCopyRef.current.style.visibility =
-          copyFade > 0.005 ? "visible" : "hidden";
+          copyFade > 0.02 ? "visible" : "hidden";
         heroCopyRef.current.style.pointerEvents =
           copyFade > 0.2 ? "auto" : "none";
       }
 
-      // 2. Black Hole: gentle forward camera drift & cosmic dissolve into starfield (p: 0.06 -> 0.22)
-      // Never plunges into singularity black void; dissolves into underlying AmbientField stars.
+      // Black hole dissolves into the starfield (p: 0.06 -> 0.22).
       const holeFade = 1 - smootherstep(0.06, 0.22, p);
-      if (heroHoleRef.current) {
-        heroHoleRef.current.style.opacity = String(holeFade);
-        heroHoleRef.current.style.visibility =
-          holeFade > 0.005 ? "visible" : "hidden";
-        heroHoleRef.current.style.pointerEvents =
-          holeFade > 0.2 ? "auto" : "none";
+      if (Math.abs(holeFade - lastHole) > 0.012) {
+        lastHole = holeFade;
+        if (heroHoleRef.current) {
+          heroHoleRef.current.style.opacity = String(holeFade);
+          heroHoleRef.current.style.visibility =
+            holeFade > 0.02 ? "visible" : "hidden";
+          heroHoleRef.current.style.pointerEvents =
+            holeFade > 0.2 ? "auto" : "none";
+        }
+        setHeroHoleCovering(holeFade > 0.2);
       }
       const diveTarget = smootherstep(0.0, 0.22, p) * 0.25;
       blackHoleRef.current?.setDiveProgress(diveTarget);
-      blackHoleRef.current?.setActive?.(holeFade > 0.005);
+      blackHoleRef.current?.setActive?.(holeFade > 0.04);
     };
 
     const ctx = gsap.context(() => {
       const main = ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: "+=680%",
+        end: window.matchMedia("(hover: none) and (pointer: coarse)").matches
+          ? "+=260%"
+          : "+=340%",
         pin,
         pinSpacing: true,
         scrub: SITE_SCRUB,
-        anticipatePin: 1,
+        anticipatePin: 0,
         fastScrollEnd: true,
         invalidateOnRefresh: true,
         onEnter: () => {
@@ -186,6 +198,7 @@ export function HomeSectionMirageWork() {
         window.clearTimeout(unlockTimerRef.current);
       }
       stRef.current = null;
+      setHeroHoleCovering(false);
       ctx.revert();
     };
   }, []);

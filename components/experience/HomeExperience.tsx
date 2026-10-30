@@ -7,6 +7,7 @@
 import {
   HomeSectionMirageWork,
   // HomeSectionWork, // revert: Landberg ribbon still at components/home/HomeSectionWork.tsx
+  HomeCreatePath,
   HomeHorizontalStatement,
   HomeEarthExperienceSection,
 } from "@/components/home";
@@ -37,6 +38,7 @@ export function HomeExperience() {
         >
           {/* Unified continuous sequence: Hero → Cosmic Starfield → UTOPIANVERSE → Mirage River */}
           <HomeSectionMirageWork />
+          <HomeCreatePath />
           <HomeHorizontalStatement />
           <HomeEarthExperienceSection />
           <SiteFooter />

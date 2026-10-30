@@ -16,13 +16,15 @@
  * pins (dive / CREATE–GROW / thesis) still feel immediate under the hand.
  */
 export const SITE_LENIS = {
-  /** Edolus default 0.1 — tuned for brisk, buttery tracking on long pins. */
-  lerp: 0.16,
+  /**
+   * 0.16 left the hero about a quarter-second behind the wheel.
+   * 0.62 still eases, and settles in a few frames.
+   */
+  lerp: 0.62,
   smoothWheel: true,
   syncTouch: false,
-  /** Optimized gain so scrolling and backscrolling feel weightless and swift. */
-  wheelMultiplier: 1.22,
-  touchMultiplier: 1.15,
+  wheelMultiplier: 1.45,
+  touchMultiplier: 1.2,
 } as const;
 
 /** Never invent GSAP catch-up after frame dips (stacks on Lenis). */
