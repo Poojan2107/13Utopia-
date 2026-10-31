@@ -1,148 +1,210 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SITE_SCRUB } from "@/components/motion/scrollFeel";
-import { Thirteen3DCanvas } from "./Thirteen3DCanvas";
-
 import styles from "@/styles/home/HomeHorizontalStatement.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function clamp01(t: number) {
-  return Math.max(0, Math.min(1, t));
-}
-
-function smootherstep(edge0: number, edge1: number, x: number) {
-  const t = clamp01((x - edge0) / Math.max(1e-6, edge1 - edge0));
-  return t * t * t * (t * (t * 6 - 15) + 10);
-}
-
-function applyThesisProgress(
-  p: number,
-  line1: HTMLElement,
-  line2: HTMLElement,
-  glow: HTMLElement | null,
-  bgTrack: HTMLElement | null
-) {
-  // Match GSAP timeline windows from the scroll-driven version
-  const l1 = smootherstep(0, 0.42, p);
-  const l2 = smootherstep(0.18, 0.6, p);
-  const glowT = smootherstep(0.35, 0.7, p);
-  const breathe = smootherstep(0.6, 1, p);
-  const scale = 1 + breathe * 0.025;
-
-  line1.style.transform = `translate3d(${(1 - l1) * -100}vw, 0, 0) scale(${scale})`;
-  line1.style.opacity = String(l1);
-  line2.style.transform = `translate3d(${(1 - l2) * 100}vw, 0, 0) scale(${scale})`;
-  line2.style.opacity = String(l2);
-
-  if (glow) {
-    glow.style.opacity = String(glowT);
-    glow.style.transform = `scale(${0.75 + glowT * 0.4})`;
-  }
-  if (bgTrack) {
-    bgTrack.style.transform = `translate3d(${15 - p * 30}vw, 0, 0)`;
-  }
-}
-
-type Props = {
-  /** 0–1 thesis chapter progress (skips ScrollTrigger when set) */
-  externalProgress?: number;
-  fillParent?: boolean;
-};
-
-/**
- * HomeHorizontalStatement — Chapter 03: Kinetic Convergence Cinema
- * Pinned 100vh cinematic canvas with centered 3D "13" Monolith Emblem.
- */
-export function HomeHorizontalStatement({
-  externalProgress,
-  fillParent = false,
-}: Props = {}) {
+export function HomeHorizontalStatement() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const pinContainerRef = useRef<HTMLDivElement | null>(null);
+  const mediaRef = useRef<HTMLDivElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  // Act 1 (Thesis) Refs
+  const thesisActRef = useRef<HTMLDivElement | null>(null);
   const line1Ref = useRef<HTMLDivElement | null>(null);
   const line2Ref = useRef<HTMLDivElement | null>(null);
-  const glowRef = useRef<HTMLDivElement | null>(null);
   const bgTrackRef = useRef<HTMLDivElement | null>(null);
-  const controlled = typeof externalProgress === "number";
-  const [emblemProgress, setEmblemProgress] = useState(
-    controlled ? clamp01(externalProgress) : 0
-  );
 
-  useEffect(() => {
-    if (!controlled) return;
-    const p = clamp01(externalProgress ?? 0);
-    const line1 = line1Ref.current;
-    const line2 = line2Ref.current;
-    if (!line1 || !line2) return;
-    applyThesisProgress(
-      p,
-      line1,
-      line2,
-      glowRef.current,
-      bgTrackRef.current
-    );
-    setEmblemProgress(p);
-  }, [controlled, externalProgress]);
+  // Act 2 (Invitation) Refs
+  const invitationActRef = useRef<HTMLDivElement | null>(null);
+  const invHeaderRef = useRef<HTMLDivElement | null>(null);
+  const invRowRef = useRef<HTMLDivElement | null>(null);
 
+  // 1. Bulletproof Video Lifecycle & Autoplay Engine
   useEffect(() => {
-    if (controlled) return;
+    const video = videoRef.current;
     const section = sectionRef.current;
-    const container = containerRef.current;
+    if (!video) return;
+
+    // Direct DOM property enforcement for browser autoplay policy
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+
+    let isDestroyed = false;
+
+    const playVideo = () => {
+      if (isDestroyed || !video) return;
+      video.muted = true;
+      video.defaultMuted = true;
+      if (video.paused) {
+        const p = video.play();
+        if (p !== undefined) {
+          p.catch(() => {
+            // Autoplay blocked by browser policy — will retry on interaction
+          });
+        }
+      }
+    };
+
+    // Attempt playback immediately on mount
+    playVideo();
+
+    // Event-based triggers
+    video.addEventListener("canplay", playVideo);
+    video.addEventListener("canplaythrough", playVideo);
+    video.addEventListener("loadeddata", playVideo);
+    video.addEventListener("ended", playVideo);
+
+    // Fallback: unlock on first user interaction if blocked by strict browser policy
+    const onUserInteract = () => {
+      playVideo();
+    };
+    window.addEventListener("pointerdown", onUserInteract, { passive: true, once: true });
+    window.addEventListener("touchstart", onUserInteract, { passive: true, once: true });
+    window.addEventListener("scroll", onUserInteract, { passive: true, once: true });
+    window.addEventListener("keydown", onUserInteract, { passive: true, once: true });
+
+    // Handle tab switching / background throttling
+    const onVisibilityChange = () => {
+      if (!document.hidden) {
+        playVideo();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    // Observer: Pre-warm 500px before scrolling into view, ensure playing whenever in/near view
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== "undefined" && section) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry?.isIntersecting) {
+            playVideo();
+          }
+        },
+        { rootMargin: "500px 0px 500px 0px", threshold: 0 }
+      );
+      observer.observe(section);
+    }
+
+    return () => {
+      isDestroyed = true;
+      observer?.disconnect();
+      video.removeEventListener("canplay", playVideo);
+      video.removeEventListener("canplaythrough", playVideo);
+      video.removeEventListener("loadeddata", playVideo);
+      video.removeEventListener("ended", playVideo);
+      window.removeEventListener("pointerdown", onUserInteract);
+      window.removeEventListener("touchstart", onUserInteract);
+      window.removeEventListener("scroll", onUserInteract);
+      window.removeEventListener("keydown", onUserInteract);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, []);
+
+  // 2. Mouse Parallax (Smooth video tilt on cursor move)
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let rafId: number;
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = section.getBoundingClientRect();
+      const xNorm = (e.clientX - rect.left) / rect.width - 0.5;
+      const yNorm = (e.clientY - rect.top) / rect.height - 0.5;
+      targetX = xNorm * -20;
+      targetY = yNorm * -14;
+    };
+
+    const updateLoop = () => {
+      rafId = requestAnimationFrame(updateLoop);
+      currentX += (targetX - currentX) * 0.05;
+      currentY += (targetY - currentY) * 0.05;
+
+      if (videoRef.current) {
+        videoRef.current.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0) scale(1.04)`;
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    rafId = requestAnimationFrame(updateLoop);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // 2. Sequential Pinned Timeline: Act 1 (Thesis) -> Fade -> Act 2 (Invitation) -> Release
+  useEffect(() => {
+    const section = sectionRef.current;
+    const pinContainer = pinContainerRef.current;
+    const actThesis = thesisActRef.current;
     const line1 = line1Ref.current;
     const line2 = line2Ref.current;
-    const glow = glowRef.current;
     const bgTrack = bgTrackRef.current;
-    if (!section || !container || !line1 || !line2) return;
+    const actInvitation = invitationActRef.current;
+    const invHeader = invHeaderRef.current;
+    const invRow = invRowRef.current;
+
+    if (!section || !pinContainer || !actThesis || !line1 || !line2 || !actInvitation) return;
 
     const ctx = gsap.context(() => {
-      let lastEmblemP = -1;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=170%",
+          end: "+=220%",
           scrub: SITE_SCRUB,
-          pin: container,
+          pin: pinContainer,
           pinSpacing: true,
           anticipatePin: 1,
           fastScrollEnd: true,
           invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const p = self.progress;
-            if (Math.abs(p - lastEmblemP) >= 0.0015) {
-              lastEmblemP = p;
-              setEmblemProgress(p);
+          onEnter: () => {
+            const vid = videoRef.current;
+            if (vid && vid.paused) {
+              vid.play().catch(() => {});
+            }
+          },
+          onEnterBack: () => {
+            const vid = videoRef.current;
+            if (vid && vid.paused) {
+              vid.play().catch(() => {});
             }
           },
         },
       });
 
+      // ── Phase 1: Thesis Lines Sweep In (0.00 -> 0.35) ──
       tl.fromTo(
         line1,
-        { x: "-100vw", opacity: 0 },
-        { x: "0vw", opacity: 1, ease: "power2.out", duration: 0.42 },
+        { x: "-70vw", opacity: 0 },
+        { x: "0vw", opacity: 1, ease: "power2.out", duration: 0.35 },
         0
       );
 
       tl.fromTo(
         line2,
-        { x: "100vw", opacity: 0 },
-        { x: "0vw", opacity: 1, ease: "power2.out", duration: 0.42 },
-        0.18
+        { x: "70vw", opacity: 0 },
+        { x: "0vw", opacity: 1, ease: "power2.out", duration: 0.35 },
+        0.08
       );
-
-      if (glow) {
-        tl.fromTo(
-          glow,
-          { opacity: 0, scale: 0.75 },
-          { opacity: 1, scale: 1.15, ease: "power1.out", duration: 0.35 },
-          0.35
-        );
-      }
 
       if (bgTrack) {
         tl.fromTo(
@@ -153,83 +215,152 @@ export function HomeHorizontalStatement({
         );
       }
 
+      // ── Phase 2: Thesis Holds (0.35 -> 0.44), then Fades Out (0.44 -> 0.54) ──
       tl.to(
-        [line1, line2],
-        { scale: 1.025, ease: "none", duration: 0.4 },
-        0.6
+        actThesis,
+        {
+          opacity: 0,
+          y: -35,
+          scale: 1.02,
+          ease: "power2.in",
+          duration: 0.1,
+        },
+        0.44
       );
+
+      // ── Phase 3: Invitation Reveals & Locks in Over Same Video (0.54 -> 0.72) ──
+      tl.fromTo(
+        actInvitation,
+        { opacity: 0, y: 45 },
+        {
+          opacity: 1,
+          y: 0,
+          ease: "power2.out",
+          duration: 0.18,
+          onStart: () => {
+            if (actInvitation) actInvitation.style.pointerEvents = "auto";
+          },
+          onReverseComplete: () => {
+            if (actInvitation) actInvitation.style.pointerEvents = "none";
+          },
+        },
+        0.54
+      );
+
+      if (invHeader) {
+        tl.fromTo(
+          invHeader,
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, ease: "power2.out", duration: 0.16 },
+          0.56
+        );
+      }
+
+      if (invRow) {
+        tl.fromTo(
+          invRow,
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, ease: "power2.out", duration: 0.16 },
+          0.62
+        );
+      }
+
+      // ── Phase 4: Invitation Holds for Reading (0.72 -> 1.00), then Unpins into Footer ──
+      // Remains visible & interactive until pin ends at 1.00
     }, section);
 
     return () => {
       ctx.revert();
     };
-  }, [controlled]);
+  }, []);
 
   return (
     <section
       ref={sectionRef}
-      className={styles.horizontalSection}
+      className={styles.cinemaSection}
       id="thesis"
-      aria-label="13 Utopia Architectural Thesis"
-      style={
-        fillParent
-          ? {
-              position: "absolute",
-              inset: 0,
-              height: "100%",
-              minHeight: 0,
-              margin: 0,
-            }
-          : undefined
-      }
+      aria-label="13 Utopia Thesis & Invitation Sequence"
     >
-      <div
-        ref={containerRef}
-        className={styles.pinContainer}
-        style={
-          fillParent
-            ? { position: "absolute", inset: 0, height: "100%", width: "100%" }
-            : undefined
-        }
-      >
-        <div
-          ref={glowRef}
-          className={styles.convergenceGlow}
-          aria-hidden="true"
-        />
-
-        <div className={styles.emblemStage} aria-hidden="true">
-          <Thirteen3DCanvas
-            progress={emblemProgress}
-            className={styles.canvas3D}
+      <div ref={pinContainerRef} className={styles.pinContainer}>
+        {/* ── Persistent Full-Viewport Background Video Stage ── */}
+        <div ref={mediaRef} className={styles.videoStage} aria-hidden="true">
+          <video
+            ref={videoRef}
+            className={styles.fullViewportVideo}
+            src="/videos/thesis-black-hole.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            disablePictureInPicture
+            disableRemotePlayback
+            tabIndex={-1}
+            aria-hidden="true"
           />
+          {/* Atmospheric contrast veil and top/bottom horizon scrims */}
+          <div className={styles.videoScrim} />
+          <div className={styles.scrimTop} />
+          <div className={styles.scrimBottom} />
         </div>
 
-        <div className={styles.backgroundViewport} aria-hidden="true">
-          <div ref={bgTrackRef} className={styles.backgroundTrack}>
-            <span className={styles.ghostText}>
-              13 UTOPIA · UNREASONABLE OBSESSION · UNREAL REALITY ·
-            </span>
+        {/* ════════════════════════════════════════════════════
+            ACT 1: THESIS ("WE ARE 13 UTOPIA")
+            ════════════════════════════════════════════════════ */}
+        <div ref={thesisActRef} className={styles.actThesis}>
+          {/* Parallax Background Ghost Text Ribbon */}
+          <div className={styles.backgroundViewport} aria-hidden="true">
+            <div ref={bgTrackRef} className={styles.backgroundTrack}>
+              <span className={styles.ghostText}>
+                13 UTOPIA · UNREASONABLE OBSESSION · UNREAL REALITY ·
+              </span>
+            </div>
+          </div>
+
+          {/* Dual Opposing Typography Lockup */}
+          <div className={styles.stageLockup}>
+            <div ref={line1Ref} className={styles.lineTrackLeft}>
+              <span className={styles.leadText}>
+                DRIVEN BY UNREASONABLE OBSESSION TO CREATE WHAT FEELS UNREAL
+              </span>
+            </div>
+
+            <div ref={line2Ref} className={styles.lineTrackRight}>
+              <span className={styles.grandEmblem}>WE ARE 13 UTOPIA</span>
+            </div>
           </div>
         </div>
 
-        <div className={styles.stageLockup}>
-          <div
-            ref={line1Ref}
-            className={styles.lineTrackLeft}
-            style={controlled ? { opacity: 0 } : undefined}
-          >
-            <span className={styles.leadText}>
-              DRIVEN BY UNREASONABLE OBSESSION TO CREATE WHAT FEELS UNREAL
-            </span>
-          </div>
+        {/* ════════════════════════════════════════════════════
+            ACT 2: INVITATION ("LET'S BUILD WHAT...")
+            ════════════════════════════════════════════════════ */}
+        <div ref={invitationActRef} className={styles.actInvitation}>
+          <div className={styles.invitationContainer}>
+            {/* Monumental Headline */}
+            <div ref={invHeaderRef} className={styles.invitationHeader}>
+              <h2 className={styles.invitationTitle}>
+                LET&apos;S BUILD WHAT<br />
+                SHOULDN&apos;T EXIST. YET.
+              </h2>
+            </div>
 
-          <div
-            ref={line2Ref}
-            className={styles.lineTrackRight}
-            style={controlled ? { opacity: 0 } : undefined}
-          >
-            <span className={styles.grandEmblem}>WE ARE 13 UTOPIA</span>
+            {/* Action Row */}
+            <div ref={invRowRef} className={styles.invitationRow}>
+              <div className={styles.invitationLeft}>
+                <Link href="/contact" className={styles.ctaButton} data-cursor="hover">
+                  <span>START A PROJECT</span>
+                  <span className={styles.arrowIcon} aria-hidden="true">→</span>
+                </Link>
+              </div>
+
+              <div className={styles.invitationRight}>
+                <p className={styles.manifestoText}>
+                  SAME UNIVERSE.<br />
+                  DIFFERENT BUSINESSES.<br />
+                  <span className={styles.manifestoAccent}>REAL IMPACT.</span>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

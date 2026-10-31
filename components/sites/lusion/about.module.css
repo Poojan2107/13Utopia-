@@ -1,0 +1,903 @@
+/* Scoped styles for Lusion About Us experience */
+
+.container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #060709;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Background WebGL canvas wrapper */
+.canvasWrapper {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.canvasActive {
+  pointer-events: auto;
+}
+
+/* Crosshair overlay */
+.crosshairs {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4vw;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.35;
+}
+
+.crosshair {
+  font-family: monospace;
+  font-size: 1.25rem;
+  color: #ffffff;
+}
+
+/* 1. Hero Section */
+.heroSection {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 4vw 4vh 4vw;
+  z-index: 3;
+  box-sizing: border-box;
+}
+
+.heroWordmark {
+  font-size: clamp(4.5rem, 16vw, 18rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+  margin: 0;
+  color: #ffffff;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.heroBottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 2rem;
+}
+
+.scrollExplore {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
+}
+
+.scrollDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #00f2fe;
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% {
+    transform: scale(0.8);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+/* 2. Manifesto / Moonscape Scene Section */
+.manifestoSection {
+  position: relative;
+  min-height: 150vh;
+  padding: 14vh 4vw 24vh 4vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 3;
+  box-sizing: border-box;
+}
+
+.manifestoRowOne {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.manifestoColLeft {
+  max-width: 520px;
+}
+
+.manifestoHeading {
+  font-size: clamp(2rem, 4.2vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.manifestoHeading em {
+  font-style: italic;
+  font-family: serif, "Times New Roman", Times;
+  font-weight: 400;
+  letter-spacing: normal;
+}
+
+.manifestoColRight {
+  max-width: 540px;
+  text-align: right;
+}
+
+.manifestoRowTwo {
+  margin-top: 36vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+
+.statementTopLeft {
+  max-width: 580px;
+  font-size: clamp(1.75rem, 3.5vw, 3.8rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.statementTopLeft em {
+  font-style: italic;
+  font-family: serif, "Times New Roman", Times;
+  font-weight: 400;
+}
+
+.statementBottomRight {
+  max-width: 620px;
+  margin-left: auto;
+  font-size: clamp(1.5rem, 3vw, 3.2rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 3. Team Holographic Showcase Section */
+.teamSection {
+  position: relative;
+  min-height: 120vh;
+  padding: 14vh 4vw 10vh 4vw;
+  z-index: 3;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(to bottom, rgba(6, 7, 9, 0) 0%, rgba(6, 7, 9, 0.98) 12%, #060709 25%);
+}
+
+.teamTopRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.teamIndex {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.1em;
+}
+
+.teamHeaderTitle {
+  font-size: clamp(3rem, 9vw, 8.5rem);
+  font-weight: 800;
+  letter-spacing: 0.35em;
+  margin: 0;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.teamShowcaseContainer {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  border-radius: 20px;
+  background: radial-gradient(circle at center, rgba(16, 28, 56, 0.45) 0%, rgba(6, 7, 9, 0.8) 75%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.teamCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.teamMemberMeta {
+  position: absolute;
+  bottom: 3rem;
+  left: 3rem;
+  z-index: 4;
+}
+
+.teamMemberName {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.teamMemberRole {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 0 0 1rem 0;
+}
+
+.teamProgressBar {
+  width: 180px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.teamProgressFill {
+  height: 100%;
+  background: #00f2fe;
+  transition: width 0.4s ease;
+}
+
+.teamNextBtn {
+  position: absolute;
+  top: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-color: #002aff;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  z-index: 4;
+  box-shadow: 0 8px 30px rgba(0, 42, 255, 0.5);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
+}
+
+.teamNextBtn:hover {
+  transform: translateX(-50%) scale(1.1);
+  background-color: #1a42ff;
+}
+
+.teamNextBtn svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+  transition: transform 0.2s ease;
+}
+
+.teamNextBtn:hover svg {
+  transform: translateX(3px);
+}
+
+.teamNarrativeBlock {
+  position: absolute;
+  bottom: 3rem;
+  right: 3rem;
+  max-width: 360px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+  z-index: 4;
+}
+
+/* 4. Area of Expertise (Cobalt Royal Section) */
+.expertiseSection {
+  position: relative;
+  background-color: #091db8;
+  color: #ffffff;
+  padding: 14vh 4vw 16vh 4vw;
+  z-index: 3;
+  overflow: hidden;
+}
+
+.expertiseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 6rem;
+}
+
+.expertiseTitle {
+  font-size: clamp(3rem, 11vw, 10rem);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  margin: 0;
+  text-transform: uppercase;
+  max-width: 900px;
+}
+
+.expertiseSubBlock {
+  max-width: 340px;
+}
+
+.expertiseSubtitle {
+  font-family: monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+}
+
+.disciplineBadges {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.disciplineBadge {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Playing Cards Container */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 1080px) {
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .cardsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.playingCard {
+  background: #ffffff;
+  color: #060709;
+  border-radius: 18px;
+  padding: 2.2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 480px;
+  position: relative;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  user-select: none;
+}
+
+.playingCard:hover {
+  transform: translateY(-10px) rotate(0deg) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+.cardTopRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.cardTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.cardIcon {
+  width: 28px;
+  height: 28px;
+  font-family: monospace;
+  font-size: 1.3rem;
+  font-weight: 800;
+  background: #060709;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.cardItemsList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.cardItem {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #1a1a1a;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
+}
+
+.cardBottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  transform: rotate(180deg);
+  margin-top: auto;
+}
+
+.cardInvertedTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* 5. Collaboration CTA & Confetti Section */
+.ctaSection {
+  position: relative;
+  background-color: #091db8;
+  color: #ffffff;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10vh 4vw;
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.confettiCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ctaKicker {
+  font-family: monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.9;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.ctaHeading {
+  font-size: clamp(3.5rem, 11vw, 9.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin: 0 0 3rem 0;
+  position: relative;
+  z-index: 2;
+}
+
+.continueScrollBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 2.2rem;
+  background: #ffffff;
+  color: #060709;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 9999px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, background 0.2s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.continueScrollBtn:hover {
+  transform: translateY(-3px);
+  background: #f0f2f7;
+}
+
+/* 6. Awards & Recognition Section */
+.awardsSection {
+  position: relative;
+  background: #060709;
+  color: #ffffff;
+  padding: 14vh 4vw 10vh 4vw;
+  z-index: 3;
+}
+
+.sectionHeaderRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.sectionHeading {
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.sectionTotalBadge {
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: 300;
+  font-family: monospace;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.awardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 3rem 2rem;
+}
+
+.awardGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.awardOrgName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 1.25rem 0;
+  color: #ffffff;
+}
+
+.awardItemList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.awardItemRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.awardCountNumber {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* 7. Articles & Talks Section */
+.pressTalksSection {
+  position: relative;
+  background: #060709;
+  color: #ffffff;
+  padding: 8vh 4vw 14vh 4vw;
+  z-index: 3;
+}
+
+.pressTalksGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5vw;
+}
+
+@media (max-width: 860px) {
+  .pressTalksGrid {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+}
+
+.articleCard {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: padding-left 0.2s ease, border-color 0.2s ease;
+}
+
+.articleCard:hover {
+  padding-left: 0.75rem;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.articleTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.talkItemRow {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.talkTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.talkMeta {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* 8. Light Editorial Footer */
+.aboutFooterLight {
+  position: relative;
+  background-color: #f0f2f7;
+  color: #060709;
+  padding: 12vh 4vw 8vh 4vw;
+  z-index: 3;
+}
+
+.footerColumns {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1.6fr;
+  gap: 4vw;
+  margin-bottom: 8vh;
+}
+
+@media (max-width: 900px) {
+  .footerColumns {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.footerColHeading {
+  font-family: monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.footerAddressText {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #1e293b;
+  margin: 0;
+}
+
+.footerLinksList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footerLink {
+  color: #0f172a;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.footerLink:hover {
+  color: #002aff;
+}
+
+.newsletterForm {
+  display: flex;
+  position: relative;
+  max-width: 440px;
+  margin-top: 1.5rem;
+}
+
+.newsletterInput {
+  width: 100%;
+  padding: 1.1rem 3.5rem 1.1rem 1.4rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.newsletterInput:focus {
+  border-color: #002aff;
+}
+
+.newsletterSubmitBtn {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.newsletterSubmitBtn:hover {
+  background: #002aff;
+}
+
+.footerBottomBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 2.5rem;
+  font-size: 0.85rem;
+  color: #64748b;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.backToTopBtn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.backToTopBtn:hover {
+  transform: translateY(-3px);
+  background: #002aff;
+}
+
+/* 9. Dark Projects Next-Page Teaser Bar */
+.projectsTeaserBar {
+  position: relative;
+  background-color: #060709;
+  color: #ffffff;
+  padding: 6vh 4vw 8vh 4vw;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.teaserKicker {
+  font-family: monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.teaserMainRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.teaserTitle {
+  font-size: clamp(2.5rem, 7vw, 6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.teaserLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: monospace;
+  font-size: 0.95rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-decoration: none;
+  transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.teaserLink:hover {
+  color: #00f2fe;
+  gap: 2rem;
+}
+
+.teaserCrosshairs {
+  display: flex;
+  justify-content: space-between;
+  opacity: 0.3;
+  font-family: monospace;
+  font-size: 1.1rem;
+}

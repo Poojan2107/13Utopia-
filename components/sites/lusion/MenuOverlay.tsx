@@ -9,12 +9,12 @@ interface MenuOverlayProps {
 }
 
 const NAV_ITEMS = [
-  { index: "01", label: "Home", href: "#hero" },
-  { index: "02", label: "About Us", href: "#intro" },
-  { index: "03", label: "Projects", href: "#projects" },
-  { index: "04", label: "Play Reel", href: "#reel" },
-  { index: "05", label: "Philosophy", href: "#philosophy" },
-  { index: "06", label: "Contact", href: "#contact" },
+  { index: "01", label: "Home", href: "/clone/lusion" },
+  { index: "02", label: "About Us", href: "/clone/lusion/about" },
+  { index: "03", label: "Projects", href: "/clone/lusion#projects" },
+  { index: "04", label: "Play Reel", href: "/clone/lusion#reel" },
+  { index: "05", label: "Philosophy", href: "/clone/lusion#philosophy" },
+  { index: "06", label: "Contact", href: "/clone/lusion/about#contact" },
 ];
 
 export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
@@ -22,9 +22,13 @@ export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
 
   const handleNavClick = (href: string) => {
     onClose();
-    const el = document.querySelector(href);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+    if (href.startsWith("#")) {
+      const el = document.querySelector(href);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      window.location.href = href;
     }
   };
 

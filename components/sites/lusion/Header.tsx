@@ -22,7 +22,7 @@ export function Header({ onToggleMenu, isMenuOpen }: HeaderProps) {
 
   return (
     <header className={`${styles.header} ${isScrolled ? styles.headerScrolled : ""}`}>
-      <a href="#hero" className={styles.logoLink} aria-label="Lusion Home">
+      <a href="/clone/lusion" className={styles.logoLink} aria-label="Lusion Home">
         <svg
           className={styles.logoSvg}
           xmlns="http://www.w3.org/2000/svg"

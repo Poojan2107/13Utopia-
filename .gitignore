@@ -49,6 +49,11 @@ next-env.d.ts
 # live team intake edits (seed stays in repo)
 /data/launch-intake.json
 
+# raw experimental videos in public/videos (keep only active production videos tracked)
+/public/videos/*
+!/public/videos/thesis-black-hole.mp4
+!/public/videos/earth-orbit.mp4
+
 # Animmaster pack binaries + extracted labs (keep CATALOG.md)
 /animmaster/Awwwards Pack-*/
 /animmaster/_lab/
