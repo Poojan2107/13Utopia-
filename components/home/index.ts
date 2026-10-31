@@ -6,6 +6,7 @@ export { HomeManifesto } from "./HomeManifesto";
 export { HomeSectionWork } from "./HomeSectionWork";
 export { HomeSectionMirageWork } from "./HomeSectionMirageWork";
 export { HomeCreatePath } from "./HomeCreatePath";
+export { HomeExpertiseCards } from "./HomeExpertiseCards";
 export { HomeSectionSolutions } from "./HomeSectionSolutions";
 export { HomeHorizontalStatement } from "./HomeHorizontalStatement";
 export { HomeCTASection } from "./HomeCTASection";

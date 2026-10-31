@@ -35,3 +35,17 @@ export const SITE_SCRUB = true as const;
 
 /** Soft catch-up only when a section truly needs it (prefer SITE_SCRUB). */
 export const SITE_SCRUB_SOFT = 0.25 as const;
+
+/**
+ * ScrollTrigger's pin spacer reparents the node. If React already detached
+ * it, revert's removeChild throws NotFoundError. That throw is safe to drop.
+ */
+export function revertGsapContext(ctx: { revert: () => void }) {
+  try {
+    ctx.revert();
+  } catch (error) {
+    if (!(error instanceof DOMException) || error.name !== "NotFoundError") {
+      throw error;
+    }
+  }
+}

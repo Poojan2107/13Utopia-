@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SITE_SCRUB } from "@/components/motion/scrollFeel";
+import { revertGsapContext, SITE_SCRUB } from "@/components/motion/scrollFeel";
 import styles from "@/styles/home/HomeHorizontalStatement.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -151,7 +151,7 @@ export function HomeHorizontalStatement() {
   }, []);
 
   // 2. Sequential Pinned Timeline: Act 1 (Thesis) -> Fade -> Act 2 (Invitation) -> Release
-  useEffect(() => {
+  useLayoutEffect(() => {
     const section = sectionRef.current;
     const pinContainer = pinContainerRef.current;
     const actThesis = thesisActRef.current;
@@ -270,7 +270,7 @@ export function HomeHorizontalStatement() {
     }, section);
 
     return () => {
-      ctx.revert();
+      revertGsapContext(ctx);
     };
   }, []);
 

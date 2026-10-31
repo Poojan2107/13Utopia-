@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { setHeroHoleCovering } from "@/components/motion/heroHoleCover";
-import { SITE_SCRUB } from "@/components/motion/scrollFeel";
+import { revertGsapContext, SITE_SCRUB } from "@/components/motion/scrollFeel";
 import {
   MiragePortfolioExperience,
   PORTFOLIO_PROJECTS,
@@ -64,7 +64,7 @@ export function HomeSectionMirageWork() {
   }
   const unlockTimerRef = useRef<number | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const section = sectionRef.current;
     const pin = pinRef.current;
     if (!section || !pin) return;
@@ -187,19 +187,20 @@ export function HomeSectionMirageWork() {
       stRef.current = main;
     }, section);
 
-    requestAnimationFrame(() => {
+    const refreshId = requestAnimationFrame(() => {
       ScrollTrigger.refresh();
       updateDOM(0);
     });
 
     return () => {
+      cancelAnimationFrame(refreshId);
       window.removeEventListener("mirage-card-step", onStep);
       if (unlockTimerRef.current != null) {
         window.clearTimeout(unlockTimerRef.current);
       }
       stRef.current = null;
       setHeroHoleCovering(false);
-      ctx.revert();
+      revertGsapContext(ctx);
     };
   }, []);
 
