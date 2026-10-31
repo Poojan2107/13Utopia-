@@ -6,6 +6,7 @@
  */
 import {
   HomeSectionMirageWork,
+  HomeCreatePath,
   HomeHorizontalStatement,
 } from "@/components/home";
 import { SiteHeader, SiteFooter } from "@/components/layout";
@@ -35,7 +36,7 @@ export function HomeExperience() {
         >
           {/* Unified continuous sequence: Hero → Cosmic Starfield → UTOPIANVERSE → Mirage River */}
           <HomeSectionMirageWork />
-          {/* Stacked Thesis ("WE ARE 13 UTOPIA") & Invitation ("LET'S BUILD WHAT...") over single full-viewport Black Hole Video */}
+          <HomeCreatePath />
           <HomeHorizontalStatement />
           <SiteFooter />
         </main>
