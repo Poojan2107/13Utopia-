@@ -71,7 +71,7 @@ export function HomeExpertiseCards({
   progressRef?: MutableRefObject<(progress: number) => void>;
 }) {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const cardRefs = useRef<(HTMLElement | null)[]>([]);
   const titleRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const subRef = useRef<HTMLParagraphElement | null>(null);
   const chipRefs = useRef<(HTMLSpanElement | null)[]>([]);
