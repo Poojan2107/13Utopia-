@@ -50,6 +50,8 @@
   background-color: transparent !important;
   transform-origin: 50% 48%;
   will-change: transform, opacity, filter;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .containerEmbedded .canvasWrapper,

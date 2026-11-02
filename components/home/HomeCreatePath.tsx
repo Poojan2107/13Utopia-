@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { revertGsapContext, SITE_SCRUB } from "@/components/motion/scrollFeel";
+import { revertGsapContext } from "@/components/motion/scrollFeel";
 import { HomeExpertiseCards } from "@/components/home/HomeExpertiseCards";
 import styles from "@/styles/home/HomeCreatePath.module.css";
 
@@ -48,21 +48,16 @@ function clamp01(t: number) {
 
 export function HomeCreatePath() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const cardsRef = useRef<HTMLDivElement | null>(null);
   const drawRef = useRef<SVGPathElement | null>(null);
   const penRef = useRef<SVGGElement | null>(null);
   const cardsApplyRef = useRef<(progress: number) => void>(() => {});
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
-    const draw = drawRef.current;
-    const pen = penRef.current;
+    const cards = cardsRef.current;
 
-    if (!section || !draw || !pen) return;
-
-    const length = draw.getTotalLength();
-
-    draw.style.strokeDasharray = `${length}`;
-    draw.style.strokeDashoffset = `${length}`;
+    if (!section || !cards) return;
 
     const apply = (progress: number) => {
       const reduced = window.matchMedia(
@@ -70,14 +65,13 @@ export function HomeCreatePath() {
       ).matches;
 
       const drawn = reduced ? 1 : clamp01(progress);
+      const enter = reduced ? 1 : clamp01(progress / 0.28);
+      const rise = 1 - enter * enter * (3 - 2 * enter);
+
+      cards.style.opacity = String(enter);
+      cards.style.transform = `translate3d(0, ${(rise * 28).toFixed(1)}px, 0)`;
 
       cardsApplyRef.current(drawn);
-      draw.style.strokeDashoffset = `${length * (1 - drawn)}`;
-
-      const tip = draw.getPointAtLength(length * drawn);
-
-      pen.setAttribute("transform", `translate(${tip.x} ${tip.y})`);
-      pen.style.opacity = drawn > 0.02 && drawn < 0.985 ? "1" : "0";
     };
 
     const reduced = window.matchMedia(
@@ -97,7 +91,8 @@ export function HomeCreatePath() {
         pin: true,
         pinSpacing: true,
         anticipatePin: 0,
-        scrub: SITE_SCRUB,
+        scrub: true,
+        invalidateOnRefresh: true,
         onUpdate: (self) => {
           apply(self.progress);
         },
@@ -124,14 +119,16 @@ export function HomeCreatePath() {
             viewBox={`${VIEW_X} ${VIEW_Y} ${VIEW_W} ${VIEW_H}`}
             preserveAspectRatio="xMidYMid meet"
           >
-            <path className={styles.ghost} d={PATH} />
-            <path ref={drawRef} className={styles.draw} d={PATH} />
-            <g ref={penRef} className={styles.pen}>
+            <path data-line-ghost className={styles.ghost} d={PATH} />
+            <path ref={drawRef} data-line-draw className={styles.draw} d={PATH} />
+            <g ref={penRef} data-line-pen className={styles.pen}>
               <circle r="18" />
               <circle r="6" />
             </g>
           </svg>
-          <HomeExpertiseCards embedded progressRef={cardsApplyRef} />
+          <div ref={cardsRef} className={styles.cardsFade}>
+            <HomeExpertiseCards embedded progressRef={cardsApplyRef} />
+          </div>
         </div>
       </div>
     </section>

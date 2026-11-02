@@ -239,8 +239,8 @@ export function createRenderer({ canvas }: RendererOptions) {
     let catchUp = false;
     const tick = (timestamp: number): void => {
       if (stopped) return;
-      // The scroll thread owns these frames. The hole stays on the last
-      // picture and fades with CSS; the pose catches up when the wheel rests.
+      // Geodesic bakes block the scroll thread. Hold the last frame while
+      // the wheel is moving; the portal zoom is a compositor transform.
       if (isUserScrolling()) {
         catchUp = true;
         if (!stopped) frameHandle = requestAnimationFrame(tick);

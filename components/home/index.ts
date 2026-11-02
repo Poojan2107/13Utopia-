@@ -5,6 +5,7 @@ export { HomeNarrativeSection } from "./HomeNarrativeSection";
 export { HomeManifesto } from "./HomeManifesto";
 export { HomeSectionWork } from "./HomeSectionWork";
 export { HomeSectionMirageWork } from "./HomeSectionMirageWork";
+export { HomeAboutReveal } from "./HomeAboutReveal";
 export { HomeCreatePath } from "./HomeCreatePath";
 export { HomeExpertiseCards } from "./HomeExpertiseCards";
 export { HomeSectionSolutions } from "./HomeSectionSolutions";

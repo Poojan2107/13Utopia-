@@ -15,21 +15,12 @@
   height: 100dvh;
   overflow: hidden;
   background-color: transparent;
-  /* Only dissolve into the next chapter at the very bottom */
-  mask-image: linear-gradient(
-    to bottom,
-    black 0%,
-    black 92%,
-    rgba(0, 0, 0, 0.55) 97%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    black 0%,
-    black 92%,
-    rgba(0, 0, 0, 0.55) 97%,
-    transparent 100%
-  );
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  will-change: opacity, transform;
 }
 
 /* ── Hero Layers: Black Hole & Monument Typography ── */
@@ -45,6 +36,148 @@
   background-color: transparent;
 }
 
+/* Grows from the ring's existing center (desktop camera offset). */
+.holeZoom {
+  position: absolute;
+  inset: 0;
+  transform-origin: 72% 46%;
+  will-change: transform;
+}
+
+/* Scroll-scrubbed portal. Opacity and scale only — no blur filters. */
+.portal {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  overflow: hidden;
+  transform-origin: 72% 46%;
+}
+
+.streaks {
+  position: absolute;
+  left: 72%;
+  top: 46%;
+  width: 140vmax;
+  height: 140vmax;
+  margin-left: -70vmax;
+  margin-top: -70vmax;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.62);
+  transform-origin: center center;
+  will-change: transform, opacity;
+  background: repeating-conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 13deg,
+    rgba(255, 255, 255, 0.05) 14.1deg,
+    rgba(255, 255, 255, 0.55) 14.7deg,
+    rgba(255, 255, 255, 0.05) 15.5deg,
+    transparent 16.6deg
+  );
+  -webkit-mask-image: radial-gradient(
+    circle,
+    transparent 0 32%,
+    rgba(0, 0, 0, 0.85) 46%,
+    #000 58%,
+    transparent 78%
+  );
+  mask-image: radial-gradient(
+    circle,
+    transparent 0 32%,
+    rgba(0, 0, 0, 0.85) 46%,
+    #000 58%,
+    transparent 78%
+  );
+  mix-blend-mode: screen;
+}
+
+.ringGlow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(
+    circle at 72% 46%,
+    transparent 16%,
+    rgba(255, 255, 255, 0.28) 30%,
+    rgba(255, 255, 255, 0.05) 42%,
+    transparent 58%
+  );
+  mix-blend-mode: screen;
+  will-change: opacity;
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(
+    circle at 72% 46%,
+    rgba(255, 255, 255, 0.96) 0%,
+    rgba(214, 222, 230, 0.55) 16%,
+    rgba(120, 132, 146, 0.18) 34%,
+    transparent 62%
+  );
+  mix-blend-mode: screen;
+  will-change: opacity;
+}
+
+@media (max-width: 767px) {
+  .holeZoom,
+  .portal {
+    transform-origin: 50% 50%;
+  }
+
+  .horizonReveal {
+    clip-path: circle(0px at 50% 50%);
+  }
+
+  .streaks {
+    left: 50%;
+    top: 50%;
+  }
+
+  .ringGlow {
+    background: radial-gradient(
+      circle at 50% 50%,
+      transparent 16%,
+      rgba(255, 255, 255, 0.28) 30%,
+      rgba(255, 255, 255, 0.05) 42%,
+      transparent 58%
+    );
+  }
+
+  .flash {
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 255, 255, 0.96) 0%,
+      rgba(214, 222, 230, 0.55) 16%,
+      rgba(120, 132, 146, 0.18) 34%,
+      transparent 62%
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .streaks,
+  .ringGlow,
+  .flash {
+    display: none;
+  }
+}
+
+/* Growing event horizon. Clips the next scene to the dark center. */
+.horizonReveal {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  background: transparent;
+  pointer-events: none;
+  clip-path: circle(0px at 72% 46%);
+  will-change: clip-path;
+}
+
 .heroCopyContainer {
   position: absolute;
   inset: 0;
@@ -57,7 +190,8 @@
   justify-content: center;
   align-items: flex-start;
   padding: 0 clamp(24px, 6vw, 100px);
-  will-change: opacity, transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .heroLockup {
@@ -122,6 +256,8 @@
   padding: 0;
   white-space: nowrap;
   filter: var(--hero-type-shadow);
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .stackedBlock {
@@ -153,6 +289,8 @@
   padding: 0;
   white-space: nowrap;
   filter: var(--hero-type-shadow);
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .heroLeadText {

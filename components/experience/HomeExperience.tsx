@@ -6,6 +6,7 @@
  */
 import {
   HomeSectionMirageWork,
+  HomeAboutReveal,
   HomeCreatePath,
   HomeHorizontalStatement,
 } from "@/components/home";
@@ -36,6 +37,7 @@ export function HomeExperience() {
         >
           {/* Unified continuous sequence: Hero → Cosmic Starfield → UTOPIANVERSE → Mirage River */}
           <HomeSectionMirageWork />
+          <HomeAboutReveal />
           <HomeCreatePath />
           <HomeHorizontalStatement />
           <SiteFooter />

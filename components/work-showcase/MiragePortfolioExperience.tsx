@@ -205,21 +205,28 @@ export const MiragePortfolioExperience = forwardRef<
     const p = clamp01(progress);
     const s = stateRef.current;
     s.riverProgress = p;
-    if (p > 0.26) wakeLoopRef.current?.();
+    if (p > 0.1) wakeLoopRef.current?.();
+
+    if (rootRef.current) {
+      const mirageFadeIn = smootherstep(0.14, 0.34, p);
+      const exitOp = (1 - smootherstep(0.92, 1, p) * 0.35) * mirageFadeIn;
+      rootRef.current.style.opacity = String(exitOp);
+      rootRef.current.style.visibility = exitOp > 0.001 ? "visible" : "hidden";
+    }
 
     if (logoRef.current) {
-      // Stay invisible until BE UNREAL / UNREASONABLE has fully left (ends ~0.18).
+      // Emerges out of the horizon flash, then leaves as the structure opens.
       const verseShow =
-        smootherstep(0.22, 0.3, p) * (1 - smootherstep(0.46, 0.54, p));
+        smootherstep(0.34, 0.48, p) * (1 - smootherstep(0.54, 0.66, p));
       logoRef.current.style.opacity = String(verseShow);
       logoRef.current.style.visibility = verseShow > 0.02 ? "visible" : "hidden";
     }
 
     // Unified pin sequence:
-    // 0.00–0.22  Hero stage & dissolve to pure starfield (Mirage is idle/hidden)
-    // 0.22–0.38  UTOPIANVERSE text blooms in pure starfield (carousel faint/hidden)
-    // 0.38–0.48  Carousel rotunda emerges behind UTOPIANVERSE in overhead perspective
-    // 0.48–0.56  Camera swoops to eye level; UTOPIANVERSE dissolves up; Card 0 active
+    // 0.00–0.38  Black-hole dive, hyperspace, horizon flash
+    // 0.34–0.52  UTOPIANVERSE emerges from the flash
+    // 0.42–0.64  The second environment eases in
+    // 0.46–0.56  Camera swoops to eye level; Card 0 becomes active
     // 0.56–0.92  Smooth continuous card showcase (cards 0 to 9)
     // 0.92–1.00  Soft exit release into next homepage section
     let heroBlend = 1;
@@ -1016,10 +1023,11 @@ export const MiragePortfolioExperience = forwardRef<
     };
 
     let loopRunning = false;
+    let lastLogoPaint = "";
     const riverInView = () => {
       if (!embeddedRef.current) return true;
       const p = stateRef.current.riverProgress;
-      return p >= 0.28 && p <= 0.992;
+      return p >= 0.12 && p <= 0.992;
     };
 
     const animate = () => {
@@ -1062,17 +1070,22 @@ export const MiragePortfolioExperience = forwardRef<
         if (river) {
           const pinP = st.riverProgress;
           // 1. Text UTOPIANVERSE: blooms in deep starfield (p: 0.22 -> 0.30), holds, then dissolves as carousel expands (p: 0.46 -> 0.54)
-          const heroShow = smootherstep(0.22, 0.30, pinP) * (1 - smootherstep(0.46, 0.54, pinP));
-          const tracking = 0.14 + smootherstep(0.22, 0.32, pinP) * 0.06 - (1 - heroBlend) * 0.06;
-          const scale = 0.94 + smootherstep(0.22, 0.32, pinP) * 0.06 + (1 - heroBlend) * 0.06;
-          const yShift = (1 - heroBlend) * -45; // smoothly glides up as carousel expands
-
-          logoRef.current.style.left = "50%";
-          logoRef.current.style.top = "50%";
-          logoRef.current.style.letterSpacing = `${tracking.toFixed(3)}em`;
-          logoRef.current.style.transform = `translate(-50%, calc(-50% + ${yShift.toFixed(1)}px)) scale(${scale.toFixed(4)})`;
-          logoRef.current.style.opacity = String(heroShow);
-          logoRef.current.style.visibility = heroShow > 0.005 ? "visible" : "hidden";
+          const heroShow = smootherstep(0.34, 0.48, pinP) * (1 - smootherstep(0.54, 0.66, pinP));
+          const reveal = smootherstep(0.34, 0.5, pinP);
+          const tracking = 0.14 + reveal * 0.06 - (1 - heroBlend) * 0.06;
+          const scale = 0.9 + reveal * 0.12 + (1 - heroBlend) * 0.06;
+          const yShift = (1 - heroBlend) * -45;
+          const paint = `${heroShow.toFixed(3)}|${tracking.toFixed(3)}|${scale.toFixed(3)}|${yShift.toFixed(1)}`;
+          if (paint !== lastLogoPaint) {
+            lastLogoPaint = paint;
+            const logo = logoRef.current;
+            logo.style.left = "50%";
+            logo.style.top = "50%";
+            logo.style.letterSpacing = `${tracking.toFixed(3)}em`;
+            logo.style.transform = `translate(-50%, calc(-50% + ${yShift.toFixed(1)}px)) scale(${scale.toFixed(3)})`;
+            logo.style.opacity = heroShow.toFixed(3);
+            logo.style.visibility = heroShow > 0.02 ? "visible" : "hidden";
+          }
         } else {
           const diveScale = 1 + diveT * 0.28;
           const px = st.mouseX * 10;
@@ -1086,7 +1099,7 @@ export const MiragePortfolioExperience = forwardRef<
       if (heroOverlayRef.current) {
         if (river) {
           const pinP = st.riverProgress;
-          const heroShow = smootherstep(0.22, 0.30, pinP) * (1 - smootherstep(0.46, 0.54, pinP));
+          const heroShow = smootherstep(0.34, 0.48, pinP) * (1 - smootherstep(0.54, 0.66, pinP));
           heroOverlayRef.current.style.opacity = heroShow > 0.005 ? "1" : "0";
           heroOverlayRef.current.style.pointerEvents =
             heroShow > 0.45 ? "auto" : "none";
@@ -1101,7 +1114,7 @@ export const MiragePortfolioExperience = forwardRef<
       // 2. Carousel subtly appearing like a cinematic scroll-based event
       // At p < 0.34: dunes and screens are hidden (stars only)
       // At p: 0.34 -> 0.48: carousel subtly emerges behind UTOPIANVERSE into full 3D presence
-      const carouselReveal = river ? smootherstep(0.34, 0.48, st.riverProgress) : 1;
+      const carouselReveal = river ? smootherstep(0.42, 0.64, st.riverProgress) : 1;
       const showCarousel = !river || carouselReveal > 0.001;
       carouselGroup.visible = showCarousel;
       if (groundModelMesh) groundModelMesh.visible = showCarousel;
@@ -1129,7 +1142,7 @@ export const MiragePortfolioExperience = forwardRef<
       }
       if (river && rootRef.current) {
         // Continuous, weightless opacity — never CSS blur
-        const mirageFadeIn = smootherstep(0.18, 0.26, st.riverProgress);
+        const mirageFadeIn = smootherstep(0.14, 0.34, st.riverProgress);
         const exitOp = (1 - st.riverExitFade * 0.35) * mirageFadeIn;
         rootRef.current.style.visibility = exitOp > 0.001 ? "visible" : "hidden";
         rootRef.current.style.opacity = String(exitOp);
@@ -1284,7 +1297,6 @@ export const MiragePortfolioExperience = forwardRef<
   return (
     <div
       ref={rootRef}
-      style={embedded ? { opacity: 0, visibility: "hidden" } : undefined}
       className={`${styles.container}${
         embedded ? ` ${styles.containerEmbedded}` : ""
       }`}
