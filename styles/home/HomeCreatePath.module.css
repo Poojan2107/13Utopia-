@@ -38,6 +38,7 @@
   width: 100%;
   height: 100%;
   display: block;
+  overflow: visible;
 }
 
 .ghost,
@@ -50,12 +51,12 @@
 .ghost {
   stroke: rgba(255, 255, 255, 0.14);
   stroke-width: 36;
+  opacity: 0;
 }
 
 .draw {
   stroke: #ffffff;
   stroke-width: 48;
-  opacity: 0;
 }
 
 .pen {

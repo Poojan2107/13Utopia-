@@ -74,6 +74,11 @@ export function HomeAboutReveal() {
     ).matches;
 
     let routeLength = 1;
+    let frozenStart: { x: number; y: number } | null = null;
+    let frozenCurve: Array<{ x: number; y: number }> | null = null;
+
+    const fitScale = () =>
+      Math.min(window.innerWidth / 1800, window.innerHeight / 1240) || 1;
 
     const screenPoint = (svg: SVGSVGElement, x: number, y: number) => {
       const point = svg.createSVGPoint();
@@ -83,102 +88,187 @@ export function HomeAboutReveal() {
       return ctm ? point.matrixTransform(ctm) : point;
     };
 
-    const connector = () => {
-      const period = periodRef.current;
+    const periodDot = () => {
+      const nodes = Array.from(section.querySelectorAll("span"));
+      const last = nodes.filter(
+        (node): node is HTMLSpanElement =>
+          node instanceof HTMLSpanElement &&
+          node.textContent === "." &&
+          node.children.length === 0,
+      ).pop();
+      if (!last) return null;
+      const rect = last.getBoundingClientRect();
+      // Ignore transient off-screen pin/transform readings.
+      if (rect.top < -80 || rect.top > window.innerHeight + 80) {
+        if (frozenStart) {
+          return { x: frozenStart.x, y: frozenStart.y, el: last };
+        }
+        return null;
+      }
+      return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height * 0.62,
+        el: last,
+      };
+    };
+
+    const buildCurve = (
+      dotX: number,
+      dotY: number,
+      join: { x: number; y: number },
+      ux: number,
+      uy: number,
+    ) => {
+      const dx = join.x - dotX;
+      const dy = join.y - dotY;
+      const reach = Math.hypot(dx, dy) || 1;
+      // Keep the outbound handle modest so the turn doesn't bow across the grey path.
+      const leave = Math.max(90, Math.min(Math.abs(dx) * 0.55 + 40, 180));
+      const arrive = Math.max(140, Math.min(reach * 0.45, 240));
+      const overlap = strokeWidth() * 1.05;
+      const tipX = join.x + ux * overlap;
+      const tipY = join.y + uy * overlap;
+      const maxX = window.innerWidth - 20;
+      const c1x = Math.min(maxX, dotX + leave);
+      // Bend down early so the stroke reads as a curve from the first pixels.
+      const c1y = dotY + Math.max(36, Math.max(0, dy) * 0.28);
+      let c2x = tipX - ux * arrive;
+      let c2y = tipY - uy * arrive;
+      if (c2x > maxX) {
+        const t = (maxX - tipX) / (c2x - tipX || 1);
+        c2x = tipX + (c2x - tipX) * t;
+        c2y = tipY + (c2y - tipY) * t;
+      }
+      // Soft S: leave the full stop rightward, ease down, arrive on the path tangent.
+      return [
+        { x: dotX, y: dotY },
+        { x: c1x, y: c1y },
+        { x: c2x, y: c2y },
+        { x: tipX, y: tipY },
+      ];
+    };
+
+    const livePoints = () => {
+      const period = periodDot();
       const route = document.querySelector<SVGPathElement>("[data-line-draw]");
       const svg = route?.ownerSVGElement;
       if (!period || !route || !svg) return null;
-      const dot = period.getBoundingClientRect();
-      const dotX = dot.left + dot.width / 2;
-      const dotY = dot.top + dot.height * 0.62;
-      const len = route.getTotalLength();
-      const step = 14;
-      const samples: Array<{ x: number; y: number }> = [];
-      for (let d = 0; d <= len; d += step) {
-        const local = route.getPointAtLength(d);
-        const screen = screenPoint(svg, local.x, local.y);
-        samples.push({ x: screen.x, y: screen.y });
-      }
-      const margin = 36;
-      let joinAt = samples.findIndex(
-        (sample) =>
-          sample.x >= -margin &&
-          sample.x <= window.innerWidth + margin &&
-          sample.y >= -margin &&
-          sample.y <= window.innerHeight + margin,
-      );
-      const onScreen = joinAt >= 0;
-      if (!onScreen) joinAt = 0;
-      const join = onScreen
-        ? samples[joinAt]
-        : { x: samples[0].x, y: window.innerHeight + 24 };
-      const lead = samples[Math.min(joinAt + 4, samples.length - 1)];
-      const span = Math.hypot(lead.x - join.x, lead.y - join.y) || 1;
-      const ux = (lead.x - join.x) / span;
-      const uy = (lead.y - join.y) / span;
-      const endX = join.x;
-      const endY = join.y;
-      const reach = Math.hypot(endX - dotX, endY - dotY);
-      const turn = Math.max(72, Math.min(reach * 0.36, 170));
-      const c1x = dotX + Math.min(turn * 0.6, Math.max(48, (endX - dotX) * 0.4));
-      const c2x = endX - ux * turn * 0.35;
-      const c2y = endY - uy * turn * 0.35;
+      const len = route.getTotalLength() || 1;
+      const origin = route.getPointAtLength(0);
+      const ahead = route.getPointAtLength(Math.min(56, len));
+      const originScreen = screenPoint(svg, origin.x, origin.y);
+      const next = screenPoint(svg, ahead.x, ahead.y);
+      const span = Math.hypot(next.x - originScreen.x, next.y - originScreen.y) || 1;
+      const ux = (next.x - originScreen.x) / span;
+      const uy = (next.y - originScreen.y) / span;
 
-      let follow = "";
-      if (onScreen) {
-        for (let index = joinAt + 1; index < samples.length; index += 1) {
-          const sample = samples[index];
-          follow += ` L ${sample.x.toFixed(1)} ${sample.y.toFixed(1)}`;
-        }
-      }
+      // Keep the join on-screen so the turn never shoots off below the fold.
+      const join = {
+        x: Math.min(originScreen.x, window.innerWidth - 12),
+        y: Math.min(Math.max(originScreen.y, 24), window.innerHeight + 20),
+      };
 
-      const hand = `M ${dotX.toFixed(1)} ${dotY.toFixed(1)} C ${c1x.toFixed(1)} ${dotY.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${endX.toFixed(1)} ${endY.toFixed(1)}`;
-      return { d: `${hand}${follow}`, hand };
+      // Prefer the live full-stop while it is on screen so the turn stays attached to the text.
+      const useLive = period.y > 24 && period.y < window.innerHeight - 24;
+      if (useLive) frozenStart = { x: period.x, y: period.y };
+      else if (!frozenStart) frozenStart = { x: period.x, y: period.y };
+
+      const points = buildCurve(frozenStart.x, frozenStart.y, join, ux, uy);
+      return { points, skip: 0, period: period.el, ux, uy, join };
     };
+
+    const pathFrom = (points: Array<{ x: number; y: number }>) =>
+      `M ${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)} C ${points[1].x.toFixed(1)} ${points[1].y.toFixed(1)}, ${points[2].x.toFixed(1)} ${points[2].y.toFixed(1)}, ${points[3].x.toFixed(1)} ${points[3].y.toFixed(1)}`;
 
     const paintLine = (progress: number) => {
       const bridge = drawRef.current;
       const route = document.querySelector<SVGPathElement>("[data-line-draw]");
       const ghost = document.querySelector<SVGPathElement>("[data-line-ghost]");
       const pen = document.querySelector<SVGGElement>("[data-line-pen]");
-      const period = periodRef.current;
       const create = document.querySelector<HTMLElement>("#create-path");
       if (!bridge || !route || !create) return;
 
       routeLength = route.getTotalLength() || 1;
-      const shape = connector();
+      const createTop = create.getBoundingClientRect().top;
+      const live = livePoints();
       route.style.strokeDasharray = `${routeLength}`;
 
-      if (progress <= 0 || !shape) {
+      if (progress <= 0.001 || !live) {
+        frozenStart = null;
+        frozenCurve = null;
         bridge.style.opacity = "0";
+        bridge.removeAttribute("d");
         bridge.style.strokeDashoffset = "1";
         route.style.strokeDashoffset = `${routeLength}`;
+        route.style.opacity = "0";
         if (ghost) ghost.style.opacity = "0";
-        if (period) period.style.opacity = "1";
+        if (live?.period) live.period.style.opacity = "1";
+        else if (periodRef.current) periodRef.current.style.opacity = "1";
         if (pen) pen.style.opacity = "0";
         return;
       }
 
-      bridge.setAttribute("d", shape.hand);
-      const handLength = bridge.getTotalLength() || 1;
-      bridge.setAttribute("d", shape.d);
+      // Freeze the turn once How We Work is near, so the join stops reshaping.
+      if (createTop <= window.innerHeight * 0.55) {
+        if (!frozenCurve) {
+          const join = live.points[3];
+          frozenCurve = live.points.map((point) => ({
+            x: point.x - join.x,
+            y: point.y - join.y,
+          }));
+        }
+      } else {
+        frozenCurve = null;
+      }
+
+      const points = frozenCurve
+        ? frozenCurve.map((point) => ({
+            x: point.x + live.points[3].x,
+            y: point.y + live.points[3].y,
+          }))
+        : live.points;
+
+      bridge.setAttribute("d", pathFrom(points));
       bridge.style.strokeWidth = `${strokeWidth()}`;
       const bridgeLength = bridge.getTotalLength() || 1;
-      const routePx = Math.max(0, bridgeLength - handLength);
-      const drawn = clamp01(progress) * bridgeLength;
-      const joined = drawn >= handLength - 1;
-      bridge.style.strokeDasharray = `${bridgeLength}`;
-      bridge.style.strokeDashoffset = `${Math.max(0, bridgeLength - drawn)}`;
-      bridge.style.opacity = drawn > handLength * 0.012 ? "1" : "0";
-      route.style.opacity = "0";
-      if (ghost) ghost.style.opacity = joined ? "1" : "0";
+      const skip = frozenCurve ? 0 : live.skip;
+      const rest = Math.max(1, routeLength - skip);
+      const routePx = rest * fitScale();
+      const handEnd =
+        (ABOUT_PIN + 1 - ABOUT_PIN * TYPE_END) /
+        (LINE_SPAN - ABOUT_PIN * TYPE_END);
+      const drawn =
+        progress < handEnd
+          ? (progress / Math.max(0.001, handEnd)) * bridgeLength
+          : bridgeLength +
+            ((progress - handEnd) / Math.max(0.001, 1 - handEnd)) * routePx;
+      const bridgeDrawn = Math.min(drawn, bridgeLength) / bridgeLength;
+      const along = Math.max(0, drawn - bridgeLength) / fitScale();
 
-      if (period) period.style.opacity = drawn > handLength * 0.04 ? "0" : "1";
+      bridge.style.strokeDasharray = `${bridgeLength}`;
+      bridge.style.strokeDashoffset = `${bridgeLength * (1 - bridgeDrawn)}`;
+      const bridgeVisible = bridgeDrawn > 0.012 && along < strokeWidth() * 1.1;
+      bridge.style.opacity = bridgeVisible ? "1" : "0";
+
+      route.style.opacity = "1";
+      if (skip > 0) {
+        route.style.strokeDasharray = `0 ${skip} ${along} ${routeLength}`;
+        route.style.strokeDashoffset = "0";
+      } else {
+        route.style.strokeDasharray = `${routeLength}`;
+        route.style.strokeDashoffset = `${Math.max(0, routeLength - along)}`;
+      }
+
+      if (ghost) ghost.style.opacity = "0";
+
+      if (live.period) live.period.style.opacity = bridgeDrawn > 0.04 ? "0" : "1";
       if (pen) {
-        const along = routePx > 1 ? Math.max(0, drawn - handLength) / routePx : 0;
-        const tip = route.getPointAtLength(Math.min(routeLength, along * routeLength));
+        const tip = route.getPointAtLength(
+          Math.min(routeLength, skip + along),
+        );
         pen.setAttribute("transform", `translate(${tip.x} ${tip.y})`);
-        pen.style.opacity = along > 0.02 && along < 0.985 ? "1" : "0";
+        const routeT = (skip + along) / routeLength;
+        pen.style.opacity = along > 8 && routeT < 0.985 ? "1" : "0";
       }
     };
 
@@ -203,12 +293,6 @@ export function HomeAboutReveal() {
     const lineProgress = (progress: number) =>
       clamp01((progress - lineStart) / (1 - lineStart));
 
-    let paintFrame = 0;
-    const schedulePaint = (progress: number) => {
-      cancelAnimationFrame(paintFrame);
-      paintFrame = requestAnimationFrame(() => paintLine(progress));
-    };
-
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: section,
@@ -218,14 +302,16 @@ export function HomeAboutReveal() {
         anticipatePin: 0,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
-          schedulePaint(lineProgress(self.progress));
+          paintLine(lineProgress(self.progress));
         },
-        onLeave: () => schedulePaint(1),
-        onLeaveBack: () => schedulePaint(0),
+        onLeave: () => paintLine(1),
+        onLeaveBack: () => paintLine(0),
         onRefresh: (self) => {
+          frozenStart = null;
+          frozenCurve = null;
           const fresh = document.querySelector<SVGPathElement>("[data-line-draw]");
           routeLength = fresh?.getTotalLength() || 1;
-          schedulePaint(lineProgress(self.progress));
+          paintLine(lineProgress(self.progress));
         },
       });
 
@@ -292,10 +378,7 @@ export function HomeAboutReveal() {
       tl.to({}, { duration: total * ((1 - TYPE_END) / TYPE_END) }, total);
     }, section);
 
-    return () => {
-      cancelAnimationFrame(paintFrame);
-      revertGsapContext(ctx);
-    };
+    return () => revertGsapContext(ctx);
   }, []);
 
   let glyphIndex = 0;

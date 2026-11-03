@@ -13,24 +13,23 @@ gsap.registerPlugin(ScrollTrigger);
  * then settle in a row. Scroll progress drives the whole move.
  */
 
+const FRONT_SRC = encodeURI("/images/Utopia cards Front.jpg");
+
 const CARDS = [
   {
     id: "create",
     word: "Create",
-    letter: "C",
-    items: ["Brand strategy", "Identity", "Art direction", "Narrative", "Research"],
+    backSrc: encodeURI("/images/Utopia cards1.jpg"),
   },
   {
     id: "build",
     word: "Build",
-    letter: "B",
-    items: ["Product design", "Digital experiences", "Engineering", "Motion", "Systems"],
+    backSrc: encodeURI("/images/Utopia cards2.jpg"),
   },
   {
     id: "grow",
     word: "Grow",
-    letter: "G",
-    items: ["Demand", "Visibility", "Launch", "Content", "Pipeline"],
+    backSrc: encodeURI("/images/Utopia cards3.jpg"),
   },
 ] as const;
 
@@ -74,7 +73,6 @@ export function HomeExpertiseCards({
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
   const titleRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const subRef = useRef<HTMLParagraphElement | null>(null);
-  const chipRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -86,8 +84,8 @@ export function HomeExpertiseCards({
       const drawn = reduced ? 1 : clamp01(progress);
       const narrow = window.innerWidth <= 720;
       const sample = cardRefs.current[0];
-      const cardWidth = sample?.offsetWidth ?? 220;
-      const gap = narrow ? 16 : 28;
+      const cardWidth = sample?.offsetWidth ?? 320;
+      const gap = narrow ? 18 : 32;
       const count = CARDS.length;
       const row = count * cardWidth + (count - 1) * gap;
       const origin = -row / 2 + cardWidth / 2;
@@ -102,12 +100,6 @@ export function HomeExpertiseCards({
       if (subRef.current) {
         subRef.current.style.transform = `translate3d(0, ${subReveal}%, 0)`;
       }
-
-      chipRefs.current.forEach((chip, index) => {
-        if (!chip) return;
-        const reveal = fit(drawn, 0.1 + index * 0.03, 0.24 + index * 0.03, 110, 0, expoOut);
-        chip.style.transform = `translate3d(0, ${reveal}%, 0)`;
-      });
 
       const spread = fit(drawn, 0.18, 0.78, 0, 1);
       const flip = fit(drawn, 0.22, 0.92, 0, 1);
@@ -196,20 +188,6 @@ export function HomeExpertiseCards({
               Strategy, product, and growth, held in one practice.
             </p>
           </div>
-          <div className={styles.chips}>
-            {CARDS.map((card, index) => (
-              <span key={card.id} className={styles.chipWrap}>
-                <span
-                  ref={(node) => {
-                    chipRefs.current[index] = node;
-                  }}
-                  className={styles.chip}
-                >
-                  {card.letter}
-                </span>
-              </span>
-            ))}
-          </div>
         </div>
 
         <div className={styles.deck}>
@@ -222,25 +200,26 @@ export function HomeExpertiseCards({
               className={styles.card}
               aria-label={card.word}
             >
+              {/* Visible after flip (card rotateY → 0) */}
               <div className={styles.face}>
-                <header className={styles.cardHead}>
-                  <p className={styles.cardWord}>{card.word}</p>
-                  <span className={styles.cardLetter}>{card.letter}</span>
-                </header>
-                <ul className={styles.list}>
-                  {card.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-                <footer className={styles.cardHead}>
-                  <p className={styles.cardWord}>{card.word}</p>
-                  <span className={styles.cardLetter}>{card.letter}</span>
-                </footer>
+                <img
+                  className={styles.cardImage}
+                  src={card.backSrc}
+                  alt={`${card.word} card`}
+                  draggable={false}
+                  decoding="async"
+                />
               </div>
+              {/* Visible initially (card rotateY = 180) */}
               <div className={`${styles.face} ${styles.back}`} aria-hidden="true">
-                <span className={styles.backFrame}>
-                  <span className={styles.backMark}>{card.letter}</span>
-                </span>
+                <img
+                  className={styles.cardImage}
+                  src={FRONT_SRC}
+                  alt=""
+                  draggable={false}
+                  decoding="async"
+                  fetchPriority={index === 0 ? "high" : "auto"}
+                />
               </div>
             </article>
           ))}
